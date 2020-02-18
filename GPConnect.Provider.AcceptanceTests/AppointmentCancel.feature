@@ -1,4 +1,4 @@
-﻿@appointment
+﻿@appointment @1.2.6-Full-Pack
 Feature: AppointmentCancel
 
 @1.2.3

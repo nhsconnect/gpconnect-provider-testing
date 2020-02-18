@@ -20,6 +20,7 @@ namespace GPConnect.Provider.AcceptanceTests
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("PractitionerSearch")]
     [NUnit.Framework.CategoryAttribute("practitioner")]
+    [NUnit.Framework.CategoryAttribute("1.2.6-Full-Pack")]
     public partial class PractitionerSearchFeature
     {
         
@@ -33,7 +34,8 @@ namespace GPConnect.Provider.AcceptanceTests
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "PractitionerSearch", null, ProgrammingLanguage.CSharp, new string[] {
-                        "practitioner"});
+                        "practitioner",
+                        "1.2.6-Full-Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
         

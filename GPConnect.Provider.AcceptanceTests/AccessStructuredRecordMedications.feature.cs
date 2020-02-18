@@ -20,6 +20,7 @@ namespace GPConnect.Provider.AcceptanceTests
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("AccessStructuredRecordMedications")]
     [NUnit.Framework.CategoryAttribute("structuredrecord")]
+    [NUnit.Framework.CategoryAttribute("1.2.6-Full-Pack")]
     public partial class AccessStructuredRecordMedicationsFeature
     {
         
@@ -33,7 +34,8 @@ namespace GPConnect.Provider.AcceptanceTests
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "AccessStructuredRecordMedications", null, ProgrammingLanguage.CSharp, new string[] {
-                        "structuredrecord"});
+                        "structuredrecord",
+                        "1.2.6-Full-Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -76,7 +78,7 @@ namespace GPConnect.Provider.AcceptanceTests
             "eter part")]
         [NUnit.Framework.CategoryAttribute("1.2.4")]
         [NUnit.Framework.CategoryAttribute("1.2.5")]
-        [NUnit.Framework.CategoryAttribute("1.2.6")]
+        [NUnit.Framework.CategoryAttribute("1.2.6-IncrementalAndRegression")]
         [NUnit.Framework.TestCaseAttribute("patient2", null)]
         [NUnit.Framework.TestCaseAttribute("patient3", null)]
         [NUnit.Framework.TestCaseAttribute("patient5", null)]
@@ -87,7 +89,7 @@ namespace GPConnect.Provider.AcceptanceTests
             string[] @__tags = new string[] {
                     "1.2.4",
                     "1.2.5",
-                    "1.2.6"};
+                    "1.2.6-IncrementalAndRegression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -217,12 +219,12 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve the medication structured record section for a patient excludes the para" +
             "meter part value as now optional")]
-        [NUnit.Framework.CategoryAttribute("1.2.6")]
+        [NUnit.Framework.CategoryAttribute("1.2.6-IncrementalAndRegression")]
         public virtual void RetrieveTheMedicationStructuredRecordSectionForAPatientExcludesTheParameterPartValueAsNowOptional()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the medication structured record section for a patient excludes the para" +
                     "meter part value as now optional", null, new string[] {
-                        "1.2.6"});
+                        "1.2.6-IncrementalAndRegression"});
 #line 67
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -918,12 +920,12 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve the medication structured record from request with empty values for the " +
             "parameter parts")]
-        [NUnit.Framework.CategoryAttribute("1.2.6")]
+        [NUnit.Framework.CategoryAttribute("1.2.6-IncrementalAndRegression")]
         public virtual void RetrieveTheMedicationStructuredRecordFromRequestWithEmptyValuesForTheParameterParts()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the medication structured record from request with empty values for the " +
                     "parameter parts", null, new string[] {
-                        "1.2.6"});
+                        "1.2.6-IncrementalAndRegression"});
 #line 403
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();

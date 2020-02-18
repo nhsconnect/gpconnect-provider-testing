@@ -1,4 +1,4 @@
-﻿@organization
+﻿@organization @1.2.6-Full-Pack
 Feature: OrganizationRead
 
 @1.2.3

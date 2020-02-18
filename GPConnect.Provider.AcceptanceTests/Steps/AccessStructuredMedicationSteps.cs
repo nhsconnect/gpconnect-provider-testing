@@ -36,7 +36,7 @@
         [Given(@"I add the medication parameter with includePrescriptionIssues set to ""(.*)""")]
         public void GivenIAddTheMedicationsParameterWithIncludePrescriptionIssuesSetTo(string partValue)
         {
-            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] { Tuple.Create(FhirConst.GetStructuredRecordParams.kPrescriptionIssues, (Base)new FhirBoolean(Boolean.Parse(null))) };
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] { Tuple.Create(FhirConst.GetStructuredRecordParams.kPrescriptionIssues, (Base)new FhirBoolean(Boolean.Parse(partValue))) };
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kMedication, tuples);
         }
 
@@ -161,7 +161,7 @@
 			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kMedication, tuples);
 		}
 		//SJD this needs further work on
-		//SJD 10/02/20 @1.2.6
+		//SJD 10/02/20 @1.2.6-IncrementalAndRegression
 		[Given(@"I add the medication request with empty partParameter values")]
 		public void IAddTheMedicationRequestWithEmptyPartParameterValues()
 		{

@@ -1,8 +1,8 @@
-﻿@structuredrecord
+﻿@structuredrecord @1.2.6-Full-Pack
 Feature: AccessStructuredRecordMedications
 
 @1.2.4 @1.2.5
-@1.2.6 
+@1.2.6-IncrementalAndRegression 
 #SJD 06/02/20 changed test to reflect parameter.part cardinality change to 0..1
 Scenario Outline: Retrieve the medication structured record section for a patient without the parameter part
 	Given I configure the default "GpcGetStructuredRecord" request
@@ -63,7 +63,7 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		| patient12 |
 
 #SJD 06/02/20 removed parameter.part as optional in 1.2.6 and renamed test to reflect the change
-@1.2.6 
+@1.2.6-IncrementalAndRegression 
 Scenario: Retrieve the medication structured record section for a patient excludes the parameter part value as now optional
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient4"
@@ -399,7 +399,7 @@ Scenario Outline: Structured Medications Patient Has multiple Warnings and Assoc
 	| data-awaiting-filing | Patient data may be incomplete as there is data supplied by a third party awaiting review before becoming available.        |
 
 #SJD 10/02/20
-@1.2.6
+@1.2.6-IncrementalAndRegression
 Scenario: Retrieve the medication structured record from request with empty values for the parameter parts
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"

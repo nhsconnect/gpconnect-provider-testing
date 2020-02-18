@@ -20,6 +20,7 @@ namespace GPConnect.Provider.AcceptanceTests
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("FHIR")]
     [NUnit.Framework.CategoryAttribute("fhir")]
+    [NUnit.Framework.CategoryAttribute("1.2.6-Full-Pack")]
     public partial class FHIRFeature
     {
         
@@ -33,7 +34,8 @@ namespace GPConnect.Provider.AcceptanceTests
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "FHIR", null, ProgrammingLanguage.CSharp, new string[] {
-                        "fhir"});
+                        "fhir",
+                        "1.2.6-Full-Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -73,11 +75,11 @@ namespace GPConnect.Provider.AcceptanceTests
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Fhir Get MetaData")]
-        [NUnit.Framework.CategoryAttribute("1.2.6")]
+        [NUnit.Framework.CategoryAttribute("1.2.6-IncrementalAndRegression")]
         public virtual void FhirGetMetaData()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fhir Get MetaData", null, new string[] {
-                        "1.2.6"});
+                        "1.2.6-IncrementalAndRegression"});
 #line 5
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -181,12 +183,12 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("CapabilityStatement profile supports the GetStructuredRecord operation")]
         [NUnit.Framework.CategoryAttribute("1.2.4")]
-        [NUnit.Framework.CategoryAttribute("1.2.6")]
+        [NUnit.Framework.CategoryAttribute("1.2.6-IncrementalAndRegression")]
         public virtual void CapabilityStatementProfileSupportsTheGetStructuredRecordOperation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CapabilityStatement profile supports the GetStructuredRecord operation", null, new string[] {
                         "1.2.4",
-                        "1.2.6"});
+                        "1.2.6-IncrementalAndRegression"});
 #line 43
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -498,7 +500,7 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("CapabilityStatement profile supports the GetMetaDataRead operation")]
-        [NUnit.Framework.CategoryAttribute("1.2.6")]
+        [NUnit.Framework.CategoryAttribute("1.2.6-IncrementalAndRegression")]
         [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Patient-1", null)]
         [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Organization-1", null)]
         [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Practitioner-1", null)]
@@ -519,7 +521,7 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void CapabilityStatementProfileSupportsTheGetMetaDataReadOperation(string urlToCheck, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "1.2.6"};
+                    "1.2.6-IncrementalAndRegression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -549,7 +551,7 @@ testRunner.Given("I configure the default \"MetadataRead\" request", ((string)(n
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("CapabilityStatement profile supports the GetStructuredMetaDataRead operation")]
-        [NUnit.Framework.CategoryAttribute("1.2.6")]
+        [NUnit.Framework.CategoryAttribute("1.2.6-IncrementalAndRegression")]
         [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Patient-1/_history/1" +
             ".8", null)]
         [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Organization-1/_hist" +
@@ -574,7 +576,7 @@ testRunner.Given("I configure the default \"MetadataRead\" request", ((string)(n
         public virtual void CapabilityStatementProfileSupportsTheGetStructuredMetaDataReadOperation(string urlToCheck, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "1.2.6"};
+                    "1.2.6-IncrementalAndRegression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
