@@ -1,8 +1,8 @@
 ﻿@structured @structuredmedications
 Feature: StructuredMedications
 
-@1.2.4 @1.3.1
-Scenario Outline: Retrieve the medication structured record section for a patient including prescription issues
+@1.2.4 @1.3.1 @1.3.2
+Scenario Outline: Retrieve the medication structured record section for a patient with no problems and including prescription issues
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "<Patient>"
 		And I add the medication parameter with includePrescriptionIssues set to "true"
@@ -14,6 +14,7 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And the Bundle should be valid for patient "<Patient>"
+		And check that the bundle does not contain any duplicate resources
 		And the Bundle should contain "1" lists
 		And the Medications should be valid
 		And the Medication Statements should be valid
@@ -27,14 +28,49 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 
 	Examples:
 		| Patient   |
-		| patient2  |
 		| patient3  |
 		| patient5  |
 		| patient12 |
 		| patient16 |
 
-@1.2.4	@1.3.1
-Scenario Outline: Retrieve the medication structured record section for a patient excluding prescription issues
+@1.3.2
+Scenario Outline: Retrieve the medication structured record section for a patient with problems linked and including prescription issues
+	Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "<Patient>"
+		And I add the medication parameter with includePrescriptionIssues set to "true"
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "collection"
+		And the response meta profile should be for "structured"
+		And the patient resource in the bundle should contain meta data profile and version id
+		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
+		And if the response bundle contains an organization resource it should contain meta data profile and version id
+		And the Bundle should be valid for patient "<Patient>"
+		And check that the bundle does not contain any duplicate resources
+		And the Bundle should contain "2" lists
+		And the Medications should be valid
+		And the Medication Statements should be valid
+		And the Medication Requests should be valid
+		And the List of MedicationStatements should be valid
+		And there should only be one order request for acute prescriptions
+		And the Patient Id should be valid
+		And the Practitioner Id should be valid
+		And the Organization Id should be valid
+		And check the response does not contain an operation outcome
+		And I Check The Problems List
+		And I Check The Problems List Does Not Include Not In Use Fields
+		And I Check The Problems Resources are Valid
+		And I check The Problem Resources Do Not Include Not In Use Fields
+		And Check a Problem is Linked to a MedicationRequest resource that has been included in the response
+		And Check the MedicationRequests have a link to a medication that has been included in response
+		And Check there is a MedicationStatement resource that is linked to the MedicationRequest and Medication
+		And Check the Medications List resource has been included in response
+	Examples:
+		| Patient   |
+		| patient2  |
+
+@1.2.4	@1.3.1 @1.3.2
+Scenario Outline: Retrieve the medication structured record for a patient with no problems and excluding prescription issues
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "<Patient>"
 		And I add the medication parameter with includePrescriptionIssues set to "false"
@@ -46,6 +82,7 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
 		And the Bundle should be valid for patient "<Patient>"
+		And check that the bundle does not contain any duplicate resources
 		And the Bundle should contain "1" lists
 		And the Medications should be valid
 		And the Medication Statements should be valid
@@ -58,10 +95,45 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		And check the response does not contain an operation outcome
 	Examples:
 		| Patient  |
-		| patient2 |
 		| patient3 |
 		| patient5 |
 		| patient12 |
+
+@1.3.2
+Scenario Outline: Retrieve the medication structured record for a patient with problems linked and excluding prescription issues
+	Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "<Patient>"
+		And I add the medication parameter with includePrescriptionIssues set to "false"
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "collection"
+		And the response meta profile should be for "structured"
+		And the patient resource in the bundle should contain meta data profile and version id
+		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
+		And if the response bundle contains an organization resource it should contain meta data profile and version id
+		And the Bundle should be valid for patient "<Patient>"
+		And check that the bundle does not contain any duplicate resources
+		And the Bundle should contain "2" lists
+		And the Medications should be valid
+		And the Medication Statements should be valid
+		And the Medication Requests should be valid
+		And the List of MedicationStatements should be valid
+		And the Medication Requests should not contain any issues
+		And the Patient Id should be valid
+		And the Practitioner Id should be valid
+		And the Organization Id should be valid
+		And check the response does not contain an operation outcome
+		And I Check The Problems List
+		And I Check The Problems List Does Not Include Not In Use Fields
+		And I Check The Problems Resources are Valid
+		And I check The Problem Resources Do Not Include Not In Use Fields
+		And Check a Problem is Linked to a MedicationRequest resource that has been included in the response
+		And Check the MedicationRequests have a link to a medication that has been included in response
+		And Check there is a MedicationStatement resource that is linked to the MedicationRequest and Medication
+		And Check the Medications List resource has been included in response
+	Examples:
+		| Patient  |
+		| patient2 |
 
 Scenario: Retrieve the medication structured record section for a patient with no medications including issues
 	Given I configure the default "GpcGetStructuredRecord" request
@@ -199,8 +271,7 @@ Scenario: Retrieve the medication structured record section for a patient with a
 		And the patient resource in the bundle should contain meta data profile and version id
 		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
-		And the Bundle should be valid for patient "patient2"
-		And the Bundle should contain "1" lists
+		And the Bundle should be valid for patient "patient2"		
 		And the Medications should be valid
 		And the Medication Statements should be valid
 		And the Medication Requests should be valid

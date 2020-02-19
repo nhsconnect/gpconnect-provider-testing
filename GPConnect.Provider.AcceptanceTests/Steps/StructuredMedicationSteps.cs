@@ -180,65 +180,69 @@
         [Then(@"the List of MedicationStatements should be valid")]
         public void TheListOfMedicationStatementsShouldBeValid()
         {
-            Lists.ShouldHaveSingleItem("The medications data must contain a single list.");
+            
             Lists.ForEach(list =>
             {
-                AccessRecordSteps.BaseListParametersAreValid(list);
-// Added 1.2.1 RMB 1/10/2018				
-                list.Meta.VersionId.ShouldBeNull("List Meta VersionID should be Null");
-                list.Meta.LastUpdated.ShouldBeNull("List Meta LastUpdated should be Null");				
-
-                //Medication specific checks
-                CheckForValidMetaDataInResource(list, FhirConst.StructureDefinitionSystems.kList);
-                MedicationStatements.Count().Equals(list.Entry.Count());
-                list.Title.Equals(FhirConst.ListTitles.kMedications);
-                list.Code.Equals("933361000000108");
-
-                if (list.Entry.Count.Equals(0))
+                if (list.Code.Coding.First().Code.Equals(FhirConst.GetSnoMedParams.kMeds))
                 {
-                    list.EmptyReason.ShouldNotBeNull("The List's empty reason field must be populated if the list is empty.");
-//                    list.EmptyReason.Text.Equals("noContent");
-// Added github ref 87
-// RMB 9/10/2018
-//
-                    if (list.EmptyReason.Coding.Count.Equals(1))
-                    {
-                        list.EmptyReason.Coding.First().Code.ShouldBe("no-content-recorded");
-// Amended for github ref 172
-// RMB 24/1/19							
-                        list.EmptyReason.Coding.First().Display.ShouldBe("No Content Recorded");
-                    }
-                    list.Note.ShouldNotBeNull("The List's note field must be populated if the list is empty.");
-                    // Added git hub ref 88
-                    // RMB 9/10/2018
-                    //#289 PG 6/9/2019 - changed as more notes added
-                    //list.Note.First().Text.ShouldBe("Information not available");
-                   
-                    var found = false;
-                    foreach (var note in list.Note)
-                    {
-                        if (note.Text.Contains("Information not available"))
-                            found = true;
-                    }
 
-                    if (!found)
+                    AccessRecordSteps.BaseListParametersAreValid(list);
+                    // Added 1.2.1 RMB 1/10/2018				
+                    list.Meta.VersionId.ShouldBeNull("List Meta VersionID should be Null");
+                    list.Meta.LastUpdated.ShouldBeNull("List Meta LastUpdated should be Null");
+
+                    //Medication specific checks
+                    CheckForValidMetaDataInResource(list, FhirConst.StructureDefinitionSystems.kList);
+                    MedicationStatements.Count().Equals(list.Entry.Count());
+                    list.Title.Equals(FhirConst.ListTitles.kMedications);
+                    list.Code.Equals("933361000000108");
+
+                    if (list.Entry.Count.Equals(0))
                     {
-                        Log.WriteLine("Warning not Found : Information not available");
-                        found.ShouldBeTrue("Warning not Found : Information not available");
+                        list.EmptyReason.ShouldNotBeNull("The List's empty reason field must be populated if the list is empty.");
+                        //                    list.EmptyReason.Text.Equals("noContent");
+                        // Added github ref 87
+                        // RMB 9/10/2018
+                        //
+                        if (list.EmptyReason.Coding.Count.Equals(1))
+                        {
+                            list.EmptyReason.Coding.First().Code.ShouldBe("no-content-recorded");
+                            // Amended for github ref 172
+                            // RMB 24/1/19							
+                            list.EmptyReason.Coding.First().Display.ShouldBe("No Content Recorded");
+                        }
+                        list.Note.ShouldNotBeNull("The List's note field must be populated if the list is empty.");
+                        // Added git hub ref 88
+                        // RMB 9/10/2018
+                        //#289 PG 6/9/2019 - changed as more notes added
+                        //list.Note.First().Text.ShouldBe("Information not available");
+
+                        var found = false;
+                        foreach (var note in list.Note)
+                        {
+                            if (note.Text.Contains("Information not available"))
+                                found = true;
+                        }
+
+                        if (!found)
+                        {
+                            Log.WriteLine("Warning not Found : Information not available");
+                            found.ShouldBeTrue("Warning not Found : Information not available");
+                        }
+                        else
+                        {
+                            Log.WriteLine("Warning Found : Information not available");
+                        }
+
                     }
                     else
                     {
-                        Log.WriteLine("Warning Found : Information not available");
+                        list.Entry.ForEach(entry =>
+                        {
+                            entry.Item.ShouldNotBeNull("The item field must be populated for each list entry.");
+                            entry.Item.Reference.ShouldStartWith("MedicationStatement");
+                        });
                     }
-
-                }
-                else
-                {
-                    list.Entry.ForEach(entry =>
-                    {
-                        entry.Item.ShouldNotBeNull("The item field must be populated for each list entry.");
-                        entry.Item.Reference.ShouldStartWith("MedicationStatement");
-                    });
                 }
             });
         }
