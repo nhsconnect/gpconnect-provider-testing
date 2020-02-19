@@ -371,7 +371,7 @@
         [Then(@"Check a Problem is linked to an ""(.*)"" that is also included in the response with its list")]
         public void ThenCheckaProblemislinkedtoanthatisalsoincludedintheresponsewithalist(string resourceType)
         {
-            //loop problems and check one has been linked to the clincal item type
+            //loop problems and check one has been linked to the Clinical item type
             var found = false;
             string refToFind = "";
 
@@ -387,7 +387,7 @@
                     {
                         refToFind = rr.Reference;
                         found = true;
-                        Logger.Log.WriteLine("Info : Problem - Found Linked Clincal Item of type : " + resourceType + " - with ID : " + refToFind);
+                        Logger.Log.WriteLine("Info : Problem - Found Linked Clinical Item of type : " + resourceType + " - with ID : " + refToFind);
                         break;
                     }
                 }
@@ -397,7 +397,7 @@
 
             found.ShouldBeTrue("Fail : No Problems found to be linked to a  " + resourceType + " - resource type");
 
-            //check that Linked Clincal resource has been included in response.
+            //check that Linked Clinical resource has been included in response.
             VerifyResourceReferenceExists(resourceType, refToFind);
 
             //Check List is Present
@@ -437,8 +437,8 @@
             }
                     
 
-            //Check List has atleast one link to a clincal of item of correct type
-            bool foundClincalItemOnList = false;
+            //Check List has atleast one link to a Clinical of item of correct type
+            bool foundClinicalItemOnList = false;
 
             listToCheck.Entry.ForEach(a =>
             {
@@ -447,10 +447,10 @@
 
                 //Checkresource has been inluded in response
                 VerifyResourceReferenceExists(resourceType, a.Item.Reference);
-                foundClincalItemOnList = true;
+                foundClinicalItemOnList = true;
             });
 
-            foundClincalItemOnList.ShouldBeTrue("Fail : List for : " + resourceType + "-Does not contain any references to clinical item of type : " + resourceType);
+            foundClinicalItemOnList.ShouldBeTrue("Fail : List for : " + resourceType + "-Does not contain any references to clinical item of type : " + resourceType);
             Logger.Log.WriteLine("Info : List Found for : " + resourceType + "- contains references to clinical item of type : " + resourceType);
 
 
@@ -458,22 +458,22 @@
             switch (resourceType)
             {
                 case "AllergyIntolerance":
-                    ActiveAllergyIntolerances.Count().ShouldBe(listToCheck.Entry.Count(), "Fail : Clincal Item Count does Not Match list Entry Count for resource type : " + resourceType);
+                    ActiveAllergyIntolerances.Count().ShouldBe(listToCheck.Entry.Count(), "Fail : Clinical Item Count does Not Match list Entry Count for resource type : " + resourceType);
                     Logger.Log.WriteLine("Info : Passed Count Check for ResourceType  : " + resourceType + " - Bundle count equal to list entry count of : " + listToCheck.Entry.Count().ToString() );
                     break;
 
                 case "Observation": //uncat
-                    Observations.Count().ShouldBe(listToCheck.Entry.Count(), "Fail : Clincal Item Count does Not Match list Entry Count for resource type : " + resourceType);
+                    Observations.Count().ShouldBe(listToCheck.Entry.Count(), "Fail : Clinical Item Count does Not Match list Entry Count for resource type : " + resourceType);
                     Logger.Log.WriteLine("Info : Passed Count Check for ResourceType  : " + resourceType + " - Bundle count equal to list entry count of : " + listToCheck.Entry.Count().ToString());
                     break;
 
                 case "Immunization":
-                    Immunizations.Count().ShouldBe(listToCheck.Entry.Count(), "Fail : Clincal Item Count does Not Match list Entry Count for resource type : " + resourceType);
+                    Immunizations.Count().ShouldBe(listToCheck.Entry.Count(), "Fail : Clinical Item Count does Not Match list Entry Count for resource type : " + resourceType);
                     Logger.Log.WriteLine("Info : Passed Count Check for ResourceType  : " + resourceType + " - Bundle count equal to list entry count of : " + listToCheck.Entry.Count().ToString());
                     break;
 
                 case "Condition":
-                    Problems.Count().ShouldBe(listToCheck.Entry.Count(), "Fail : Clincal Item Count does Not Match list Entry Count for resource type : " + resourceType);
+                    Problems.Count().ShouldBe(listToCheck.Entry.Count(), "Fail : Clinical Item Count does Not Match list Entry Count for resource type : " + resourceType);
                     Logger.Log.WriteLine("Info : Passed Count Check for ResourceType  : " + resourceType + " - Bundle count equal to list entry count of : " + listToCheck.Entry.Count().ToString());
                     break;
 
@@ -584,7 +584,7 @@
             string pattern = @"(.*/)(.*)";
             string refToFind = Regex.Replace(fullRefToFind, pattern, "$2");
 
-            //Switch on Clincal Item type
+            //Switch on Clinical Item type
             switch (refTypeToFind)
             {
                 case "Observation":
