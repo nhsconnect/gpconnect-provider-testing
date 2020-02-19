@@ -80,10 +80,10 @@
             //Check subject/patient ref
             Patients.Where(p => p.Id == (problemsList.Subject.Reference.Replace("Patient/", ""))).Count().ShouldBe(1, "Patient Not Found in Bundle");
 
-            //check number of Conditions matches number in list
+            //check number of Problems matches number in list
             if (Problems.Count() != problemsList.Entry.Count())
             {
-                Problems.Count().ShouldBe(problemsList.Entry.Count(), "Number of Conditions does not match the number in the List");
+                Problems.Count().ShouldBe(problemsList.Entry.Count(), "Number of Problems does not match the number in the List");
             }
             else
             {
@@ -133,7 +133,7 @@
 
                 //Check extension[problemSignificance]
                 List<Extension> problemExtensions = problem.Extension.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kExtProblemSignificance)).ToList();
-                problemExtensions.Count.ShouldBe(1);
+                problemExtensions.Count.ShouldBe(1, "Fail : problemSignificance not detected and is mandatory on Problem ID : " + problem.Id );
                 Code clinicalSetting = (Code)problemExtensions.First().Value;
                 clinicalSetting.Value.ShouldBeOneOf("major", "minor");
 
@@ -348,7 +348,7 @@
         public void ThenChecktheMedicationsListresourcehasbeenincludedinresponse()
         {
             //Check List is Present
-            Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kMeds).ToList().Count().ShouldBe(1, "Failed to Find Medications list using Snomed Code.");
+            Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kMeds).ToList().Count().ShouldBe(1, "Fail : 0 or more than one Medications list Detected - Expected 1");
             var medsList = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kMeds).First();
 
             bool foundMedStatement = false;
@@ -407,25 +407,25 @@
             switch (resourceType)
             {
                 case "AllergyIntolerance":
-                    Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kActiveAllergies).ToList().Count().ShouldBe(1, "Failed to Find Active Allergies list using Snomed Code.");
+                    Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kActiveAllergies).ToList().Count().ShouldBe(1, "Fail : 0 or more than one Active Allergies lists Detected - Expected 1");
                     listToCheck = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kActiveAllergies).First();
                     Logger.Log.WriteLine("Info : Found Allergies List with Snomed ID : " + FhirConst.GetSnoMedParams.kActiveAllergies);
                     break;
 
                 case "Observation": //uncat
-                    Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kUncategorised).ToList().Count().ShouldBe(1, "Failed to Find Observation's list using Snomed Code.");
+                    Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kUncategorised).ToList().Count().ShouldBe(1, "Fail : 0 or more than one Observation list Detected - Expected 1");
                     listToCheck = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kUncategorised).First();
                     Logger.Log.WriteLine("Info : Found Observation List with Snomed ID : " + FhirConst.GetSnoMedParams.kUncategorised);
                     break;
 
                 case "Immunization":
-                    Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kImmunizations).ToList().Count().ShouldBe(1, "Failed to Find Immunization list using Snomed Code.");
+                    Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kImmunizations).ToList().Count().ShouldBe(1, "Fail : 0 or more than 1 Immunization list Detected - Expected 1");
                     listToCheck = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kImmunizations).First();
                     Logger.Log.WriteLine("Info : Found Immunization List with Snomed ID : " + FhirConst.GetSnoMedParams.kImmunizations);
                     break;
 
                 case "Condition":
-                    Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kProblems).ToList().Count().ShouldBe(1, "Failed to Find Problems list using Snomed Code.");
+                    Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kProblems).ToList().Count().ShouldBe(1, "Fail : 0 or more than 1 Problems list Detected - Expected 1");
                     listToCheck = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kProblems).First();
                     Logger.Log.WriteLine("Info : Found Problems List with Snomed ID : " + FhirConst.GetSnoMedParams.kProblems);
                     break;
@@ -630,14 +630,5 @@
             }
         }
 
-        [Then(@"I load a fake response")]
-        public void ThenIloadafakeresponse()
-        {
-            JObject o1 = JObject.Parse(File.ReadAllText(@"C:\development\response-consultations.txt"));
-            var jsonParser = new FhirJsonParser();
-            _httpContext.FhirResponse.Resource = jsonParser.Parse<Resource>(o1.ToString());
-
-
-        }
     }
 }

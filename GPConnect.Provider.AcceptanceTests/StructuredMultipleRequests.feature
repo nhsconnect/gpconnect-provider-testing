@@ -99,5 +99,21 @@ Scenario: Structured request sent with multpile parameters expected success and 
 		And I add the Problems parameter
     When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
+		And check that the bundle does not contain any duplicate resources
 		And the patient resource in the bundle should contain meta data profile and version id
 		And check the response does not contain an operation outcome
+	
+	#Add all Problems Steps
+
+	#Add all Consultations Steps
+
+
+		# Check Have no duplicates
+		# Check have Meds Resource and Linkages and List
+		# Check have allergies and List
+		# Check have Consultations and List
+		# Check have Immunizations and List
+		# Check have Uncategorised and List
+		# Check have Problems and List
+
+

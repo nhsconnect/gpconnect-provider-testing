@@ -250,7 +250,8 @@ Scenario: Check warning code is populated for a patient
 		And I add the medication parameter with includePrescriptionIssues set to "true"
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
-		And the Bundle should contain "1" lists
+		#PG 1.3.2 - Updated to check for extra problems list for this patient.
+		And the Bundle should contain "2" lists
 # RMB 13/9/2018 github ref 84 Replaced 'Medication List' with 'Medications and medical devices'
 		And the Bundle should contain a list with the title "Medications and medical devices"
 		And the Lists are valid for a patient without allergies
