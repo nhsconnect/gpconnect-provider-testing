@@ -121,15 +121,16 @@ Scenario Outline: Retrieve the structured record section for a patient without t
 		| patient5 |
 		| patient12 |
 		
-@1.2.4 @1.3.1
-Scenario: Retrieve the medication structured record section for a patient without the mandatory includePrescriptionIssue parameter
+@1.2.4 @1.3.1 @1.3.2
+#PG 19-2-2020 - 1.3.2 - param no longer mandatory, so checking call works
+Scenario: Retrieve the medication structured record section for a patient without the includePrescriptionIssue parameter
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"
 		And I add the medications parameter without mandatory partParameter
 	When I make the "GpcGetStructuredRecord" request
-	Then the response status code should indicate failure
-		And the response status code should be "422"
-		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
+	Then the response status code should indicate success
+		And the response meta profile should be for "structured"
+		
 
 #SJD 06/09/2019 #295 this is now accepted under forward compatability for 1.3.0
 @1.2.4 @1.3.1

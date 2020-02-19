@@ -1,7 +1,7 @@
 ﻿@structured @structureduncategorised
 Feature: StructuredUncategorised
 	
-@1.3.1
+@1.3.1 @1.3.2
 Scenario: Verify Uncategorised structured record for a Patient with Uncategorised data not linked to any problems
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient3"
@@ -25,6 +25,7 @@ Scenario: Verify Uncategorised structured record for a Patient with Uncategorise
 		And check the response does not contain an operation outcome
 
 #PG 19-2-2020 - Added for 1.3.2 - To check that associated problmes and the problems list are sent.
+@1.3.2
 Scenario: Verify Uncategorised structured record for a Patient with Uncategorised data associated to Problems
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
@@ -46,12 +47,11 @@ Scenario: Verify Uncategorised structured record for a Patient with Uncategorise
 		And The Observation List is Valid
 		And The Structured List Does Not Include Not In Use Fields
 		And check the response does not contain an operation outcome
-		#Check Problmes
-		#Check Problems List
 		And I Check The Problems List
 		And I Check The Problems List Does Not Include Not In Use Fields
 		And I Check The Problems Resources are Valid
 		And I check The Problem Resources Do Not Include Not In Use Fields
+		And Check a Problem is linked to an "Observation" that is also included in the response with its list
 
 Scenario: Retrieve uncategorised data structured record section for an invalid NHS number
 	Given I configure the default "GpcGetStructuredRecord" request

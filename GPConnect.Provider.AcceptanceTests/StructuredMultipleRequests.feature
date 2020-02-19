@@ -45,16 +45,15 @@ Scenario: Structured request sent with valid partParameter for includeMedication
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
 @1.3.1
-Scenario: Structured request sent with valid partParameter for includeAllergies and without the mandatory partParameter for includeMedications - expected failure 
+#PG 19-2-2020 - 1.3.2 - updated to possitive check as part parm now not mandatory
+Scenario: Structured request sent with valid partParameter for includeAllergies and without includeMedications - expected success
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
 		And I add the immunizations parameter
 		And I add the allergies parameter with resolvedAllergies set to "true"
 		And I add the medications parameter without mandatory partParameter
 	When I make the "GpcGetStructuredRecord" request
-	Then the response status code should indicate failure
-		And the response status code should be "422"
-		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
+	Then the response status code should indicate success
 	
 @1.3.1
 Scenario: Structured request sent with two parameters and an invalid boolean part parameter expected failure
