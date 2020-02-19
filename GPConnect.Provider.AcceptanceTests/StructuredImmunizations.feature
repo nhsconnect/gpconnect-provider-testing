@@ -1,7 +1,31 @@
 ﻿@structured @structuredimmunizations
 Feature: StructuredImmunizations
-	
-Scenario: Verify Immunizations structured record for a Patient with Immunizations
+
+@1.3.2	
+Scenario: Verify Immunizations structured record for a Patient with Immunizations not linked to any problems
+	Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "patient3"
+		And I add the immunizations parameter
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "collection"
+		And the response meta profile should be for "structured"
+		And the patient resource in the bundle should contain meta data profile and version id
+		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
+		And if the response bundle contains an organization resource it should contain meta data profile and version id
+		And the Bundle should be valid for patient "patient3"
+		And the Patient Id should be valid
+		And the Practitioner Id should be valid
+		And the Organization Id should be valid 
+		And The Immunization Resources are Valid
+		And The Immunization Resources Do Not Include Not In Use Fields
+		And the Bundle should contain "1" lists
+		And The Immunization List is Valid
+		And The Structured List Does Not Include Not In Use Fields	
+
+#PG 19-2-2020 - Added for 1.3.2 - To check that associated problmes and the problems list are sent.
+@1.3.2
+Scenario: Verify Immunizations structured record for a Patient with Immunizations associated to Problems
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
 		And I add the immunizations parameter
@@ -18,9 +42,15 @@ Scenario: Verify Immunizations structured record for a Patient with Immunization
 		And the Organization Id should be valid 
 		And The Immunization Resources are Valid
 		And The Immunization Resources Do Not Include Not In Use Fields
-		And the Bundle should contain "1" lists
+		And the Bundle should contain "2" lists
 		And The Immunization List is Valid
 		And The Structured List Does Not Include Not In Use Fields	
+		And check the response does not contain an operation outcome
+		And I Check The Problems List
+		And I Check The Problems List Does Not Include Not In Use Fields
+		And I Check The Problems Resources are Valid
+		And I check The Problem Resources Do Not Include Not In Use Fields
+		And Check a Problem is linked to an "Immunization" that is also included in the response with its list
 
 Scenario: Retrieve the immunizations structured record section for an invalid NHS number
 	Given I configure the default "GpcGetStructuredRecord" request
