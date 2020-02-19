@@ -13,6 +13,7 @@
             public const string kUncategorised = "826501000000100";
             public const string kMeds = "933361000000108";
             public const string kActiveAllergies = "886921000000105";
+            public const string kResolvedAllergies = "1103671000000101";
         }
 
 

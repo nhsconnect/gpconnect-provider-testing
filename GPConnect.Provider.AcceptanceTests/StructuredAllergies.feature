@@ -1,8 +1,8 @@
 ﻿@structured @structuredallergies
 Feature: StructuredAllergies
 
-@1.2.4 @1.3.1
-Scenario Outline: Retrieve the allergy structured record section for a patient including resolved allergies
+@1.2.4 @1.3.1 @1.3.2
+Scenario Outline: Retrieve the allergy structured record section for a patient including resolved allergies no problems associated
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "<Patient>"
 		And I add the allergies parameter with resolvedAllergies set to "true"
@@ -18,6 +18,7 @@ Scenario Outline: Retrieve the allergy structured record section for a patient i
 		And the Practitioner Id should be valid
 		And the Organization Id should be valid
 		And the Bundle should be valid for patient "<Patient>"
+		And check that the bundle does not contain any duplicate resources
 		And the Bundle should contain "2" lists
 		And the Bundle should contain a list with the title "Allergies and adverse reactions"
 		And the Bundle should contain a list with the title "Ended allergies"
@@ -26,7 +27,6 @@ Scenario Outline: Retrieve the allergy structured record section for a patient i
 		And check the response does not contain an operation outcome
 	Examples:
 		| Patient   |
-		| patient2  |
 		| patient3  |
 		| patient4  |
 		| patient6  |
@@ -37,8 +37,41 @@ Scenario Outline: Retrieve the allergy structured record section for a patient i
 		| patient13 |
 ## removed github ref 91 		| patient15 |
 
-@1.2.4 @1.3.1
-Scenario Outline: Retrieve the allergy structured record section for a patient excluding resolved allergies
+@1.3.2
+Scenario Outline: Retrieve the allergy structured record section for a patient including resolved allergies with linked Problems
+	Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "<Patient>"
+		And I add the allergies parameter with resolvedAllergies set to "true"
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "collection"
+		And the response meta profile should be for "structured"
+		And the patient resource in the bundle should contain meta data profile and version id
+		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
+		And if the response bundle contains an organization resource it should contain meta data profile and version id
+		And the AllergyIntolerance should be valid
+		And the Patient Id should be valid
+		And the Practitioner Id should be valid
+		And the Organization Id should be valid
+		And the Bundle should be valid for patient "<Patient>"
+		And check that the bundle does not contain any duplicate resources
+		And the Bundle should contain "3" lists
+		And the Bundle should contain a list with the title "Allergies and adverse reactions"
+		And the Bundle should contain a list with the title "Ended allergies"
+		And the Bundle should contain the correct number of allergies
+		And the Lists are valid for a patient with allergies
+		And check the response does not contain an operation outcome
+		And I Check The Problems List
+		And I Check The Problems List Does Not Include Not In Use Fields
+		And I Check The Problems Resources are Valid
+		And I check The Problem Resources Do Not Include Not In Use Fields
+		And Check a Problem is linked to an "AllergyIntolerance" that is also included in the response with its list
+	Examples:
+		| Patient   |
+		| patient2  |
+
+@1.2.4 @1.3.1 @1.3.2
+Scenario Outline: Retrieve the allergy structured record for a patient with no problems and excluding resolved allergies
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "<Patient>"
 		And I add the allergies parameter with resolvedAllergies set to "false"
@@ -62,7 +95,6 @@ Scenario Outline: Retrieve the allergy structured record section for a patient e
 		And check the response does not contain an operation outcome
 	Examples:
 		| Patient   |
-		| patient2  |
 		| patient3  |
 		| patient4  |
 		| patient6  |
@@ -72,6 +104,40 @@ Scenario Outline: Retrieve the allergy structured record section for a patient e
 		| patient12 |
 		| patient13 |
 ## removed github ref 91 		| patient15 |
+
+@1.3.2
+Scenario Outline: Retrieve the allergy structured record for a patient with problems linked but excluding resolved allergies
+	Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "<Patient>"
+		And I add the allergies parameter with resolvedAllergies set to "false"
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "collection"
+		And the response meta profile should be for "structured"
+		And the patient resource in the bundle should contain meta data profile and version id
+		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
+		And if the response bundle contains an organization resource it should contain meta data profile and version id
+		And the Patient Id should be valid
+		And the Practitioner Id should be valid
+		And the Organization Id should be valid
+		And the Bundle should be valid for patient "<Patient>"
+		And check that the bundle does not contain any duplicate resources
+		And the Bundle should contain "2" lists
+		And the Bundle should contain a list with the title "Allergies and adverse reactions"
+		And the Bundle should not contain a list with the title "Ended allergies"
+		And the AllergyIntolerance should be valid
+		And the Bundle should contain the correct number of allergies
+		And the Lists are valid for a patient with allergies
+		And check the response does not contain an operation outcome
+		And I Check The Problems List
+		And I Check The Problems List Does Not Include Not In Use Fields
+		And I Check The Problems Resources are Valid
+		And I check The Problem Resources Do Not Include Not In Use Fields
+		And Check a Problem is linked to an "AllergyIntolerance" that is also included in the response with its list
+
+	Examples:
+		| Patient   |
+		| patient2  |
 
 Scenario: Retrieve the allergy structured record section including resolved allergies for a patient without any allergies
 	Given I configure the default "GpcGetStructuredRecord" request

@@ -105,55 +105,61 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 		{
 			Lists.ForEach(list =>
 			{
-				AccessRecordSteps.BaseListParametersAreValid(list);
+                //make sure to only act on allergies lists
+              if (list.Code.Coding.First().Code.Equals(FhirConst.GetSnoMedParams.kActiveAllergies) || list.Code.Coding.First().Code.Equals(FhirConst.GetSnoMedParams.kResolvedAllergies))
+              {
+                    AccessRecordSteps.BaseListParametersAreValid(list);
 
-				// Added 1.2.1 RMB 1/10/2018
-				list.Meta.VersionId.ShouldBeNull("List Meta VersionId should be Null");
-				list.Meta.LastUpdated.ShouldBeNull("List Meta LastUpdated should be Null");
+                    // Added 1.2.1 RMB 1/10/2018
+                    list.Meta.VersionId.ShouldBeNull("List Meta VersionId should be Null");
+                    list.Meta.LastUpdated.ShouldBeNull("List Meta LastUpdated should be Null");
 
-				//Alergy specific checks
-				CheckForValidMetaDataInResource(list, FhirConst.StructureDefinitionSystems.kList);
+                    //Alergy specific checks
+                    CheckForValidMetaDataInResource(list, FhirConst.StructureDefinitionSystems.kList);
 
-				if (list.Title.Equals(FhirConst.ListTitles.kActiveAllergies))
-				{
-					list.Code.Coding.First().Code.Equals("886921000000105");
-				} else if (list.Title.Equals(FhirConst.ListTitles.kResolvedAllergies))
-				{
-					// Changed from TBD to 1103671000000101 for 1.2.0 RMB 7/8/2018
-					list.Code.Coding.First().Code.Equals("1103671000000101");
-					// Amended github ref 89
-					// RMB 9/10/2018				
-					// git hub ref 174 snomed code display set to Ended allergies
-					// RMB 23/1/19
-					//					list.Code.Coding.First().Display.ShouldBe("Ended allergies (record artifact)");
-					list.Code.Coding.First().Display.ShouldBe("Ended allergies");
-				}
+                    if (list.Title.Equals(FhirConst.ListTitles.kActiveAllergies))
+                    {
+                        list.Code.Coding.First().Code.Equals("886921000000105");
+                    }
+                    else if (list.Title.Equals(FhirConst.ListTitles.kResolvedAllergies))
+                    {
+                        // Changed from TBD to 1103671000000101 for 1.2.0 RMB 7/8/2018
+                        list.Code.Coding.First().Code.Equals("1103671000000101");
+                        // Amended github ref 89
+                        // RMB 9/10/2018				
+                        // git hub ref 174 snomed code display set to Ended allergies
+                        // RMB 23/1/19
+                        //					list.Code.Coding.First().Display.ShouldBe("Ended allergies (record artifact)");
+                        list.Code.Coding.First().Display.ShouldBe("Ended allergies");
+                    }
 
-				if (list.Entry.Count > 0)
-				{
-					list.Entry.ForEach(entry =>
-					{
-						entry.Item.ShouldNotBeNull("The item field must be populated for each list entry.");
-						entry.Item.Reference.ShouldMatch("AllergyIntolerance/.+|#.+");
-						if (entry.Item.IsContainedReference)
-						{
-							string id = entry.Item.Reference.Substring(1);
-							List<Resource> contained = list.Contained.Where(allergy => allergy.Id.Equals(id)).ToList();
-							contained.Count.ShouldBe(1);
-							contained.ForEach(allergy =>
-							{
-								AllergyIntolerance allergyIntolerance = (AllergyIntolerance)allergy;
-								allergyIntolerance.ClinicalStatus.Equals(AllergyIntolerance.AllergyIntoleranceClinicalStatus.Resolved);
-							});
-						}
-					});
-				}
 
-				if (list.Entry.Count == 0)
-				{
-					list.EmptyReason.ShouldNotBeNull("The List's empty reason field must be populated if the list is empty.");
-					list.Note.ShouldNotBeNull("The List's note field must be populated if the list is empty.");
-				}
+                    if (list.Entry.Count > 0)
+                    {
+                        list.Entry.ForEach(entry =>
+                        {
+                            entry.Item.ShouldNotBeNull("The item field must be populated for each list entry.");
+                            entry.Item.Reference.ShouldMatch("AllergyIntolerance/.+|#.+");
+                            if (entry.Item.IsContainedReference)
+                            {
+                                string id = entry.Item.Reference.Substring(1);
+                                List<Resource> contained = list.Contained.Where(allergy => allergy.Id.Equals(id)).ToList();
+                                contained.Count.ShouldBe(1);
+                                contained.ForEach(allergy =>
+                                {
+                                    AllergyIntolerance allergyIntolerance = (AllergyIntolerance)allergy;
+                                    allergyIntolerance.ClinicalStatus.Equals(AllergyIntolerance.AllergyIntoleranceClinicalStatus.Resolved);
+                                });
+                            }
+                        });
+                    }
+
+                    if (list.Entry.Count == 0)
+                    {
+                        list.EmptyReason.ShouldNotBeNull("The List's empty reason field must be populated if the list is empty.");
+                        list.Note.ShouldNotBeNull("The List's note field must be populated if the list is empty.");
+                    }
+              }
 			});
 		}
 
@@ -259,11 +265,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 		{
 			Lists.ForEach(list =>
 			{
-				list.EmptyReason.ShouldBeNull("ist empty reason should be null");
-				list.Note.ForEach(note =>
-				{
-					note.Text.ShouldNotContain("no known allergies");
-				});
+                if (list.Code.Coding.First().Code.Equals(FhirConst.GetSnoMedParams.kActiveAllergies))
+                {
+
+                    list.EmptyReason.ShouldBeNull("List empty reason should be null");
+                    list.Note.ForEach(note =>
+                    {
+                        note.Text.ShouldNotContain("no known allergies");
+                    });
+                }
 			});
 		}
 
