@@ -765,8 +765,10 @@
                     break;
 
                 case "Observation": //uncat
-                    Observations.Count().ShouldBe(listToCheck.Entry.Count(), "Fail : Clinical Item Count does Not Match list Entry Count for resource type : " + resourcetypeToCheck);
-                    Logger.Log.WriteLine("Info : Passed Count Check for ResourceType  : " + resourcetypeToCheck + " - Bundle count equal to list entry count of : " + listToCheck.Entry.Count().ToString());
+                    //uncat - these are not always uncategorised data resources as they are used for other purposes so cannot do a stright
+                    //count check against list and resources. all items on list will be checked that they have been included above which covers checking the list
+                    //Observations.Count().ShouldBe(listToCheck.Entry.Count(), "Fail : Clinical Item Count does Not Match list Entry Count for resource type : " + resourcetypeToCheck);
+                    //Logger.Log.WriteLine("Info : Passed Count Check for ResourceType  : " + resourcetypeToCheck + " - Bundle count equal to list entry count of : " + listToCheck.Entry.Count().ToString());
                     break;
 
                 case "Immunization":
