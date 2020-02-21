@@ -496,8 +496,6 @@
 
             foreach (var p in Problems)
             {
-                Condition problem = (Condition)p;
-
                 if (p.Context != null)
                 {
                     if (p.Context.Reference.StartsWith("Encounter/"))
