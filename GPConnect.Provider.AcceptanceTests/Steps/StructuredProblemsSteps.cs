@@ -498,7 +498,7 @@
             {
                 Condition problem = (Condition)p;
 
-                if (p.Context.Reference != null)
+                if (p.Context != null)
                 {
                     if (p.Context.Reference.StartsWith("Encounter/"))
                     {
