@@ -30,7 +30,7 @@ Scenario: Verify response for a Patient with Problems linked to all supported cl
 		And Check a Problem is linked to an "AllergyIntolerance" that is also included in the response with its list
 		And Check a Problem is linked to an "Immunization" that is also included in the response with its list
 		And Check a Problem is linked to an "Observation" that is also included in the response with its list
-		And Check that a Problem is linked to a consultation but only a reference is sent in response
+		And Check that a Problem is linked via context to a consultation but only a reference is sent in response
 		# Unable to check problems linked to other problems due to TPP not supporting this.
 
 Scenario Outline: Retrieve problems structured record with status partParameter expected success

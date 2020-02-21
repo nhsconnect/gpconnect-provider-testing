@@ -149,8 +149,8 @@ this.ScenarioInitialize(scenarioInfo);
   testRunner.And("Check a Problem is linked to an \"Observation\" that is also included in the respon" +
                     "se with its list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 33
-  testRunner.And("Check that a Problem is linked to a consultation but only a reference is sent in " +
-                    "response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("Check that a Problem is linked via context to a consultation but only a reference" +
+                    " is sent in response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

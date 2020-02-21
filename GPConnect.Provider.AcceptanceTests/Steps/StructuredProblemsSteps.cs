@@ -489,43 +489,31 @@
         }
 
 
-        [Then(@"Check that a Problem is linked to a consultation but only a reference is sent in response")]
+        [Then(@"Check that a Problem is linked via context to a consultation but only a reference is sent in response")]
         public void ThenCheckthataProblemislinkedtoaconsultationbutonlyareferenceissentinresponse()
         {
-            //loop problems and check have atleast one enoucnter ref and that encounter resource is NOT included in bundle.
             var found = false;
 
             foreach (var p in Problems)
             {
                 Condition problem = (Condition)p;
-                List<Extension> problemRelatedContentExtensions = p.Extension.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kExtProblemRelatedContent)).ToList();
 
-                foreach (var rcc in problemRelatedContentExtensions)
+                if(p.Context.Reference.StartsWith("Encounter/"))
                 {
-                    ResourceReference rr = (ResourceReference)rcc.Value;
-                    if (rr.Reference.StartsWith("Encounter/"))
-                    {
-                        var fullRefToFind = rr.Reference;
-                        found = true;
-                        Logger.Log.WriteLine("Info : Problem - Found with Link To an Encounter with ID : " + fullRefToFind);
+                    Logger.Log.WriteLine("Info : Problem - Found with Context Link To an Encounter with ID : " + p.Context.Reference);
 
-                        //check any Encounter References are not inluded in bundle
-                        string pattern = @"(.*/)(.*)";
-                        string refToFind = Regex.Replace(fullRefToFind, pattern, "$2");
+                    //check any Encounter References are not inluded in bundle
+                    string pattern = @"(.*/)(.*)";
+                    string refToFind = Regex.Replace(p.Context.Reference, pattern, "$2");
 
-                        //check doesnt exist in bundle
-                        Encounters.Where(e => e.Id == refToFind).Count().ShouldBe(0, "Fail : Found Encounter when there are Not supposed to be any returned for a problems only call");
-
-                        Logger.Log.WriteLine("Info : Encounter Reference Checked and Encounter resource is not included in bundle with ID : " + refToFind);
-                    }
-                }
+                    //check doesnt exist in bundle
+                    Encounters.Where(e => e.Id == refToFind).Count().ShouldBe(0, "Fail : Found Context Linked Encounter in bundle when there are Not supposed to be any returned for a problems only call - Bad ID : " + p.Context.Reference);
+                    Logger.Log.WriteLine("Info : Encounter Reference Checked and Encounter resource is not included in bundle with ID : " + p.Context.Reference);
+                    found = true;
+                }     
             };
 
-            found.ShouldBeTrue("Fail : No Problems found with a link to an Encounter as per the data requirements for this test");
-
-            //check no Encounters in bundle
-            Encounters.Count().ShouldBe(0, "Fail : Found Encounters when No Encounters are supposed to be returned in a problems only request");
-            Logger.Log.WriteLine("Info : No Encounters Found in bundle as Expected");
+            found.ShouldBeTrue("Fail : No Problems found with a Context link to an Encounter as per the data requirements for this test");
 
             //check no Consultations lists in bundle
 
