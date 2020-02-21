@@ -498,19 +498,22 @@
             {
                 Condition problem = (Condition)p;
 
-                if(p.Context.Reference.StartsWith("Encounter/"))
+                if (p.Context.Reference != null)
                 {
-                    Logger.Log.WriteLine("Info : Problem - Found with Context Link To an Encounter with ID : " + p.Context.Reference);
+                    if (p.Context.Reference.StartsWith("Encounter/"))
+                    {
+                        Logger.Log.WriteLine("Info : Problem - Found with Context Link To an Encounter with ID : " + p.Context.Reference);
 
-                    //check any Encounter References are not inluded in bundle
-                    string pattern = @"(.*/)(.*)";
-                    string refToFind = Regex.Replace(p.Context.Reference, pattern, "$2");
+                        //check any Encounter References are not inluded in bundle
+                        string pattern = @"(.*/)(.*)";
+                        string refToFind = Regex.Replace(p.Context.Reference, pattern, "$2");
 
-                    //check doesnt exist in bundle
-                    Encounters.Where(e => e.Id == refToFind).Count().ShouldBe(0, "Fail : Found Context Linked Encounter in bundle when there are Not supposed to be any returned for a problems only call - Bad ID : " + p.Context.Reference);
-                    Logger.Log.WriteLine("Info : Encounter Reference Checked and Encounter resource is not included in bundle with ID : " + p.Context.Reference);
-                    found = true;
-                }     
+                        //check doesnt exist in bundle
+                        Encounters.Where(e => e.Id == refToFind).Count().ShouldBe(0, "Fail : Found Context Linked Encounter in bundle when there are Not supposed to be any returned for a problems only call - Bad ID : " + p.Context.Reference);
+                        Logger.Log.WriteLine("Info : Encounter Reference Checked and Encounter resource is not included in bundle with ID : " + p.Context.Reference);
+                        found = true;
+                    }
+                }
             };
 
             found.ShouldBeTrue("Fail : No Problems found with a Context link to an Encounter as per the data requirements for this test");
