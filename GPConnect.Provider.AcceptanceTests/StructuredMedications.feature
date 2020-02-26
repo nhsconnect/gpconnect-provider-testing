@@ -1,7 +1,7 @@
-﻿@structured @structuredmedications
+﻿@structured @structuredmedications @1.3.2-Full_Pack
 Feature: StructuredMedications
 
-@1.2.4 @1.3.1 @1.3.2
+@1.2.4 @1.3.1-IncrementalAndRegression @1.3.2-IncrementalAndRegression
 Scenario Outline: Retrieve the medication structured record section for a patient with no problems and including prescription issues
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "<Patient>"
@@ -33,7 +33,7 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		| patient12 |
 		| patient16 |
 
-@1.3.2
+@1.3.2-IncrementalAndRegression
 Scenario Outline: Retrieve the medication structured record section for a patient with problems linked and including prescription issues
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "<Patient>"
@@ -69,7 +69,7 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		| Patient   |
 		| patient2  |
 
-@1.2.4	@1.3.1 @1.3.2
+@1.2.4	@1.3.1-IncrementalAndRegression @1.3.2-IncrementalAndRegression
 Scenario Outline: Retrieve the medication structured record for a patient with no problems and excluding prescription issues
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "<Patient>"
@@ -99,7 +99,7 @@ Scenario Outline: Retrieve the medication structured record for a patient with n
 		| patient5 |
 		| patient12 |
 
-@1.3.2
+@1.3.2-IncrementalAndRegression
 Scenario Outline: Retrieve the medication structured record for a patient with problems linked and excluding prescription issues
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "<Patient>"
@@ -193,7 +193,7 @@ Scenario Outline: Retrieve the structured record section for a patient without t
 		| patient5 |
 		| patient12 |
 		
-@1.2.4 @1.3.1 @1.3.2
+@1.2.4 @1.3.1-IncrementalAndRegression @1.3.2-IncrementalAndRegression
 #PG 19-2-2020 - 1.3.2 - param no longer mandatory, so checking call works
 Scenario: Retrieve the medication structured record section for a patient without the includePrescriptionIssue parameter
 	Given I configure the default "GpcGetStructuredRecord" request
@@ -205,7 +205,7 @@ Scenario: Retrieve the medication structured record section for a patient withou
 		
 
 #SJD 06/09/2019 #295 this is now accepted under forward compatability for 1.3.0
-@1.2.4 @1.3.1
+@1.2.4 @1.3.1-IncrementalAndRegression
 Scenario: Verify that when the medication parameter is labelled incorrectly with correct mandatory partParameter returns success
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"
@@ -248,7 +248,7 @@ Given I configure the default "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
 		
-@1.3.1
+@1.3.1-IncrementalAndRegression
 #SJD 04/10/2019 changed the response code as per specification for invalid parameter	
 Scenario: Retrieve the medication structured record section for an invalid parameter type
 	Given I configure the default "GpcGetStructuredRecord" request
@@ -278,7 +278,7 @@ Scenario: Retrieve the medication structured record section for a patient with a
 		And the List of MedicationStatements should be valid
 		And the MedicationStatement EffectiveDate is Greater Than Search Date of "3" years ago	
 
-@1.2.4 @1.3.1
+@1.2.4 @1.3.1-IncrementalAndRegression
 Scenario Outline: Retrieve the medication structured record section for a patient with invalid date values
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"
@@ -376,7 +376,7 @@ Scenario:  structured record for a patient that has inactive flag
 
 
 #PG 6/9/2019 - #289
-@1.2.4 @1.3.1
+@1.2.4 @1.3.1-IncrementalAndRegression
 Scenario Outline: Structured Medications Patient Has multiple Warnings and Associated Notes
 	Given I configure the default "GpcGetStructuredRecord" request 
 		And I add an NHS Number parameter for "patient16"
@@ -391,7 +391,7 @@ Scenario Outline: Structured Medications Patient Has multiple Warnings and Assoc
 	| Warning             | Note                                                                                                                       |
 	| data-in-transit      | Patient record transfer from previous GP practice not yet complete; information recorded before dd-Mmm-yyyy may be missing. |
 
-	@1.3.1
+	@1.3.1-IncrementalAndRegression
 	Scenario: Retrieve the medication structured record with startDate in the future - expected failure
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"

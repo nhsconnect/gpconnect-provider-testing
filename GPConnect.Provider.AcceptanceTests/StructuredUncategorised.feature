@@ -1,7 +1,7 @@
-﻿@structured @structureduncategorised
+﻿@structured @structureduncategorised @1.3.2-Full_Pack
 Feature: StructuredUncategorised
 	
-@1.3.1 @1.3.2
+@1.3.1-IncrementalAndRegression @1.3.2-IncrementalAndRegression
 Scenario: Verify Uncategorised structured record for a Patient with Uncategorised data not linked to any problems
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient3"
@@ -25,7 +25,7 @@ Scenario: Verify Uncategorised structured record for a Patient with Uncategorise
 		And check the response does not contain an operation outcome
 
 #PG 19-2-2020 - Added for 1.3.2 - To check that associated problmes and the problems list are sent.
-@1.3.2
+@1.3.2-IncrementalAndRegression
 Scenario: Verify Uncategorised structured record for a Patient with Uncategorised data associated to Problems
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"

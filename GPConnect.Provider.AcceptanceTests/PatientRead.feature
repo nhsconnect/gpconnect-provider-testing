@@ -1,4 +1,4 @@
-﻿@patient
+﻿@patient @1.3.2-Full_Pack
 Feature: PatientRead
 
 Scenario Outline: Read patient 404 if patient not found

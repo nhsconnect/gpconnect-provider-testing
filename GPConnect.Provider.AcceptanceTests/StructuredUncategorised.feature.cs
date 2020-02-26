@@ -21,6 +21,7 @@ namespace GPConnect.Provider.AcceptanceTests
     [NUnit.Framework.DescriptionAttribute("StructuredUncategorised")]
     [NUnit.Framework.CategoryAttribute("structured")]
     [NUnit.Framework.CategoryAttribute("structureduncategorised")]
+    [NUnit.Framework.CategoryAttribute("1.3.2-Full_Pack")]
     public partial class StructuredUncategorisedFeature
     {
         
@@ -35,7 +36,8 @@ namespace GPConnect.Provider.AcceptanceTests
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "StructuredUncategorised", null, ProgrammingLanguage.CSharp, new string[] {
                         "structured",
-                        "structureduncategorised"});
+                        "structureduncategorised",
+                        "1.3.2-Full_Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -76,14 +78,14 @@ namespace GPConnect.Provider.AcceptanceTests
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Verify Uncategorised structured record for a Patient with Uncategorised data not " +
             "linked to any problems")]
-        [NUnit.Framework.CategoryAttribute("1.3.1")]
-        [NUnit.Framework.CategoryAttribute("1.3.2")]
+        [NUnit.Framework.CategoryAttribute("1.3.1-IncrementalAndRegression")]
+        [NUnit.Framework.CategoryAttribute("1.3.2-IncrementalAndRegression")]
         public virtual void VerifyUncategorisedStructuredRecordForAPatientWithUncategorisedDataNotLinkedToAnyProblems()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verify Uncategorised structured record for a Patient with Uncategorised data not " +
                     "linked to any problems", null, new string[] {
-                        "1.3.1",
-                        "1.3.2"});
+                        "1.3.1-IncrementalAndRegression",
+                        "1.3.2-IncrementalAndRegression"});
 #line 5
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -137,12 +139,12 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Verify Uncategorised structured record for a Patient with Uncategorised data asso" +
             "ciated to Problems")]
-        [NUnit.Framework.CategoryAttribute("1.3.2")]
+        [NUnit.Framework.CategoryAttribute("1.3.2-IncrementalAndRegression")]
         public virtual void VerifyUncategorisedStructuredRecordForAPatientWithUncategorisedDataAssociatedToProblems()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verify Uncategorised structured record for a Patient with Uncategorised data asso" +
                     "ciated to Problems", null, new string[] {
-                        "1.3.2"});
+                        "1.3.2-IncrementalAndRegression"});
 #line 29
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();

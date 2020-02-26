@@ -21,6 +21,7 @@ namespace GPConnect.Provider.AcceptanceTests
     [NUnit.Framework.DescriptionAttribute("StructuredImmunizations")]
     [NUnit.Framework.CategoryAttribute("structured")]
     [NUnit.Framework.CategoryAttribute("structuredimmunizations")]
+    [NUnit.Framework.CategoryAttribute("1.3.2-Full_Pack")]
     public partial class StructuredImmunizationsFeature
     {
         
@@ -35,7 +36,8 @@ namespace GPConnect.Provider.AcceptanceTests
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "StructuredImmunizations", null, ProgrammingLanguage.CSharp, new string[] {
                         "structured",
-                        "structuredimmunizations"});
+                        "structuredimmunizations",
+                        "1.3.2-Full_Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -76,12 +78,12 @@ namespace GPConnect.Provider.AcceptanceTests
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Verify Immunizations structured record for a Patient with Immunizations not linke" +
             "d to any problems")]
-        [NUnit.Framework.CategoryAttribute("1.3.2")]
+        [NUnit.Framework.CategoryAttribute("1.3.2-IncrementalAndRegression")]
         public virtual void VerifyImmunizationsStructuredRecordForAPatientWithImmunizationsNotLinkedToAnyProblems()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verify Immunizations structured record for a Patient with Immunizations not linke" +
                     "d to any problems", null, new string[] {
-                        "1.3.2"});
+                        "1.3.2-IncrementalAndRegression"});
 #line 5
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -133,12 +135,12 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Verify Immunizations structured record for a Patient with Immunizations associate" +
             "d to Problems")]
-        [NUnit.Framework.CategoryAttribute("1.3.2")]
+        [NUnit.Framework.CategoryAttribute("1.3.2-IncrementalAndRegression")]
         public virtual void VerifyImmunizationsStructuredRecordForAPatientWithImmunizationsAssociatedToProblems()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verify Immunizations structured record for a Patient with Immunizations associate" +
                     "d to Problems", null, new string[] {
-                        "1.3.2"});
+                        "1.3.2-IncrementalAndRegression"});
 #line 28
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();

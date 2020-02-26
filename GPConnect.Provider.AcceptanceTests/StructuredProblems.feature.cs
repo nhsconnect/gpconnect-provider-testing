@@ -21,6 +21,7 @@ namespace GPConnect.Provider.AcceptanceTests
     [NUnit.Framework.DescriptionAttribute("StructuredProblems")]
     [NUnit.Framework.CategoryAttribute("structured")]
     [NUnit.Framework.CategoryAttribute("structuredproblems")]
+    [NUnit.Framework.CategoryAttribute("1.3.2-Full_Pack")]
     public partial class StructuredProblemsFeature
     {
         
@@ -35,7 +36,8 @@ namespace GPConnect.Provider.AcceptanceTests
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "StructuredProblems", null, ProgrammingLanguage.CSharp, new string[] {
                         "structured",
-                        "structuredproblems"});
+                        "structuredproblems",
+                        "1.3.2-Full_Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -76,12 +78,12 @@ namespace GPConnect.Provider.AcceptanceTests
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Verify response for a Patient with Problems linked to all supported clinical item" +
             " types")]
-        [NUnit.Framework.CategoryAttribute("1.3.2")]
+        [NUnit.Framework.CategoryAttribute("1.3.2-IncrementalAndRegression")]
         public virtual void VerifyResponseForAPatientWithProblemsLinkedToAllSupportedClinicalItemTypes()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verify response for a Patient with Problems linked to all supported clinical item" +
                     " types", null, new string[] {
-                        "1.3.2"});
+                        "1.3.2-IncrementalAndRegression"});
 #line 5
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();

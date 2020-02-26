@@ -21,6 +21,7 @@ namespace GPConnect.Provider.AcceptanceTests
     [NUnit.Framework.DescriptionAttribute("StructuredAllergies")]
     [NUnit.Framework.CategoryAttribute("structured")]
     [NUnit.Framework.CategoryAttribute("structuredallergies")]
+    [NUnit.Framework.CategoryAttribute("1.3.2-Full_Pack")]
     public partial class StructuredAllergiesFeature
     {
         
@@ -35,7 +36,8 @@ namespace GPConnect.Provider.AcceptanceTests
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "StructuredAllergies", null, ProgrammingLanguage.CSharp, new string[] {
                         "structured",
-                        "structuredallergies"});
+                        "structuredallergies",
+                        "1.3.2-Full_Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -77,8 +79,8 @@ namespace GPConnect.Provider.AcceptanceTests
         [NUnit.Framework.DescriptionAttribute("Retrieve the allergy structured record section for a patient including resolved a" +
             "llergies no problems associated")]
         [NUnit.Framework.CategoryAttribute("1.2.4")]
-        [NUnit.Framework.CategoryAttribute("1.3.1")]
-        [NUnit.Framework.CategoryAttribute("1.3.2")]
+        [NUnit.Framework.CategoryAttribute("1.3.1-IncrementalAndRegression")]
+        [NUnit.Framework.CategoryAttribute("1.3.2-IncrementalAndRegression")]
         [NUnit.Framework.TestCaseAttribute("patient3", null)]
         [NUnit.Framework.TestCaseAttribute("patient4", null)]
         [NUnit.Framework.TestCaseAttribute("patient6", null)]
@@ -90,8 +92,8 @@ namespace GPConnect.Provider.AcceptanceTests
         {
             string[] @__tags = new string[] {
                     "1.2.4",
-                    "1.3.1",
-                    "1.3.2"};
+                    "1.3.1-IncrementalAndRegression",
+                    "1.3.2-IncrementalAndRegression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -156,12 +158,12 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve the allergy structured record section for a patient including resolved a" +
             "llergies with linked Problems")]
-        [NUnit.Framework.CategoryAttribute("1.3.2")]
+        [NUnit.Framework.CategoryAttribute("1.3.2-IncrementalAndRegression")]
         [NUnit.Framework.TestCaseAttribute("patient2", null)]
         public virtual void RetrieveTheAllergyStructuredRecordSectionForAPatientIncludingResolvedAllergiesWithLinkedProblems(string patient, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "1.3.2"};
+                    "1.3.2-IncrementalAndRegression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -238,8 +240,8 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Retrieve the allergy structured record for a patient with no problems and excludi" +
             "ng resolved allergies")]
         [NUnit.Framework.CategoryAttribute("1.2.4")]
-        [NUnit.Framework.CategoryAttribute("1.3.1")]
-        [NUnit.Framework.CategoryAttribute("1.3.2")]
+        [NUnit.Framework.CategoryAttribute("1.3.1-IncrementalAndRegression")]
+        [NUnit.Framework.CategoryAttribute("1.3.2-IncrementalAndRegression")]
         [NUnit.Framework.TestCaseAttribute("patient3", null)]
         [NUnit.Framework.TestCaseAttribute("patient4", null)]
         [NUnit.Framework.TestCaseAttribute("patient6", null)]
@@ -251,8 +253,8 @@ this.ScenarioInitialize(scenarioInfo);
         {
             string[] @__tags = new string[] {
                     "1.2.4",
-                    "1.3.1",
-                    "1.3.2"};
+                    "1.3.1-IncrementalAndRegression",
+                    "1.3.2-IncrementalAndRegression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -315,12 +317,12 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve the allergy structured record for a patient with problems linked but exc" +
             "luding resolved allergies")]
-        [NUnit.Framework.CategoryAttribute("1.3.2")]
+        [NUnit.Framework.CategoryAttribute("1.3.2-IncrementalAndRegression")]
         [NUnit.Framework.TestCaseAttribute("patient2", null)]
         public virtual void RetrieveTheAllergyStructuredRecordForAPatientWithProblemsLinkedButExcludingResolvedAllergies(string patient, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "1.3.2"};
+                    "1.3.2-IncrementalAndRegression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -617,13 +619,13 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Retrieve the allergy structured record section for a patient without the resolved" +
             " allergies parameter expected failure")]
         [NUnit.Framework.CategoryAttribute("1.2.4")]
-        [NUnit.Framework.CategoryAttribute("1.3.1")]
+        [NUnit.Framework.CategoryAttribute("1.3.1-IncrementalAndRegression")]
         public virtual void RetrieveTheAllergyStructuredRecordSectionForAPatientWithoutTheResolvedAllergiesParameterExpectedFailure()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the allergy structured record section for a patient without the resolved" +
                     " allergies parameter expected failure", null, new string[] {
                         "1.2.4",
-                        "1.3.1"});
+                        "1.3.1-IncrementalAndRegression"});
 #line 225
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -650,13 +652,13 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Retrieve the allergy structured record with additional include unknown prescripti" +
             "on issues parameter expected success with operational outcome")]
         [NUnit.Framework.CategoryAttribute("1.2.4")]
-        [NUnit.Framework.CategoryAttribute("1.3.1")]
+        [NUnit.Framework.CategoryAttribute("1.3.1-IncrementalAndRegression")]
         public virtual void RetrieveTheAllergyStructuredRecordWithAdditionalIncludeUnknownPrescriptionIssuesParameterExpectedSuccessWithOperationalOutcome()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the allergy structured record with additional include unknown prescripti" +
                     "on issues parameter expected success with operational outcome", null, new string[] {
                         "1.2.4",
-                        "1.3.1"});
+                        "1.3.1-IncrementalAndRegression"});
 #line 236
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -813,11 +815,11 @@ testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", (
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve the allergy structured record section for an invalid parameter type")]
-        [NUnit.Framework.CategoryAttribute("1.3.1")]
+        [NUnit.Framework.CategoryAttribute("1.3.1-IncrementalAndRegression")]
         public virtual void RetrieveTheAllergyStructuredRecordSectionForAnInvalidParameterType()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the allergy structured record section for an invalid parameter type", null, new string[] {
-                        "1.3.1"});
+                        "1.3.1-IncrementalAndRegression"});
 #line 294
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -844,13 +846,13 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Retrieve the allergy structured record section for a patient with additional time" +
             "Period parameter expected success")]
         [NUnit.Framework.CategoryAttribute("1.2.4")]
-        [NUnit.Framework.CategoryAttribute("1.3.1")]
+        [NUnit.Framework.CategoryAttribute("1.3.1-IncrementalAndRegression")]
         public virtual void RetrieveTheAllergyStructuredRecordSectionForAPatientWithAdditionalTimePeriodParameterExpectedSuccess()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the allergy structured record section for a patient with additional time" +
                     "Period parameter expected success", null, new string[] {
                         "1.2.4",
-                        "1.3.1"});
+                        "1.3.1-IncrementalAndRegression"});
 #line 305
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -876,13 +878,13 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Retrieve the allergy structured record section for a patient with additional star" +
             "t date parameter expected success")]
         [NUnit.Framework.CategoryAttribute("1.2.4")]
-        [NUnit.Framework.CategoryAttribute("1.3.1")]
+        [NUnit.Framework.CategoryAttribute("1.3.1-IncrementalAndRegression")]
         public virtual void RetrieveTheAllergyStructuredRecordSectionForAPatientWithAdditionalStartDateParameterExpectedSuccess()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the allergy structured record section for a patient with additional star" +
                     "t date parameter expected success", null, new string[] {
                         "1.2.4",
-                        "1.3.1"});
+                        "1.3.1-IncrementalAndRegression"});
 #line 316
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -1020,7 +1022,7 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Structured Allergies Patient Has multiple Warnings and Associated Notes")]
         [NUnit.Framework.CategoryAttribute("1.2.4")]
-        [NUnit.Framework.CategoryAttribute("1.3.1")]
+        [NUnit.Framework.CategoryAttribute("1.3.1-IncrementalAndRegression")]
         [NUnit.Framework.TestCaseAttribute("confidential-items", "Items excluded due to confidentiality and/or patient preferences.", null)]
         [NUnit.Framework.TestCaseAttribute("data-in-transit", "Patient record transfer from previous GP practice not yet complete; information r" +
             "ecorded before dd-Mmm-yyyy may be missing.", null)]
@@ -1028,7 +1030,7 @@ this.ScenarioInitialize(scenarioInfo);
         {
             string[] @__tags = new string[] {
                     "1.2.4",
-                    "1.3.1"};
+                    "1.3.1-IncrementalAndRegression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));

@@ -20,6 +20,7 @@ namespace GPConnect.Provider.AcceptanceTests
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("PatientRegister")]
     [NUnit.Framework.CategoryAttribute("patient")]
+    [NUnit.Framework.CategoryAttribute("1.3.2-Full_Pack")]
     public partial class PatientRegisterFeature
     {
         
@@ -33,7 +34,8 @@ namespace GPConnect.Provider.AcceptanceTests
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "PatientRegister", null, ProgrammingLanguage.CSharp, new string[] {
-                        "patient"});
+                        "patient",
+                        "1.3.2-Full_Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
         

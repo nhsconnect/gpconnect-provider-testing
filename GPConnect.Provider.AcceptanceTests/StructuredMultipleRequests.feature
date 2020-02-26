@@ -1,7 +1,7 @@
-﻿@structured @structuredmultiplerequests
+﻿@structured @structuredmultiplerequests @1.3.2-Full_Pack
 Feature: StructuredMultipleRequests
 
-@1.3.1
+@1.3.1-IncrementalAndRegression
 Scenario: Structured request with one parameter and no Clinical information expected success
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"
@@ -9,7 +9,7 @@ Scenario: Structured request with one parameter and no Clinical information expe
 	Then the response status code should indicate success
 		And the patient resource in the bundle should contain meta data profile and version id
 
-@1.3.1
+@1.3.1-IncrementalAndRegression
 Scenario: Structured request sent with three parameters and no expected mandatory for includeResolvedAllergies - expected failure
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
@@ -20,7 +20,7 @@ Scenario: Structured request sent with three parameters and no expected mandator
 		And the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
-@1.3.1
+@1.3.1-IncrementalAndRegression
 Scenario: Structured request sent with multiple valid parameters but not including the mandatory part parameters - expected failure 
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
@@ -32,7 +32,7 @@ Scenario: Structured request sent with multiple valid parameters but not includi
 		And the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
-@1.3.1
+@1.3.1-IncrementalAndRegression
 Scenario: Structured request sent with valid partParameter for includeMedications and without the mandatory partParameter for includeAllergies - expected failure 
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
@@ -44,7 +44,7 @@ Scenario: Structured request sent with valid partParameter for includeMedication
 		And the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
-@1.3.1
+@1.3.1-IncrementalAndRegression
 #PG 19-2-2020 - 1.3.2 - updated to possitive check as part parm now not mandatory
 Scenario: Structured request sent with valid partParameter for includeAllergies and without includeMedications - expected success
 	Given I configure the default "GpcGetStructuredRecord" request
@@ -55,7 +55,7 @@ Scenario: Structured request sent with valid partParameter for includeAllergies 
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
 	
-@1.3.1
+@1.3.1-IncrementalAndRegression
 Scenario: Structured request sent with two parameters and an invalid boolean part parameter expected failure
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"
@@ -65,7 +65,7 @@ Scenario: Structured request sent with two parameters and an invalid boolean par
 		And the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
-@1.3.1
+@1.3.1-IncrementalAndRegression
 Scenario: Structured request sent with multiple parameters and part parameters with expected success including operation outcomes
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"
@@ -76,7 +76,7 @@ Scenario: Structured request sent with multiple parameters and part parameters w
 		And the patient resource in the bundle should contain meta data profile and version id
 		And Check the number of issues in the operation outcome "3"
 
-@1.3.1
+@1.3.1-IncrementalAndRegression
 #SJD 04/10/2019 changed the response code as per specification for invalid parameter	
 Scenario: Structured request sent with two invalid parameters expected failure
 	Given I configure the default "GpcGetStructuredRecord" request
@@ -86,7 +86,7 @@ Scenario: Structured request sent with two invalid parameters expected failure
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
-@1.3.2	
+@1.3.2-IncrementalAndRegression	
 Scenario: Structured request sent with multpile parameters expected success and no operation outcome
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"

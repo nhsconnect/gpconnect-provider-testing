@@ -1,4 +1,4 @@
-﻿@appointment
+﻿@appointment @1.3.2-Full_Pack
 Feature: AppointmentRead
 
 @1.2.3

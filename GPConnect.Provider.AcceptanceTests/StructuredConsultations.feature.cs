@@ -21,6 +21,7 @@ namespace GPConnect.Provider.AcceptanceTests
     [NUnit.Framework.DescriptionAttribute("StructuredConsultations")]
     [NUnit.Framework.CategoryAttribute("structured")]
     [NUnit.Framework.CategoryAttribute("structuredconsultations")]
+    [NUnit.Framework.CategoryAttribute("1.3.2-Full_Pack")]
     public partial class StructuredConsultationsFeature
     {
         
@@ -35,7 +36,8 @@ namespace GPConnect.Provider.AcceptanceTests
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "StructuredConsultations", null, ProgrammingLanguage.CSharp, new string[] {
                         "structured",
-                        "structuredconsultations"});
+                        "structuredconsultations",
+                        "1.3.2-Full_Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -76,12 +78,12 @@ namespace GPConnect.Provider.AcceptanceTests
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Verify Consultations Response for a Patient with Topic or Headings linked to all " +
             "supported clinical items and a problem")]
-        [NUnit.Framework.CategoryAttribute("1.3.2")]
+        [NUnit.Framework.CategoryAttribute("1.3.2-IncrementalAndRegression")]
         public virtual void VerifyConsultationsResponseForAPatientWithTopicOrHeadingsLinkedToAllSupportedClinicalItemsAndAProblem()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verify Consultations Response for a Patient with Topic or Headings linked to all " +
                     "supported clinical items and a problem", null, new string[] {
-                        "1.3.2"});
+                        "1.3.2-IncrementalAndRegression"});
 #line 5
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -754,11 +756,11 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Verify Problems Linked to Consultations are included and valid in response")]
-        [NUnit.Framework.CategoryAttribute("1.3.1")]
+        [NUnit.Framework.CategoryAttribute("1.3.1-IncrementalAndRegression")]
         public virtual void VerifyProblemsLinkedToConsultationsAreIncludedAndValidInResponse()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verify Problems Linked to Consultations are included and valid in response", null, new string[] {
-                        "1.3.1"});
+                        "1.3.1-IncrementalAndRegression"});
 #line 267
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();

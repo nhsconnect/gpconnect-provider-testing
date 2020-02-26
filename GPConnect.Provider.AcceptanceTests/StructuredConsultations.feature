@@ -1,7 +1,7 @@
-﻿@structured @structuredconsultations
+﻿@structured @structuredconsultations @1.3.2-Full_Pack
 Feature: StructuredConsultations
 
-@1.3.2
+@1.3.2-IncrementalAndRegression
 Scenario: Verify Consultations Response for a Patient with Topic or Headings linked to all supported clinical items and a problem
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
@@ -263,7 +263,7 @@ Examples:
 		| 2015-12-01                 | null                       |
 		| 2018                       | 2019                       |
 
-@1.3.1
+@1.3.1-IncrementalAndRegression
 Scenario: Verify Problems Linked to Consultations are included and valid in response
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"

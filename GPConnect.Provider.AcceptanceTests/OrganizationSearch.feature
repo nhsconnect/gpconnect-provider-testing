@@ -1,4 +1,4 @@
-﻿@organization
+﻿@organization @1.3.2-Full_Pack
 Feature: OrganizationSearch
 
 @1.2.3

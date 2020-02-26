@@ -1,4 +1,4 @@
-﻿@location
+﻿@location @1.3.2-Full_Pack
 Feature: LocationRead
 
 @1.2.3

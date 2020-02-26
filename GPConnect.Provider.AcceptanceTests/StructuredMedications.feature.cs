@@ -21,6 +21,7 @@ namespace GPConnect.Provider.AcceptanceTests
     [NUnit.Framework.DescriptionAttribute("StructuredMedications")]
     [NUnit.Framework.CategoryAttribute("structured")]
     [NUnit.Framework.CategoryAttribute("structuredmedications")]
+    [NUnit.Framework.CategoryAttribute("1.3.2-Full_Pack")]
     public partial class StructuredMedicationsFeature
     {
         
@@ -35,7 +36,8 @@ namespace GPConnect.Provider.AcceptanceTests
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "StructuredMedications", null, ProgrammingLanguage.CSharp, new string[] {
                         "structured",
-                        "structuredmedications"});
+                        "structuredmedications",
+                        "1.3.2-Full_Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -77,8 +79,8 @@ namespace GPConnect.Provider.AcceptanceTests
         [NUnit.Framework.DescriptionAttribute("Retrieve the medication structured record section for a patient with no problems " +
             "and including prescription issues")]
         [NUnit.Framework.CategoryAttribute("1.2.4")]
-        [NUnit.Framework.CategoryAttribute("1.3.1")]
-        [NUnit.Framework.CategoryAttribute("1.3.2")]
+        [NUnit.Framework.CategoryAttribute("1.3.1-IncrementalAndRegression")]
+        [NUnit.Framework.CategoryAttribute("1.3.2-IncrementalAndRegression")]
         [NUnit.Framework.TestCaseAttribute("patient3", null)]
         [NUnit.Framework.TestCaseAttribute("patient5", null)]
         [NUnit.Framework.TestCaseAttribute("patient12", null)]
@@ -87,8 +89,8 @@ namespace GPConnect.Provider.AcceptanceTests
         {
             string[] @__tags = new string[] {
                     "1.2.4",
-                    "1.3.1",
-                    "1.3.2"};
+                    "1.3.1-IncrementalAndRegression",
+                    "1.3.2-IncrementalAndRegression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -152,12 +154,12 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve the medication structured record section for a patient with problems lin" +
             "ked and including prescription issues")]
-        [NUnit.Framework.CategoryAttribute("1.3.2")]
+        [NUnit.Framework.CategoryAttribute("1.3.2-IncrementalAndRegression")]
         [NUnit.Framework.TestCaseAttribute("patient2", null)]
         public virtual void RetrieveTheMedicationStructuredRecordSectionForAPatientWithProblemsLinkedAndIncludingPrescriptionIssues(string patient, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "1.3.2"};
+                    "1.3.2-IncrementalAndRegression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -241,8 +243,8 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Retrieve the medication structured record for a patient with no problems and excl" +
             "uding prescription issues")]
         [NUnit.Framework.CategoryAttribute("1.2.4")]
-        [NUnit.Framework.CategoryAttribute("1.3.1")]
-        [NUnit.Framework.CategoryAttribute("1.3.2")]
+        [NUnit.Framework.CategoryAttribute("1.3.1-IncrementalAndRegression")]
+        [NUnit.Framework.CategoryAttribute("1.3.2-IncrementalAndRegression")]
         [NUnit.Framework.TestCaseAttribute("patient3", null)]
         [NUnit.Framework.TestCaseAttribute("patient5", null)]
         [NUnit.Framework.TestCaseAttribute("patient12", null)]
@@ -250,8 +252,8 @@ this.ScenarioInitialize(scenarioInfo);
         {
             string[] @__tags = new string[] {
                     "1.2.4",
-                    "1.3.1",
-                    "1.3.2"};
+                    "1.3.1-IncrementalAndRegression",
+                    "1.3.2-IncrementalAndRegression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -315,12 +317,12 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve the medication structured record for a patient with problems linked and " +
             "excluding prescription issues")]
-        [NUnit.Framework.CategoryAttribute("1.3.2")]
+        [NUnit.Framework.CategoryAttribute("1.3.2-IncrementalAndRegression")]
         [NUnit.Framework.TestCaseAttribute("patient2", null)]
         public virtual void RetrieveTheMedicationStructuredRecordForAPatientWithProblemsLinkedAndExcludingPrescriptionIssues(string patient, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "1.3.2"};
+                    "1.3.2-IncrementalAndRegression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -551,15 +553,15 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Retrieve the medication structured record section for a patient without the inclu" +
             "dePrescriptionIssue parameter")]
         [NUnit.Framework.CategoryAttribute("1.2.4")]
-        [NUnit.Framework.CategoryAttribute("1.3.1")]
-        [NUnit.Framework.CategoryAttribute("1.3.2")]
+        [NUnit.Framework.CategoryAttribute("1.3.1-IncrementalAndRegression")]
+        [NUnit.Framework.CategoryAttribute("1.3.2-IncrementalAndRegression")]
         public virtual void RetrieveTheMedicationStructuredRecordSectionForAPatientWithoutTheIncludePrescriptionIssueParameter()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the medication structured record section for a patient without the inclu" +
                     "dePrescriptionIssue parameter", null, new string[] {
                         "1.2.4",
-                        "1.3.1",
-                        "1.3.2"});
+                        "1.3.1-IncrementalAndRegression",
+                        "1.3.2-IncrementalAndRegression"});
 #line 198
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -583,13 +585,13 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Verify that when the medication parameter is labelled incorrectly with correct ma" +
             "ndatory partParameter returns success")]
         [NUnit.Framework.CategoryAttribute("1.2.4")]
-        [NUnit.Framework.CategoryAttribute("1.3.1")]
+        [NUnit.Framework.CategoryAttribute("1.3.1-IncrementalAndRegression")]
         public virtual void VerifyThatWhenTheMedicationParameterIsLabelledIncorrectlyWithCorrectMandatoryPartParameterReturnsSuccess()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verify that when the medication parameter is labelled incorrectly with correct ma" +
                     "ndatory partParameter returns success", null, new string[] {
                         "1.2.4",
-                        "1.3.1"});
+                        "1.3.1-IncrementalAndRegression"});
 #line 209
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -714,11 +716,11 @@ testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", (
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve the medication structured record section for an invalid parameter type")]
-        [NUnit.Framework.CategoryAttribute("1.3.1")]
+        [NUnit.Framework.CategoryAttribute("1.3.1-IncrementalAndRegression")]
         public virtual void RetrieveTheMedicationStructuredRecordSectionForAnInvalidParameterType()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the medication structured record section for an invalid parameter type", null, new string[] {
-                        "1.3.1"});
+                        "1.3.1-IncrementalAndRegression"});
 #line 253
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -797,7 +799,7 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Retrieve the medication structured record section for a patient with invalid date" +
             " values")]
         [NUnit.Framework.CategoryAttribute("1.2.4")]
-        [NUnit.Framework.CategoryAttribute("1.3.1")]
+        [NUnit.Framework.CategoryAttribute("1.3.1-IncrementalAndRegression")]
         [NUnit.Framework.TestCaseAttribute("X2014", null)]
         [NUnit.Framework.TestCaseAttribute("X2014-02", null)]
         [NUnit.Framework.TestCaseAttribute("X2015-10-23T11:08:32", null)]
@@ -810,7 +812,7 @@ this.ScenarioInitialize(scenarioInfo);
         {
             string[] @__tags = new string[] {
                     "1.2.4",
-                    "1.3.1"};
+                    "1.3.1-IncrementalAndRegression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -1036,14 +1038,14 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Structured Medications Patient Has multiple Warnings and Associated Notes")]
         [NUnit.Framework.CategoryAttribute("1.2.4")]
-        [NUnit.Framework.CategoryAttribute("1.3.1")]
+        [NUnit.Framework.CategoryAttribute("1.3.1-IncrementalAndRegression")]
         [NUnit.Framework.TestCaseAttribute("data-in-transit", "Patient record transfer from previous GP practice not yet complete; information r" +
             "ecorded before dd-Mmm-yyyy may be missing.", null)]
         public virtual void StructuredMedicationsPatientHasMultipleWarningsAndAssociatedNotes(string warning, string note, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "1.2.4",
-                    "1.3.1"};
+                    "1.3.1-IncrementalAndRegression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -1077,12 +1079,12 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve the medication structured record with startDate in the future - expected" +
             " failure")]
-        [NUnit.Framework.CategoryAttribute("1.3.1")]
+        [NUnit.Framework.CategoryAttribute("1.3.1-IncrementalAndRegression")]
         public virtual void RetrieveTheMedicationStructuredRecordWithStartDateInTheFuture_ExpectedFailure()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the medication structured record with startDate in the future - expected" +
                     " failure", null, new string[] {
-                        "1.3.1"});
+                        "1.3.1-IncrementalAndRegression"});
 #line 395
  this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();

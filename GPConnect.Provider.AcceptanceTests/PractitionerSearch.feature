@@ -1,4 +1,4 @@
-﻿@practitioner
+﻿@practitioner @1.3.2-Full_Pack
 Feature: PractitionerSearch
 
 # Common

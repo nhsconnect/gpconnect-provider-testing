@@ -1,7 +1,7 @@
-﻿@structured @structuredproblems
+﻿@structured @structuredproblems @1.3.2-Full_Pack
 Feature: StructuredProblems
 
-@1.3.2
+@1.3.2-IncrementalAndRegression
 Scenario: Verify response for a Patient with Problems linked to all supported clinical item types
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"

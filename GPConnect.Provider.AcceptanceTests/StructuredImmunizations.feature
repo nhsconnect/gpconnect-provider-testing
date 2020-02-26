@@ -1,7 +1,7 @@
-﻿@structured @structuredimmunizations
+﻿@structured @structuredimmunizations @1.3.2-Full_Pack
 Feature: StructuredImmunizations
 
-@1.3.2	
+@1.3.2-IncrementalAndRegression	
 Scenario: Verify Immunizations structured record for a Patient with Immunizations not linked to any problems
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient3"
@@ -24,7 +24,7 @@ Scenario: Verify Immunizations structured record for a Patient with Immunization
 		And The Structured List Does Not Include Not In Use Fields	
 
 #PG 19-2-2020 - Added for 1.3.2 - To check that associated problmes and the problems list are sent.
-@1.3.2
+@1.3.2-IncrementalAndRegression
 Scenario: Verify Immunizations structured record for a Patient with Immunizations associated to Problems
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
