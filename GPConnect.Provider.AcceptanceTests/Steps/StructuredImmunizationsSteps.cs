@@ -96,7 +96,7 @@
                 immunization.Status.ToString().ShouldBe("completed", StringCompareShould.IgnoreCase);
 
                 //Check NotGiven
-                immunization.NotGiven.ShouldBe(false, "Immunization.NotGiven is not FALSE");
+                //immunization.NotGiven.ShouldBe(false, "Immunization.NotGiven is not FALSE");
 
                 //Check vaccineCode
                 immunization.VaccineCode.Coding.ForEach(code =>
