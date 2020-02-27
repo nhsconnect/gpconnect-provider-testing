@@ -401,3 +401,12 @@ Scenario Outline: Structured Medications Patient Has multiple Warnings and Assoc
 		Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 	
+	#Duplicate Part Parm check - Martin Hillyand advised to check INVALID_RESOURCE returned
+	@1.3.2-IncrementalAndRegression
+	Scenario: Attempt to Retrieve medications using duplicate part param expect failure
+	Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "patient3"
+		And I add a duplicate medication part parameter
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should be "422"
+	And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
