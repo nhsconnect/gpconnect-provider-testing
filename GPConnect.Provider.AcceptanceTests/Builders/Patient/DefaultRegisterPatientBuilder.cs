@@ -22,7 +22,7 @@
             patientIdentifier.Extension.Add(new Extension
             {
                 Url = FhirConst.StructureDefinitionSystems.kExtCcGpcNhsNumVerification,
-                Value = new CodeableConcept(FhirConst.CodeSystems.kCcNhsNumVerification, "01", "Number present and verified")
+                Value = new CodeableConcept(FhirConst.CodeSystems.kCcNhsNumVerification, "01", "Number present and verified", null)
             });
 
             var patientToRegister = new Patient
