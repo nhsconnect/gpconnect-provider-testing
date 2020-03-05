@@ -21,7 +21,7 @@ namespace GPConnect.Provider.AcceptanceTests
     [NUnit.Framework.DescriptionAttribute("StructuredConsultations")]
     [NUnit.Framework.CategoryAttribute("structured")]
     [NUnit.Framework.CategoryAttribute("structuredconsultations")]
-    [NUnit.Framework.CategoryAttribute("1.3.2-Full_Pack")]
+    [NUnit.Framework.CategoryAttribute("1.3.2-Full-Pack")]
     public partial class StructuredConsultationsFeature
     {
         
@@ -37,7 +37,7 @@ namespace GPConnect.Provider.AcceptanceTests
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "StructuredConsultations", null, ProgrammingLanguage.CSharp, new string[] {
                         "structured",
                         "structuredconsultations",
-                        "1.3.2-Full_Pack"});
+                        "1.3.2-Full-Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
         

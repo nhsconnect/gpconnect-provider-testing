@@ -27,6 +27,8 @@
 
         MetadataRead = 17,
 
-        GpcGetStructuredRecord = 18
-    }
+        GpcGetStructuredRecord = 18,
+
+		StructuredMetaDataRead = 19
+	}
 }

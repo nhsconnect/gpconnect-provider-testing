@@ -1,4 +1,4 @@
-﻿@practitioner @1.3.2-Full_Pack
+﻿﻿@practitioner @1.3.2-Full-Pack
 Feature: PractitionerSearch
 
 # Common
@@ -183,3 +183,12 @@ Scenario: Practitioner search returned should conform to the GPconnect specifica
 		And the response bundle should contain "1" entries
 		And the response should be a Bundle resource of type "searchset"
 		And the Practitioner Not In Use should be valid
+
+# git hub ref 320 SJD 05/12/2019
+Scenario: Practitioner search with unknown identifier
+       Given I configure the default "PractitionerSearch" request
+              And I add a Practitioner Identifier parameter with unknown value
+       When I make the "PractitionerSearch" request
+       Then the response status code should indicate success
+              And the response should be a Bundle resource of type "searchset"
+              And the response bundle should contain "0" entries

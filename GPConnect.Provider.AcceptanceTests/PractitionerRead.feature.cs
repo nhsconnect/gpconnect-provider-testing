@@ -20,7 +20,7 @@ namespace GPConnect.Provider.AcceptanceTests
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("PractitionerRead")]
     [NUnit.Framework.CategoryAttribute("practitioner")]
-    [NUnit.Framework.CategoryAttribute("1.3.2-Full_Pack")]
+    [NUnit.Framework.CategoryAttribute("1.3.2-Full-Pack")]
     public partial class PractitionerReadFeature
     {
         
@@ -35,7 +35,7 @@ namespace GPConnect.Provider.AcceptanceTests
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "PractitionerRead", null, ProgrammingLanguage.CSharp, new string[] {
                         "practitioner",
-                        "1.3.2-Full_Pack"});
+                        "1.3.2-Full-Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
         

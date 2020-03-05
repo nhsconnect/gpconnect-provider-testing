@@ -34,7 +34,9 @@
             public static string MetadataRead => BaseInteraction + "rest:read:metadata-1";
 
             public const string kFhirPractitioner = "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner-1";
+			
+			public static string StructuredMetaDataRead => BaseInteraction + "rest:read:structured_metadata-1";
 
-        }
+		}
     }
 }

@@ -56,7 +56,9 @@
                     return AppointmentReadConfiguration();
                 case GpConnectInteraction.MetadataRead:
                     return MetadataReadConfiguration();
-                default:
+				case GpConnectInteraction.StructuredMetaDataRead:
+					return StructuredMetaDataReadConfiguration();
+				default:
                     return _httpRequestConfiguration;
             }
         }
@@ -232,5 +234,16 @@
 
             return _httpRequestConfiguration;
         }
-    }
+
+		//SJD added for 1.2.6 
+		private static HttpRequestConfiguration StructuredMetaDataReadConfiguration()
+		{
+			_httpRequestConfiguration.HttpMethod = HttpMethod.Get;
+            _httpRequestConfiguration.RequestUrl = "metadata";
+
+			_httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.StructuredMetaDataRead);
+
+			return _httpRequestConfiguration;
+		}
+	}
 }

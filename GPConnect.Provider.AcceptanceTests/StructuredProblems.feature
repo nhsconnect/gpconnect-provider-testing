@@ -1,4 +1,4 @@
-﻿@structured @structuredproblems @1.3.2-Full_Pack
+﻿@structured @structuredproblems @1.3.2-Full-Pack
 Feature: StructuredProblems
 
 @1.3.2-IncrementalAndRegression

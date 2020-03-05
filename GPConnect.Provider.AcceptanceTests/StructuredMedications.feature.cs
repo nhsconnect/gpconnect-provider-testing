@@ -21,7 +21,7 @@ namespace GPConnect.Provider.AcceptanceTests
     [NUnit.Framework.DescriptionAttribute("StructuredMedications")]
     [NUnit.Framework.CategoryAttribute("structured")]
     [NUnit.Framework.CategoryAttribute("structuredmedications")]
-    [NUnit.Framework.CategoryAttribute("1.3.2-Full_Pack")]
+    [NUnit.Framework.CategoryAttribute("1.3.2-Full-Pack")]
     public partial class StructuredMedicationsFeature
     {
         
@@ -37,7 +37,7 @@ namespace GPConnect.Provider.AcceptanceTests
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "StructuredMedications", null, ProgrammingLanguage.CSharp, new string[] {
                         "structured",
                         "structuredmedications",
-                        "1.3.2-Full_Pack"});
+                        "1.3.2-Full-Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -1123,11 +1123,11 @@ this.ScenarioInitialize(scenarioInfo);
   testRunner.And("I add an NHS Number parameter for \"patient3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 409
   testRunner.And("I add a duplicate medication part parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 412
+#line 410
  testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 413
+#line 411
  testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 414
+#line 412
  testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_RESOU" +
                     "RCE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden

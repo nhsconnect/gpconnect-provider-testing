@@ -1,4 +1,4 @@
-﻿@structured @structuredmedications @1.3.2-Full_Pack
+﻿@structured @structuredmedications @1.3.2-Full-Pack
 Feature: StructuredMedications
 
 @1.2.4 @1.3.1-IncrementalAndRegression @1.3.2-IncrementalAndRegression

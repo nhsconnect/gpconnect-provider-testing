@@ -1,4 +1,4 @@
-﻿@structured @structuredimmunizations @1.3.2-Full_Pack
+﻿@structured @structuredimmunizations @1.3.2-Full-Pack
 Feature: StructuredImmunizations
 
 @1.3.2-IncrementalAndRegression	

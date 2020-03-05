@@ -1,4 +1,4 @@
-﻿@appointment @1.3.2-Full_Pack
+﻿@appointment @1.3.2-Full-Pack
 Feature: AppointmentBook
 
 @1.2.3

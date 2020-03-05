@@ -1,4 +1,4 @@
-﻿@getschedule @1.3.2-Full_Pack
+﻿@getschedule @1.3.2-Full-Pack
 Feature: SearchForFreeSlots
 	
 Scenario Outline: Searching for free slots with valid parameters should return success

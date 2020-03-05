@@ -31,7 +31,8 @@
                     break;
                 case GpConnectInteraction.GpcGetCareRecord:
                 case GpConnectInteraction.GpcGetStructuredRecord:
-                case GpConnectInteraction.PatientSearch:
+				case GpConnectInteraction.StructuredMetaDataRead:
+				case GpConnectInteraction.PatientSearch:
                 case GpConnectInteraction.PatientRead:
                 case GpConnectInteraction.AppointmentSearch:
                 case GpConnectInteraction.AppointmentRead:
