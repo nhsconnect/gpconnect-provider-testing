@@ -1,7 +1,7 @@
 ﻿@structured @structuredmedications @1.3.2-Full-Pack
 Feature: StructuredMedications
 
-@1.2.4 @1.3.1-IncrementalAndRegression @1.3.2-IncrementalAndRegression
+@1.3.1-IncrementalAndRegression @1.3.2-IncrementalAndRegression
 Scenario Outline: Retrieve the medication structured record section for a patient with no problems and including prescription issues
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "<Patient>"
@@ -69,7 +69,7 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		| Patient   |
 		| patient2  |
 
-@1.2.4	@1.3.1-IncrementalAndRegression @1.3.2-IncrementalAndRegression
+@1.3.1-IncrementalAndRegression @1.3.2-IncrementalAndRegression
 Scenario Outline: Retrieve the medication structured record for a patient with no problems and excluding prescription issues
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "<Patient>"
@@ -193,7 +193,7 @@ Scenario Outline: Retrieve the structured record section for a patient without t
 		| patient5 |
 		| patient12 |
 		
-@1.2.4 @1.3.1-IncrementalAndRegression @1.3.2-IncrementalAndRegression
+@1.3.1-IncrementalAndRegression @1.3.2-IncrementalAndRegression
 #PG 19-2-2020 - 1.3.2 - param no longer mandatory, so checking call works
 Scenario: Retrieve the medication structured record section for a patient without the includePrescriptionIssue parameter
 	Given I configure the default "GpcGetStructuredRecord" request
@@ -205,7 +205,7 @@ Scenario: Retrieve the medication structured record section for a patient withou
 		
 
 #SJD 06/09/2019 #295 this is now accepted under forward compatability for 1.3.0
-@1.2.4 @1.3.1-IncrementalAndRegression
+@1.3.1-IncrementalAndRegression
 Scenario: Verify that when the medication parameter is labelled incorrectly with correct mandatory partParameter returns success
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"
@@ -215,7 +215,6 @@ Scenario: Verify that when the medication parameter is labelled incorrectly with
 		And Check the operation outcome returns the correct text and diagnotics "includeInvalidMedications"
 		And Check the number of issues in the operation outcome "1"
 
-@1.2.4
 Scenario: Retrieve the medication structured record section for an invalid NHS number
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for an invalid NHS Number
@@ -259,7 +258,6 @@ Scenario: Retrieve the medication structured record section for an invalid param
 		And the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
-@1.2.4
 Scenario: Retrieve the medication structured record section for a patient with a timePeriod
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
@@ -278,7 +276,7 @@ Scenario: Retrieve the medication structured record section for a patient with a
 		And the List of MedicationStatements should be valid
 		And the MedicationStatement EffectiveDate is Greater Than Search Date of "3" years ago	
 
-@1.2.4 @1.3.1-IncrementalAndRegression
+@1.3.1-IncrementalAndRegression
 Scenario Outline: Retrieve the medication structured record section for a patient with invalid date values
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"
@@ -331,7 +329,6 @@ Scenario: Check warning code is populated for a patient
 # Added for github ref 110 (Demonstrator)
 # 1.2.1 RMB 15/10/2018
 
-@1.2.4
 Scenario: Structured record for a patient that is not in the database 
 	Given I configure the default "GpcGetStructuredRecord" request 
 		And I add an NHS Number parameter for "patientNotInSystem"
@@ -344,7 +341,6 @@ Scenario: Structured record for a patient that is not in the database
 # Added for github ref 129
 # RMB 5/11/2018
 #
-@1.2.4
 Scenario: Structured record for a patient that is deceased
 	Given I configure the default "GpcGetStructuredRecord" request 
 		And I add an NHS Number parameter for "patient18"
@@ -354,7 +350,6 @@ Scenario: Structured record for a patient that is deceased
 		And the response status code should be "404"
 		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
 
-@1.2.4
 Scenario:  structured record for a patient that has sensitive flag
 	Given I configure the default "GpcGetStructuredRecord" request 
 		And I add an NHS Number parameter for "patient9"
@@ -364,7 +359,6 @@ Scenario:  structured record for a patient that has sensitive flag
 		And the response status code should be "404"
 		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
 
-@1.2.4
 Scenario:  structured record for a patient that has inactive flag
 	Given I configure the default "GpcGetStructuredRecord" request 
 		And I add an NHS Number parameter for "patient21"
@@ -376,7 +370,7 @@ Scenario:  structured record for a patient that has inactive flag
 
 
 #PG 6/9/2019 - #289
-@1.2.4 @1.3.1-IncrementalAndRegression
+@1.3.1-IncrementalAndRegression
 Scenario Outline: Structured Medications Patient Has multiple Warnings and Associated Notes
 	Given I configure the default "GpcGetStructuredRecord" request 
 		And I add an NHS Number parameter for "patient16"

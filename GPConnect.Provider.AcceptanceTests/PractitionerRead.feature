@@ -1,7 +1,6 @@
 ﻿@practitioner @1.3.2-Full-Pack
 Feature: PractitionerRead
 
-@1.2.3
 Scenario Outline: Practitioner read successful request validate all of response
 	Given I get the Practitioner for Practitioner Code "<practitioner>"
 		And I store the Practitioner

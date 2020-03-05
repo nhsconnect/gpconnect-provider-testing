@@ -1,6 +1,6 @@
 ﻿@patient @1.3.2-Full-Pack
-
 Feature: PatientRegister
+
 Scenario Outline: Register patient send request to incorrect URL
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
@@ -23,7 +23,6 @@ Scenario: Register patient without sending identifier within patient
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "INVALID_NHS_NUMBER"
 
-@1.2.3
 Scenario: Register patient without gender element
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
@@ -157,7 +156,6 @@ Scenario: Register patient with invalid patient resource type
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 	
-@1.2.3
 Scenario: Register patient with invalid patient resource with additional element
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
@@ -175,7 +173,6 @@ Scenario: Register patient with duplicate patient resource parameters
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 			
-@1.2.3
 Scenario: Register patient which alread exists on the system as a normal patient
 	Given I get an existing patients nshNumber
 		And I store the patient in the register patient resource format
@@ -432,7 +429,6 @@ Scenario Outline: Register patient with additional not allowed elements
 		| Photo         |
 		| Deceased      |
 
-@1.2.3
 Scenario Outline: Register patient setting JWT request type to invalid type
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
@@ -456,7 +452,6 @@ Scenario:Register patient invalid response check caching headers exist
 		And the response should be a OperationOutcome resource with error code "INVALID_NHS_NUMBER"
 		And the required cacheing headers should be present in the response
 
-@1.2.3
 Scenario: Register patient and check preferred branch 
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
@@ -548,7 +543,6 @@ Scenario: Register patient with family name not matching PDS
 
 # git hub ref 180
 # RMB 4/2/19
-@1.2.3
 Scenario Outline: Register patient with Multiple Address Use types
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request

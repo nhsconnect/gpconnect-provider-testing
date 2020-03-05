@@ -1,7 +1,6 @@
 ﻿@appointment @1.3.2-Full-Pack
 Feature: AppointmentRead
 
-@1.2.3
 Scenario Outline: I perform a successful Read appointment
 	Given I create an Appointment for Patient "<PatientName>" 
 		And I store the Created Appointment

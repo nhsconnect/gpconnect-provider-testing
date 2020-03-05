@@ -29,7 +29,6 @@ Scenario: CapabilityStatement profile supported fhir version
 
 # github ref 132
 # RMB 29/10/2018
-@1.2.4
 Scenario: CapabilityStatement profile supports the RegisterPatient operation
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
@@ -38,7 +37,6 @@ Scenario: CapabilityStatement profile supports the RegisterPatient operation
 
 #132 - RMB 29/10/2018
 #292 - PG 30/8/2019 - added check for correct url on operation
-@1.2.4
 Scenario: CapabilityStatement profile supports the GetStructuredRecord operation
 	Given I configure the default "MetadataRead" request
 	When I make the "MetaDataRead" request
