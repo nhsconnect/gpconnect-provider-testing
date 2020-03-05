@@ -141,7 +141,7 @@ Scenario: endpoint should support gzip compression for metadata endpoint and con
 		And the response body should be FHIR JSON
 		And the Response Resource should be a CapabilityStatement
                   
-Scenario Outline: CapabilityStatement GetMetaDataRead operation returns correct profile versions		
+Scenario Outline: CapabilityStatement GetMetaDataRead operation returns correct profile versions
 Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
@@ -165,13 +165,6 @@ Examples:
 | https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-List-1                |
 | https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-StructuredRecord-Bundle-1   |
           
-Scenario: CapabilityStatement profile supports the GetStructuredMetaDataRead operation
-Given I configure the default "StructuredMetaDataRead" request
-	When I make the "StructuredMetaDataRead" request
-	Then the response status code should indicate success
-	And the CapabilityStatement REST Operations should contain "gpc.getstructuredrecord"
-	And the CapabilityStatement Operation "gpc.getstructuredrecord" has url "https://fhir.nhs.uk/STU3/OperationDefinition/GPConnect-GetStructuredRecord-Operation-1/_history/1.13" 
-	
 Scenario Outline: CapabilityStatement GetStructuredMetaDataRead operation returns correct profile versions
 Given I configure the default "StructuredMetaDataRead" request
 	When I make the "StructuredMetaDataRead" request
@@ -192,3 +185,10 @@ Examples:
 | https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-StructuredRecord-Bundle-1/_history/1.3   |
 | https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-OperationOutcome-1/_history/1.2          |
           
+Scenario: CapabilityStatement profile supports the GetStructuredMetaDataRead operation
+Given I configure the default "StructuredMetaDataRead" request
+	When I make the "StructuredMetaDataRead" request
+	Then the response status code should indicate success
+	And the CapabilityStatement REST Operations should contain "gpc.getstructuredrecord"
+	And the CapabilityStatement Operation "gpc.getstructuredrecord" has url "https://fhir.nhs.uk/STU3/OperationDefinition/GPConnect-GetStructuredRecord-Operation-1/_history/1.13" 
+	
