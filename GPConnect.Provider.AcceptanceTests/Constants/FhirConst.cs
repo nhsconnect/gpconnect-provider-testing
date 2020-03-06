@@ -41,8 +41,9 @@
 			public const string kProblems = "includeProblems";
 			public const string kProblemsStatus = "filterStatus";
 			public const string kProblemsSignificance = "filterSignificance";
-
-			public const string kStartDate = "start";
+            public const string kInvestigations = "includeInvestigations";
+            
+            public const string kStartDate = "start";
             public const string kEndDate = "end";
             public const string kResolvedAllergies = "includeResolvedAllergies";
             public const string kPrescriptionIssues  = "includePrescriptionIssues";

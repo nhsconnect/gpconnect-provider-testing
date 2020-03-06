@@ -255,6 +255,7 @@
     <Compile Include="SSP.feature.cs" />
     <Compile Include="Steps\StructuredConsultationsSteps.cs" />
     <Compile Include="Steps\StructuredImmunizationsSteps.cs" />
+    <Compile Include="Steps\StructuredInvestigationsSteps.cs" />
     <Compile Include="Steps\StructuredMedicationSteps.cs" />
     <Compile Include="Steps\StructuredAllergySteps.cs" />
     <Compile Include="Steps\AmendAppointmentSteps.cs" />
@@ -298,6 +299,7 @@
     <Compile Include="StructuredAllergies.feature.cs" />
     <Compile Include="StructuredConsultations.feature.cs" />
     <Compile Include="StructuredImmunizations.feature.cs" />
+    <Compile Include="StructuredInvestigations.feature.cs" />
     <Compile Include="StructuredMedications.feature.cs" />
     <Compile Include="StructuredMultipleRequests.feature.cs" />
     <Compile Include="StructuredProblems.feature.cs" />
@@ -306,6 +308,7 @@
   <ItemGroup>
     <None Include="StructuredConsultations.feature" />
     <None Include="StructuredImmunizations.feature" />
+    <None Include="StructuredInvestigations.feature" />
     <None Include="StructuredMedications.feature" />
     <None Include="App.config">
       <SubType>Designer</SubType>
