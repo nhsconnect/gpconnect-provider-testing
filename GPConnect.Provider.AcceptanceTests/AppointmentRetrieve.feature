@@ -1,4 +1,4 @@
-﻿@appointment @1.3.2-Full-Pack
+﻿@appointment @1.5.0-Full-Pack
 Feature: AppointmentRetrieve
 
 Scenario: Appointment retrieve success valid id where appointment resource returned is not required

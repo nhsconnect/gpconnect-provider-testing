@@ -1,4 +1,4 @@
-﻿@location @1.3.2-Full-Pack
+﻿@location @1.5.0-Full-Pack
 Feature: LocationRead
 
 Scenario Outline: Location read successful request validate the response contains logical identifier

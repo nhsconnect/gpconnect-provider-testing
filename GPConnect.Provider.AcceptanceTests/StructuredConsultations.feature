@@ -1,4 +1,4 @@
-﻿@structured @structuredconsultations @1.3.2-Full-Pack
+﻿@structured @structuredconsultations @1.5.0-Full-Pack
 Feature: StructuredConsultations
 
 @1.3.2-IncrementalAndRegression

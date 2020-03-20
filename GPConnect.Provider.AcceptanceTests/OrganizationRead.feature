@@ -1,4 +1,4 @@
-﻿@organization @1.3.2-Full-Pack
+﻿@organization @1.5.0-Full-Pack
 Feature: OrganizationRead
 
 Scenario: Organization Read successful request validate all of response

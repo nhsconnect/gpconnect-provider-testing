@@ -1,4 +1,4 @@
-﻿@appointment @1.3.2-Full-Pack
+﻿@appointment @1.5.0-Full-Pack
 Feature: AppointmentRead
 
 Scenario Outline: I perform a successful Read appointment

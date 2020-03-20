@@ -20,7 +20,7 @@ namespace GPConnect.Provider.AcceptanceTests
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("AppointmentAmend")]
     [NUnit.Framework.CategoryAttribute("appointment")]
-    [NUnit.Framework.CategoryAttribute("1.3.2-Full-Pack")]
+    [NUnit.Framework.CategoryAttribute("1.5.0-Full-Pack")]
     public partial class AppointmentAmendFeature
     {
         
@@ -35,7 +35,7 @@ namespace GPConnect.Provider.AcceptanceTests
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "AppointmentAmend", null, ProgrammingLanguage.CSharp, new string[] {
                         "appointment",
-                        "1.3.2-Full-Pack"});
+                        "1.5.0-Full-Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
         

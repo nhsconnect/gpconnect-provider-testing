@@ -328,7 +328,7 @@
 			});
 			if (foundFlag)
 			{
-				var failMessage = "Test failed as an unexpected operation outcome found in response";
+				var failMessage = "Fail : Test failed as an unexpected Operation Outcome found in response";
 				Log.WriteLine(failMessage);
 				foundFlag.ShouldBeFalse(failMessage);
 

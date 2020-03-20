@@ -1,4 +1,4 @@
-﻿@appointment @1.3.2-Full-Pack
+﻿@appointment @1.5.0-Full-Pack
 Feature: AppointmentAmend
 
 Scenario Outline: I perform a successful amend appointment and check the returned appointment resources are in the future

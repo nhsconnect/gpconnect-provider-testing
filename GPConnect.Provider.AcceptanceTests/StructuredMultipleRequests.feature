@@ -1,4 +1,4 @@
-﻿@structured @structuredmultiplerequests @1.3.2-Full-Pack
+﻿@structured @structuredmultiplerequests @1.5.0-Full-Pack
 Feature: StructuredMultipleRequests
 
 @1.3.1-IncrementalAndRegression

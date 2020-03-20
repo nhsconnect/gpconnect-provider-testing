@@ -31,6 +31,10 @@
         public List<Observation> Observations => GetResources<Observation>();
         public List<Encounter> Encounters => GetResources<Encounter>();
         public List<Condition> Conditions => GetResources<Condition>();
+        public List<DiagnosticReport> DiagnosticReports => GetResources<DiagnosticReport>();
+        public List<ReferralRequest> ReferralRequests => GetResources<ReferralRequest>();
+        public List<ProcedureRequest> ProcedureRequests => GetResources<ProcedureRequest>();
+        public List<Specimen> Specimens => GetResources<Specimen>();
 
         private List<T> GetResources<T>() where T : Resource
         {
@@ -71,7 +75,11 @@
             {typeof(Immunization), ResourceType.Immunization},
             {typeof(Observation), ResourceType.Observation},
             {typeof(Encounter), ResourceType.Encounter},
-            {typeof(Condition), ResourceType.Condition}
+            {typeof(Condition), ResourceType.Condition},
+            {typeof(DiagnosticReport), ResourceType.DiagnosticReport},
+            {typeof(ReferralRequest), ResourceType.ReferralRequest},
+            {typeof(ProcedureRequest), ResourceType.ProcedureRequest},
+            {typeof(Specimen), ResourceType.Specimen}
 
         };
     }

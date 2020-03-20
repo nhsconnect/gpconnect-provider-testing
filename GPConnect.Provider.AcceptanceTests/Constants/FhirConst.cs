@@ -14,6 +14,8 @@
             public const string kMeds = "933361000000108";
             public const string kActiveAllergies = "886921000000105";
             public const string kResolvedAllergies = "1103671000000101";
+            public const string kInvestigations = "887191000000108";
+            public const string kOutboundReferrals = "792931000000107";
         }
 
 
@@ -42,7 +44,10 @@
 			public const string kProblemsStatus = "filterStatus";
 			public const string kProblemsSignificance = "filterSignificance";
             public const string kInvestigations = "includeInvestigations";
-            
+            public const string kInvestigationsSearch = "investigationSearchPeriod";
+            public const string kReferrals = "includeReferrals";
+            public const string kReferralSearch = "referralSearchPeriod";
+
             public const string kStartDate = "start";
             public const string kEndDate = "end";
             public const string kResolvedAllergies = "includeResolvedAllergies";
@@ -200,8 +205,11 @@
             public const string kVaccinationProcedure = "https://fhir.hl7.org.uk/STU3/StructureDefinition/Extension-CareConnect-VaccinationProcedure-1";
             public const string kEncounter = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Encounter-1";
             public const string kProblems = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-ProblemHeader-Condition-1";
-             
-
+            public const string kDiagnosticReport = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-DiagnosticReport-1";
+            public const string kProcedureRequest = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-ProcedureRequest-1";
+            public const string kSpecimen = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Specimen-1";
+            public const string kReferrals = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-ReferralRequest-1";
+            
             // git hub ref 158
             // RMB 9/1/19			
             public const string kListEmptyReason = "https://fhir.nhs.uk/STU3/CodeSystem/CareConnect-ListEmptyReasonCode-1";			
@@ -253,6 +261,8 @@
             public const string kConsultation = "Surgery Consultation";
             public const string kTopics = "?????";
             public const string kHeadings = "?????";
+            public const string kInvestigations = "Investigations and Results";
+            public const string kOutboundReferrals = "Outbound referral";
 
         }
     }
