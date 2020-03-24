@@ -164,14 +164,14 @@ Examples:
 | https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-MedicationRequest-1        |
 | https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-List-1                     |
 | https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-StructuredRecord-Bundle-1        |
-| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Immunization-1"            |
-| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Condition-ProblemHeader-1" |
-| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Encounter-1"               |
-| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Observation-1"             |
-| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-DiagnosticReport-1"        |
-| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Specimen-1"			      |
-| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-ProcedureRequest-1"        |
-| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-ReferralRequest-1"         |
+| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Immunization-1             |
+| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Condition-ProblemHeader-1  |
+| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Encounter-1                |
+| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Observation-1              |
+| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-DiagnosticReport-1         |
+| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Specimen-1			      |
+| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-ProcedureRequest-1         |
+| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-ReferralRequest-1          |
   
 Scenario Outline: CapabilityStatement GetStructuredMetaDataRead operation returns correct profile versions
 Given I configure the default "StructuredMetaDataRead" request
