@@ -43,11 +43,12 @@
         public void ThenIChecktheReferralsListsareValid()
         {
             //Check atleast one Referrals List exists using Snomed Code
-            Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kOutboundReferrals).ToList().Count().ShouldBe(1, "Failed to Find ONE Referrals list using Snomed Code.");
+            //Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kOutboundReferrals).ToList().Count().ShouldBe(1, "Failed to Find ONE Referrals list using Snomed Code.");
+            Lists.Where(l => l.Code.Coding.First().Code == "886721000000107").ToList().Count().ShouldBe(1, "Failed to Find ONE Referrals list using Snomed Code.");
 
             //Get  Investigations list
-            var referralsList = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kOutboundReferrals).ToList();
-            //var referralsList = Lists.Where(l => l.Code.Coding.First().Code == "886721000000107").ToList();
+            //var referralsList = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kOutboundReferrals).ToList();
+            var referralsList = Lists.Where(l => l.Code.Coding.First().Code == "886721000000107").ToList();
 
             referralsList.ForEach(referList =>
             {
@@ -106,8 +107,6 @@
             //check atleast one
             ReferralRequests.ToList().Count().ShouldBeGreaterThan(0, "Error Should be Atleast One ReferralRequest in response as per Data requirements");
 
-            bool foundResult = false;
-
             ReferralRequests.ForEach(referalRequest=>
             {
                 //Check Id
@@ -116,209 +115,40 @@
                 //Check Meta.profile
                 CheckForValidMetaDataInResource(referalRequest, FhirConst.StructureDefinitionSystems.kReferrals);
 
-                //        //Check Identfier
-                //        diagnostic.Identifier.Count.ShouldBeGreaterThan(0, "There should be at least 1 Identifier system/value pair");
-                //        diagnostic.Identifier.ForEach(identifier =>
-                //        {
-                //            identifier.Value.ShouldNotBeNullOrEmpty("Fail : No Identifier found when resource should have a unique Identifier");
-                //        });
+                //Check Identfier
+                referalRequest.Identifier.Count.ShouldBeGreaterThan(0, "There should be at least 1 Identifier system/value pair");
+                referalRequest.Identifier.ForEach(identifier =>
+                {
+                    identifier.Value.ShouldNotBeNullOrEmpty("Fail : No Identifier found when resource should have a unique Identifier");
+                });
 
-                //        //check atleast one Procedure Reference found and item included in bundle
-                //        string refToCheck = "";
-                //        bool found = false;
-                //        string pattern = @"(.*)(/)(.*)";
+                //Check Status
+                referalRequest.Status.ToString().ToLower().ShouldBe("unknown", "ReferalRequest Status should be set to unknown");
 
-                //        if (diagnostic.BasedOn != null)
-                //        {
-                //            if (diagnostic.BasedOn.Count() >= 1)
-                //            {
-                //                refToCheck = diagnostic.BasedOn.First().Reference;
-                //                if (refToCheck.StartsWith("ProcedureRequest/"))
-                //                {
-                //                    string refToFind = Regex.Replace(refToCheck, pattern, "$3");
-                //                    //check Resource Exists
-                //                    VerifyResourceReferenceExists("ProcedureRequest", refToFind);
-                //                    Logger.Log.WriteLine("Info : Found and Verified ProcedureRequest");
-                //                    found = true;
-                //                }
-                //            }
-                //        }
+                //Check intent
+                referalRequest.Intent.ToString().ToLower().ShouldBe("order", "ReferalRequest Intent should be set to order");
 
-                //        found.ShouldBeTrue("Fail : No link to a Procedure found on DiagnosticReport - ID : " + diagnostic.Id);
-
-                //        //Check Status
-                //        diagnostic.Status.ToString().ShouldNotBeNull("DiagnosticReport Status should not be null");
-
-                //        //check Code
-                //        diagnostic.Code.Coding.First().Code.ShouldBe("721981007");
-                //        diagnostic.Code.Coding.First().Display.ShouldBe("Diagnostic studies report");
-
-                //        //Check Subject/patient
-                //        Patients.Where(p => p.Id == (diagnostic.Subject.Reference.Replace("Patient/", ""))).Count().ShouldBe(1, "Patient Not Found in Bundle");
-
-                //        //check issued
-                //        diagnostic.Issued.ShouldNotBeNull("Fail : Issued should contain a datetime");
-
-                //        //check atleast one Specimen Reference found and item included in bundle
-                //        refToCheck = "";
-                //        found = false;
-
-                //        if (diagnostic.Specimen != null)
-                //        {
-                //            if (diagnostic.Specimen.Count() >= 1)
-                //            {
-                //                refToCheck = diagnostic.Specimen.First().Reference;
-                //                if (refToCheck.StartsWith("Specimen/"))
-                //                {
-                //                    string refToFind = Regex.Replace(refToCheck, pattern, "$3");
-                //                    //check Resource Exists
-                //                    VerifyResourceReferenceExists("Specimen", refToFind);
-                //                    Logger.Log.WriteLine("Info : Found and Verified Specimen");
-                //                    found = true;
-                //                }
-                //            }
-                //        }
-
-                //        found.ShouldBeTrue("Fail : No link to a Specimen found on DiagnosticReport - ID : " + diagnostic.Id);
-
-                //        //check one diagnosticreport is linked to a report as per data requirements
-                //        if (diagnostic.Result != null)
-                //        {
-                //            if (diagnostic.Result.Count() >= 1)
-                //            {
-                //                diagnostic.Result.ForEach(d =>
-                //                {
-                //                    refToCheck = d.Reference;
-                //                    if (refToCheck.StartsWith("Observation/"))
-                //                    {
-                //                        string refToFind = Regex.Replace(refToCheck, pattern, "$3");
-                //                        //check Resource Exists
-                //                        VerifyResourceReferenceExists("Observation", refToFind);
-                //                        Logger.Log.WriteLine("Info : Found and Verified Observation - Test Result Linked to DiagnosticReport");
-                //                        foundResult = true;
-                //                    }
-                //                });
-                //            }
-                //        }
+                //Check Subject/patient
+                Patients.Where(p => p.Id == (referalRequest.Subject.Reference.Replace("Patient/", ""))).Count().ShouldBe(1, "Patient Not Found in Bundle");
 
             });
 
-
-            //    foundResult.ShouldBeTrue("fail : Atleast one DiagnosticReport should be linked to a test result");
-
-
-
         }
 
-        //[Then(@"I Check the DiagnosticReports Do Not Include Not in Use Fields")]
-        //public void ThenIChecktheDiagnosticReportsDoNotIncludeNotinUseFields()
-        //{
-        //    DiagnosticReports.ForEach(diag =>
-        //    {
-        //        diag.Effective.ShouldBeNull("Fail :  DiagnosticReport - effective element Should not be used - Not In Use Field");
-        //        diag.Context.ShouldBeNull("Fail :  DiagnosticReport - context element Should not be used - Not In Use Field");
-        //        diag.ImagingStudy.Count().ShouldBe(0, "Fail :  DiagnosticReport - imagingStudy element Should not be used - Not In Use Field");
-        //        diag.Image.Count().ShouldBe(0, "Fail :  DiagnosticReport - image element Should not be used - Not In Use Field");
-        //        diag.PresentedForm.Count().ShouldBe(0, "Fail :  DiagnosticReport - PresentedForm element Should not be used - Not In Use Field");
-        //    });
-        //}
-
-        //[Then(@"I Check the ProcedureRequests are Valid")]
-        //public void ThenIChecktheProcedureRequestareValid()
-        //{
-        //    //check atleast one
-        //    ProcedureRequests.ToList().Count().ShouldBeGreaterThan(0, "Error Should be Atleast One ProcedureRequest in response as per Data requirements");
-
-        //    ProcedureRequests.ForEach(proc =>
-        //    {
-        //        //Check Id
-        //        proc.Id.ShouldNotBeNullOrEmpty();
-
-        //        //Check Meta.profile
-        //        CheckForValidMetaDataInResource(proc, FhirConst.StructureDefinitionSystems.kProcedureRequest);
-
-        //        //Check Identfier
-        //        proc.Identifier.Count.ShouldBeGreaterThan(0, "There should be at least 1 Identifier system/value pair");
-        //        proc.Identifier.ForEach(identifier =>
-        //        {
-        //            identifier.Value.ShouldNotBeNullOrEmpty("Fail : No Identifier found when resource should have a unique Identifier");
-        //        });
-
-        //        //Check Status
-        //        proc.Status.ToString().ToLower().ShouldBe("active", "ProcedureRequest Status is NOT set to active");
-
-        //        //check intent
-        //        proc.Intent.ToString().ToLower().ShouldBe("order", "ProcedureRequest Status is NOT set to order");
-
-        //        //Check Subject/patient
-        //        Patients.Where(p => p.Id == (proc.Subject.Reference.Replace("Patient/", ""))).Count().ShouldBe(1, "Patient Not Found in Bundle");
-        //    });
-        //}
-
-
-        //[Then(@"I Check the ProcedureRequests Do Not Include Not in Use Fields")]
-        //public void ThenIChecktheProcedureRequestDoNotIncludeNotinUseFields()
-        //{
-        //    ProcedureRequests.ForEach(procs =>
-        //    {
-        //        procs.Definition.Count().ShouldBe(0, "Fail :  ProcedureRequest - Definition element Should not be used - Not In Use Field");
-        //        procs.BasedOn.Count().ShouldBe(0, "Fail :  ProcedureRequest - BasedOn element Should not be used - Not In Use Field");
-        //        procs.Replaces.Count().ShouldBe(0, "Fail :  ProcedureRequest - Replaces element Should not be used - Not In Use Field");
-        //        procs.Requisition.ShouldBeNull("Fail :  ProcedureRequest - Requisition element Should not be used - Not In Use Field");
-        //        procs.Priority.ShouldBeNull("Fail :  ProcedureRequest - Priority element Should not be used - Not In Use Field");
-        //        procs.DoNotPerform.ShouldBeNull("Fail :  ProcedureRequest - DoNotPerform element Should not be used - Not In Use Field");
-        //        procs.Category.Count().ShouldBe(0, "Fail :  ProcedureRequest - Category element Should not be used - Not In Use Field");
-        //        procs.Context.ShouldBeNull("Fail :  ProcedureRequest - Context element Should not be used - Not In Use Field");
-        //        procs.Occurrence.ShouldBeNull("Fail :  ProcedureRequest - Occurrence element Should not be used - Not In Use Field");
-        //        procs.AsNeeded.ShouldBeNull("Fail :  ProcedureRequest - AsNeeded element Should not be used - Not In Use Field");
-        //        procs.AuthoredOn.ShouldBeNull("Fail :  ProcedureRequest - AuthoredOn element Should not be used - Not In Use Field");
-        //        procs.PerformerType.ShouldBeNull("Fail :  ProcedureRequest - PerformerType element Should not be used - Not In Use Field");
-        //        procs.SupportingInfo.Count().ShouldBe(0, "Fail :  ProcedureRequest - SupportingInfo element Should not be used - Not In Use Field");
-        //        procs.Specimen.Count().ShouldBe(0, "Fail :  ProcedureRequest - Specimen element Should not be used - Not In Use Field");
-        //        procs.BodySite.Count().ShouldBe(0, "Fail :  ProcedureRequest - BodySite element Should not be used - Not In Use Field");
-        //        procs.RelevantHistory.Count().ShouldBe(0, "Fail :  ProcedureRequest - RelevantHistory element Should not be used - Not In Use Field");
-        //    });
-        //}
-
-
-        //[Then(@"I Check the Specimens are Valid")]
-        //public void ThenIChecktheSpecimensareValid()
-        //{
-        //    //check atleast one
-        //    Specimens.ToList().Count().ShouldBeGreaterThan(0, "Error Should be Atleast One Specimens in response as per Data requirements");
-
-        //    Specimens.ForEach(specimen =>
-        //    {
-        //        //Check Id
-        //        specimen.Id.ShouldNotBeNullOrEmpty();
-
-        //        //Check Meta.profile
-        //        CheckForValidMetaDataInResource(specimen, FhirConst.StructureDefinitionSystems.kSpecimen);
-
-        //        //Check Identfier
-        //        specimen.Identifier.Count.ShouldBeGreaterThan(0, "There should be at least 1 Identifier system/value pair");
-        //        specimen.Identifier.ForEach(identifier =>
-        //        {
-        //            identifier.Value.ShouldNotBeNullOrEmpty("Fail : No Identifier found when resource should have a unique Identifier");
-        //        });
-
-        //        //Check Subject/patient
-        //        Patients.Where(p => p.Id == (specimen.Subject.Reference.Replace("Patient/", ""))).Count().ShouldBe(1, "Patient Not Found in Bundle");
-        //    });
-        //}
-
-        //[Then(@"I Check the Specimens Do Not Include Not in Use Fields")]
-        //public void ThenIChecktheSpecimensDoNotIncludeNotinUseFields()
-        //{
-        //    Specimens.ForEach(specimen =>
-        //    {
-        //        specimen.Parent.Count().ShouldBe(0, "Fail :  Specimen - Parent element Should not be used - Not In Use Field");
-        //        specimen.Request.Count().ShouldBe(0, "Fail :  Specimen - Request element Should not be used - Not In Use Field");
-        //        specimen.Collection.Method.ShouldBeNull("Fail :  Specimen - Collection element Should not be used - Not In Use Field");
-        //        specimen.Processing.Count().ShouldBe(0, "Fail :  Specimen - Processing element Should not be used - Not In Use Field");
-        //        specimen.Container.Count().ShouldBe(0, "Fail :  Specimen - Container element Should not be used - Not In Use Field");
-        //    });
-        //}
+        [Then(@"I Check the ReferralRequests Do Not Include Not in Use Fields")]
+        public void ThenIChecktheReferralRequestsDoNotIncludeNotinUseFields()
+        {
+            ReferralRequests.ForEach(referalRequest =>
+            {
+                referalRequest.Definition.Count().ShouldBe(0, "Fail :  ReferralRequest - Definition element Should not be used - Not In Use Field");
+                referalRequest.Replaces.Count().ShouldBe(0, "Fail :  ReferralRequest - Replaces element Should not be used - Not In Use Field");
+                referalRequest.GroupIdentifier.ShouldBeNull("Fail :  ReferralRequest - GroupIdentifier element Should not be used - Not In Use Field");
+                referalRequest.Type.ShouldBeNull("Fail :  ReferralRequest - Type element Should not be used - Not In Use Field");
+                referalRequest.Occurrence.ShouldBeNull("Fail :  ReferralRequest - Occurrence element Should not be used - Not In Use Field");
+                referalRequest.ReasonReference.Count().ShouldBe(0, "Fail :  ReferralRequest - ReasonReference element Should not be used - Not In Use Field");
+                referalRequest.RelevantHistory.Count().ShouldBe(0, "Fail :  ReferralRequest - RelevantHistory element Should not be used - Not In Use Field");
+            });
+        }
 
         //public void VerifyResourceReferenceExists(string refTypeToFind, string refToFind)
         //{

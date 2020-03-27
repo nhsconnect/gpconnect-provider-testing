@@ -203,11 +203,7 @@
 
             });
 
-
             foundResult.ShouldBeTrue("fail : Atleast one DiagnosticReport should be linked to a test result");
-
-
-
         }
 
         [Then(@"I Check the DiagnosticReports Do Not Include Not in Use Fields")]
