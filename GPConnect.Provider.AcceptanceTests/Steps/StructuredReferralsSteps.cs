@@ -43,12 +43,10 @@
         public void ThenIChecktheReferralsListsareValid()
         {
             //Check atleast one Referrals List exists using Snomed Code
-            //Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kOutboundReferrals).ToList().Count().ShouldBe(1, "Failed to Find ONE Referrals list using Snomed Code.");
-            Lists.Where(l => l.Code.Coding.First().Code == "886721000000107").ToList().Count().ShouldBe(1, "Failed to Find ONE Referrals list using Snomed Code.");
+            Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kOutboundReferrals).ToList().Count().ShouldBe(1, "Failed to Find ONE Referrals list using Snomed Code.");
 
             //Get  Investigations list
-            //var referralsList = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kOutboundReferrals).ToList();
-            var referralsList = Lists.Where(l => l.Code.Coding.First().Code == "886721000000107").ToList();
+            var referralsList = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kOutboundReferrals).ToList();
 
             referralsList.ForEach(referList =>
             {
@@ -63,7 +61,7 @@
                 referList.Mode.ToString().ToLower().ShouldBe("snapshot", "List Status is NOT set to snapshot");
 
                 //Check title
-                //referList.Title.ShouldBe(FhirConst.ListTitles.kOutboundReferrals, "Referrals List Title is Incorrect");
+                referList.Title.ShouldBe(FhirConst.ListTitles.kOutboundReferrals, "Referrals List Title is Incorrect");
 
                 //Check code
                 referList.Code.Coding.ForEach(coding =>
