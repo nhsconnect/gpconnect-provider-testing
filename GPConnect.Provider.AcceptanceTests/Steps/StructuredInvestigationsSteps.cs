@@ -23,6 +23,7 @@
         private Bundle Bundle => _httpContext.FhirResponse.Bundle;
         private List<ProcedureRequest> ProcedureRequests => _httpContext.FhirResponse.ProcedureRequests;
         private List<Specimen> Specimens => _httpContext.FhirResponse.Specimens;
+        private List<Observation> Observations => _httpContext.FhirResponse.Observations;
 
         public StructuredInvestigationsSteps(HttpSteps httpSteps, HttpContext httpContext)
             : base(httpSteps)
@@ -106,7 +107,12 @@
             //check atleast one
             DiagnosticReports.ToList().Count().ShouldBeGreaterThan(0, "Error Should be Atleast One DiagnosticReport in response as per Data requirements");
 
-            bool foundResult = false;
+            //bool foundResult = false;
+            bool foundProcedureRequest = false;
+            bool foundSpecimen = false;
+            bool foundlinkedTestGroup = false;
+            bool foundSpecimenLinkedToTestGroup = false;
+            bool foundTestReportFiling = false;
 
             DiagnosticReports.ForEach(diagnostic =>
             {
@@ -123,9 +129,8 @@
                     identifier.Value.ShouldNotBeNullOrEmpty("Fail : No Identifier found when resource should have a unique Identifier");
                 });
 
-                //check atleast one Procedure Reference found and item included in bundle
+                //check atleast one diagnosticReport is linked to a Procedurerequest(and included in bundle) as per data requirements
                 string refToCheck = "";
-                bool found = false;
                 string pattern = @"(.*)(/)(.*)";
 
                 if (diagnostic.BasedOn != null)
@@ -139,12 +144,10 @@
                             //check Resource Exists
                             VerifyResourceReferenceExists("ProcedureRequest", refToFind);
                             Logger.Log.WriteLine("Info : Found and Verified ProcedureRequest");
-                            found = true;
+                            foundProcedureRequest = true;
                         }
                     }
                 }
-
-                found.ShouldBeTrue("Fail : No link to a Procedure found on DiagnosticReport - ID : " + diagnostic.Id);
 
                 //Check Status
                 diagnostic.Status.ToString().ShouldNotBeNull("DiagnosticReport Status should not be null");
@@ -161,8 +164,6 @@
 
                 //check atleast one Specimen Reference found and item included in bundle
                 refToCheck = "";
-                found = false;
-               
                 if (diagnostic.Specimen != null)
                 {
                     if (diagnostic.Specimen.Count() >= 1)
@@ -174,14 +175,12 @@
                             //check Resource Exists
                             VerifyResourceReferenceExists("Specimen", refToFind);
                             Logger.Log.WriteLine("Info : Found and Verified Specimen");
-                            found = true;
+                            foundSpecimen = true;
                         }
                     }
                 }
 
-                found.ShouldBeTrue("Fail : No link to a Specimen found on DiagnosticReport - ID : " + diagnostic.Id);
-
-                //check one diagnosticreport is linked to a report as per data requirements
+                //check diagnosticreport is linked to a test group or report as per data requirements
                 if (diagnostic.Result != null)
                 {
                     if (diagnostic.Result.Count() >= 1)
@@ -191,20 +190,47 @@
                             refToCheck = d.Reference;
                             if (refToCheck.StartsWith("Observation/"))
                             {
+                                //check and verify observation
                                 string refToFind = Regex.Replace(refToCheck, pattern, "$3");
-                                //check Resource Exists
                                 VerifyResourceReferenceExists("Observation", refToFind);
                                 Logger.Log.WriteLine("Info : Found and Verified Observation - Test Result Linked to DiagnosticReport");
-                                foundResult = true;
+                                foundlinkedTestGroup = true;
+
+                                //check if observation has a link to specimen
+                                Observation currentObservation = Observations.Where(o => o.Id == refToFind).FirstOrDefault();
+                                if (currentObservation.Specimen.Reference.StartsWith("Specimen/"))
+                                {
+                                    string specimenRefToFind = Regex.Replace(currentObservation.Specimen.Reference, pattern, "$3");
+                                    VerifyResourceReferenceExists("Specimen", specimenRefToFind);
+                                    Logger.Log.WriteLine("Info : Found Specimen linked to Test group");
+                                    foundSpecimenLinkedToTestGroup = true;
+                                }
+
+
+                                //check if observation is a test report filing as per data requirements - should be one
+                                if (currentObservation.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kObservationCommentNoteCode)
+                                {
+                                    //found a Test filing Comment
+                                    foundTestReportFiling = true;
+                                }
+
                             }
-                        });                       
+                        });
                     }
                 }
 
             });
 
-            foundResult.ShouldBeTrue("fail : Atleast one DiagnosticReport should be linked to a test result");
+            
+            //Check Data Requirements were met
+            foundProcedureRequest.ShouldBeTrue("Fail : No link to a ProcedureRequest found on any DiagnosticReport as per data requirements");
+            foundSpecimen.ShouldBeTrue("Fail : No link to a Specimen found on any DiagnosticReport");
+            foundlinkedTestGroup.ShouldBeTrue("fail : No link to a Test Group found on any DiagnosticReport");
+            foundSpecimenLinkedToTestGroup.ShouldBeTrue("fail : No link to a Specimen from a Test group Found");
+            foundTestReportFiling.ShouldBeTrue("fail : No link found to a Test report Filing from any DiagnosticReport");
+
         }
+
 
         [Then(@"I Check the DiagnosticReports Do Not Include Not in Use Fields")]
         public void ThenIChecktheDiagnosticReportsDoNotIncludeNotinUseFields()
@@ -218,6 +244,7 @@
                 diag.PresentedForm.Count().ShouldBe(0, "Fail :  DiagnosticReport - PresentedForm element Should not be used - Not In Use Field");
             });
         }
+
 
         [Then(@"I Check the ProcedureRequests are Valid")]
         public void ThenIChecktheProcedureRequestareValid()
@@ -408,6 +435,44 @@
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kInvestigations, tuples);
         }
 
+
+        [Then(@"I Check a Test group is linked to a Test Report Filing")]
+        public void GiveCheckaTestgroupislinkedtoaTestReportFiling()
+        {
+            //check atleast one
+            Observations.ToList().Count().ShouldBeGreaterThan(0, "Error Should be Atleast One Observation Test Group or Test Report Filing in response as per Data requirements");
+            bool foundTestReportFiling = false;
+
+            //loop each observation and check each related reference
+            Observations.ForEach(observation =>
+            {
+                //check each related looking for a link to a test report filing
+                observation.Related.ForEach(rel =>
+                {
+                    string fullRefToFind = rel.Target.Reference;
+
+                    if (fullRefToFind.StartsWith("Observation/"))
+                    {
+                        string pattern = @"(.*)(/)(.*)";
+                        string refToFind = Regex.Replace(fullRefToFind, pattern, "$3");
+
+                        //get handle to the related observation
+                        Observation obToCheck = Observations.Where(o => o.Id == refToFind).FirstOrDefault();
+
+                        //check if observation is a test report filing as per data requirements - should be one
+                        if (obToCheck.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kObservationCommentNoteCode)
+                        {
+                            //found a Test report filing
+                            foundTestReportFiling = true;
+                        }
+                    }
+                }) ;
+                
+            });
+
+            foundTestReportFiling.ShouldBeTrue("Fail : No Test Group found with a link to a test report filing as per data requirements");
+
+        }
 
     }
 }

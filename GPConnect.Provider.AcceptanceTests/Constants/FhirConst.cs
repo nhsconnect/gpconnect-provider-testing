@@ -16,6 +16,7 @@
             public const string kResolvedAllergies = "1103671000000101";
             public const string kInvestigations = "887191000000108";
             public const string kOutboundReferrals = "792931000000107";
+            public const string kObservationCommentNoteCode = "37331000000100";
         }
 
 

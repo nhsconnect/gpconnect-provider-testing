@@ -28,6 +28,7 @@ Scenario: Verify Investigations structured record for a Patient with Investigati
 		And I Check the ProcedureRequests Do Not Include Not in Use Fields
 		And I Check the Specimens are Valid		
 		And I Check the Specimens Do Not Include Not in Use Fields
+		And I Check a Test group is linked to a Test Report Filing
 		#TBD Checks around Observations - Test Results etc more analysis required to decide if can automate checks
 
 @1.5.0-IncrementalAndRegression
