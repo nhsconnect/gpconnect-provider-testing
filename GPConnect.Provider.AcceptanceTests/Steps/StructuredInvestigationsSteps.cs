@@ -198,12 +198,15 @@
 
                                 //check if observation has a link to specimen
                                 Observation currentObservation = Observations.Where(o => o.Id == refToFind).FirstOrDefault();
-                                if (currentObservation.Specimen.Reference.StartsWith("Specimen/"))
+                                if (currentObservation.Specimen != null)
                                 {
-                                    string specimenRefToFind = Regex.Replace(currentObservation.Specimen.Reference, pattern, "$3");
-                                    VerifyResourceReferenceExists("Specimen", specimenRefToFind);
-                                    Logger.Log.WriteLine("Info : Found Specimen linked to Test group");
-                                    foundSpecimenLinkedToTestGroup = true;
+                                    if (currentObservation.Specimen.Reference.StartsWith("Specimen/"))
+                                    {
+                                        string specimenRefToFind = Regex.Replace(currentObservation.Specimen.Reference, pattern, "$3");
+                                        VerifyResourceReferenceExists("Specimen", specimenRefToFind);
+                                        Logger.Log.WriteLine("Info : Found Specimen linked to Test group");
+                                        foundSpecimenLinkedToTestGroup = true;
+                                    }
                                 }
 
 
@@ -435,7 +438,7 @@
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kInvestigations, tuples);
         }
 
-
+        //Not currently used as no easy way to know what is a test group without being very specific about data requirements
         [Then(@"I Check a Test group is linked to a Test Report Filing")]
         public void GiveCheckaTestgroupislinkedtoaTestReportFiling()
         {
