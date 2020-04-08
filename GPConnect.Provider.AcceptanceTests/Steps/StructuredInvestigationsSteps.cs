@@ -24,6 +24,7 @@
         private List<ProcedureRequest> ProcedureRequests => _httpContext.FhirResponse.ProcedureRequests;
         private List<Specimen> Specimens => _httpContext.FhirResponse.Specimens;
         private List<Observation> Observations => _httpContext.FhirResponse.Observations;
+        private List<Condition> Problems => _httpContext.FhirResponse.Conditions;
 
         public StructuredInvestigationsSteps(HttpSteps httpSteps, HttpContext httpContext)
             : base(httpSteps)
@@ -180,7 +181,7 @@
                     }
                 }
 
-                //check diagnosticreport is linked to a test group or report as per data requirements
+                //check diagnosticreport is linked to a test group that is also linked to a specimen
                 if (diagnostic.Result != null)
                 {
                     if (diagnostic.Result.Count() >= 1)
@@ -476,6 +477,41 @@
             foundTestReportFiling.ShouldBeTrue("Fail : No Test Group found with a link to a test report filing as per data requirements");
 
         }
+
+        [Then(@"Check a Problem is linked to DiagnosticReport and that it is also included")]
+        public void ThenCheckaProblemislinkedtoanthatisalsoincludedintheresponsewithalist( )
+        {
+            
+            var found = false;
+            string refToFind = "";
+
+            foreach (var p in Problems)
+            {
+                Condition problem = (Condition)p;
+                List<Extension> problemRelatedContentExtensions = p.Extension.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kExtProblemRelatedContent)).ToList();
+
+                foreach (var rcc in problemRelatedContentExtensions)
+                {
+                    ResourceReference rr = (ResourceReference)rcc.Value;
+                    if (rr.Reference.StartsWith("DiagnosticReport/" ))
+                    {
+                        refToFind = rr.Reference;
+                        found = true;
+                        Logger.Log.WriteLine("Info : Problem - Found Linked to a DiagnosticReport - with ID : " + refToFind);
+                        break;
+                    }
+                }
+                if (found)
+                    break;
+            };
+
+            found.ShouldBeTrue("Fail : No Problems found to be linked to a  DiagnosticReport");
+
+            ////check that Linked Clinical resource has been included in response.
+            VerifyResourceReferenceExists("DiagnosticReport", refToFind);
+
+        }
+
 
     }
 }

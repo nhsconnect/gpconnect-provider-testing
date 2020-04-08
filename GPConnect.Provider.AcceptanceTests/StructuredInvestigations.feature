@@ -55,14 +55,13 @@ Scenario: Verify Investigations structured record for a Patient with Investigati
 		And I Check the ProcedureRequests Do Not Include Not in Use Fields
 		And I Check the Specimens are Valid		
 		And I Check the Specimens Do Not Include Not in Use Fields
-		#TBD Checks around Observations - Test Results etc more analysis required to decide if can automate checks
 		And I Check The Problems List
 		And I Check The Problems List Does Not Include Not In Use Fields
 		And I Check The Problems Resources are Valid
 		And I check The Problem Resources Do Not Include Not In Use Fields
+		And Check a Problem is linked to DiagnosticReport and that it is also included
 		And the Bundle should contain "2" lists
-		#add check that a problem is linked to a diagnosticreport
-		#And Check a Problem is linked to an "Observation" that is also included in the response with its list
+		
 
 @1.5.0-IncrementalAndRegression
 Scenario: Retrieve Investigations structured record for a patient that has no Investigations data
