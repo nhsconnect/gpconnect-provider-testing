@@ -28,6 +28,8 @@ Scenario: Verify Investigations structured record for a Patient with Investigati
 		And I Check the ProcedureRequests Do Not Include Not in Use Fields
 		And I Check the Specimens are Valid		
 		And I Check the Specimens Do Not Include Not in Use Fields
+		And I Check the Test report Filing is Valid
+		And I Check the Test report Filing Do Not Include Not in Use Fields
 
 @1.5.0-IncrementalAndRegression
 Scenario: Verify Investigations structured record for a Patient with Investigations associated to Problems
@@ -60,6 +62,8 @@ Scenario: Verify Investigations structured record for a Patient with Investigati
 		And I Check The Problems Resources are Valid
 		And I check The Problem Resources Do Not Include Not In Use Fields
 		And Check a Problem is linked to DiagnosticReport and that it is also included
+		And I Check the Test report Filing is Valid
+		And I Check the Test report Filing Do Not Include Not in Use Fields
 		And the Bundle should contain "2" lists
 		
 

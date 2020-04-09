@@ -181,7 +181,7 @@
                     }
                 }
 
-                //check diagnosticreport is linked to a test group that is also linked to a specimen
+                //check diagnosticreport is linked to a test group and a test report filing that is also linked to a specimen
                 if (diagnostic.Result != null)
                 {
                     if (diagnostic.Result.Count() >= 1)
@@ -512,6 +512,82 @@
             VerifyResourceReferenceExists("DiagnosticReport", refToFind);
 
         }
+
+
+        //And I Check the Test report Filing is Valid
+        //And I Check the Test report Filing Do Not Include Not in Use Fields
+
+        [Then(@"I Check the Test report Filing is Valid")]
+        public void ThenIChecktheTestreportFilingisValid()
+        {
+            bool found = false;
+            Observations.ForEach(obs =>
+            {
+                if (obs.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kObservationCommentNoteCode)
+                {
+                    //Check Id
+                    obs.Id.ShouldNotBeNullOrEmpty();
+
+                    //Check Meta.profile
+                    CheckForValidMetaDataInResource(obs, FhirConst.StructureDefinitionSystems.kObservation);
+
+                    //Check Identfier
+                    obs.Identifier.Count.ShouldBeGreaterThan(0, "There should be at least 1 Identifier system/value pair on the Test report Filing");
+                    obs.Identifier.ForEach(identifier =>
+                    {
+                        identifier.Value.ShouldNotBeNullOrEmpty("Fail : No Identifier found when Test report Filing should have a unique Identifier");
+                    });
+
+                    //Check Status
+                    obs.Status.ToString().ToLower().ShouldBe("unknown", "Test report Filing Status is NOT set to unknown");
+
+                    //Check Subject/patient
+                    Patients.Where(p => p.Id == (obs.Subject.Reference.Replace("Patient/", ""))).Count().ShouldBe(1, "Patient Not Found in Bundle");
+
+                    //Check issued
+                    obs.Issued.ShouldNotBeNull("Fail : issued should not be null - mandatory Field");
+
+                    //check performer
+                    obs.Performer.FirstOrDefault().Reference.ShouldNotBeNull("Fail : Performer should not be null - mandatory Field");
+
+                    found = true;
+                }
+            });
+
+            found.ShouldBeTrue("Fail : No Test Report Filing found as per data requirements");
+
+        }
+
+
+            [Then(@"I Check the Test report Filing Do Not Include Not in Use Fields")]
+        public void ThenIChecktheTestreportFilingDoNotIncludeNotiNUseFields()
+        {
+            bool found = false;
+            Observations.ForEach(obs =>
+            {
+
+                if (obs.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kObservationCommentNoteCode)
+                {
+                    obs.BasedOn.Count().ShouldBe(0, "Fail :  Observation Test report Filing - basedon element Should not be used - Not In Use Field");
+                    obs.Category.Count().ShouldBe(0, "Fail :  Observation Test report Filing - category element Should not be used - Not In Use Field");
+                    obs.Context.ShouldBeNull("Fail :  Observation Test report Filing  - context element Should not be used - Not In Use Field");
+                    obs.DataAbsentReason.ShouldBeNull("Fail :  Observation Test report Filing  - DataAbsentReason element Should not be used - Not In Use Field");
+                    obs.Interpretation.ShouldBeNull("Fail :  Observation Test report Filing  - Interpretation element Should not be used - Not In Use Field");
+                    obs.BodySite.ShouldBeNull("Fail :  Observation Test report Filing  - BodySite element Should not be used - Not In Use Field");
+                    obs.Method.ShouldBeNull("Fail :  Observation Test report Filing  - Method element Should not be used - Not In Use Field");
+                    obs.Specimen.ShouldBeNull("Fail :  Observation Test report Filing  - Specimen element Should not be used - Not In Use Field");
+                    obs.ReferenceRange.Count().ShouldBe(0, "Fail :  Observation Test report Filing - ReferenceRange element Should not be used - Not In Use Field");
+                    obs.Device.ShouldBeNull("Fail :  Observation Test report Filing  - Device element Should not be used - Not In Use Field");
+                    obs.Component.Count().ShouldBe(0, "Fail :  Observation Test report Filing - Component element Should not be used - Not In Use Field");
+
+                    found = true;
+                }
+            });
+
+            found.ShouldBeTrue("Fail : No Test Report Filing found as per data requirements");
+        }
+
+
 
 
     }
