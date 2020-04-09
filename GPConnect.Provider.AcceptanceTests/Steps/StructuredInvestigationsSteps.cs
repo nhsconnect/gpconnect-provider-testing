@@ -495,7 +495,8 @@
                     ResourceReference rr = (ResourceReference)rcc.Value;
                     if (rr.Reference.StartsWith("DiagnosticReport/" ))
                     {
-                        refToFind = rr.Reference;
+                        string pattern = @"(.*)(/)(.*)";
+                        refToFind = Regex.Replace(rr.Reference, pattern, "$3");
                         found = true;
                         Logger.Log.WriteLine("Info : Problem - Found Linked to a DiagnosticReport - with ID : " + refToFind);
                         break;
