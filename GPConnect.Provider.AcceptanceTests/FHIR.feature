@@ -1,7 +1,7 @@
 ﻿@fhir @1.2.6-Full-Pack
 Feature: FHIR
 
-@1.2.6-IncrementalAndRegression
+@1.2.7-IncrementalAndRegression
 Scenario: Fhir Get MetaData
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
