@@ -1,4 +1,4 @@
-﻿@patient @1.2.6-Full-Pack
+﻿@patient @1.2.7-Full-Pack
 
 Feature: PatientRegister
 Scenario Outline: Register patient send request to incorrect URL

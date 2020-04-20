@@ -1,4 +1,4 @@
-﻿@fhir @1.2.6-Full-Pack
+﻿@fhir @1.2.7-Full-Pack
 Feature: FHIR
 
 @1.2.7-IncrementalAndRegression

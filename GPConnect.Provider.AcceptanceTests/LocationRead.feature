@@ -1,4 +1,4 @@
-﻿@location @1.2.6-Full-Pack
+﻿@location @1.2.7-Full-Pack
 Feature: LocationRead
 
 @1.2.3

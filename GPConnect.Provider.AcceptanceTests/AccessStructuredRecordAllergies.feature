@@ -1,4 +1,4 @@
-﻿@structuredrecord @1.2.6-Full-Pack
+﻿@structuredrecord @1.2.7-Full-Pack
 Feature: AccessStructuredRecordAllergies
 
 @1.2.4

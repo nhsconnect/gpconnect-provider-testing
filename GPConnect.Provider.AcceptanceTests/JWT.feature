@@ -1,4 +1,4 @@
-﻿@jwt @1.2.3 @1.2.6-Full-Pack
+﻿@jwt @1.2.3 @1.2.7-Full-Pack
 Feature: JWT
 
 Scenario: JWT - Bearer Token - not base 64 encoded

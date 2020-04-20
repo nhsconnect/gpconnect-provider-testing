@@ -20,7 +20,7 @@ namespace GPConnect.Provider.AcceptanceTests
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("PatientSearch")]
     [NUnit.Framework.CategoryAttribute("patient")]
-    [NUnit.Framework.CategoryAttribute("1.2.6-Full-Pack")]
+    [NUnit.Framework.CategoryAttribute("1.2.7-Full-Pack")]
     public partial class PatientSearchFeature
     {
         
@@ -35,7 +35,7 @@ namespace GPConnect.Provider.AcceptanceTests
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "PatientSearch", null, ProgrammingLanguage.CSharp, new string[] {
                         "patient",
-                        "1.2.6-Full-Pack"});
+                        "1.2.7-Full-Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
         

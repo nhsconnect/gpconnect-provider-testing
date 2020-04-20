@@ -384,5 +384,78 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             _bundleSteps.ResponseBundleDoesNotContainReferenceOfType(excludedActor);
         }
+        
+        [Then(@"One of the Schedules returned Contains the ServiceCategory element set")]
+        public void OneofSchedulesreturnedContainstheServiceCategoryelementset()
+        {
+            bool found = false;
+            foreach (var schedule in Schedules)
+            {
+                if (schedule.ServiceCategory != null)
+                {
+                    if (!String.IsNullOrEmpty(schedule.ServiceCategory.Text))
+                    {
+                        found = true;
+                        Logger.Log.WriteLine("Info : Found a Schedule resource with ServiceCategory set");
+                    }
+                }
+
+                if (found)
+                    break;
+            }
+            found.ShouldBeTrue("Fail : At least one Schedule Resource should contain a ServiceCategory set as per the data requirements");
+        }
+
+        [Then(@"One of the Slots returned Contains the ServiceType element set")]
+        public void OneofSlotsreturnedContainstheServiceTypeelementset()
+        {
+            bool found = false;
+            foreach (var slot in Slots)
+            {
+                if (slot.ServiceType != null)
+                {
+                    foreach (var st in slot.ServiceType)
+                    {
+                        if (!String.IsNullOrEmpty(st.Text))
+                        {
+                            found = true;
+                            Logger.Log.WriteLine("Info : Found a Slot resource with ServiceType set");
+                            break;
+                        }
+                    }
+                }
+
+                if (found)
+                    break;
+            }
+       
+            found.ShouldBeTrue("Fail : At least one Slot Resource should contain a ServiceType set as per the data requirements");
+        }
+
+        [Then(@"No Schedules or Slots contain comment field")]
+        public void NoSchedulesorSlotscontaincommentfield()
+        {
+            //check schedules
+            foreach (var schedule in Schedules)
+            {
+                if (schedule.Comment != null)
+                {
+                    schedule.Comment.ShouldBeNullOrEmpty("Fail : Found Schedule with a comment on when none should be sent");
+                }
+            }
+            Logger.Log.WriteLine("Info : No Schedule found with a Comment Set");
+
+            //Check slots
+            foreach (var slot in Slots)
+            {
+                if (slot.Comment != null)
+                {
+                    slot.Comment.ShouldBeNullOrEmpty("Fail : Found Slot with a comment on when none should be sent");                    
+                }
+            }
+            Logger.Log.WriteLine("Info : No Slot found with a Comment Set");
+        }
+
+
     }
 }
