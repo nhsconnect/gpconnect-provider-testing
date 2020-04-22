@@ -149,3 +149,22 @@ Scenario: CapabilityStatement profile supports the read appointment operation
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
 		And the CapabilityStatement REST Resources should contain the "Appointment" Resource with the "Read" Interaction
+
+@1.2.7-IncrementalAndRegression
+Scenario Outline: Read appointment that contains serviceCategory and serviceType elements
+	Given I create an Appointment for Patient "<PatientName>" 
+		And I create an Appointment with org type "<OrgType>" with channel "<DeliveryChannel>" with prac role "<PracRole>"	
+		And I store the Created Appointment
+	Given I configure the default "AppointmentRead" request
+	When I make the "AppointmentRead" request
+	Then the response status code should indicate success
+		And the Response Resource should be an Appointment
+		And the Appointments returned must be in the future
+		And the Appointment Id should be valid
+		And the Appointment Metadata should be valid
+		And the Appointment DeliveryChannel must be present
+		And the Appointment PractitionerRole must be present
+		And One Appointment contains serviceCategory and serviceType elements
+	Examples:
+		| PatientName | OrgType | DeliveryChannel | PracRole |
+		| patient1    | true    | true            | true     |

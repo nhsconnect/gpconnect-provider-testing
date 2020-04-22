@@ -24,8 +24,7 @@
         private readonly PatientSteps _patientSteps;
         private readonly SearchForFreeSlotsSteps _searchForFreeSlotsSteps;
         private readonly HttpRequestConfigurationSteps _httpRequestConfigurationSteps;
-        private readonly IFhirResourceRepository _fhirResourceRepository;
- 
+        private readonly IFhirResourceRepository _fhirResourceRepository;        
 
         private List<Appointment> Appointments => _httpContext.FhirResponse.Appointments;
 
@@ -135,6 +134,37 @@
             _httpSteps.jwtHelper.RequestingOrganization = changed.ToFhirJson();
 
             CreateAnAppointmentFromTheStoredPatientAndStoredSchedule();
+
+            _httpSteps.MakeRequest(GpConnectInteraction.AppointmentCreate);
+
+        }
+
+        [Given(@"I create an Appointment for Patient ""([^""]*)"" and Organization Code ""([^""]*)"" With serviceCategory and serviceType in Request")]
+        public void CreateAnAppointmentForPatientAndOrganizationCodeWithserviceCategoryandserviceTypeinRequest(string patient, string code)
+        {
+            _patientSteps.GetThePatientForPatientValue(patient);
+            _patientSteps.StoreThePatient();
+
+            _searchForFreeSlotsSteps.GetAvailableFreeSlots();
+            _searchForFreeSlotsSteps.StoreTheFreeSlotsBundle();
+
+            _httpSteps.ConfigureRequest(GpConnectInteraction.AppointmentCreate);
+            Organization changed = FhirHelper.GetDefaultOrganization();
+            changed.Identifier.First().Value = GlobalContext.OdsCodeMap[code];
+            _httpSteps.jwtHelper.RequestingOrganization = changed.ToFhirJson();
+
+            CreateAnAppointmentFromTheStoredPatientAndStoredSchedule();
+
+            //Add two new elements into request
+            //add ServiceCategory
+            _fhirResourceRepository.Appointment.ServiceCategory = new CodeableConcept();
+            _fhirResourceRepository.Appointment.ServiceCategory.Text = "Test-ServiceCategory";
+
+            //add ServiceType
+            _fhirResourceRepository.Appointment.ServiceType = new List<CodeableConcept>();
+            var st = new CodeableConcept();
+            st.Text = "Test-ServiceType";
+            _fhirResourceRepository.Appointment.ServiceType.Add(st);
 
             _httpSteps.MakeRequest(GpConnectInteraction.AppointmentCreate);
 
