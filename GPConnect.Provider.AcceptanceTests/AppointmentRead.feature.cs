@@ -409,10 +409,10 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Read appointment that contains serviceCategory and serviceType elements")]
+        [NUnit.Framework.DescriptionAttribute("Read appointment that contains serviceCategory and serviceType elements set")]
         [NUnit.Framework.CategoryAttribute("1.2.7-IncrementalAndRegression")]
         [NUnit.Framework.TestCaseAttribute("patient1", "true", "true", "true", null)]
-        public virtual void ReadAppointmentThatContainsServiceCategoryAndServiceTypeElements(string patientName, string orgType, string deliveryChannel, string pracRole, string[] exampleTags)
+        public virtual void ReadAppointmentThatContainsServiceCategoryAndServiceTypeElementsSet(string patientName, string orgType, string deliveryChannel, string pracRole, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "1.2.7-IncrementalAndRegression"};
@@ -420,7 +420,7 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Read appointment that contains serviceCategory and serviceType elements", null, @__tags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Read appointment that contains serviceCategory and serviceType elements set", null, @__tags);
 #line 154
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();

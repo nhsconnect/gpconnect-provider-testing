@@ -351,3 +351,57 @@ Scenario: I perform cancel appointment with participants with absoulte reference
 	When I make the "AppointmentCancel" request
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
+
+@1.2.7-IncrementalAndRegression
+Scenario: I perform a successful cancel appointment on an appointment that has serviceCategory and serviceType elements set
+	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+		And I store the Created Appointment
+	Given I configure the default "AppointmentCancel" request
+		And I set the Created Appointment to Cancelled with Reason "Test-Cancel-Reason"
+	When I make the "AppointmentCancel" request
+	Then the response status code should indicate success
+		And the Response Resource should be an Appointment
+		And the Appointment Status should be Cancelled
+		And the Appointment Cancellation Reason Extension should be valid for "Test-Cancel-Reason"
+		And the Appointment Metadata should be valid
+		And the Appointment Status should be Cancelled
+		And the Appointment Id should equal the Created Appointment Id
+		And the Appointment Extensions should equal the Created Appointment Extensions
+		And the Appointment Description should equal the Created Appointment Description
+		And the Appointment Start and End Dates should equal the Created Appointment Start and End Dates
+		And the Appointment Slots should equal the Created Appointment Slots
+		And the Appointment Participants should be equal to the Created Appointment Participants
+		And the Appointment Created should be equal to the Created Appointment Created
+		And the Appointments returned must be in the future
+		And the appointment reason must not be included
+		And the Appointment DeliveryChannel must be valid
+		And the Appointment PractitionerRole must be valid
+		And the Appointment Not In Use should be valid
+		And One Appointment contains serviceCategory and serviceType elements
+
+@1.2.7-IncrementalAndRegression
+Scenario: I perform a successful cancel appointment on an appointment that does not have serviceCategory and serviceType elements set
+	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+		And I store the Created Appointment
+	Given I configure the default "AppointmentCancel" request
+		And I set the Created Appointment to Cancelled with Reason "Test-Cancel-Reason"
+	When I make the "AppointmentCancel" request
+	Then the response status code should indicate success
+		And the Response Resource should be an Appointment
+		And the Appointment Status should be Cancelled
+		And the Appointment Cancellation Reason Extension should be valid for "Test-Cancel-Reason"
+		And the Appointment Metadata should be valid
+		And the Appointment Status should be Cancelled
+		And the Appointment Id should equal the Created Appointment Id
+		And the Appointment Extensions should equal the Created Appointment Extensions
+		And the Appointment Description should equal the Created Appointment Description
+		And the Appointment Start and End Dates should equal the Created Appointment Start and End Dates
+		And the Appointment Slots should equal the Created Appointment Slots
+		And the Appointment Participants should be equal to the Created Appointment Participants
+		And the Appointment Created should be equal to the Created Appointment Created
+		And the Appointments returned must be in the future
+		And the appointment reason must not be included
+		And the Appointment DeliveryChannel must be valid
+		And the Appointment PractitionerRole must be valid
+		And the Appointment Not In Use should be valid
+		And Appointment Does not contains serviceCategory and serviceType elements

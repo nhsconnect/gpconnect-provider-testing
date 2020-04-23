@@ -151,7 +151,7 @@ Scenario: CapabilityStatement profile supports the read appointment operation
 		And the CapabilityStatement REST Resources should contain the "Appointment" Resource with the "Read" Interaction
 
 @1.2.7-IncrementalAndRegression
-Scenario Outline: Read appointment that contains serviceCategory and serviceType elements
+Scenario Outline: Read appointment that contains serviceCategory and serviceType elements set
 	Given I create an Appointment for Patient "<PatientName>" 
 		And I create an Appointment with org type "<OrgType>" with channel "<DeliveryChannel>" with prac role "<PracRole>"	
 		And I store the Created Appointment

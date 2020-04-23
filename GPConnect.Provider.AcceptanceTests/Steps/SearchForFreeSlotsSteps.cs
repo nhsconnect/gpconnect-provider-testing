@@ -457,5 +457,34 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
 
+        [Then(@"None of the Schedules returned Contains the ServiceCategory element set")]
+        public void NoneofSchedulesreturnedContainstheServiceCategoryelementset()
+        {            
+            foreach (var schedule in Schedules)
+            {
+                if (schedule.ServiceCategory != null)
+                {
+                    schedule.ServiceCategory.Text.ShouldBeNullOrEmpty("Fail: Day 1 of Schedule should not have a ServiceCategory set as per the data requirements");
+                }
+
+            }         
+        }
+
+        [Then(@"None of the Slots returned Contain the ServiceType element set")]
+        public void NoneofSlotsreturnedContaintheServiceTypeelementset()
+        {
+            foreach (var slot in Slots)
+            {
+                if (slot.ServiceType != null)
+                {
+                    foreach (var st in slot.ServiceType)
+                    {
+                        st.Text.ShouldBeNullOrEmpty("Fail : Day 1 Slot Resource should not contain a ServiceType set as per the data requirements");
+                    }
+                }
+            }
+        }
+
+
     }
 }

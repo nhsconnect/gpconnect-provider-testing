@@ -523,5 +523,64 @@
                 });
             });
         }
+
+        [Then(@"One Appointment contains serviceCategory and serviceType elements")]
+        public void OneAppointmentcontainsserviceCategoryandserviceTypeelements()
+        {
+            bool foundServiceCategory = false;
+            bool foundserviceType = false;
+
+            Appointments.ForEach(appointment =>
+            {
+
+                if (appointment.ServiceCategory != null)
+                {
+                    if (!String.IsNullOrEmpty(appointment.ServiceCategory.Text))
+                    {
+                        foundServiceCategory = true;
+                        Logger.Log.WriteLine("Info : Found an Appointment resource with ServiceCategory set");
+                    }
+                }
+
+                foundServiceCategory.ShouldBeTrue("Fail : At least one Appointment Resource should contain a ServiceCategory set as per the data requirements");
+
+                if (appointment.ServiceType != null)
+                {
+                    foreach (var st in appointment.ServiceType)
+                    {
+                        if (!String.IsNullOrEmpty(st.Text))
+                        {
+                            foundserviceType = true;
+                            Logger.Log.WriteLine("Info : Found an Appointment resource with ServiceType set");
+                            break;
+                        }
+                    }
+                }
+
+                foundserviceType.ShouldBeTrue("Fail : At least one Appointment Resource should contain a ServiceType set as per the data requirements");
+
+            });
+        }
+
+        [Then(@"Appointment Does not contains serviceCategory and serviceType elements")]
+        public void AppointmentDoesntcontainsserviceCategoryandserviceTypeelements()
+        {
+            Appointments.ForEach(appointment =>
+            {
+                if (appointment.ServiceCategory != null)
+                {
+                    appointment.ServiceCategory.Text.ShouldBeNullOrEmpty("Fail : Appointment Resource should Not contain a ServiceCategory set as per the data requirements");
+                }
+
+                if (appointment.ServiceType != null)
+                {
+                    foreach (var st in appointment.ServiceType)
+                    {
+                        st.Text.ShouldBeNullOrEmpty("Fail : Appointment Resource should Not contain a ServiceType set as per the data requirements");
+                    }
+                }
+            });
+        }
+
     }
 }

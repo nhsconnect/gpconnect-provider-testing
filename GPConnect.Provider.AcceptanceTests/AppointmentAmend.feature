@@ -276,3 +276,60 @@ Scenario: I perform amend appointment with participants with absoulte references
 	When I make the "AppointmentAmend" request
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
+
+@1.2.7-IncrementalAndRegression
+Scenario: I perform a successful amend appointment on an appointment that has ServiceCategory and ServiceType elements set
+	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+		And I store the Created Appointment
+	Given I configure the default "AppointmentAmend" request
+		And I set the Created Appointment Description to "TestChangedDescription"
+		And I set the Created Appointment Comment to "TestChangedComment"
+	When I make the "AppointmentAmend" request
+	Then the response status code should indicate success
+		And the Response Resource should be an Appointment
+		And the Appointments returned must be in the future
+		And the Appointment Metadata should be valid
+		And the Appointment Status should be valid
+		And the Appointment Start should be valid
+		And the Appointment End should be valid
+		And the Appointment Slots should be valid
+		And the Appointment Participants should be valid and resolvable
+		And the Appointment Priority should be valid
+		And the Appointment Participant Type and Actor should be valid
+		And the Appointment Identifiers should be valid
+		And the Appointment Description should be valid for "TestChangedDescription"
+		And the Appointment Comment should be valid for "TestChangedComment"
+		And the Appointment Created must be valid
+		And the Appointment DeliveryChannel must be valid
+		And the Appointment PractitionerRole must be valid
+		And the Appointment Not In Use should be valid
+		And One Appointment contains serviceCategory and serviceType elements
+	
+@1.2.7-IncrementalAndRegression	
+Scenario: I perform a successful amend appointment on an appointment that does not have ServiceCategory and ServiceType elements set
+	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+		And I store the Created Appointment
+	Given I configure the default "AppointmentAmend" request
+		And I set the Created Appointment Description to "TestChangedDescription"
+		And I set the Created Appointment Comment to "TestChangedComment"
+	When I make the "AppointmentAmend" request
+	Then the response status code should indicate success
+		And the Response Resource should be an Appointment
+		And the Appointments returned must be in the future
+		And the Appointment Metadata should be valid
+		And the Appointment Status should be valid
+		And the Appointment Start should be valid
+		And the Appointment End should be valid
+		And the Appointment Slots should be valid
+		And the Appointment Participants should be valid and resolvable
+		And the Appointment Priority should be valid
+		And the Appointment Participant Type and Actor should be valid
+		And the Appointment Identifiers should be valid
+		And the Appointment Description should be valid for "TestChangedDescription"
+		And the Appointment Comment should be valid for "TestChangedComment"
+		And the Appointment Created must be valid
+		And the Appointment DeliveryChannel must be valid
+		And the Appointment PractitionerRole must be valid
+		And the Appointment Not In Use should be valid
+		And Appointment Does not contains serviceCategory and serviceType elements
+	
