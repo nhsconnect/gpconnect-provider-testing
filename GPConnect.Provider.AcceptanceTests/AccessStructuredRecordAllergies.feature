@@ -1,7 +1,7 @@
 ﻿@structuredrecord @1.2.7-Full-Pack
 Feature: AccessStructuredRecordAllergies
 
-@1.2.4
+@1.2.4 
 Scenario Outline: Retrieve the allergy structured record section for a patient including resolved allergies
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "<Patient>"
@@ -36,7 +36,7 @@ Scenario Outline: Retrieve the allergy structured record section for a patient i
 		| patient13 |
 ## removed github ref 91 		| patient15 |
 
-@1.2.4
+@1.2.4 @1.2.7-IncrementalAndRegression
 Scenario Outline: Retrieve the allergy structured record section for a patient excluding resolved allergies
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "<Patient>"

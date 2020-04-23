@@ -201,6 +201,7 @@ Scenario: Book appointment prefer header set to minimal
 	Then the response status code should indicate created
 		And the response body should be empty
 
+	@1.2.7-IncrementalAndRegression
 Scenario: Book Appointment and appointment participant is valid
 	Given I get an existing patients nshNumber
 		And I store the Patient

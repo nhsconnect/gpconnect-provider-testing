@@ -151,6 +151,7 @@ this.ScenarioInitialize(scenarioInfo);
             "ption issues")]
         [NUnit.Framework.CategoryAttribute("1.2.4")]
         [NUnit.Framework.CategoryAttribute("1.2.5")]
+        [NUnit.Framework.CategoryAttribute("1.2.7-IncrementalAndRegression")]
         [NUnit.Framework.TestCaseAttribute("patient2", null)]
         [NUnit.Framework.TestCaseAttribute("patient3", null)]
         [NUnit.Framework.TestCaseAttribute("patient5", null)]
@@ -159,7 +160,8 @@ this.ScenarioInitialize(scenarioInfo);
         {
             string[] @__tags = new string[] {
                     "1.2.4",
-                    "1.2.5"};
+                    "1.2.5",
+                    "1.2.7-IncrementalAndRegression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));

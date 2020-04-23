@@ -33,7 +33,7 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		| patient12 |
 		| patient16 |
 
-@1.2.4 @1.2.5	
+@1.2.4 @1.2.5 @1.2.7-IncrementalAndRegression
 Scenario Outline: Retrieve the medication structured record section for a patient excluding prescription issues
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "<Patient>"
