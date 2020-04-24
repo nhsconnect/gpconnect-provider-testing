@@ -816,7 +816,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 333
   testRunner.And("the Appointment Not In Use should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 334
-  testRunner.And("Appointment Does not contains serviceCategory and serviceType elements", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("Appointments Do not contain serviceCategory and serviceType elements", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

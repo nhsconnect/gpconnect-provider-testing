@@ -139,13 +139,38 @@
 
         }
 
-        [Given(@"I create an Appointment for Patient ""([^""]*)"" and Organization Code ""([^""]*)"" With serviceCategory and serviceType in Request")]
-        public void CreateAnAppointmentForPatientAndOrganizationCodeWithserviceCategoryandserviceTypeinRequest(string patient, string code)
+        
+
+       
+        [Given(@"I create an Appointment in ""([^ ""]*)"" days time for Patient ""([^""]*)"" and Organization Code ""([^""]*)""")]
+        public void CreateanAppointmentInXDaysTimeforPatientAndOrganizationCode(int days, string patient, string code)
         {
             _patientSteps.GetThePatientForPatientValue(patient);
             _patientSteps.StoreThePatient();
 
-            _searchForFreeSlotsSteps.GetAvailableFreeSlots();
+            _searchForFreeSlotsSteps.GetAvailableFreeSlotsSearchingXDaysInFuture(days);
+        
+            _searchForFreeSlotsSteps.StoreTheFreeSlotsBundle();
+
+            _httpSteps.ConfigureRequest(GpConnectInteraction.AppointmentCreate);
+            Organization changed = FhirHelper.GetDefaultOrganization();
+            changed.Identifier.First().Value = GlobalContext.OdsCodeMap[code];
+            _httpSteps.jwtHelper.RequestingOrganization = changed.ToFhirJson();
+
+            CreateAnAppointmentFromTheStoredPatientAndStoredSchedule();
+
+            _httpSteps.MakeRequest(GpConnectInteraction.AppointmentCreate);
+
+        }
+
+
+        [Given(@"I create an Appointment in ""([^ ""]*)"" days time for Patient ""([^""]*)"" and Organization Code ""([^""]*)"" With serviceCategory and serviceType in Request")]        
+        public void CreateanAppointmentInXDaysTimeForPatientAndOrganizationCodeWithserviceCategoryandserviceTypeinRequest(int days, string patient, string code)
+        {
+            _patientSteps.GetThePatientForPatientValue(patient);
+            _patientSteps.StoreThePatient();
+
+            _searchForFreeSlotsSteps.GetAvailableFreeSlotsSearchingXDaysInFuture(days);
             _searchForFreeSlotsSteps.StoreTheFreeSlotsBundle();
 
             _httpSteps.ConfigureRequest(GpConnectInteraction.AppointmentCreate);
@@ -527,6 +552,7 @@
         [Then(@"One Appointment contains serviceCategory and serviceType elements")]
         public void OneAppointmentcontainsserviceCategoryandserviceTypeelements()
         {
+            Appointments.Count().ShouldBeGreaterThanOrEqualTo(1, "Fail : Test expects atleast one Appointment is returned");
             bool foundServiceCategory = false;
             bool foundserviceType = false;
 
@@ -562,9 +588,10 @@
             });
         }
 
-        [Then(@"Appointment Does not contains serviceCategory and serviceType elements")]
+        [Then(@"Appointments Do not contain serviceCategory and serviceType elements")]
         public void AppointmentDoesntcontainsserviceCategoryandserviceTypeelements()
         {
+            Appointments.Count().ShouldBeGreaterThanOrEqualTo(1, "Fail : Test expects atleast one Appointment is returned");
             Appointments.ForEach(appointment =>
             {
                 if (appointment.ServiceCategory != null)

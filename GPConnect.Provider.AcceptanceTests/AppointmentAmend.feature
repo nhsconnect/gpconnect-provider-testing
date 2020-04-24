@@ -331,5 +331,5 @@ Scenario: I perform a successful amend appointment on an appointment that does n
 		And the Appointment DeliveryChannel must be valid
 		And the Appointment PractitionerRole must be valid
 		And the Appointment Not In Use should be valid
-		And Appointment Does not contains serviceCategory and serviceType elements
+		And Appointments Do not contain serviceCategory and serviceType elements
 	

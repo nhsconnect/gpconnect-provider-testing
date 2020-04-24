@@ -1473,19 +1473,20 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Book single appointment for Patient1 Expect ServiceCategory and serviceType in re" +
-            "sponse")]
+        [NUnit.Framework.DescriptionAttribute("Book single appointment for Patient1 for 1 day ahead Expect NO ServiceCategory an" +
+            "d serviceType in response")]
         [NUnit.Framework.CategoryAttribute("1.2.7-IncrementalAndRegression")]
-        public virtual void BookSingleAppointmentForPatient1ExpectServiceCategoryAndServiceTypeInResponse()
+        public virtual void BookSingleAppointmentForPatient1For1DayAheadExpectNOServiceCategoryAndServiceTypeInResponse()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book single appointment for Patient1 Expect ServiceCategory and serviceType in re" +
-                    "sponse", null, new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book single appointment for Patient1 for 1 day ahead Expect NO ServiceCategory an" +
+                    "d serviceType in response", null, new string[] {
                         "1.2.7-IncrementalAndRegression"});
 #line 595
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
 #line 596
- testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I create an Appointment in \"1\" days time for Patient \"patient1\" and Organization " +
+                    "Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 597
   testRunner.And("I store the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 598
@@ -1493,26 +1494,26 @@ this.ScenarioInitialize(scenarioInfo);
 #line 599
   testRunner.And("the Response Resource should be an Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 600
-  testRunner.And("One Appointment contains serviceCategory and serviceType elements", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("Appointments Do not contain serviceCategory and serviceType elements", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Book single appointment for Patient1 Send in ServiceCategory and serviceType in r" +
-            "equest Expect success and elements in response")]
+        [NUnit.Framework.DescriptionAttribute("Book single appointment for Patient1 for 2 days ahead Expect ServiceCategory and " +
+            "serviceType in response")]
         [NUnit.Framework.CategoryAttribute("1.2.7-IncrementalAndRegression")]
-        public virtual void BookSingleAppointmentForPatient1SendInServiceCategoryAndServiceTypeInRequestExpectSuccessAndElementsInResponse()
+        public virtual void BookSingleAppointmentForPatient1For2DaysAheadExpectServiceCategoryAndServiceTypeInResponse()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book single appointment for Patient1 Send in ServiceCategory and serviceType in r" +
-                    "equest Expect success and elements in response", null, new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book single appointment for Patient1 for 2 days ahead Expect ServiceCategory and " +
+                    "serviceType in response", null, new string[] {
                         "1.2.7-IncrementalAndRegression"});
 #line 603
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
 #line 604
- testRunner.Given("I create an Appointment for Patient \"patient1\" and Organization Code \"ORG1\" With " +
-                    "serviceCategory and serviceType in Request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I create an Appointment in \"2\" days time for Patient \"patient1\" and Organization " +
+                    "Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 605
   testRunner.And("I store the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 606
@@ -1521,6 +1522,33 @@ this.ScenarioInitialize(scenarioInfo);
   testRunner.And("the Response Resource should be an Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 608
   testRunner.And("One Appointment contains serviceCategory and serviceType elements", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Book single appointment for Patient1 for 1 days Ahead Send in ServiceCategory and" +
+            " serviceType in request Expect extra request elements ignored")]
+        [NUnit.Framework.CategoryAttribute("1.2.7-IncrementalAndRegression")]
+        public virtual void BookSingleAppointmentForPatient1For1DaysAheadSendInServiceCategoryAndServiceTypeInRequestExpectExtraRequestElementsIgnored()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book single appointment for Patient1 for 1 days Ahead Send in ServiceCategory and" +
+                    " serviceType in request Expect extra request elements ignored", null, new string[] {
+                        "1.2.7-IncrementalAndRegression"});
+#line 611
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 612
+ testRunner.Given("I create an Appointment in \"1\" days time for Patient \"patient1\" and Organization " +
+                    "Code \"ORG1\" With serviceCategory and serviceType in Request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 613
+  testRunner.And("I store the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 614
+ testRunner.Then("the response status code should indicate created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 615
+  testRunner.And("the Response Resource should be an Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 616
+  testRunner.And("Appointments Do not contain serviceCategory and serviceType elements", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

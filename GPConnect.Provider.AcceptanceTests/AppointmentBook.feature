@@ -592,20 +592,28 @@ Scenario: Book appointment without a comment
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
 @1.2.7-IncrementalAndRegression
-Scenario: Book single appointment for Patient1 Expect ServiceCategory and serviceType in response
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1"
+Scenario: Book single appointment for Patient1 for 1 day ahead Expect NO ServiceCategory and serviceType in response
+	Given I create an Appointment in "1" days time for Patient "patient1" and Organization Code "ORG1"
 		And I store the Created Appointment
 	Then the response status code should indicate created
 		And the Response Resource should be an Appointment
-		And One Appointment contains serviceCategory and serviceType elements
-		
+		And Appointments Do not contain serviceCategory and serviceType elements
+
 @1.2.7-IncrementalAndRegression
-Scenario: Book single appointment for Patient1 Send in ServiceCategory and serviceType in request Expect success and elements in response
-	Given I create an Appointment for Patient "patient1" and Organization Code "ORG1" With serviceCategory and serviceType in Request
+Scenario: Book single appointment for Patient1 for 2 days ahead Expect ServiceCategory and serviceType in response
+	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1"
 		And I store the Created Appointment
 	Then the response status code should indicate created
 		And the Response Resource should be an Appointment
 		And One Appointment contains serviceCategory and serviceType elements
+
+@1.2.7-IncrementalAndRegression
+Scenario: Book single appointment for Patient1 for 1 day Ahead Send in ServiceCategory and serviceType in request Expect extra request elements ignored
+	Given I create an Appointment in "1" days time for Patient "patient1" and Organization Code "ORG1" With serviceCategory and serviceType in Request
+		And I store the Created Appointment
+	Then the response status code should indicate created
+		And the Response Resource should be an Appointment
+		And Appointments Do not contain serviceCategory and serviceType elements
 
 		
 		
