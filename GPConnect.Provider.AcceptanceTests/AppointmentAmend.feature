@@ -365,7 +365,7 @@ Scenario: I successfully amend appointment that has ServiceCategory and ServiceT
 
 #This test Will fail on Demonstrator as that has more stringent checking than actual providers are implementing
 @1.2.7-IncrementalAndRegression
-Scenario: Successfully amend appointment that has ServiceCategory and ServiceType elements set attempting to change ServiceCategory and serviceType in request
+Scenario: Successfully amend appointment that has ServiceCategory and ServiceType elements set attempting to change ServiceCategory and serviceType from original values in request
 	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentAmend" request

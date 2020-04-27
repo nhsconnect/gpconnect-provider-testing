@@ -892,12 +892,14 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Successfully amend appointment that has ServiceCategory and ServiceType elements " +
-            "set attempting to change ServiceCategory and serviceType in request")]
+            "set attempting to change ServiceCategory and serviceType from original values in" +
+            " request")]
         [NUnit.Framework.CategoryAttribute("1.2.7-IncrementalAndRegression")]
-        public virtual void SuccessfullyAmendAppointmentThatHasServiceCategoryAndServiceTypeElementsSetAttemptingToChangeServiceCategoryAndServiceTypeInRequest()
+        public virtual void SuccessfullyAmendAppointmentThatHasServiceCategoryAndServiceTypeElementsSetAttemptingToChangeServiceCategoryAndServiceTypeFromOriginalValuesInRequest()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Successfully amend appointment that has ServiceCategory and ServiceType elements " +
-                    "set attempting to change ServiceCategory and serviceType in request", null, new string[] {
+                    "set attempting to change ServiceCategory and serviceType from original values in" +
+                    " request", null, new string[] {
                         "1.2.7-IncrementalAndRegression"});
 #line 368
 this.ScenarioInitialize(scenarioInfo);
