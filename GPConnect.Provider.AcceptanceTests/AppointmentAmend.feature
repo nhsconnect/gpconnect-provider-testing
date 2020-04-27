@@ -363,13 +363,15 @@ Scenario: I successfully amend appointment that has ServiceCategory and ServiceT
 		And the Appointment Not In Use should be valid
 		And One Appointment contains serviceCategory and serviceType elements
 
+#This test Will fail on Demonstrator as that has more stringent checking than actual providers are implementing
 @1.2.7-IncrementalAndRegression
-Scenario: I successfully amend appointment that has ServiceCategory and ServiceType elements set with ServiceCategory and serviceType in request that is ignored
-	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1" With serviceCategory and serviceType in Request
+Scenario: Successfully amend appointment that has ServiceCategory and ServiceType elements set attempting to change ServiceCategory and serviceType in request
+	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentAmend" request
 		And I set the Created Appointment Description to "TestChangedDescription"
 		And I set the Created Appointment Comment to "TestChangedComment"
+		And I set the Created Appointment ServiceCategory and serviceType to new values
 	When I make the "AppointmentAmend" request
 	Then the response status code should indicate success
 		And the Response Resource should be an Appointment
@@ -389,5 +391,6 @@ Scenario: I successfully amend appointment that has ServiceCategory and ServiceT
 		And the Appointment DeliveryChannel must be valid
 		And the Appointment PractitionerRole must be valid
 		And the Appointment Not In Use should be valid
-		And One Appointment contains serviceCategory and serviceType elements
+        And One Appointment contains serviceCategory and serviceType elements
+
 	

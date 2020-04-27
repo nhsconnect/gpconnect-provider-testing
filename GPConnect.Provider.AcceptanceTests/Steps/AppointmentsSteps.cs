@@ -606,5 +606,12 @@
             });
         }
 
+        [Given(@"I set the Created Appointment ServiceCategory and serviceType to new values")]
+        public void SetTheCreatedAppointmentServiceCategoryandserviceTypetonewvalues()
+        {
+            _fhirResourceRepository.Appointment.ServiceCategory.Text = "Test-ServiceCategory";
+            _fhirResourceRepository.Appointment.ServiceType.First().Text = "Test-ServiceType";
+        }
+
     }
 }
