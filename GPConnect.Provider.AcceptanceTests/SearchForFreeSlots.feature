@@ -467,7 +467,7 @@ Scenario Outline: Searching for free slots with org type and code searchFilter s
 	And the CapabilityStatement has a searchInclude called "Location:managingOrganization"
 	
 @1.2.7-IncrementalAndRegression
-Scenario: Search for a slots expecting a Schedule without serviceCategory and a slot without serviceType
+Scenario: Search for a slots 1 day ahead expecting a Schedule without serviceCategory and a slot without serviceType
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
 		And I set the required parameters with a time period of "1" days
@@ -486,10 +486,9 @@ Scenario: Search for a slots expecting a Schedule without serviceCategory and a 
 		And the Location Address should be valid
 		And None of the Schedules returned Contains the ServiceCategory element set
 		And None of the Slots returned Contain the ServiceType element set
-		And No Schedules or Slots contain comment field
 
 @1.2.7-IncrementalAndRegression
-Scenario: Search for a slots expecting a Schedule with serviceCategory and a slot with serviceType
+Scenario: Search for a slots 2 days ahead expecting a Schedule with serviceCategory and a slot with serviceType
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
 		And I set the required parameters with a time period of "2" days
@@ -508,4 +507,23 @@ Scenario: Search for a slots expecting a Schedule with serviceCategory and a slo
 		And the Location Address should be valid
 		And One of the Schedules returned Contains the ServiceCategory element set
 		And One of the Slots returned Contains the ServiceType element set
-		And No Schedules or Slots contain comment field
+
+@1.2.7-IncrementalAndRegression
+Scenario: Search for a slots expecting No Comment elements for the Schedules and Slots
+	Given I configure the default "SearchForFreeSlots" request
+		And I set the JWT Requested Scope to Organization Read
+		And I set the required parameters with a time period of "2" days
+		And I add the parameter "_include:recurse" with the value "Schedule:actor:Location"
+	When I make the "SearchForFreeSlots" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "searchset"
+		And the Location Metadata should be valid
+		And the Location Id should be valid
+		And the Location Identifier should be valid
+		And the Location Type should be valid
+		And the Location Physical Type should be valid
+		And the Location PartOf Location should be valid
+		And the Location Managing Organization should be valid
+		And the Location Name should be valid
+		And the Location Address should be valid
+		And No Schedules or Slots contain comment element

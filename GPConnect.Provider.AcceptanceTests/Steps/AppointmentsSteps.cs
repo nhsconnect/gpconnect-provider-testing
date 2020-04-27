@@ -140,8 +140,6 @@
         }
 
         
-
-       
         [Given(@"I create an Appointment in ""([^ ""]*)"" days time for Patient ""([^""]*)"" and Organization Code ""([^""]*)""")]
         public void CreateanAppointmentInXDaysTimeforPatientAndOrganizationCode(int days, string patient, string code)
         {
@@ -162,7 +160,6 @@
             _httpSteps.MakeRequest(GpConnectInteraction.AppointmentCreate);
 
         }
-
 
         [Given(@"I create an Appointment in ""([^ ""]*)"" days time for Patient ""([^""]*)"" and Organization Code ""([^""]*)"" With serviceCategory and serviceType in Request")]        
         public void CreateanAppointmentInXDaysTimeForPatientAndOrganizationCodeWithserviceCategoryandserviceTypeinRequest(int days, string patient, string code)

@@ -462,8 +462,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             found.ShouldBeTrue("Fail : At least one Slot Resource should contain a ServiceType set as per the data requirements");
         }
 
-        [Then(@"No Schedules or Slots contain comment field")]
-        public void NoSchedulesorSlotscontaincommentfield()
+        [Then(@"No Schedules or Slots contain comment element")]
+        public void NoSchedulesorSlotscontaincommentelement()
         {
             //check schedules
             foreach (var schedule in Schedules)

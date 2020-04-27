@@ -597,6 +597,19 @@ Scenario: Book single appointment for Patient1 for 1 day ahead Expect NO Service
 		And I store the Created Appointment
 	Then the response status code should indicate created
 		And the Response Resource should be an Appointment
+		And the Appointment Metadata should be valid
+		And the Appointment Id should be valid
+		And the Appointment Status should be valid
+		And the Appointment Start should be valid
+		And the Appointment End should be valid
+		And the Appointment Participants should be valid and resolvable
+		And the Appointment Slots should be valid
+		And the Appointment Description must be valid
+		And the booking organization extension must be valid
+		And the Appointment Created must be valid
+		And the appointment reason must not be included
+		And the Appointment DeliveryChannel must be valid
+		And the Appointment PractitionerRole must be valid
 		And Appointments Do not contain serviceCategory and serviceType elements
 
 @1.2.7-IncrementalAndRegression
@@ -605,6 +618,19 @@ Scenario: Book single appointment for Patient1 for 2 days ahead Expect ServiceCa
 		And I store the Created Appointment
 	Then the response status code should indicate created
 		And the Response Resource should be an Appointment
+		And the Appointment Metadata should be valid
+		And the Appointment Id should be valid
+		And the Appointment Status should be valid
+		And the Appointment Start should be valid
+		And the Appointment End should be valid
+		And the Appointment Participants should be valid and resolvable
+		And the Appointment Slots should be valid
+		And the Appointment Description must be valid
+		And the booking organization extension must be valid
+		And the Appointment Created must be valid
+		And the appointment reason must not be included
+		And the Appointment DeliveryChannel must be valid
+		And the Appointment PractitionerRole must be valid
 		And One Appointment contains serviceCategory and serviceType elements
 
 @1.2.7-IncrementalAndRegression
@@ -613,7 +639,38 @@ Scenario: Book single appointment for Patient1 for 1 day Ahead Send in ServiceCa
 		And I store the Created Appointment
 	Then the response status code should indicate created
 		And the Response Resource should be an Appointment
+		And the Appointment Metadata should be valid
+		And the Appointment Id should be valid
+		And the Appointment Status should be valid
+		And the Appointment Start should be valid
+		And the Appointment End should be valid
+		And the Appointment Participants should be valid and resolvable
+		And the Appointment Slots should be valid
+		And the Appointment Description must be valid
+		And the booking organization extension must be valid
+		And the Appointment Created must be valid
+		And the appointment reason must not be included
+		And the Appointment DeliveryChannel must be valid
+		And the Appointment PractitionerRole must be valid
 		And Appointments Do not contain serviceCategory and serviceType elements
 
-		
-		
+@1.2.7-IncrementalAndRegression
+Scenario: Book single appointment for Patient1 for 2 days Ahead Send in ServiceCategory and serviceType in request Expect extra request elements ignored
+	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1" With serviceCategory and serviceType in Request
+		And I store the Created Appointment
+	Then the response status code should indicate created
+		And the Response Resource should be an Appointment
+		And the Appointment Metadata should be valid
+		And the Appointment Id should be valid
+		And the Appointment Status should be valid
+		And the Appointment Start should be valid
+		And the Appointment End should be valid
+		And the Appointment Participants should be valid and resolvable
+		And the Appointment Slots should be valid
+		And the Appointment Description must be valid
+		And the booking organization extension must be valid
+		And the Appointment Created must be valid
+		And the appointment reason must not be included
+		And the Appointment DeliveryChannel must be valid
+		And the Appointment PractitionerRole must be valid
+		And One Appointment contains serviceCategory and serviceType elements
