@@ -307,7 +307,7 @@ Scenario: Successfully amend comment and description on an appointment when send
 
 		
 @1.2.7-IncrementalAndRegression
-Scenario: Successfully amend appointment that has ServiceCategory set attempting to change ServiceCategory from original values in request but provider ignores
+Scenario: Successfully amend appointment that has ServiceCategory set attempting to change ServiceCategory from original value in request but provider ignores
 	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentAmend" request
@@ -336,7 +336,7 @@ Scenario: Successfully amend appointment that has ServiceCategory set attempting
 		And the Appointment ServiceCategory should NOT be "Test -ServiceCategory"
 
 @1.2.7-IncrementalAndRegression
-Scenario: Successfully amend appointment that has ServiceType set attempting to change ServiceType from original values in request but provider ignores
+Scenario: Successfully amend appointment that has ServiceType set attempting to change ServiceType from original value in request but provider ignores
 	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentAmend" request

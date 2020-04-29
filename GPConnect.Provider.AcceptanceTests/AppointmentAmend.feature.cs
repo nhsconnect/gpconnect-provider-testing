@@ -765,12 +765,12 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Successfully amend appointment that has ServiceCategory set attempting to change " +
-            "ServiceCategory from original values in request but provider ignores")]
+            "ServiceCategory from original value in request but provider ignores")]
         [NUnit.Framework.CategoryAttribute("1.2.7-IncrementalAndRegression")]
-        public virtual void SuccessfullyAmendAppointmentThatHasServiceCategorySetAttemptingToChangeServiceCategoryFromOriginalValuesInRequestButProviderIgnores()
+        public virtual void SuccessfullyAmendAppointmentThatHasServiceCategorySetAttemptingToChangeServiceCategoryFromOriginalValueInRequestButProviderIgnores()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Successfully amend appointment that has ServiceCategory set attempting to change " +
-                    "ServiceCategory from original values in request but provider ignores", null, new string[] {
+                    "ServiceCategory from original value in request but provider ignores", null, new string[] {
                         "1.2.7-IncrementalAndRegression"});
 #line 310
 this.ScenarioInitialize(scenarioInfo);
@@ -834,12 +834,12 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Successfully amend appointment that has ServiceType set attempting to change Serv" +
-            "iceType from original values in request but provider ignores")]
+            "iceType from original value in request but provider ignores")]
         [NUnit.Framework.CategoryAttribute("1.2.7-IncrementalAndRegression")]
-        public virtual void SuccessfullyAmendAppointmentThatHasServiceTypeSetAttemptingToChangeServiceTypeFromOriginalValuesInRequestButProviderIgnores()
+        public virtual void SuccessfullyAmendAppointmentThatHasServiceTypeSetAttemptingToChangeServiceTypeFromOriginalValueInRequestButProviderIgnores()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Successfully amend appointment that has ServiceType set attempting to change Serv" +
-                    "iceType from original values in request but provider ignores", null, new string[] {
+                    "iceType from original value in request but provider ignores", null, new string[] {
                         "1.2.7-IncrementalAndRegression"});
 #line 339
 this.ScenarioInitialize(scenarioInfo);
