@@ -565,8 +565,54 @@
                     }
                 }
 
-                foundServiceCategory.ShouldBeTrue("Fail : At least one Appointment Resource should contain a ServiceCategory set as per the data requirements");
+                if (appointment.ServiceType != null)
+                {
+                    foreach (var st in appointment.ServiceType)
+                    {
+                        if (!String.IsNullOrEmpty(st.Text))
+                        {
+                            foundserviceType = true;
+                            Logger.Log.WriteLine("Info : Found an Appointment resource with ServiceType set");
+                            break;
+                        }
+                    }
+                }
+            });
 
+            foundServiceCategory.ShouldBeTrue("Fail : At least one Appointment Resource should contain a ServiceCategory set as per the data requirements");
+            foundserviceType.ShouldBeTrue("Fail : At least one Appointment Resource should contain a ServiceType set as per the data requirements");
+        }
+
+        [Then(@"One Appointment contains serviceCategory element")]
+        public void OneAppointmentcontainsserviceCategoryelement()
+        {
+            Appointments.Count().ShouldBeGreaterThanOrEqualTo(1, "Fail : Test expects atleast one Appointment is returned");
+            bool foundServiceCategory = false;
+
+            Appointments.ForEach(appointment =>
+            {
+
+                if (appointment.ServiceCategory != null)
+                {
+                    if (!String.IsNullOrEmpty(appointment.ServiceCategory.Text))
+                    {
+                        foundServiceCategory = true;
+                        Logger.Log.WriteLine("Info : Found an Appointment resource with ServiceCategory set");
+                    }
+                }                
+            });
+            foundServiceCategory.ShouldBeTrue("Fail : At least one Appointment Resource should contain a ServiceCategory set as per the data requirements");
+        }
+
+
+        [Then(@"One Appointment contains serviceType element")]
+        public void OneAppointmentcontainsserviceTypeelement()
+        {
+            Appointments.Count().ShouldBeGreaterThanOrEqualTo(1, "Fail : Test expects atleast one Appointment is returned");
+            bool foundserviceType = false;
+
+            Appointments.ForEach(appointment =>
+            {
                 if (appointment.ServiceType != null)
                 {
                     foreach (var st in appointment.ServiceType)
@@ -580,10 +626,10 @@
                     }
                 }
 
-                foundserviceType.ShouldBeTrue("Fail : At least one Appointment Resource should contain a ServiceType set as per the data requirements");
-
             });
+            foundserviceType.ShouldBeTrue("Fail : At least one Appointment Resource should contain a ServiceType set as per the data requirements");
         }
+
 
         [Then(@"Appointments Do not contain serviceCategory and serviceType elements")]
         public void AppointmentDoesntcontainsserviceCategoryandserviceTypeelements()
@@ -611,6 +657,18 @@
         {
             _fhirResourceRepository.Appointment.ServiceCategory.Text = "Test-ServiceCategory";
             _fhirResourceRepository.Appointment.ServiceType.First().Text = "Test-ServiceType";
+        }
+
+        [Given(@"I set the Created Appointment ServiceCategory to ""(.*)""")]
+        public void SetTheCreatedAppointmentServiceCategoryto(string value)
+        {
+            _fhirResourceRepository.Appointment.ServiceCategory.Text = value;
+        }
+
+        [Given(@"I set the Created Appointment ServiceType to ""(.*)""")]
+        public void SetTheCreatedAppointmentserviceTypetoanewvalue(string value)
+        {
+            _fhirResourceRepository.Appointment.ServiceType.First().Text = value;
         }
 
     }

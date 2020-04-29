@@ -1473,19 +1473,17 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Book single appointment for Patient1 for 1 day ahead Expect NO ServiceCategory an" +
-            "d serviceType in response")]
+        [NUnit.Framework.DescriptionAttribute("Book single appointment for Patient expecting servicecategory is populated")]
         [NUnit.Framework.CategoryAttribute("1.2.7-IncrementalAndRegression")]
-        public virtual void BookSingleAppointmentForPatient1For1DayAheadExpectNOServiceCategoryAndServiceTypeInResponse()
+        public virtual void BookSingleAppointmentForPatientExpectingServicecategoryIsPopulated()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book single appointment for Patient1 for 1 day ahead Expect NO ServiceCategory an" +
-                    "d serviceType in response", null, new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book single appointment for Patient expecting servicecategory is populated", null, new string[] {
                         "1.2.7-IncrementalAndRegression"});
 #line 595
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
 #line 596
- testRunner.Given("I create an Appointment in \"1\" days time for Patient \"patient1\" and Organization " +
+ testRunner.Given("I create an Appointment in \"2\" days time for Patient \"patient1\" and Organization " +
                     "Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 597
   testRunner.And("I store the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -1520,19 +1518,17 @@ this.ScenarioInitialize(scenarioInfo);
 #line 612
   testRunner.And("the Appointment PractitionerRole must be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 613
-  testRunner.And("Appointments Do not contain serviceCategory and serviceType elements", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("One Appointment contains serviceCategory element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Book single appointment for Patient1 for 2 days ahead Expect ServiceCategory and " +
-            "serviceType in response")]
+        [NUnit.Framework.DescriptionAttribute("Book single appointment for Patient expecting serviceType is populated")]
         [NUnit.Framework.CategoryAttribute("1.2.7-IncrementalAndRegression")]
-        public virtual void BookSingleAppointmentForPatient1For2DaysAheadExpectServiceCategoryAndServiceTypeInResponse()
+        public virtual void BookSingleAppointmentForPatientExpectingServiceTypeIsPopulated()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book single appointment for Patient1 for 2 days ahead Expect ServiceCategory and " +
-                    "serviceType in response", null, new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book single appointment for Patient expecting serviceType is populated", null, new string[] {
                         "1.2.7-IncrementalAndRegression"});
 #line 616
 this.ScenarioInitialize(scenarioInfo);
@@ -1573,25 +1569,25 @@ this.ScenarioInitialize(scenarioInfo);
 #line 633
   testRunner.And("the Appointment PractitionerRole must be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 634
-  testRunner.And("One Appointment contains serviceCategory and serviceType elements", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("One Appointment contains serviceType element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Book single appointment for Patient1 for 1 day Ahead Send in ServiceCategory and " +
-            "serviceType in request Expect extra request elements ignored")]
+        [NUnit.Framework.DescriptionAttribute("Book single appointment expecting servicecategory in response when ServiceCategor" +
+            "y and serviceType are in request but ignored")]
         [NUnit.Framework.CategoryAttribute("1.2.7-IncrementalAndRegression")]
-        public virtual void BookSingleAppointmentForPatient1For1DayAheadSendInServiceCategoryAndServiceTypeInRequestExpectExtraRequestElementsIgnored()
+        public virtual void BookSingleAppointmentExpectingServicecategoryInResponseWhenServiceCategoryAndServiceTypeAreInRequestButIgnored()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book single appointment for Patient1 for 1 day Ahead Send in ServiceCategory and " +
-                    "serviceType in request Expect extra request elements ignored", null, new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book single appointment expecting servicecategory in response when ServiceCategor" +
+                    "y and serviceType are in request but ignored", null, new string[] {
                         "1.2.7-IncrementalAndRegression"});
 #line 637
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
 #line 638
- testRunner.Given("I create an Appointment in \"1\" days time for Patient \"patient1\" and Organization " +
+ testRunner.Given("I create an Appointment in \"2\" days time for Patient \"patient1\" and Organization " +
                     "Code \"ORG1\" With serviceCategory and serviceType in Request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 639
   testRunner.And("I store the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -1626,19 +1622,19 @@ this.ScenarioInitialize(scenarioInfo);
 #line 654
   testRunner.And("the Appointment PractitionerRole must be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 655
-  testRunner.And("Appointments Do not contain serviceCategory and serviceType elements", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("One Appointment contains serviceCategory element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Book single appointment for Patient1 for 2 days Ahead Send in ServiceCategory and" +
-            " serviceType in request Expect extra request elements ignored")]
+        [NUnit.Framework.DescriptionAttribute("Book single appointment expecting serviceType in response when ServiceCategory an" +
+            "d serviceType are in request but ignored")]
         [NUnit.Framework.CategoryAttribute("1.2.7-IncrementalAndRegression")]
-        public virtual void BookSingleAppointmentForPatient1For2DaysAheadSendInServiceCategoryAndServiceTypeInRequestExpectExtraRequestElementsIgnored()
+        public virtual void BookSingleAppointmentExpectingServiceTypeInResponseWhenServiceCategoryAndServiceTypeAreInRequestButIgnored()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book single appointment for Patient1 for 2 days Ahead Send in ServiceCategory and" +
-                    " serviceType in request Expect extra request elements ignored", null, new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book single appointment expecting serviceType in response when ServiceCategory an" +
+                    "d serviceType are in request but ignored", null, new string[] {
                         "1.2.7-IncrementalAndRegression"});
 #line 658
 this.ScenarioInitialize(scenarioInfo);
@@ -1679,7 +1675,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 675
   testRunner.And("the Appointment PractitionerRole must be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 676
-  testRunner.And("One Appointment contains serviceCategory and serviceType elements", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("One Appointment contains serviceType element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

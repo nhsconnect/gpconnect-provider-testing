@@ -33,6 +33,7 @@ Scenario Outline: I perform a successful amend appointment and check the returne
 		| patient2 |
 		| patient3 |
 
+@1.2.7-IncrementalAndRegression
 Scenario Outline: I perform a successful amend appointment with Extensions
 	Given I create an Appointment for Patient "<PatientName>" 
 		And I create an Appointment with org type "<OrgType>" with channel "<DeliveryChannel>" with prac role "<PracRole>"	
@@ -277,71 +278,42 @@ Scenario: I perform amend appointment with participants with absoulte references
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
-
-@1.2.7-IncrementalAndRegression	
-Scenario: I successfully amend appointment that does not have ServiceCategory and ServiceType elements set
-	Given I create an Appointment in "1" days time for Patient "patient1" and Organization Code "ORG1"
-		And I store the Created Appointment
-	Given I configure the default "AppointmentAmend" request
-		And I set the Created Appointment Description to "TestChangedDescription"
-		And I set the Created Appointment Comment to "TestChangedComment"
-	When I make the "AppointmentAmend" request
-	Then the response status code should indicate success
-		And the Response Resource should be an Appointment
-		And the Appointments returned must be in the future
-		And the Appointment Metadata should be valid
-		And the Appointment Status should be valid
-		And the Appointment Start should be valid
-		And the Appointment End should be valid
-		And the Appointment Slots should be valid
-		And the Appointment Participants should be valid and resolvable
-		And the Appointment Priority should be valid
-		And the Appointment Participant Type and Actor should be valid
-		And the Appointment Identifiers should be valid
-		And the Appointment Description should be valid for "TestChangedDescription"
-		And the Appointment Comment should be valid for "TestChangedComment"
-		And the Appointment Created must be valid
-		And the Appointment DeliveryChannel must be valid
-		And the Appointment PractitionerRole must be valid
-		And the Appointment Not In Use should be valid
-		And Appointments Do not contain serviceCategory and serviceType elements
-	
-	@1.2.7-IncrementalAndRegression	
-Scenario: I successfully amend appointment that does not have ServiceCategory and ServiceType elements set with ServiceCategory and serviceType in request that is ignored
-	Given I create an Appointment in "1" days time for Patient "patient1" and Organization Code "ORG1" With serviceCategory and serviceType in Request
-		And I store the Created Appointment
-	Given I configure the default "AppointmentAmend" request
-		And I set the Created Appointment Description to "TestChangedDescription"
-		And I set the Created Appointment Comment to "TestChangedComment"
-	When I make the "AppointmentAmend" request
-	Then the response status code should indicate success
-		And the Response Resource should be an Appointment
-		And the Appointments returned must be in the future
-		And the Appointment Metadata should be valid
-		And the Appointment Status should be valid
-		And the Appointment Start should be valid
-		And the Appointment End should be valid
-		And the Appointment Slots should be valid
-		And the Appointment Participants should be valid and resolvable
-		And the Appointment Priority should be valid
-		And the Appointment Participant Type and Actor should be valid
-		And the Appointment Identifiers should be valid
-		And the Appointment Description should be valid for "TestChangedDescription"
-		And the Appointment Comment should be valid for "TestChangedComment"
-		And the Appointment Created must be valid
-		And the Appointment DeliveryChannel must be valid
-		And the Appointment PractitionerRole must be valid
-		And the Appointment Not In Use should be valid
-		And Appointments Do not contain serviceCategory and serviceType elements
-
-
 @1.2.7-IncrementalAndRegression
-Scenario: I successfully amend appointment that has ServiceCategory and ServiceType elements set
+Scenario: Successfully amend comment and description on an appointment when sending in ServiceCategory and serviceType in request provider ignores ServiceCategory and serviceType in request
+	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1" With serviceCategory and serviceType in Request
+		And I store the Created Appointment
+	Given I configure the default "AppointmentAmend" request
+		And I set the Created Appointment Description to "TestChangedDescription"
+		And I set the Created Appointment Comment to "TestChangedComment"
+	When I make the "AppointmentAmend" request
+	Then the response status code should indicate success
+		And the Response Resource should be an Appointment
+		And the Appointments returned must be in the future
+		And the Appointment Metadata should be valid
+		And the Appointment Status should be valid
+		And the Appointment Start should be valid
+		And the Appointment End should be valid
+		And the Appointment Slots should be valid
+		And the Appointment Participants should be valid and resolvable
+		And the Appointment Priority should be valid
+		And the Appointment Participant Type and Actor should be valid
+		And the Appointment Identifiers should be valid
+		And the Appointment Description should be valid for "TestChangedDescription"
+		And the Appointment Comment should be valid for "TestChangedComment"
+		And the Appointment Created must be valid
+		And the Appointment DeliveryChannel must be valid
+		And the Appointment PractitionerRole must be valid
+		And the Appointment Not In Use should be valid
+
+		
+@1.2.7-IncrementalAndRegression
+Scenario: Successfully amend appointment that has ServiceCategory set attempting to change ServiceCategory from original values in request but provider ignores
 	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentAmend" request
 		And I set the Created Appointment Description to "TestChangedDescription"
 		And I set the Created Appointment Comment to "TestChangedComment"
+		And I set the Created Appointment ServiceCategory to "Test -ServiceCategory"
 	When I make the "AppointmentAmend" request
 	Then the response status code should indicate success
 		And the Response Resource should be an Appointment
@@ -361,17 +333,16 @@ Scenario: I successfully amend appointment that has ServiceCategory and ServiceT
 		And the Appointment DeliveryChannel must be valid
 		And the Appointment PractitionerRole must be valid
 		And the Appointment Not In Use should be valid
-		And One Appointment contains serviceCategory and serviceType elements
+		And the Appointment ServiceCategory should NOT be "Test -ServiceCategory"
 
-#This test Will fail on Demonstrator as that has more stringent checking than actual providers are implementing
 @1.2.7-IncrementalAndRegression
-Scenario: Successfully amend appointment that has ServiceCategory and ServiceType elements set attempting to change ServiceCategory and serviceType from original values in request
+Scenario: Successfully amend appointment that has ServiceType set attempting to change ServiceType from original values in request but provider ignores
 	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentAmend" request
 		And I set the Created Appointment Description to "TestChangedDescription"
 		And I set the Created Appointment Comment to "TestChangedComment"
-		And I set the Created Appointment ServiceCategory and serviceType to new values
+		And I set the Created Appointment ServiceType to "Test-ServiceType"
 	When I make the "AppointmentAmend" request
 	Then the response status code should indicate success
 		And the Response Resource should be an Appointment
@@ -391,6 +362,7 @@ Scenario: Successfully amend appointment that has ServiceCategory and ServiceTyp
 		And the Appointment DeliveryChannel must be valid
 		And the Appointment PractitionerRole must be valid
 		And the Appointment Not In Use should be valid
-        And One Appointment contains serviceCategory and serviceType elements
+		And the Appointment ServiceType should NOT be "Test-ServiceType"
 
-	
+
+		 

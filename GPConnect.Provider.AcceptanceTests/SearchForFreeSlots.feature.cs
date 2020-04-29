@@ -1086,65 +1086,59 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Search for a slots 1 day ahead expecting a Schedule without serviceCategory and a" +
-            " slot without serviceType")]
+        [NUnit.Framework.DescriptionAttribute("Search for a slots expecting a Schedule with serviceCategory populated")]
         [NUnit.Framework.CategoryAttribute("1.2.7-IncrementalAndRegression")]
-        public virtual void SearchForASlots1DayAheadExpectingAScheduleWithoutServiceCategoryAndASlotWithoutServiceType()
+        public virtual void SearchForASlotsExpectingAScheduleWithServiceCategoryPopulated()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Search for a slots 1 day ahead expecting a Schedule without serviceCategory and a" +
-                    " slot without serviceType", null, new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Search for a slots expecting a Schedule with serviceCategory populated", null, new string[] {
                         "1.2.7-IncrementalAndRegression"});
-#line 470
+#line 471
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 471
- testRunner.Given("I configure the default \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 472
-  testRunner.And("I set the JWT Requested Scope to Organization Read", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 473
-  testRunner.And("I set the required parameters with a time period of \"1\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set the JWT Requested Scope to Organization Read", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 474
-  testRunner.And("I add the parameter \"_include:recurse\" with the value \"Schedule:actor:Location\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I set the required parameters with a time period of \"2\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 475
- testRunner.When("I make the \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I add the parameter \"_include:recurse\" with the value \"Schedule:actor:Location\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 476
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I make the \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 477
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 478
-  testRunner.And("the Location Metadata should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 479
-  testRunner.And("the Location Id should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Location Metadata should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 480
-  testRunner.And("the Location Identifier should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Location Id should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 481
-  testRunner.And("the Location Type should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Location Identifier should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 482
-  testRunner.And("the Location Physical Type should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Location Type should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 483
-  testRunner.And("the Location PartOf Location should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Location Physical Type should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 484
-  testRunner.And("the Location Managing Organization should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Location PartOf Location should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 485
-  testRunner.And("the Location Name should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Location Managing Organization should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 486
-  testRunner.And("the Location Address should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Location Name should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 487
-  testRunner.And("None of the Schedules returned Contains the ServiceCategory element set", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Location Address should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 488
-  testRunner.And("None of the Slots returned Contain the ServiceType element set", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("One of the Schedules returned Contains the ServiceCategory element set", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Search for a slots 2 days ahead expecting a Schedule with serviceCategory and a s" +
-            "lot with serviceType")]
+        [NUnit.Framework.DescriptionAttribute("Search for a slots expecting a slot with serviceType populated")]
         [NUnit.Framework.CategoryAttribute("1.2.7-IncrementalAndRegression")]
-        public virtual void SearchForASlots2DaysAheadExpectingAScheduleWithServiceCategoryAndASlotWithServiceType()
+        public virtual void SearchForASlotsExpectingASlotWithServiceTypePopulated()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Search for a slots 2 days ahead expecting a Schedule with serviceCategory and a s" +
-                    "lot with serviceType", null, new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Search for a slots expecting a slot with serviceType populated", null, new string[] {
                         "1.2.7-IncrementalAndRegression"});
 #line 491
 this.ScenarioInitialize(scenarioInfo);
@@ -1182,8 +1176,6 @@ this.ScenarioInitialize(scenarioInfo);
 #line 507
   testRunner.And("the Location Address should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 508
-  testRunner.And("One of the Schedules returned Contains the ServiceCategory element set", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 509
   testRunner.And("One of the Slots returned Contains the ServiceType element set", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1196,42 +1188,42 @@ this.ScenarioInitialize(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Search for a slots expecting No Comment elements for the Schedules and Slots", null, new string[] {
                         "1.2.7-IncrementalAndRegression"});
-#line 512
+#line 511
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 513
+#line 512
  testRunner.Given("I configure the default \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 514
+#line 513
   testRunner.And("I set the JWT Requested Scope to Organization Read", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 515
+#line 514
   testRunner.And("I set the required parameters with a time period of \"2\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 516
+#line 515
   testRunner.And("I add the parameter \"_include:recurse\" with the value \"Schedule:actor:Location\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 517
+#line 516
  testRunner.When("I make the \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 518
+#line 517
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 519
+#line 518
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 520
+#line 519
   testRunner.And("the Location Metadata should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 521
+#line 520
   testRunner.And("the Location Id should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 522
+#line 521
   testRunner.And("the Location Identifier should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 523
+#line 522
   testRunner.And("the Location Type should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 524
+#line 523
   testRunner.And("the Location Physical Type should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 525
+#line 524
   testRunner.And("the Location PartOf Location should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 526
+#line 525
   testRunner.And("the Location Managing Organization should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 527
+#line 526
   testRunner.And("the Location Name should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 528
+#line 527
   testRunner.And("the Location Address should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 529
+#line 528
   testRunner.And("No Schedules or Slots contain comment element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

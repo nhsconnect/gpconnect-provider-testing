@@ -283,26 +283,7 @@ Scenario: Appointment retrieve and response should contain valid booking orgainz
 		And the Appointment booking organization extension and contained resource must be valid
 
 @1.2.7-IncrementalAndRegression
-Scenario Outline: Retrieve a patient’s appointment booked 1 day ahead where servicecategory and serviceType are not set 
-	Given I create an Appointment in "1" days time for Patient "patient1" and Organization Code "ORG1"
-		And I store the Created Appointment
-	Given I configure the default "AppointmentRead" request
-	When I make the "AppointmentRead" request
-	Then the response status code should indicate success
-		And the Response Resource should be an Appointment
-		And the Appointments returned must be in the future
-		And the Appointment Id should be valid
-		And the Appointment Metadata should be valid
-		And the Appointment DeliveryChannel must be present
-		And the Appointment PractitionerRole must be present
-		And the Appointment Not In Use should be valid
-		And Appointments Do not contain serviceCategory and serviceType elements
-	Examples:
-		| PatientName | OrgType | DeliveryChannel | PracRole |
-		| patient1    | true    | true            | true     |
-
-@1.2.7-IncrementalAndRegression
-Scenario Outline: Retrieve a patient’s appointments booked 2 days ahead where servicecategory and serviceType are populated
+Scenario Outline: Retrieve a patient’s appointments expecting servicecategory is populated
 	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentRead" request
@@ -315,7 +296,26 @@ Scenario Outline: Retrieve a patient’s appointments booked 2 days ahead where 
 		And the Appointment DeliveryChannel must be present
 		And the Appointment PractitionerRole must be present
 		And the Appointment Not In Use should be valid
-		And One Appointment contains serviceCategory and serviceType elements
+		And One Appointment contains serviceCategory element
+	Examples:
+		| PatientName | OrgType | DeliveryChannel | PracRole |
+		| patient1    | true    | true            | true     |
+
+@1.2.7-IncrementalAndRegression
+Scenario Outline: Retrieve a patient’s appointments expecting serviceType is populated
+	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1"
+		And I store the Created Appointment
+	Given I configure the default "AppointmentRead" request
+	When I make the "AppointmentRead" request
+	Then the response status code should indicate success
+		And the Response Resource should be an Appointment
+		And the Appointments returned must be in the future
+		And the Appointment Id should be valid
+		And the Appointment Metadata should be valid
+		And the Appointment DeliveryChannel must be present
+		And the Appointment PractitionerRole must be present
+		And the Appointment Not In Use should be valid
+		And One Appointment contains serviceType element
 	Examples:
 		| PatientName | OrgType | DeliveryChannel | PracRole |
 		| patient1    | true    | true            | true     |

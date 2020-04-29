@@ -352,36 +352,8 @@ Scenario: I perform cancel appointment with participants with absoulte reference
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
-
-		@1.2.7-IncrementalAndRegression
-Scenario: Successfully Cancel an appointment that does not have serviceCategory and serviceType set on appointment 
-	Given I create an Appointment in "1" days time for Patient "patient1" and Organization Code "ORG1"
-		And I store the Created Appointment
-	Given I configure the default "AppointmentCancel" request
-		And I set the Created Appointment to Cancelled with Reason "Test-Cancel-Reason"
-	When I make the "AppointmentCancel" request
-	Then the response status code should indicate success
-		And the Response Resource should be an Appointment
-		And the Appointment Status should be Cancelled
-		And the Appointment Cancellation Reason Extension should be valid for "Test-Cancel-Reason"
-		And the Appointment Metadata should be valid
-		And the Appointment Status should be Cancelled
-		And the Appointment Id should equal the Created Appointment Id
-		And the Appointment Extensions should equal the Created Appointment Extensions
-		And the Appointment Description should equal the Created Appointment Description
-		And the Appointment Start and End Dates should equal the Created Appointment Start and End Dates
-		And the Appointment Slots should equal the Created Appointment Slots
-		And the Appointment Participants should be equal to the Created Appointment Participants
-		And the Appointment Created should be equal to the Created Appointment Created
-		And the Appointments returned must be in the future
-		And the appointment reason must not be included
-		And the Appointment DeliveryChannel must be valid
-		And the Appointment PractitionerRole must be valid
-		And the Appointment Not In Use should be valid
-		And Appointments Do not contain serviceCategory and serviceType elements
-
 @1.2.7-IncrementalAndRegression
-Scenario: Successfully Cancel an appointment that has serviceCategory and serviceType set on appointment
+Scenario: Successfully Cancel an appointment that has serviceCategory populated
 	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1"
 		And I store the Created Appointment
 	Given I configure the default "AppointmentCancel" request
@@ -405,5 +377,31 @@ Scenario: Successfully Cancel an appointment that has serviceCategory and servic
 		And the Appointment DeliveryChannel must be valid
 		And the Appointment PractitionerRole must be valid
 		And the Appointment Not In Use should be valid
-		And One Appointment contains serviceCategory and serviceType elements
+		And One Appointment contains serviceCategory element
 
+@1.2.7-IncrementalAndRegression
+Scenario: Successfully Cancel an appointment that has serviceType populated
+	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1"
+		And I store the Created Appointment
+	Given I configure the default "AppointmentCancel" request
+		And I set the Created Appointment to Cancelled with Reason "Test-Cancel-Reason"
+	When I make the "AppointmentCancel" request
+	Then the response status code should indicate success
+		And the Response Resource should be an Appointment
+		And the Appointment Status should be Cancelled
+		And the Appointment Cancellation Reason Extension should be valid for "Test-Cancel-Reason"
+		And the Appointment Metadata should be valid
+		And the Appointment Status should be Cancelled
+		And the Appointment Id should equal the Created Appointment Id
+		And the Appointment Extensions should equal the Created Appointment Extensions
+		And the Appointment Description should equal the Created Appointment Description
+		And the Appointment Start and End Dates should equal the Created Appointment Start and End Dates
+		And the Appointment Slots should equal the Created Appointment Slots
+		And the Appointment Participants should be equal to the Created Appointment Participants
+		And the Appointment Created should be equal to the Created Appointment Created
+		And the Appointments returned must be in the future
+		And the appointment reason must not be included
+		And the Appointment DeliveryChannel must be valid
+		And the Appointment PractitionerRole must be valid
+		And the Appointment Not In Use should be valid
+		And One Appointment contains serviceType element
