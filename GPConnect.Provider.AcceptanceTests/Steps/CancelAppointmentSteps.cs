@@ -356,5 +356,17 @@
 
             _httpSteps.MakeRequest(GpConnectInteraction.AppointmentCancel);
         }
+
+        [Given(@"I Remove the serviceCategory and the serviceType from the appointment")]
+        public void IRemovetheserviceCategoryandtheserviceTypefromtheappointment()
+        {
+            if (_fhirResourceRepository.Appointment.ServiceCategory != null)
+                _fhirResourceRepository.Appointment.ServiceCategory = null;
+
+            if (_fhirResourceRepository.Appointment.ServiceType != null)
+                _fhirResourceRepository.Appointment.ServiceType = null;
+        }
+
+
     }
 }

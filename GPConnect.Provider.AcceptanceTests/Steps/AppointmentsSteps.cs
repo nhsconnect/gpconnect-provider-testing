@@ -161,6 +161,33 @@
 
         }
 
+        [Given(@"I create an Appointment in ""([^ ""]*)"" days time for Patient ""([^""]*)"" and Organization Code ""([^""]*)"" Removing ServiceCategory and ServiceType from Created Appointment")]
+        public void CreateanAppointmentInXDaysTimeforPatientAndOrganizationCodeRemovingServiceCategoryandServiceTypefromCreatedAppointment(int days, string patient, string code)
+        {
+            _patientSteps.GetThePatientForPatientValue(patient);
+            _patientSteps.StoreThePatient();
+
+            _searchForFreeSlotsSteps.GetAvailableFreeSlotsSearchingXDaysInFuture(days);
+
+            _searchForFreeSlotsSteps.StoreTheFreeSlotsBundle();
+
+            _httpSteps.ConfigureRequest(GpConnectInteraction.AppointmentCreate);
+            Organization changed = FhirHelper.GetDefaultOrganization();
+            changed.Identifier.First().Value = GlobalContext.OdsCodeMap[code];
+            _httpSteps.jwtHelper.RequestingOrganization = changed.ToFhirJson();
+
+            CreateAnAppointmentFromTheStoredPatientAndStoredSchedule();
+
+            if (_fhirResourceRepository.Appointment.ServiceCategory != null)
+                _fhirResourceRepository.Appointment.ServiceCategory = null;
+
+            if (_fhirResourceRepository.Appointment.ServiceType != null)
+                _fhirResourceRepository.Appointment.ServiceType = null;
+
+            _httpSteps.MakeRequest(GpConnectInteraction.AppointmentCreate);
+
+        }
+
         [Given(@"I create an Appointment in ""([^ ""]*)"" days time for Patient ""([^""]*)"" and Organization Code ""([^""]*)"" With serviceCategory and serviceType in Request")]        
         public void CreateanAppointmentInXDaysTimeForPatientAndOrganizationCodeWithserviceCategoryandserviceTypeinRequest(int days, string patient, string code)
         {
@@ -191,7 +218,7 @@
             _httpSteps.MakeRequest(GpConnectInteraction.AppointmentCreate);
 
         }
-
+        
         [Given(@"I create an Appointment for Today for Patient ""([^""]*)"" and Organization Code ""([^""]*)""")]
         public void CreateAnAppointmentForTodayForPatientAndOrganizationCode(string patient, string code)
         {
