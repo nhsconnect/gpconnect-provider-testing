@@ -443,14 +443,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 				if (allergy.Identifier.Count == 1)
 				{
 					var identifier = allergy.Identifier.First();
-					identifier.System.ShouldNotBeNullOrWhiteSpace("Fail : Identifier system must not be null");
-
-                    //FhirConst.ValueSetSystems.kVsAllergyIntoleranceIdentifierSystem.Equals(identifier.System).ShouldBeTrue();
-
-                    //new code to check for valid guid in the identifier by PG 10/4/2019 For ticket #190
-                    //		Guid guidResult;
-                    //Guid.TryParse(identifier.Value, out guidResult).ShouldBeTrue("AllergyIntolerance identifier GUID is not valid or Null");
-
+					identifier.System.ShouldNotBeNullOrWhiteSpace("Fail : Identifier should not be Null or Blank");
                     identifier.Value.ShouldNotBeNullOrWhiteSpace("Fail : Identifier Value must not be null");
                 }
 			});

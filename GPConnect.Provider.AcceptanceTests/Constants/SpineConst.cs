@@ -5,6 +5,7 @@
         internal static class InteractionIds
         {
             private const string BaseInteraction = "urn:nhs:names:services:gpconnect:fhir:";
+            private const string StructuredBaseInteraction = "urn:nhs:names:services:gpconnect:structured:fhir:";
 
             public const string GpcGetCareRecord = BaseInteraction + "operation:gpc.getcarerecord-1";
             public const string GpcGetStructuredRecord = BaseInteraction + "operation:gpc.getstructuredrecord-1";
@@ -35,8 +36,8 @@
 
             public const string kFhirPractitioner = "urn:nhs:names:services:gpconnect:fhir:rest:search:practitioner-1";
 			
-			public static string StructuredMetaDataRead => BaseInteraction + "rest:read:structured_metadata-1";
+            public static string StructuredMetaDataRead => StructuredBaseInteraction + "rest:read:metadata-1";
 
-		}
+        }
     }
 }
