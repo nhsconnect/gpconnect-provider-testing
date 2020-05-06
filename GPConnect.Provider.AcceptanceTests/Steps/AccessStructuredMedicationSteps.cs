@@ -391,7 +391,7 @@
         }
 
         //PG 10-4-2019 #190 - Updated Code to check that GUID is valid
-        //PG 18-2-2020 - Updated for 1.2.6 to allow any identfier, just shoudlnt be blank.
+        //PG 18-2-2020 - Updated for 1.2.6 to allow any identifier, just should not be blank.
         [Then(@"the MedicationStatement Identifier should be valid")]
         public void TheMedicationStatementIdentifierShouldBeValid()
         {
@@ -401,15 +401,9 @@
                 if (medStatement.Identifier.Count == 1)
                 {
                     var identifier = medStatement.Identifier.First();				
-					identifier.System.ShouldNotBeNullOrWhiteSpace("Identifier system must be set to 'https://fhir.nhs.uk/Id/cross-care-setting-identifier'");
-					FhirConst.ValueSetSystems.kVsAllergyIntoleranceIdentifierSystem.Equals(identifier.System).ShouldBeTrue();
-
-                    //new code to check for valid guid in the identifier by PG 10/4/2019 For ticket #190
-                    //Guid guidResult;
-                    //Guid.TryParse(identifier.Value, out guidResult).ShouldBeTrue("MedicationStatement identifier GUID is not valid or Null");
-
-                    identifier.Value.ShouldNotBeEmpty("Fail : MedicationStatement should contain a unique identfier");
-                    Logger.Log.WriteLine("Info : Found MedicationStatement with an Identfier");
+					identifier.System.ShouldNotBeNullOrWhiteSpace("Fail : Identifier should not be Null or Blank");
+                    identifier.Value.ShouldNotBeNullOrWhiteSpace("Fail : MedicationStatement should contain a unique identifier");
+                    Logger.Log.WriteLine("Info : Found MedicationStatement with an Identifier");
                 }
             });
         }					
@@ -804,11 +798,9 @@
                 if (medRequest.Identifier.Count == 1)
                 {
                     var identifier = medRequest.Identifier.First();				
-					identifier.System.ShouldNotBeNullOrWhiteSpace("Identifier system must be set to 'https://fhir.nhs.uk/Id/cross-care-setting-identifier'");
-					FhirConst.ValueSetSystems.kVsAllergyIntoleranceIdentifierSystem.Equals(identifier.System).ShouldBeTrue();
-
-                    identifier.Value.ShouldNotBeNull("Fail : Identifier value is Mandatory");
-                    Logger.Log.WriteLine("Info : Found MedicationRequest Identfier");
+					identifier.System.ShouldNotBeNullOrWhiteSpace("Fail : Identifier should not be Null or Blank");
+                    identifier.Value.ShouldNotBeNullOrWhiteSpace("Fail : Identifier value is Mandatory");
+                    Logger.Log.WriteLine("Info : Found MedicationRequest Identifier");
                 }
             });
         }
