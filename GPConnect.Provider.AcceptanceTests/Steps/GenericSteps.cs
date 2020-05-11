@@ -230,7 +230,7 @@
         [AfterTestRun]
         public static void outputFileBasedTestReport()
         {
-            //output test run sumamry file
+            //output test run summary file
             if (ReportingConfiguration.FileReportingEnabled)
             {
 
@@ -241,15 +241,26 @@
                     file.WriteLine("Overall Stats from test Run: Total=" + (GlobalContext.CountTestRunPassed + GlobalContext.CountTestRunFailed).ToString() + "  Passed=" + GlobalContext.CountTestRunPassed.ToString() + "  Failed: " + GlobalContext.CountTestRunFailed.ToString());
                     file.WriteLine("****************************************************************");
 
-                    //Add inormation about the test run
+                    //Add information about the test run
                     file.WriteLine("TestRunDateTime : " + DateTime.UtcNow.ToLocalTime().ToString());
                     file.WriteLine("consumerASID : " + AppSettingsHelper.ConsumerASID);
                     file.WriteLine("providerASID : " + AppSettingsHelper.ProviderASID);
-                    file.WriteLine("useTLS Flag : " + AppSettingsHelper.UseTLS.ToString());
-                    file.WriteLine("serverURL: " + AppSettingsHelper.ServerUrl);
-                    file.WriteLine("serverPort HTTP: " + AppSettingsHelper.ServerHttpPort);
-                    file.WriteLine("serverPort HTTPS: " + AppSettingsHelper.ServerHttpsPort);
-                    file.WriteLine("serverBase : " + AppSettingsHelper.ServerBase);
+
+                    file.WriteLine("UseTLSFoundationsAndAppmts Flag : " + AppSettingsHelper.UseTLSFoundationsAndAppmts.ToString());
+                    file.WriteLine("jwtAudValueFoundationsAndAppmts : " + AppSettingsHelper.JwtAudValueFoundationsAndAppmts);
+                    file.WriteLine("serverURL - FoundationsAndAppmts : " + AppSettingsHelper.ServerUrlFoundationsAndAppmts);
+                    file.WriteLine("serverPort - FoundationsAndAppmts - HTTP : " + AppSettingsHelper.ServerHttpPortFoundationsAndAppmts);
+                    file.WriteLine("serverPort - FoundationsAndAppmts - HTTPS : " + AppSettingsHelper.ServerHttpsPortFoundationsAndAppmts);
+                    file.WriteLine("serverBase - FoundationsAndAppmts : " + AppSettingsHelper.ServerBaseFoundationsAndAppmts);
+
+                    file.WriteLine("UseTLSStructured Flag : " + AppSettingsHelper.UseTLSStructured.ToString());
+                    file.WriteLine("jwtAudValueStructured : " + AppSettingsHelper.JwtAudValueStructured);
+                    file.WriteLine("serverURL - Structured : " + AppSettingsHelper.ServerUrlStructured);
+                    file.WriteLine("serverPort - Structured - HTTP : " + AppSettingsHelper.ServerHttpPortStructured);
+                    file.WriteLine("serverPort - Structured HTTPS : " + AppSettingsHelper.ServerHttpsPortStructured);
+                    file.WriteLine("serverBase - Structured : " + AppSettingsHelper.ServerBaseStructured);
+
+
                     file.WriteLine("useSpineProxy Flag : " + AppSettingsHelper.UseSpineProxy.ToString());
                     file.WriteLine("spineProxyUrl : " + AppSettingsHelper.SpineProxyUrl.ToString());
                     file.WriteLine("spineProxyPort : " + AppSettingsHelper.SpineProxyPort.ToString());
