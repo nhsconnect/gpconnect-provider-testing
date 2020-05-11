@@ -14,6 +14,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 	using GPConnect.Provider.AcceptanceTests.Steps;
 	using GPConnect.Provider.AcceptanceTests.Logger;
     using System.Text.RegularExpressions;
+	using Newtonsoft.Json.Linq;
+	using System.IO;
+	using Hl7.Fhir.Serialization;
 
 	[Binding]
 	public sealed class AccessStructuredAllergySteps : BaseSteps
@@ -377,6 +380,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 			TheAllergyIntoleranceIdShouldBeValid();
 
 			// Added check for Allergy Identifier should be set and be a GUID RMB 07-08-2016
+			// SJD relaxed as no longer constrained to GUID
 			TheAllergyIntoleranceIdentifierShouldBeValid();
 
 			TheAllergyIntoleranceMetadataShouldBeValid();
@@ -430,23 +434,18 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 		}
 
 		//PG 10-4-2019 #190 - Updated Code to check that GUID is valid
+		//SJD/PG 1.2.6 - relaxed GUID check as no longer constrained to GUID
 		private void TheAllergyIntoleranceIdentifierShouldBeValid()
-		{
+		{			
 			AllAllergyIntolerances.ForEach(allergy =>
 			{
-				allergy.Identifier.Count.ShouldBeGreaterThan(0, "There should be at least 1 Identifier system/value pair");
+				allergy.Identifier.Count.ShouldBeGreaterThan(0, "Fail : There should be at least 1 Identifier system/value pair");
 				if (allergy.Identifier.Count == 1)
 				{
 					var identifier = allergy.Identifier.First();
-					identifier.System.ShouldNotBeNullOrWhiteSpace("Identifier system must be set to 'https://fhir.nhs.uk/Id/cross-care-setting-identifier'");
-					FhirConst.ValueSetSystems.kVsAllergyIntoleranceIdentifierSystem.Equals(identifier.System).ShouldBeTrue();
-
-							//new code to check for valid guid in the identifier by PG 10/4/2019 For ticket #190
-							Guid guidResult;
-					Guid.TryParse(identifier.Value, out guidResult).ShouldBeTrue("AllergyIntolerance identifier GUID is not valid or Null");
-
-
-				}
+					identifier.System.ShouldNotBeNullOrWhiteSpace("Fail : Identifier should not be Null or Blank");
+                    identifier.Value.ShouldNotBeNullOrWhiteSpace("Fail : Identifier Value must not be null");
+                }
 			});
 		}
 

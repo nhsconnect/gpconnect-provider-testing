@@ -24,8 +24,7 @@
         private readonly PatientSteps _patientSteps;
         private readonly SearchForFreeSlotsSteps _searchForFreeSlotsSteps;
         private readonly HttpRequestConfigurationSteps _httpRequestConfigurationSteps;
-        private readonly IFhirResourceRepository _fhirResourceRepository;
- 
+        private readonly IFhirResourceRepository _fhirResourceRepository;        
 
         private List<Appointment> Appointments => _httpContext.FhirResponse.Appointments;
 
@@ -140,6 +139,86 @@
 
         }
 
+        
+        [Given(@"I create an Appointment in ""([^ ""]*)"" days time for Patient ""([^""]*)"" and Organization Code ""([^""]*)""")]
+        public void CreateanAppointmentInXDaysTimeforPatientAndOrganizationCode(int days, string patient, string code)
+        {
+            _patientSteps.GetThePatientForPatientValue(patient);
+            _patientSteps.StoreThePatient();
+
+            _searchForFreeSlotsSteps.GetAvailableFreeSlotsSearchingXDaysInFuture(days);
+        
+            _searchForFreeSlotsSteps.StoreTheFreeSlotsBundle();
+
+            _httpSteps.ConfigureRequest(GpConnectInteraction.AppointmentCreate);
+            Organization changed = FhirHelper.GetDefaultOrganization();
+            changed.Identifier.First().Value = GlobalContext.OdsCodeMap[code];
+            _httpSteps.jwtHelper.RequestingOrganization = changed.ToFhirJson();
+
+            CreateAnAppointmentFromTheStoredPatientAndStoredSchedule();
+
+            _httpSteps.MakeRequest(GpConnectInteraction.AppointmentCreate);
+
+        }
+
+        [Given(@"I create an Appointment in ""([^ ""]*)"" days time for Patient ""([^""]*)"" and Organization Code ""([^""]*)"" Removing ServiceCategory and ServiceType from Created Appointment")]
+        public void CreateanAppointmentInXDaysTimeforPatientAndOrganizationCodeRemovingServiceCategoryandServiceTypefromCreatedAppointment(int days, string patient, string code)
+        {
+            _patientSteps.GetThePatientForPatientValue(patient);
+            _patientSteps.StoreThePatient();
+
+            _searchForFreeSlotsSteps.GetAvailableFreeSlotsSearchingXDaysInFuture(days);
+
+            _searchForFreeSlotsSteps.StoreTheFreeSlotsBundle();
+
+            _httpSteps.ConfigureRequest(GpConnectInteraction.AppointmentCreate);
+            Organization changed = FhirHelper.GetDefaultOrganization();
+            changed.Identifier.First().Value = GlobalContext.OdsCodeMap[code];
+            _httpSteps.jwtHelper.RequestingOrganization = changed.ToFhirJson();
+
+            CreateAnAppointmentFromTheStoredPatientAndStoredSchedule();
+
+            if (_fhirResourceRepository.Appointment.ServiceCategory != null)
+                _fhirResourceRepository.Appointment.ServiceCategory = null;
+
+            if (_fhirResourceRepository.Appointment.ServiceType != null)
+                _fhirResourceRepository.Appointment.ServiceType = null;
+
+            _httpSteps.MakeRequest(GpConnectInteraction.AppointmentCreate);
+
+        }
+
+        [Given(@"I create an Appointment in ""([^ ""]*)"" days time for Patient ""([^""]*)"" and Organization Code ""([^""]*)"" With serviceCategory and serviceType in Request")]        
+        public void CreateanAppointmentInXDaysTimeForPatientAndOrganizationCodeWithserviceCategoryandserviceTypeinRequest(int days, string patient, string code)
+        {
+            _patientSteps.GetThePatientForPatientValue(patient);
+            _patientSteps.StoreThePatient();
+
+            _searchForFreeSlotsSteps.GetAvailableFreeSlotsSearchingXDaysInFuture(days);
+            _searchForFreeSlotsSteps.StoreTheFreeSlotsBundle();
+
+            _httpSteps.ConfigureRequest(GpConnectInteraction.AppointmentCreate);
+            Organization changed = FhirHelper.GetDefaultOrganization();
+            changed.Identifier.First().Value = GlobalContext.OdsCodeMap[code];
+            _httpSteps.jwtHelper.RequestingOrganization = changed.ToFhirJson();
+
+            CreateAnAppointmentFromTheStoredPatientAndStoredSchedule();
+
+            //Add two new elements into request
+            //add ServiceCategory
+            _fhirResourceRepository.Appointment.ServiceCategory = new CodeableConcept();
+            _fhirResourceRepository.Appointment.ServiceCategory.Text = "Test-ServiceCategory";
+
+            //add ServiceType
+            _fhirResourceRepository.Appointment.ServiceType = new List<CodeableConcept>();
+            var st = new CodeableConcept();
+            st.Text = "Test-ServiceType";
+            _fhirResourceRepository.Appointment.ServiceType.Add(st);
+
+            _httpSteps.MakeRequest(GpConnectInteraction.AppointmentCreate);
+
+        }
+        
         [Given(@"I create an Appointment for Today for Patient ""([^""]*)"" and Organization Code ""([^""]*)""")]
         public void CreateAnAppointmentForTodayForPatientAndOrganizationCode(string patient, string code)
         {
@@ -493,5 +572,131 @@
                 });
             });
         }
+
+        [Then(@"One Appointment contains serviceCategory and serviceType elements")]
+        public void OneAppointmentcontainsserviceCategoryandserviceTypeelements()
+        {
+            Appointments.Count().ShouldBeGreaterThanOrEqualTo(1, "Fail : Test expects atleast one Appointment is returned");
+            bool foundServiceCategory = false;
+            bool foundserviceType = false;
+
+            Appointments.ForEach(appointment =>
+            {
+
+                if (appointment.ServiceCategory != null)
+                {
+                    if (!String.IsNullOrEmpty(appointment.ServiceCategory.Text))
+                    {
+                        foundServiceCategory = true;
+                        Logger.Log.WriteLine("Info : Found an Appointment resource with ServiceCategory set");
+                    }
+                }
+
+                if (appointment.ServiceType != null)
+                {
+                    foreach (var st in appointment.ServiceType)
+                    {
+                        if (!String.IsNullOrEmpty(st.Text))
+                        {
+                            foundserviceType = true;
+                            Logger.Log.WriteLine("Info : Found an Appointment resource with ServiceType set");
+                            break;
+                        }
+                    }
+                }
+            });
+
+            foundServiceCategory.ShouldBeTrue("Fail : At least one Appointment Resource should contain a ServiceCategory set as per the data requirements");
+            foundserviceType.ShouldBeTrue("Fail : At least one Appointment Resource should contain a ServiceType set as per the data requirements");
+        }
+
+        [Then(@"One Appointment contains serviceCategory element")]
+        public void OneAppointmentcontainsserviceCategoryelement()
+        {
+            Appointments.Count().ShouldBeGreaterThanOrEqualTo(1, "Fail : Test expects atleast one Appointment is returned");
+            bool foundServiceCategory = false;
+
+            Appointments.ForEach(appointment =>
+            {
+
+                if (appointment.ServiceCategory != null)
+                {
+                    if (!String.IsNullOrEmpty(appointment.ServiceCategory.Text))
+                    {
+                        foundServiceCategory = true;
+                        Logger.Log.WriteLine("Info : Found an Appointment resource with ServiceCategory set");
+                    }
+                }                
+            });
+            foundServiceCategory.ShouldBeTrue("Fail : At least one Appointment Resource should contain a ServiceCategory set as per the data requirements");
+        }
+
+
+        [Then(@"One Appointment contains serviceType element")]
+        public void OneAppointmentcontainsserviceTypeelement()
+        {
+            Appointments.Count().ShouldBeGreaterThanOrEqualTo(1, "Fail : Test expects atleast one Appointment is returned");
+            bool foundserviceType = false;
+
+            Appointments.ForEach(appointment =>
+            {
+                if (appointment.ServiceType != null)
+                {
+                    foreach (var st in appointment.ServiceType)
+                    {
+                        if (!String.IsNullOrEmpty(st.Text))
+                        {
+                            foundserviceType = true;
+                            Logger.Log.WriteLine("Info : Found an Appointment resource with ServiceType set");
+                            break;
+                        }
+                    }
+                }
+
+            });
+            foundserviceType.ShouldBeTrue("Fail : At least one Appointment Resource should contain a ServiceType set as per the data requirements");
+        }
+
+
+        [Then(@"Appointments Do not contain serviceCategory and serviceType elements")]
+        public void AppointmentDoesntcontainsserviceCategoryandserviceTypeelements()
+        {
+            Appointments.Count().ShouldBeGreaterThanOrEqualTo(1, "Fail : Test expects atleast one Appointment is returned");
+            Appointments.ForEach(appointment =>
+            {
+                if (appointment.ServiceCategory != null)
+                {
+                    appointment.ServiceCategory.Text.ShouldBeNullOrEmpty("Fail : Appointment Resource should Not contain a ServiceCategory set as per the data requirements");
+                }
+
+                if (appointment.ServiceType != null)
+                {
+                    foreach (var st in appointment.ServiceType)
+                    {
+                        st.Text.ShouldBeNullOrEmpty("Fail : Appointment Resource should Not contain a ServiceType set as per the data requirements");
+                    }
+                }
+            });
+        }
+
+        [Given(@"I set the Created Appointment ServiceCategory and serviceType to new values")]
+        public void SetTheCreatedAppointmentServiceCategoryandserviceTypetonewvalues()
+        {
+            _fhirResourceRepository.Appointment.ServiceCategory.Text = "Test-ServiceCategory";
+            _fhirResourceRepository.Appointment.ServiceType.First().Text = "Test-ServiceType";
+        }
+
+        [Given(@"I set the Created Appointment ServiceCategory to ""(.*)""")]
+        public void SetTheCreatedAppointmentServiceCategoryto(string value)
+        {
+            _fhirResourceRepository.Appointment.ServiceCategory.Text = value;
+        }
+
+        [Given(@"I set the Created Appointment ServiceType to ""(.*)""")]
+        public void SetTheCreatedAppointmentserviceTypetoanewvalue(string value)
+        {
+            _fhirResourceRepository.Appointment.ServiceType.First().Text = value;
+        }
+
     }
 }

@@ -1,4 +1,4 @@
-﻿@appointment
+﻿@appointment @1.2.7-Full-Pack
 Feature: AppointmentRead
 
 @1.2.3
@@ -149,3 +149,40 @@ Scenario: CapabilityStatement profile supports the read appointment operation
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
 		And the CapabilityStatement REST Resources should contain the "Appointment" Resource with the "Read" Interaction
+
+
+@1.2.7-IncrementalAndRegression
+Scenario Outline: Read a patient’s appointments expecting servicecategory is populated
+	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1"
+		And I store the Created Appointment
+	Given I configure the default "AppointmentRead" request
+	When I make the "AppointmentRead" request
+	Then the response status code should indicate success
+		And the Response Resource should be an Appointment
+		And the Appointments returned must be in the future
+		And the Appointment Id should be valid
+		And the Appointment Metadata should be valid
+		And the Appointment DeliveryChannel must be present
+		And the Appointment PractitionerRole must be present
+		And One Appointment contains serviceCategory element
+	Examples:
+		| PatientName | OrgType | DeliveryChannel | PracRole |
+		| patient1    | true    | true            | true     |
+
+@1.2.7-IncrementalAndRegression
+Scenario Outline: Read a patient’s appointments expecting serviceType is populated
+	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1"
+		And I store the Created Appointment
+	Given I configure the default "AppointmentRead" request
+	When I make the "AppointmentRead" request
+	Then the response status code should indicate success
+		And the Response Resource should be an Appointment
+		And the Appointments returned must be in the future
+		And the Appointment Id should be valid
+		And the Appointment Metadata should be valid
+		And the Appointment DeliveryChannel must be present
+		And the Appointment PractitionerRole must be present
+		And One Appointment contains serviceType element
+	Examples:
+		| PatientName | OrgType | DeliveryChannel | PracRole |
+		| patient1    | true    | true            | true     |

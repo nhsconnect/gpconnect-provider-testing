@@ -27,11 +27,12 @@
                 case GpConnectInteraction.PractitionerRead:
                 case GpConnectInteraction.LocationRead:
                 case GpConnectInteraction.SearchForFreeSlots:
+                case GpConnectInteraction.StructuredMetaDataRead:
                     jwtHelper.RequestedScope = JwtConst.Scope.kOrganizationRead;
                     break;
                 case GpConnectInteraction.GpcGetCareRecord:
-                case GpConnectInteraction.GpcGetStructuredRecord:
-                case GpConnectInteraction.PatientSearch:
+                case GpConnectInteraction.GpcGetStructuredRecord:				
+				case GpConnectInteraction.PatientSearch:
                 case GpConnectInteraction.PatientRead:
                 case GpConnectInteraction.AppointmentSearch:
                 case GpConnectInteraction.AppointmentRead:
@@ -46,6 +47,37 @@
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+
+
+            switch (_gpConnectInteraction)
+            {
+                case GpConnectInteraction.StructuredMetaDataRead:
+                case GpConnectInteraction.GpcGetStructuredRecord:
+                    jwtHelper.AuthTokenURL = AppSettingsHelper.JwtAudValueStructured;
+                    break;
+                case GpConnectInteraction.MetadataRead:
+                case GpConnectInteraction.OrganizationSearch:
+                case GpConnectInteraction.OrganizationRead:
+                case GpConnectInteraction.PractitionerSearch:
+                case GpConnectInteraction.PractitionerRead:
+                case GpConnectInteraction.LocationRead:
+                case GpConnectInteraction.SearchForFreeSlots:
+                case GpConnectInteraction.GpcGetCareRecord:
+                case GpConnectInteraction.PatientSearch:
+                case GpConnectInteraction.PatientRead:
+                case GpConnectInteraction.AppointmentSearch:
+                case GpConnectInteraction.AppointmentRead:
+                case GpConnectInteraction.RegisterPatient:
+                case GpConnectInteraction.AppointmentCreate:
+                case GpConnectInteraction.AppointmentAmend:
+                case GpConnectInteraction.AppointmentCancel:
+                    jwtHelper.AuthTokenURL = AppSettingsHelper.JwtAudValueFoundationsAndAppmts;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+
         }
     }
 }

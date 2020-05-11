@@ -32,7 +32,7 @@
         }
 
         #region Medication Parameters
-
+		//SJD need furhter work on
         [Given(@"I add the medication parameter with includePrescriptionIssues set to ""(.*)""")]
         public void GivenIAddTheMedicationsParameterWithIncludePrescriptionIssuesSetTo(string partValue)
         {
@@ -159,6 +159,22 @@
 				Tuple.Create("madeUpProblems", (Base)new Code ("madeUpProblemsValue1"))
 			};
 			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kMedication, tuples);
+		}
+		//SJD this needs further work on
+		//SJD 10/02/20 @1.2.6-IncrementalAndRegression
+		[Given(@"I add the medication request with empty partParameter values")]
+		public void IAddTheMedicationRequestWithEmptyPartParameterValues()
+		{
+			var tempDate = DateTime.UtcNow.AddYears(-2);
+			var startDate = tempDate.ToString("yyyy-MM-dd");
+
+			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[]
+				{
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kPrescriptionIssues, (Base)new FhirBoolean(null)),
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kMedicationDatePeriod, (Base)FhirHelper.GetStartDate(null)),
+				
+			};
+		_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kMedication, tuples);
 		}
 
 		#endregion
@@ -375,6 +391,7 @@
         }
 
         //PG 10-4-2019 #190 - Updated Code to check that GUID is valid
+        //PG 18-2-2020 - Updated for 1.2.6 to allow any identifier, just should not be blank.
         [Then(@"the MedicationStatement Identifier should be valid")]
         public void TheMedicationStatementIdentifierShouldBeValid()
         {
@@ -384,13 +401,9 @@
                 if (medStatement.Identifier.Count == 1)
                 {
                     var identifier = medStatement.Identifier.First();				
-					identifier.System.ShouldNotBeNullOrWhiteSpace("Identifier system must be set to 'https://fhir.nhs.uk/Id/cross-care-setting-identifier'");
-					FhirConst.ValueSetSystems.kVsAllergyIntoleranceIdentifierSystem.Equals(identifier.System).ShouldBeTrue();
-
-                    //new code to check for valid guid in the identifier by PG 10/4/2019 For ticket #190
-                    Guid guidResult;
-                    Guid.TryParse(identifier.Value, out guidResult).ShouldBeTrue("MedicationStatement identifier GUID is not valid or Null");
-
+					identifier.System.ShouldNotBeNullOrWhiteSpace("Fail : Identifier should not be Null or Blank");
+                    identifier.Value.ShouldNotBeNullOrWhiteSpace("Fail : MedicationStatement should contain a unique identifier");
+                    Logger.Log.WriteLine("Info : Found MedicationStatement with an Identifier");
                 }
             });
         }					
@@ -775,6 +788,7 @@
         }
 		
 		// Added RMB 8/8/2018
+        //PG 18-2-2020 - Updated for 1.2.6 - identifier should not be blank
         [Then(@"the MedicationRequest Identifier should be valid")]
         public void TheMedicationRequestIdentifierShouldBeValid()
         {
@@ -784,9 +798,9 @@
                 if (medRequest.Identifier.Count == 1)
                 {
                     var identifier = medRequest.Identifier.First();				
-					identifier.System.ShouldNotBeNullOrWhiteSpace("Identifier system must be set to 'https://fhir.nhs.uk/Id/cross-care-setting-identifier'");
-					FhirConst.ValueSetSystems.kVsAllergyIntoleranceIdentifierSystem.Equals(identifier.System).ShouldBeTrue();					
-					identifier.Value.ShouldNotBeNull("Identifier value is Mandatory and a GUID");					
+					identifier.System.ShouldNotBeNullOrWhiteSpace("Fail : Identifier should not be Null or Blank");
+                    identifier.Value.ShouldNotBeNullOrWhiteSpace("Fail : Identifier value is Mandatory");
+                    Logger.Log.WriteLine("Info : Found MedicationRequest Identifier");
                 }
             });
         }

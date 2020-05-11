@@ -1,4 +1,4 @@
-﻿@appointment
+﻿@appointment @1.2.7-Full-Pack
 Feature: AppointmentBook
 
 @1.2.3
@@ -201,6 +201,7 @@ Scenario: Book appointment prefer header set to minimal
 	Then the response status code should indicate created
 		And the response body should be empty
 
+	@1.2.7-IncrementalAndRegression
 Scenario: Book Appointment and appointment participant is valid
 	Given I get an existing patients nshNumber
 		And I store the Patient
@@ -589,3 +590,107 @@ Scenario: Book appointment without a comment
 	Then the response status code should be "422"
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
+
+@1.2.7-IncrementalAndRegression
+Scenario: Book single appointment for Patient expecting servicecategory is populated
+	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1"
+		And I store the Created Appointment
+	Then the response status code should indicate created
+		And the Response Resource should be an Appointment
+		And the Appointment Metadata should be valid
+		And the Appointment Id should be valid
+		And the Appointment Status should be valid
+		And the Appointment Start should be valid
+		And the Appointment End should be valid
+		And the Appointment Participants should be valid and resolvable
+		And the Appointment Slots should be valid
+		And the Appointment Description must be valid
+		And the booking organization extension must be valid
+		And the Appointment Created must be valid
+		And the appointment reason must not be included
+		And the Appointment DeliveryChannel must be valid
+		And the Appointment PractitionerRole must be valid
+		And One Appointment contains serviceCategory element
+
+@1.2.7-IncrementalAndRegression
+Scenario: Book single appointment for Patient expecting serviceType is populated
+	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1"
+		And I store the Created Appointment
+	Then the response status code should indicate created
+		And the Response Resource should be an Appointment
+		And the Appointment Metadata should be valid
+		And the Appointment Id should be valid
+		And the Appointment Status should be valid
+		And the Appointment Start should be valid
+		And the Appointment End should be valid
+		And the Appointment Participants should be valid and resolvable
+		And the Appointment Slots should be valid
+		And the Appointment Description must be valid
+		And the booking organization extension must be valid
+		And the Appointment Created must be valid
+		And the appointment reason must not be included
+		And the Appointment DeliveryChannel must be valid
+		And the Appointment PractitionerRole must be valid
+		And One Appointment contains serviceType element
+
+@1.2.7-IncrementalAndRegression
+Scenario: Book single appointment expecting servicecategory in response when ServiceCategory and serviceType are in request but ignored
+	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1" With serviceCategory and serviceType in Request
+		And I store the Created Appointment
+	Then the response status code should indicate created
+		And the Response Resource should be an Appointment
+		And the Appointment Metadata should be valid
+		And the Appointment Id should be valid
+		And the Appointment Status should be valid
+		And the Appointment Start should be valid
+		And the Appointment End should be valid
+		And the Appointment Participants should be valid and resolvable
+		And the Appointment Slots should be valid
+		And the Appointment Description must be valid
+		And the booking organization extension must be valid
+		And the Appointment Created must be valid
+		And the appointment reason must not be included
+		And the Appointment DeliveryChannel must be valid
+		And the Appointment PractitionerRole must be valid
+		And One Appointment contains serviceCategory element
+
+@1.2.7-IncrementalAndRegression
+Scenario: Book single appointment expecting serviceType in response when ServiceCategory and serviceType are in request but ignored
+	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1" With serviceCategory and serviceType in Request
+		And I store the Created Appointment
+	Then the response status code should indicate created
+		And the Response Resource should be an Appointment
+		And the Appointment Metadata should be valid
+		And the Appointment Id should be valid
+		And the Appointment Status should be valid
+		And the Appointment Start should be valid
+		And the Appointment End should be valid
+		And the Appointment Participants should be valid and resolvable
+		And the Appointment Slots should be valid
+		And the Appointment Description must be valid
+		And the booking organization extension must be valid
+		And the Appointment Created must be valid
+		And the appointment reason must not be included
+		And the Appointment DeliveryChannel must be valid
+		And the Appointment PractitionerRole must be valid
+		And One Appointment contains serviceType element
+
+@1.2.7-IncrementalAndRegression
+Scenario: Book single appointment ensuring backwards compatibility with consumers that do not send ServiceCategory And serviceType expect success
+	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1" Removing ServiceCategory and ServiceType from Created Appointment
+		And I store the Created Appointment
+	Then the response status code should indicate created
+		And the Response Resource should be an Appointment
+		And the Appointment Metadata should be valid
+		And the Appointment Id should be valid
+		And the Appointment Status should be valid
+		And the Appointment Start should be valid
+		And the Appointment End should be valid
+		And the Appointment Participants should be valid and resolvable
+		And the Appointment Slots should be valid
+		And the Appointment Description must be valid
+		And the booking organization extension must be valid
+		And the Appointment Created must be valid
+		And the appointment reason must not be included
+		And the Appointment DeliveryChannel must be valid
+		And the Appointment PractitionerRole must be valid

@@ -1,4 +1,4 @@
-﻿@structuredrecord
+﻿@structuredrecord @1.2.7-Full-Pack
 Feature: StructuredMultipleRequests
 
 @1.2.4

@@ -1,11 +1,13 @@
-﻿@structuredrecord
+﻿@structuredrecord @1.2.7-Full-Pack
 Feature: AccessStructuredRecordMedications
 
-@1.2.4
-Scenario Outline: Retrieve the medication structured record section for a patient including prescription issues
+@1.2.4 @1.2.5
+@1.2.6-IncrementalAndRegression 
+#SJD 06/02/20 changed test to reflect parameter.part cardinality change to 0..1
+Scenario Outline: Retrieve the medication structured record section for a patient without the parameter part
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "<Patient>"
-		And I add the medication parameter with includePrescriptionIssues set to "true"
+		And I add the medications parameter
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "collection"
@@ -31,7 +33,7 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		| patient12 |
 		| patient16 |
 
-@1.2.4		
+@1.2.4 @1.2.5 @1.2.7-IncrementalAndRegression
 Scenario Outline: Retrieve the medication structured record section for a patient excluding prescription issues
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "<Patient>"
@@ -60,11 +62,13 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		| patient5 |
 		| patient12 |
 
-Scenario: Retrieve the medication structured record section for a patient with no medications including issues
+#SJD 06/02/20 removed parameter.part as optional in 1.2.6 and renamed test to reflect the change
+@1.2.6-IncrementalAndRegression 
+Scenario: Retrieve the medication structured record section for a patient excludes the parameter part value as now optional
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient4"
-		And I add the medication parameter with includePrescriptionIssues set to "true"
-	When I make the "GpcGetStructuredRecord" request
+		And I add the medications parameter
+		When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "collection"
 		And the response meta profile should be for "structured"
@@ -118,15 +122,16 @@ Scenario Outline: Retrieve the structured record section for a patient without t
 		| patient5 |
 		| patient12 |
 		
-@1.2.4
-Scenario: Retrieve the medication structured record section for a patient without the prescription issue parameter
-	Given I configure the default "GpcGetStructuredRecord" request
-		And I add an NHS Number parameter for "patient1"
-		And I add the medications parameter
-	When I make the "GpcGetStructuredRecord" request
-	Then the response status code should indicate failure
-		And the response status code should be "422"
-		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
+#SJD 06/02/2020 removed in 1.2.6 as parameter.part is now optional
+#@1.2.4
+#Scenario: Retrieve the medication structured record section for a patient without the prescription issue parameter
+#	Given I configure the default "GpcGetStructuredRecord" request
+#		And I add an NHS Number parameter for "patient1"
+#		And I add the medications parameter
+#	When I make the "GpcGetStructuredRecord" request
+#	Then the response status code should indicate failure
+#		And the response status code should be "422"
+#		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
 #SJD 06/09/2019 #295 this is now accepted under forward compatability for 1.3.0
 @1.2.4
@@ -282,7 +287,6 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 
 @1.2.4
 Scenario Outline: Retrieve the medication structured record expected failure with invalid date used operation outcome 
-Retrieve the allergy structured record section for a patient with an end date only expected success
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"
 		And I set a medications period parameter start date to "<StartDate>" 
@@ -392,3 +396,13 @@ Scenario Outline: Structured Medications Patient Has multiple Warnings and Assoc
 	| Warning             | Note                                                                                                                       |
 	| data-in-transit      | Patient record transfer from previous GP practice not yet complete; information recorded before dd-Mmm-yyyy may be missing. |
 	| data-awaiting-filing | Patient data may be incomplete as there is data supplied by a third party awaiting review before becoming available.        |
+
+#SJD 10/02/20
+@1.2.6-IncrementalAndRegression
+Scenario: Retrieve the medication structured record from request with empty values for the parameter parts expect Failure
+	Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "patient1"
+		And I set a medications period parameter start date to "" 
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate failure
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"

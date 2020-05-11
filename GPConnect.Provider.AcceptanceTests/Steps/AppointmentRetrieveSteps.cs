@@ -157,5 +157,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             _httpSteps.MakeRequest(GpConnectInteraction.AppointmentSearch);
         }
+
+        
     }
 }

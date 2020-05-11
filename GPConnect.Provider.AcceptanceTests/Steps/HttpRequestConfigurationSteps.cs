@@ -7,6 +7,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     using System.Net.Http;
     using Constants;
     using Context;
+    using Hl7.Fhir.Model;
     using Shouldly;
     using TechTalk.SpecFlow;
 
@@ -155,6 +156,18 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             Given($"I add the parameter \"start\" with the value \"{FhirConst.Prefixs.kGreaterThanOrEqualTo}{val.Start}\"");
             Given($"I add the parameter \"end\" with the value \"{FhirConst.Prefixs.kLessThanOrEqualTo}{val.End}\"");
+        }
+
+        [Given(@"I add the time period starting and ending in ""(.*)"" days in the future")]
+        public void GivenIaddthetimeperiodstartingandendinginDaysInTheFuture(int days)
+        {
+            var dateStart = DateTime.UtcNow.Date.AddDays(days).ToLocalTime();
+            var dateEnd = dateStart.AddDays(1);
+            
+            var val = new Period(new FhirDateTime(dateStart), new FhirDateTime(dateEnd));
+            Given($"I add the parameter \"start\" with the value \"{FhirConst.Prefixs.kGreaterThanOrEqualTo}{val.Start}\"");
+            Given($"I add the parameter \"end\" with the value \"{FhirConst.Prefixs.kLessThanOrEqualTo}{val.End}\"");
+
         }
 
         [Given(@"I add the parameter ""(.*)"" with the value ""(.*)""")]
