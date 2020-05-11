@@ -29,9 +29,20 @@ In here, there are a number of attribues you'll need to change:
 * fhirDirectory - \<path to checked out GP Connect FHIR project\>
 
 By default, the test suite points to the public [Demonstrator](http://ec2-54-194-109-184.eu-west-1.compute.amazonaws.com) (code available [here](https://github.com/nhs-digital/gpconnect).) To change this, modify the following properties:
-* useTLS
-* serverUrl
-* serverPort
+
+For Foundation/Appointments Tests
+* useTLSFoundationsAndAppmts
+* serverUrlFoundationsAndAppmts
+* serverHttpsPortFoundationsAndAppmts
+* serverHttpPortFoundationsAndAppmts
+* serverBaseFoundationsAndAppmts
+
+For Structured Tests
+* useTLSStructured
+* serverUrlStructured
+* serverHttpsPortStructured
+* serverHttpPortStructured
+* serverBaseStructured
 
 ## Running in Visual Studio ( Must be at least Visual Studio 2017)
 Note: *This assumes the project has already been checked out and the appropriate modifications described in the Setup and Config sections have already been made.*
