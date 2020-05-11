@@ -21,6 +21,8 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         public DateTime? ExpiryTime { get; set; }
         public string ReasonForRequest { get; set; }
         public string AuthTokenURL { get; set; }
+        public string AuthTokenURLFoundationsAndAppmts { get; set; }
+        public string AuthTokenURLStructured { get; set; }
         public string RequestingDevice { get; set; }
         public string RequestingOrganization { get; set; }
         public string RequestingIdentity { get; set; }
@@ -44,7 +46,9 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
             SetCreationTimeSecondsPast(2);
             SetExpiryTimeInSecondsPast(2);
             ReasonForRequest = JwtConst.Values.kDirectCare;
-            AuthTokenURL = AppSettingsHelper.JwtAudValue;
+            AuthTokenURL = "";
+            AuthTokenURLFoundationsAndAppmts = AppSettingsHelper.JwtAudValueFoundationsAndAppmts;
+            AuthTokenURLStructured = AppSettingsHelper.JwtAudValueStructured;
             RequestingDevice = FhirHelper.GetDefaultDevice().ToFhirJson();
             RequestingOrganization = FhirHelper.GetDefaultOrganization().ToFhirJson();
             RequestingIdentityId = FhirHelper.GetDefaultPractitioner().Id;

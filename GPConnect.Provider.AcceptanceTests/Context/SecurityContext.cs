@@ -10,6 +10,8 @@ namespace GPConnect.Provider.AcceptanceTests.Context
     public interface ISecurityContext
     {
         bool UseTLS { get; set; }
+        bool UseTLSFoundationsAndAppmts { get; set; }
+        bool UseTLSStructured { get; set; }
         bool ValidateServerCert { get; set; }
         bool SendClientCert { get; set; }
         string ClientCertThumbPrint { get; set; }
@@ -29,6 +31,8 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         private static class Context
         {
             public const string kUseTLS = "useTLS";
+            public const string kUeTLSFoundationsAndAppmts = "useTLSFoundationsAndAppmts";
+            public const string kUseTLSStructured = "useTLSStructured";
             public const string kValidateServerCert = "validateServerCert";
             public const string kSendClientCert = "sendClientCert";
             public const string kClientCertThumbPrint = "clientCertThumbPrint";
@@ -44,6 +48,27 @@ namespace GPConnect.Provider.AcceptanceTests.Context
             {
                 Log.WriteLine("{0}={1}", Context.kUseTLS, value);
                 _scenarioContext.Set(value, Context.kUseTLS);
+            }
+        }
+
+        public bool UseTLSFoundationsAndAppmts
+        {
+            get { return _scenarioContext.Get<bool>(Context.kUeTLSFoundationsAndAppmts); }
+            set
+            {
+                Log.WriteLine("{0}={1}", Context.kUeTLSFoundationsAndAppmts, value);
+                _scenarioContext.Set(value, Context.kUeTLSFoundationsAndAppmts);
+            }
+        }
+
+
+        public bool UseTLSStructured
+        {
+            get { return _scenarioContext.Get<bool>(Context.kUseTLSStructured); }
+            set
+            {
+                Log.WriteLine("{0}={1}", Context.kUseTLSStructured, value);
+                _scenarioContext.Set(value, Context.kUseTLSStructured);
             }
         }
 
@@ -92,7 +117,10 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         public void LoadAppConfig()
         {
             Log.WriteLine("SecurityContext->LoadAppConfig()");
-            UseTLS = AppSettingsHelper.UseTLS;
+            //UseTLS = AppSettingsHelper.UseTLS;
+            UseTLS = true;
+            UseTLSFoundationsAndAppmts = AppSettingsHelper.UseTLSFoundationsAndAppmts;
+            UseTLSStructured = AppSettingsHelper.UseTLSStructured;
             ClientCertThumbPrint = AppSettingsHelper.ThumbprintSspValid;
             SendClientCert = AppSettingsHelper.SendClientCert;
             ValidateServerCert = AppSettingsHelper.ValidateServerCert;

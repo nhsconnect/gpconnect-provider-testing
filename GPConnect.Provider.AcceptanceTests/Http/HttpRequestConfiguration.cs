@@ -1,6 +1,7 @@
 ﻿namespace GPConnect.Provider.AcceptanceTests.Http
 {
     using System;
+    using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
     using Constants;
@@ -24,9 +25,14 @@
             SetDefaultHeaders();
         }
 
-        public bool UseTls => ScenarioContext.Current.Get<bool>("useTLS");
+        
+        public string SspProtocol = "https://";
+        public bool UseTlsFoundationsAndAppmts => ScenarioContext.Current.Get<bool>("useTLSFoundationsAndAppmts");
+        public string ProtocolFoundationsAndAppmts => UseTlsFoundationsAndAppmts ? "https://" : "http://";
+        public bool UseTlsStructured => ScenarioContext.Current.Get<bool>("useTLSStructured");
+        public string ProtocolStructured => UseTlsStructured ? "https://" : "http://";
 
-        public string Protocol => UseTls ? "https://" : "http://";
+
 
         // Web Proxy
         public bool UseWebProxy { get; set; }
@@ -35,7 +41,7 @@
 
         public string WebProxyPort { get; set; }
 
-        public string WebProxyAddress => Protocol + WebProxyUrl + ":" + WebProxyPort;
+        public string WebProxyAddress => "https://" + WebProxyUrl + ":" + WebProxyPort;
 
         // Spine Proxy
         public bool UseSpineProxy { get; set; }
@@ -44,7 +50,8 @@
 
         public string SpineProxyPort { get; set; }
 
-        public string SpineProxyAddress => Protocol + SpineProxyUrl + ":" + SpineProxyPort;
+        public string SpineProxyAddress => SspProtocol + SpineProxyUrl + ":" + SpineProxyPort;
+        
 
         // Raw Request
         public string RequestMethod { get; set; }
@@ -63,29 +70,50 @@
         // Provider
         public string ProviderASID { get; set; }
 
-        public string FhirServerUrl { get; set; }
+        public string FhirServerUrlFoundationsAndAppmts { get; set; }
+        public string FhirServerPortFoundationsAndAppmts => UseTlsFoundationsAndAppmts ? FhirServerHttpsPortFoundationsAndAppmts : FhirServerHttpPortFoundationsAndAppmts;
+        public string FhirServerFhirBaseFoundationsAndAppmts { get; set; }
 
-        public string FhirServerPort => UseTls ? FhirServerHttpsPort : FhirServerHttpPort;
-
-        public string FhirServerFhirBase { get; set; }
-
-        //public string ProviderAddress => Protocol + ((FhirServerPort != "") ? FhirServerUrl + ":" + FhirServerPort + FhirServerFhirBase : FhirServerUrl + FhirServerFhirBase);
+        public string FhirServerUrlStructured { get; set; }
+        public string FhirServerPortStructured => UseTlsStructured ? FhirServerHttpsPortStructured : FhirServerHttpPortStructured;
+        public string FhirServerFhirBaseStructured { get; set; }
 
         // PG - 27/3/2019 - SSP has been upgraded and will not allow a port number in the URL - so change below removes port when UseTls is true in app.config 
         public string ProviderAddress
         {
             get
             {
-                if (UseTls)
-                {
-                    return Protocol + ((FhirServerPort != "") ? FhirServerUrl + FhirServerFhirBase : FhirServerUrl + FhirServerFhirBase);
+                var currentInteraction = this.RequestHeaders.GetHeaderValue("Ssp-InteractionId");
 
+                //If Structured Request
+                if (currentInteraction == SpineConst.InteractionIds.GpcGetStructuredRecord || currentInteraction == SpineConst.InteractionIds.StructuredMetaDataRead)
+                {
+                    if (UseTlsStructured)
+                    {
+                        return ProtocolStructured + ((FhirServerPortStructured != "") ? FhirServerUrlStructured + FhirServerFhirBaseStructured : FhirServerUrlStructured + FhirServerFhirBaseStructured);
+
+                    }
+                    else
+                    {
+                        return ProtocolStructured + ((FhirServerPortStructured != "") ? FhirServerUrlStructured + ":" + FhirServerPortStructured + FhirServerFhirBaseStructured : FhirServerUrlStructured + FhirServerFhirBaseStructured);
+
+                    }
                 }
+                //Foundations and Appointments
                 else
                 {
-                    return Protocol + ((FhirServerPort != "") ? FhirServerUrl + ":" + FhirServerPort + FhirServerFhirBase : FhirServerUrl + FhirServerFhirBase);
+                    if (UseTlsFoundationsAndAppmts)
+                    {
+                        return ProtocolFoundationsAndAppmts + ((FhirServerPortFoundationsAndAppmts != "") ? FhirServerUrlFoundationsAndAppmts + FhirServerFhirBaseFoundationsAndAppmts : FhirServerUrlFoundationsAndAppmts + FhirServerFhirBaseFoundationsAndAppmts);
 
+                    }
+                    else
+                    {
+                        return ProtocolFoundationsAndAppmts + ((FhirServerPortFoundationsAndAppmts != "") ? FhirServerUrlFoundationsAndAppmts + ":" + FhirServerPortFoundationsAndAppmts + FhirServerFhirBaseFoundationsAndAppmts : FhirServerUrlFoundationsAndAppmts + FhirServerFhirBaseFoundationsAndAppmts);
+
+                    }
                 }
+
             }
         }
 
@@ -103,23 +131,33 @@
         private string GetBaseUrl()
         {
             var sspAddress = UseSpineProxy ? SpineProxyAddress + "/" : string.Empty;
-
-            // github ref 98
-            // RMB 17/10/2018
-            //            var baseUrl = Protocol + ((FhirServerPort != "") ? FhirServerUrl + ":" + FhirServerPort + FhirServerFhirBase : FhirServerUrl + FhirServerFhirBase);
-
-            // PG - 27/3/2019 - SSP has been upgraded and will not allow a port number in the URL - so change below removes port when UseTls is true in app.config 
-            //var baseUrl = sspAddress + Protocol + ((FhirServerPort != "") ? FhirServerUrl + ":" + FhirServerPort + FhirServerFhirBase : FhirServerUrl + FhirServerFhirBase);
             string baseUrl;
 
-            if (UseTls)
-            {
-                baseUrl = sspAddress + Protocol + ((FhirServerPort != "") ? FhirServerUrl + FhirServerFhirBase : FhirServerUrl + FhirServerFhirBase);
+            var currentInteraction = this.RequestHeaders.GetHeaderValue("Ssp-InteractionId");
 
+            //If Structured Request
+            if (currentInteraction == SpineConst.InteractionIds.GpcGetStructuredRecord || currentInteraction == SpineConst.InteractionIds.StructuredMetaDataRead)
+            {
+                if (UseTlsStructured)
+                {
+                    baseUrl = sspAddress + ProtocolStructured + ((FhirServerPortStructured != "") ? FhirServerUrlStructured + FhirServerFhirBaseStructured : FhirServerUrlStructured + FhirServerFhirBaseStructured);
+                }
+                else
+                {
+                    baseUrl = sspAddress + ProtocolStructured + ((FhirServerPortStructured != "") ? FhirServerUrlStructured + ":" + FhirServerPortStructured + FhirServerFhirBaseStructured : FhirServerUrlStructured + FhirServerFhirBaseStructured);
+                }
             }
+            //Foundations and Appointments
             else
             {
-                baseUrl = sspAddress + Protocol + ((FhirServerPort != "") ? FhirServerUrl + ":" + FhirServerPort + FhirServerFhirBase : FhirServerUrl + FhirServerFhirBase);
+                if (UseTlsFoundationsAndAppmts)
+                {
+                    baseUrl = sspAddress + ProtocolFoundationsAndAppmts + ((FhirServerPortFoundationsAndAppmts != "") ? FhirServerUrlFoundationsAndAppmts + FhirServerFhirBaseFoundationsAndAppmts : FhirServerUrlFoundationsAndAppmts + FhirServerFhirBaseFoundationsAndAppmts);
+                }
+                else
+                {
+                    baseUrl = sspAddress + ProtocolFoundationsAndAppmts + ((FhirServerPortFoundationsAndAppmts != "") ? FhirServerUrlFoundationsAndAppmts + ":" + FhirServerPortFoundationsAndAppmts + FhirServerFhirBaseFoundationsAndAppmts : FhirServerUrlFoundationsAndAppmts + FhirServerFhirBaseFoundationsAndAppmts);
+                }
             }
 
             if (baseUrl[baseUrl.Length - 1] != '/')
@@ -137,12 +175,18 @@
         public void LoadAppConfig()
         {
             Log.WriteLine("HttpContext->LoadAppConfig()");
-           
-            FhirServerUrl = AppSettingsHelper.ServerUrl;
-            FhirServerHttpPort = AppSettingsHelper.ServerHttpPort;
-            FhirServerHttpsPort = AppSettingsHelper.ServerHttpsPort;
-           
-            FhirServerFhirBase = AppSettingsHelper.ServerBase;
+
+            FhirServerUrlFoundationsAndAppmts = AppSettingsHelper.ServerUrlFoundationsAndAppmts;
+            FhirServerHttpPortFoundationsAndAppmts = AppSettingsHelper.ServerHttpPortFoundationsAndAppmts;
+            FhirServerHttpsPortFoundationsAndAppmts = AppSettingsHelper.ServerHttpsPortFoundationsAndAppmts;
+            FhirServerFhirBaseFoundationsAndAppmts = AppSettingsHelper.ServerBaseFoundationsAndAppmts;
+
+            FhirServerUrlStructured = AppSettingsHelper.ServerUrlStructured;
+            FhirServerHttpPortStructured = AppSettingsHelper.ServerHttpPortStructured;
+            FhirServerHttpsPortStructured = AppSettingsHelper.ServerHttpsPortStructured;
+            FhirServerFhirBaseStructured = AppSettingsHelper.ServerBaseStructured;
+
+
             UseWebProxy = AppSettingsHelper.UseWebProxy;
             WebProxyUrl = AppSettingsHelper.WebProxyUrl;
             WebProxyPort = AppSettingsHelper.WebProxyPort;
@@ -154,8 +198,13 @@
         }
 
         public string FhirServerHttpPort { get; set; }
-
         public string FhirServerHttpsPort { get; set; }
+
+        public string FhirServerHttpPortFoundationsAndAppmts { get; set; }
+        public string FhirServerHttpsPortFoundationsAndAppmts { get; set; }
+
+        public string FhirServerHttpPortStructured { get; set; }
+        public string FhirServerHttpsPortStructured { get; set; }
 
         public Parameters BodyParameters { get; set; }
 
