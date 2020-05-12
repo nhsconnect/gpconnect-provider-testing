@@ -27,13 +27,19 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         public static bool FhirCheckWebFirst => Get<bool>("fhirCheckWebFirst");
 
         // Security Settings
-        public static bool UseTLS => Get<bool>("useTLS");
+        public static bool UseTLSFoundationsAndAppmts => Get<bool>("useTLSFoundationsAndAppmts");
+        public static bool UseTLSStructured => Get<bool>("useTLSStructured");
 
         // Server Settings
-        public static string ServerUrl => Get<string>("serverUrl");
-        public static string ServerHttpsPort => Get<string>("serverHttpsPort");
-        public static string ServerHttpPort => Get<string>("serverHttpPort");
-        public static string ServerBase => Get<string>("serverBase");
+        public static string ServerUrlFoundationsAndAppmts => Get<string>("serverUrlFoundationsAndAppmts");
+        public static string ServerHttpsPortFoundationsAndAppmts => Get<string>("serverHttpsPortFoundationsAndAppmts");
+        public static string ServerHttpPortFoundationsAndAppmts => Get<string>("serverHttpPortFoundationsAndAppmts");
+        public static string ServerBaseFoundationsAndAppmts => Get<string>("serverBaseFoundationsAndAppmts");
+
+        public static string ServerUrlStructured => Get<string>("serverUrlStructured");
+        public static string ServerHttpsPortStructured => Get<string>("serverHttpsPortStructured");
+        public static string ServerHttpPortStructured => Get<string>("serverHttpPortStructured");
+        public static string ServerBaseStructured => Get<string>("serverBaseStructured");
 
         // Web Proxy Settings
         public static bool UseWebProxy => Get<bool>("useWebProxy");
@@ -83,17 +89,19 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         // Provider Settings
         public static string ProviderASID => Get<string>("providerASID");
 
-        public static string JwtAudValue => Get<string>("jwtAudValue");
+        //public static string JwtAudValue => Get<string>("jwtAudValue");
+        public static string JwtAudValueFoundationsAndAppmts => Get<string>("jwtAudValueFoundationsAndAppmts");
+        public static string JwtAudValueStructured => Get<string>("jwtAudValueStructured");
+
 
         public static T Get<T>(string key)
         {
             var appSetting = ConfigurationManager.AppSettings[key];
 
-
-            if (!(key.Equals("serverHttpPort") || key.Equals("serverHttpsPort")) && string.IsNullOrWhiteSpace(appSetting))
-            {
-                throw new ConfigurationErrorsException($"AppSettings Key='{key}' Not Found.");
-            }
+                if (!(key.Equals("serverHttpsPortFoundationsAndAppmts") || key.Equals("serverHttpPortFoundationsAndAppmts") || key.Equals("serverHttpsPortStructured") || key.Equals("serverHttpPortStructured")) && string.IsNullOrWhiteSpace(appSetting))
+                {
+                    throw new ConfigurationErrorsException($"AppSettings Key='{key}' Not Found.");
+                }
 
             var converter = TypeDescriptor.GetConverter(typeof(T));
 

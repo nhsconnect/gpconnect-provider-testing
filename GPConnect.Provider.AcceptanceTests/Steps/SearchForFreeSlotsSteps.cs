@@ -46,6 +46,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _httpSteps.MakeRequest(GpConnectInteraction.SearchForFreeSlots);
         }
 
+        [Given(@"I get Available Free Slots Searching ""(.*)"" days in future")]
+        public void GetAvailableFreeSlotsSearchingXDaysInFuture(int days)
+        {
+            _httpSteps.ConfigureRequest(GpConnectInteraction.SearchForFreeSlots);
+            _jwtSteps.SetTheJwtRequestedScopeToOrganizationRead();
+
+            SetthesearchparameterswithorgtypeforaspecificdayinfutureXdaysAhead(days, true);
+            
+            _httpSteps.MakeRequest(GpConnectInteraction.SearchForFreeSlots);
+        }
+
         [Given(@"I get Available Free Slots for Today")]
         public void GetAvailableFreeSlotsForToday()
         {
@@ -104,6 +115,23 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             
             _httpRequestConfigurationSteps.GivenIAddTheParameterWithTheValue("_include", "Slot:schedule");
         }
+
+        [Given(@"I set the search parameters with org type for a specific day in future ""(.*)"" days ahead")]
+        public void SetthesearchparameterswithorgtypeforaspecificdayinfutureXdaysAhead(int days, Boolean orgType)
+        {
+            _httpRequestConfigurationSteps.GivenIaddthetimeperiodstartingandendinginDaysInTheFuture(days);
+            _httpRequestConfigurationSteps.GivenIAddTheParameterWithTheValue("status", "free");
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/Id/ods-organization-code" + '|' + GlobalContext.OdsCodeMap["ORG1"]);
+            if (orgType)
+            {
+                _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/STU3/CodeSystem/GPConnect-OrganisationType-1" + '|' + "urgent-care");
+            }
+
+            _httpRequestConfigurationSteps.GivenIAddTheParameterWithTheValue("_include", "Slot:schedule");
+        }
+
+
+
         [Given(@"I add a single searchFilter paramater with value equal to ""(.*)""")]
         public void ISetASingleTheSearchFilterParameterTo(string invalidValue)
         {
@@ -384,5 +412,111 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             _bundleSteps.ResponseBundleDoesNotContainReferenceOfType(excludedActor);
         }
+        
+        [Then(@"One of the Schedules returned Contains the ServiceCategory element set")]
+        public void OneofSchedulesreturnedContainstheServiceCategoryelementset()
+        {
+            Schedules.Count().ShouldBeGreaterThanOrEqualTo(1, "Fail : Expect atleast one Schedule is returned for This test");
+            bool found = false;
+            foreach (var schedule in Schedules)
+            {
+                if (schedule.ServiceCategory != null)
+                {
+                    if (!String.IsNullOrEmpty(schedule.ServiceCategory.Text))
+                    {
+                        found = true;
+                        Logger.Log.WriteLine("Info : Found a Schedule resource with ServiceCategory set");
+                    }
+                }
+
+                if (found)
+                    break;
+            }
+            found.ShouldBeTrue("Fail : At least one Schedule Resource should contain a ServiceCategory set as per the data requirements");
+        }
+
+        [Then(@"One of the Slots returned Contains the ServiceType element set")]
+        public void OneofSlotsreturnedContainstheServiceTypeelementset()
+        {
+            Slots.Count().ShouldBeGreaterThanOrEqualTo(1, "Fail : Test expects atleast one slot is returned");
+            bool found = false;
+            foreach (var slot in Slots)
+            {
+                if (slot.ServiceType != null)
+                {
+                    foreach (var st in slot.ServiceType)
+                    {
+                        if (!String.IsNullOrEmpty(st.Text))
+                        {
+                            found = true;
+                            Logger.Log.WriteLine("Info : Found a Slot resource with ServiceType set");
+                            break;
+                        }
+                    }
+                }
+
+                if (found)
+                    break;
+            }
+       
+            found.ShouldBeTrue("Fail : At least one Slot Resource should contain a ServiceType set as per the data requirements");
+        }
+
+        [Then(@"No Schedules or Slots contain comment element")]
+        public void NoSchedulesorSlotscontaincommentelement()
+        {
+            //check schedules
+            foreach (var schedule in Schedules)
+            {
+                if (schedule.Comment != null)
+                {
+                    schedule.Comment.ShouldBeNullOrEmpty("Fail : Found Schedule with a comment on when none should be sent");
+                }
+            }
+            Logger.Log.WriteLine("Info : No Schedule found with a Comment Set");
+
+            //Check slots
+            foreach (var slot in Slots)
+            {
+                if (slot.Comment != null)
+                {
+                    slot.Comment.ShouldBeNullOrEmpty("Fail : Found Slot with a comment on when none should be sent");                    
+                }
+            }
+            Logger.Log.WriteLine("Info : No Slot found with a Comment Set");
+        }
+
+
+        [Then(@"None of the Schedules returned Contains the ServiceCategory element set")]
+        public void NoneofSchedulesreturnedContainstheServiceCategoryelementset()
+        {
+            Schedules.Count().ShouldBeGreaterThanOrEqualTo(1, "Fail : Expect atleast one Schedule is returned for This test");
+            foreach (var schedule in Schedules)
+            {
+                if (schedule.ServiceCategory != null)
+                {
+                    schedule.ServiceCategory.Text.ShouldBeNullOrEmpty("Fail: Day 1 of Schedule should not have a ServiceCategory set as per the data requirements");
+                }
+
+            }         
+        }
+
+        [Then(@"None of the Slots returned Contain the ServiceType element set")]
+        public void NoneofSlotsreturnedContaintheServiceTypeelementset()
+        {
+            Slots.Count().ShouldBeGreaterThanOrEqualTo(1, "Fail : Test expects atleast one slot is returned");
+            foreach (var slot in Slots)
+            {
+                if (slot.ServiceType != null)
+                {
+                    foreach (var st in slot.ServiceType)
+                    {
+                        st.Text.ShouldBeNullOrEmpty("Fail : Day 1 Slot Resource should not contain a ServiceType set as per the data requirements");
+                    }
+                }
+            }
+        }
+
+
     }
 }

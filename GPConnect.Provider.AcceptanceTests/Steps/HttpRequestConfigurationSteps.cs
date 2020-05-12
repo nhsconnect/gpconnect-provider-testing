@@ -7,6 +7,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     using System.Net.Http;
     using Constants;
     using Context;
+    using Hl7.Fhir.Model;
     using Shouldly;
     using TechTalk.SpecFlow;
 
@@ -103,8 +104,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I add the time period parameters for ""(.*)"" days starting today using the start format ""(.*)"" and the end format ""(.*)""")]
         public void GivenIAddTheTimePeriodParametersforDaysStartingTodayWithStartEndFormats(int days, string startFormat, string endFormat)
         {
-           var val = TimePeriodHelper.GetTimePeriodStartDateFormatEndDateFormat(startFormat, endFormat, days);
-     
+            var val = TimePeriodHelper.GetTimePeriodStartDateFormatEndDateFormat(startFormat, endFormat, days);
+
 
             Given($"I add the parameter \"start\" with the value \"{FhirConst.Prefixs.kGreaterThanOrEqualTo}{val.Start}\"");
             Given($"I add the parameter \"end\" with the value \"{FhirConst.Prefixs.kLessThanOrEqualTo}{val.End}\"");
@@ -157,6 +158,18 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Given($"I add the parameter \"end\" with the value \"{FhirConst.Prefixs.kLessThanOrEqualTo}{val.End}\"");
         }
 
+        [Given(@"I add the time period starting and ending in ""(.*)"" days in the future")]
+        public void GivenIaddthetimeperiodstartingandendinginDaysInTheFuture(int days)
+        {
+            var dateStart = DateTime.UtcNow.Date.AddDays(days).ToLocalTime();
+            var dateEnd = dateStart.AddDays(1);
+
+            var val = new Period(new FhirDateTime(dateStart), new FhirDateTime(dateEnd));
+            Given($"I add the parameter \"start\" with the value \"{FhirConst.Prefixs.kGreaterThanOrEqualTo}{val.Start}\"");
+            Given($"I add the parameter \"end\" with the value \"{FhirConst.Prefixs.kLessThanOrEqualTo}{val.End}\"");
+
+        }
+
         [Given(@"I add the parameter ""(.*)"" with the value ""(.*)""")]
         public void GivenIAddTheParameterWithTheValue(string parameterName, string parameterValue)
         {
@@ -173,7 +186,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I update the parameter ""(.*)"" with value ""(.*)""")]
         public void GivenIUpdateTheParameters(string key, string value)
         {
-             _httpContext.HttpRequestConfiguration.RequestParameters.UpdatetParameter(key, value);
+            _httpContext.HttpRequestConfiguration.RequestParameters.UpdatetParameter(key, value);
         }
 
         [Given(@"I add the parameter ""(.*)"" with the value or sitecode ""(.*)""")]

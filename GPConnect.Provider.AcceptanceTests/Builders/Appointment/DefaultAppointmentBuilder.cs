@@ -76,6 +76,26 @@
             IEnumerable<string> MetaProfile = new string[] { FhirConst.StructureDefinitionSystems.kAppointment };
             ApptMeta.Profile = MetaProfile;
 
+            string serviceType = "";
+            if (firstSlot.ServiceType != null)
+            {
+                if (firstSlot.ServiceType.Count() >= 1)
+                {
+                    serviceType = firstSlot.ServiceType.First().Text;
+                }
+
+            }
+
+            string serviceCategory = "";
+            if (schedule.ServiceCategory != null)
+            {
+                if (schedule.ServiceCategory.Text != null)
+                { 
+                serviceCategory = schedule.ServiceCategory.Text;
+                }
+
+            }
+
             //Initialize Appointment
             var appointment = new Appointment
             {
@@ -121,6 +141,25 @@
             // RMB 27/2/19
             //CodeableConcept type = new CodeableConcept("http://hl7.org/fhir/ValueSet/c80-practice-codes", "394802001", "General medicine", null);
             //appointment.AppointmentType = type;
+
+
+            //add serviceCategory
+            if (serviceCategory != "")
+            {
+                CodeableConcept sc = new CodeableConcept(null, null, null, serviceCategory);
+                appointment.ServiceCategory = sc;
+            }
+
+            //add serviceType
+            if (serviceType != "")
+            {
+                List<CodeableConcept> stList = new List<CodeableConcept>
+                {
+                        new CodeableConcept(null, null, null, serviceType)
+                };
+                appointment.ServiceType = stList;
+            }
+
 
             return appointment;
         }
