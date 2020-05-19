@@ -12,6 +12,7 @@ namespace GPConnect.Provider.AcceptanceTests.Context
         bool UseTLS { get; set; }
         bool UseTLSFoundationsAndAppmts { get; set; }
         bool UseTLSStructured { get; set; }
+        bool UseTLSDocuments { get; set; }
         bool ValidateServerCert { get; set; }
         bool SendClientCert { get; set; }
         string ClientCertThumbPrint { get; set; }
@@ -33,6 +34,7 @@ namespace GPConnect.Provider.AcceptanceTests.Context
             public const string kUseTLS = "useTLS";
             public const string kUeTLSFoundationsAndAppmts = "useTLSFoundationsAndAppmts";
             public const string kUseTLSStructured = "useTLSStructured";
+            public const string kUseTLSDocuments = "useTLSDocuments";
             public const string kValidateServerCert = "validateServerCert";
             public const string kSendClientCert = "sendClientCert";
             public const string kClientCertThumbPrint = "clientCertThumbPrint";
@@ -71,6 +73,17 @@ namespace GPConnect.Provider.AcceptanceTests.Context
                 _scenarioContext.Set(value, Context.kUseTLSStructured);
             }
         }
+
+        public bool UseTLSDocuments
+        {
+            get { return _scenarioContext.Get<bool>(Context.kUseTLSDocuments); }
+            set
+            {
+                Log.WriteLine("{0}={1}", Context.kUseTLSDocuments, value);
+                _scenarioContext.Set(value, Context.kUseTLSDocuments);
+            }
+        }
+
 
         public bool ValidateServerCert
         {
@@ -121,6 +134,7 @@ namespace GPConnect.Provider.AcceptanceTests.Context
             UseTLS = true;
             UseTLSFoundationsAndAppmts = AppSettingsHelper.UseTLSFoundationsAndAppmts;
             UseTLSStructured = AppSettingsHelper.UseTLSStructured;
+            UseTLSDocuments = AppSettingsHelper.UseTLSDocuments;
             ClientCertThumbPrint = AppSettingsHelper.ThumbprintSspValid;
             SendClientCert = AppSettingsHelper.SendClientCert;
             ValidateServerCert = AppSettingsHelper.ValidateServerCert;

@@ -23,6 +23,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         public string AuthTokenURL { get; set; }
         public string AuthTokenURLFoundationsAndAppmts { get; set; }
         public string AuthTokenURLStructured { get; set; }
+        public string AuthTokenURLDocuments { get; set; }
         public string RequestingDevice { get; set; }
         public string RequestingOrganization { get; set; }
         public string RequestingIdentity { get; set; }
@@ -49,6 +50,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
             AuthTokenURL = "";
             AuthTokenURLFoundationsAndAppmts = AppSettingsHelper.JwtAudValueFoundationsAndAppmts;
             AuthTokenURLStructured = AppSettingsHelper.JwtAudValueStructured;
+            AuthTokenURLDocuments = AppSettingsHelper.JwtAudValueDocuments;
             RequestingDevice = FhirHelper.GetDefaultDevice().ToFhirJson();
             RequestingOrganization = FhirHelper.GetDefaultOrganization().ToFhirJson();
             RequestingIdentityId = FhirHelper.GetDefaultPractitioner().Id;

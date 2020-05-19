@@ -26,15 +26,32 @@
             _httpContext.FhirResponse.Resource.ResourceType.ShouldBe(ResourceType.CapabilityStatement);
         }
 
-        [Then(@"the CapabilityStatement version should match the GP Connect specification release")]
-        public void TheCapabilityStatementVersionShouldMatchTheGPConnectSpecificationRelease()
+        [Then(@"the FoundationsAndAppmts CapabilityStatement version should match the GP Connect specification release")]
+        public void TheFoundationsAndAppmtsCapabilityStatementVersionShouldMatchTheGPConnectSpecificationRelease()
         {
             CapabilityStatements.ForEach(capabilityStatement =>
             {
-                capabilityStatement.Version.ShouldBe(AppSettingsHelper.GPConnectSpecVersion, $"The CapabilityStatement should match the specification version {AppSettingsHelper.GPConnectSpecVersion} but was {capabilityStatement.Version}");
+                capabilityStatement.Version.ShouldBe(AppSettingsHelper.GPConnectSpecVersionFoundationsAndAppmts, $"The FoundationsAndAppmts CapabilityStatement should match the specification version {AppSettingsHelper.GPConnectSpecVersionFoundationsAndAppmts} but was {capabilityStatement.Version}");
             });
         }
 
+        [Then(@"the Structured CapabilityStatement version should match the GP Connect specification release")]
+        public void TheStructuredCapabilityStatementVersionShouldMatchTheGPConnectSpecificationRelease()
+        {
+            CapabilityStatements.ForEach(capabilityStatement =>
+            {
+                capabilityStatement.Version.ShouldBe(AppSettingsHelper.GPConnectSpecVersionStructured, $"The Structured CapabilityStatement should match the specification version {AppSettingsHelper.GPConnectSpecVersionStructured} but was {capabilityStatement.Version}");
+            });
+        }
+
+        [Then(@"the Documents CapabilityStatement version should match the GP Connect specification release")]
+        public void TheDocumentsCapabilityStatementVersionShouldMatchTheGPConnectSpecificationRelease()
+        {
+            CapabilityStatements.ForEach(capabilityStatement =>
+            {
+                capabilityStatement.Version.ShouldBe(AppSettingsHelper.GPConnectSpecVersionDocuments, $"The Documents CapabilityStatement should match the specification version {AppSettingsHelper.GPConnectSpecVersionDocuments} but was {capabilityStatement.Version}");
+            });
+        }    
 
         [Then("the CapabilityStatement Format should contain XML and JSON")]
         public void TheCapabilityStatementFormatShouldContainXmlAndJson()

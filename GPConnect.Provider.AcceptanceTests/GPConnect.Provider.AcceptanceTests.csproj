@@ -196,6 +196,7 @@
     <Compile Include="Data\ODSCodeMap.cs" />
     <Compile Include="Data\NHSNoMap.cs" />
     <Compile Include="Data\PDS.cs" />
+    <Compile Include="Documents.feature.cs" />
     <Compile Include="Enum\GpConnectInteraction.cs" />
     <Compile Include="Extensions\BaseExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
@@ -308,6 +309,7 @@
     <Compile Include="StructuredUncategorised.feature.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Documents.feature" />
     <None Include="StructuredConsultations.feature" />
     <None Include="StructuredImmunizations.feature" />
     <None Include="StructuredInvestigations.feature" />

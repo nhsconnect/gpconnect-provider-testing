@@ -58,7 +58,9 @@
                     return MetadataReadConfiguration();
 				case GpConnectInteraction.StructuredMetaDataRead:
 					return StructuredMetaDataReadConfiguration();
-				default:
+                case GpConnectInteraction.DocumentsMetaDataRead:
+                    return DocumentsMetaDataReadConfiguration();
+                default:
                     return _httpRequestConfiguration;
             }
         }
@@ -245,5 +247,16 @@
 
 			return _httpRequestConfiguration;
 		}
-	}
+
+        private static HttpRequestConfiguration DocumentsMetaDataReadConfiguration()
+        {
+            _httpRequestConfiguration.HttpMethod = HttpMethod.Get;
+            _httpRequestConfiguration.RequestUrl = "metadata";
+
+            _httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.DocumentsMetaDataRead);
+
+            return _httpRequestConfiguration;
+        }
+
+    }
 }

@@ -19,7 +19,10 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         public static string DataDirectory => Get<string>("dataDirectory");
 
         // FHIR Settings
-        public static string GPConnectSpecVersion => Get<string>("gpConnectSpecVersion");
+        public static string GPConnectSpecVersionFoundationsAndAppmts => Get<string>("gpConnectSpecVersionFoundationsAndAppmts");
+        public static string GPConnectSpecVersionStructured => Get<string>("gpConnectSpecVersionStructured");
+        public static string GPConnectSpecVersionDocuments => Get<string>("gpConnectSpecVersionDocuments");
+
         public static string FhirDirectory => Get<string>("fhirDirectory");
         public static string FhirWebDirectory => Get<string>("fhirWebDirectory");
         public static bool FhirCheckWeb => Get<bool>("fhirCheckWeb");
@@ -29,6 +32,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         // Security Settings
         public static bool UseTLSFoundationsAndAppmts => Get<bool>("useTLSFoundationsAndAppmts");
         public static bool UseTLSStructured => Get<bool>("useTLSStructured");
+        public static bool UseTLSDocuments => Get<bool>("useTlsDocuments");
 
         // Server Settings
         public static string ServerUrlFoundationsAndAppmts => Get<string>("serverUrlFoundationsAndAppmts");
@@ -41,6 +45,12 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         public static string ServerHttpPortStructured => Get<string>("serverHttpPortStructured");
         public static string ServerBaseStructured => Get<string>("serverBaseStructured");
 
+        public static string ServerUrlDocuments => Get<string>("serverUrlDocuments");
+        public static string ServerHttpsPortDocuments => Get<string>("serverHttpsPortDocuments");
+        public static string ServerHttpPortDocuments => Get<string>("serverHttpPortDocuments");
+        public static string ServerBaseDocuments => Get<string>("serverBaseDocuments");
+
+        
         // Web Proxy Settings
         public static bool UseWebProxy => Get<bool>("useWebProxy");
         public static string WebProxyUrl => Get<string>("webProxyUrl");
@@ -92,13 +102,14 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         //public static string JwtAudValue => Get<string>("jwtAudValue");
         public static string JwtAudValueFoundationsAndAppmts => Get<string>("jwtAudValueFoundationsAndAppmts");
         public static string JwtAudValueStructured => Get<string>("jwtAudValueStructured");
+        public static string JwtAudValueDocuments => Get<string>("jwtAudValueDocuments");
 
 
         public static T Get<T>(string key)
         {
             var appSetting = ConfigurationManager.AppSettings[key];
 
-                if (!(key.Equals("serverHttpsPortFoundationsAndAppmts") || key.Equals("serverHttpPortFoundationsAndAppmts") || key.Equals("serverHttpsPortStructured") || key.Equals("serverHttpPortStructured")) && string.IsNullOrWhiteSpace(appSetting))
+                if (!(key.Equals("serverHttpsPortFoundationsAndAppmts") || key.Equals("serverHttpPortFoundationsAndAppmts") || key.Equals("serverHttpsPortStructured") || key.Equals("serverHttpPortStructured") || key.Equals("serverHttpsPortDocuments") || key.Equals("serverHttpPortDocuments")  ) && string.IsNullOrWhiteSpace(appSetting))
                 {
                     throw new ConfigurationErrorsException($"AppSettings Key='{key}' Not Found.");
                 }

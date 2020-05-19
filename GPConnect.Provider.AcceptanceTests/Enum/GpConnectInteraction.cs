@@ -29,6 +29,12 @@
 
         GpcGetStructuredRecord = 18,
 
-		StructuredMetaDataRead = 19
-	}
+		StructuredMetaDataRead = 19,
+
+        DocumentsMetaDataRead = 20,
+        DocumentsPatientSearch = 21,
+        DocumentsSearch = 22,
+        DocumentsRetrieve = 23
+
+    }
 }

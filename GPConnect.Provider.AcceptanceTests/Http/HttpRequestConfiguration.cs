@@ -27,11 +27,15 @@
 
         
         public string SspProtocol = "https://";
+
         public bool UseTlsFoundationsAndAppmts => ScenarioContext.Current.Get<bool>("useTLSFoundationsAndAppmts");
         public string ProtocolFoundationsAndAppmts => UseTlsFoundationsAndAppmts ? "https://" : "http://";
+
         public bool UseTlsStructured => ScenarioContext.Current.Get<bool>("useTLSStructured");
         public string ProtocolStructured => UseTlsStructured ? "https://" : "http://";
 
+        public bool UseTlsDocuments => ScenarioContext.Current.Get<bool>("useTLSDocuments");
+        public string ProtocolDocuments => UseTlsDocuments ? "https://" : "http://";
 
 
         // Web Proxy
@@ -78,7 +82,10 @@
         public string FhirServerPortStructured => UseTlsStructured ? FhirServerHttpsPortStructured : FhirServerHttpPortStructured;
         public string FhirServerFhirBaseStructured { get; set; }
 
-        // PG - 27/3/2019 - SSP has been upgraded and will not allow a port number in the URL - so change below removes port when UseTls is true in app.config 
+        public string FhirServerUrlDocuments { get; set; }
+        public string FhirServerPortDocuments => UseTlsDocuments ? FhirServerHttpsPortDocuments : FhirServerHttpPortDocuments;
+        public string FhirServerFhirBaseDocuments { get; set; }
+
         public string ProviderAddress
         {
             get
@@ -96,6 +103,20 @@
                     else
                     {
                         return ProtocolStructured + ((FhirServerPortStructured != "") ? FhirServerUrlStructured + ":" + FhirServerPortStructured + FhirServerFhirBaseStructured : FhirServerUrlStructured + FhirServerFhirBaseStructured);
+
+                    }
+                }
+                //Documents
+                else if (currentInteraction == SpineConst.InteractionIds.DocumentsMetaDataRead || currentInteraction == SpineConst.InteractionIds.DocumentsPatientSearch || currentInteraction == SpineConst.InteractionIds.DocumentsRetrieve || currentInteraction == SpineConst.InteractionIds.DocumentsSearch)
+                {
+                    if (UseTlsDocuments)
+                    {
+                        return ProtocolDocuments + ((FhirServerPortDocuments != "") ? FhirServerUrlDocuments + FhirServerFhirBaseDocuments : FhirServerUrlDocuments + FhirServerFhirBaseDocuments);
+
+                    }
+                    else
+                    {
+                        return ProtocolDocuments + ((FhirServerPortDocuments != "") ? FhirServerUrlDocuments + ":" + FhirServerPortDocuments + FhirServerFhirBaseDocuments : FhirServerUrlStructured + FhirServerFhirBaseDocuments);
 
                     }
                 }
@@ -147,6 +168,18 @@
                     baseUrl = sspAddress + ProtocolStructured + ((FhirServerPortStructured != "") ? FhirServerUrlStructured + ":" + FhirServerPortStructured + FhirServerFhirBaseStructured : FhirServerUrlStructured + FhirServerFhirBaseStructured);
                 }
             }
+            //Documents
+            else if (currentInteraction == SpineConst.InteractionIds.DocumentsMetaDataRead || currentInteraction == SpineConst.InteractionIds.DocumentsPatientSearch || currentInteraction == SpineConst.InteractionIds.DocumentsRetrieve || currentInteraction == SpineConst.InteractionIds.DocumentsSearch)
+            {
+                if (UseTlsDocuments)
+                {
+                    baseUrl = sspAddress + ProtocolDocuments + ((FhirServerPortDocuments != "") ? FhirServerUrlDocuments + FhirServerFhirBaseDocuments : FhirServerUrlDocuments + FhirServerFhirBaseDocuments);
+                }
+                else
+                {
+                    baseUrl = sspAddress + ProtocolDocuments + ((FhirServerPortDocuments != "") ? FhirServerUrlDocuments + ":" + FhirServerPortDocuments + FhirServerFhirBaseDocuments : FhirServerUrlDocuments + FhirServerFhirBaseDocuments);
+                }
+            }
             //Foundations and Appointments
             else
             {
@@ -186,6 +219,10 @@
             FhirServerHttpsPortStructured = AppSettingsHelper.ServerHttpsPortStructured;
             FhirServerFhirBaseStructured = AppSettingsHelper.ServerBaseStructured;
 
+            FhirServerUrlDocuments = AppSettingsHelper.ServerUrlDocuments;
+            FhirServerHttpPortDocuments = AppSettingsHelper.ServerHttpPortDocuments;
+            FhirServerHttpsPortDocuments = AppSettingsHelper.ServerHttpsPortDocuments;
+            FhirServerFhirBaseDocuments = AppSettingsHelper.ServerBaseDocuments;
 
             UseWebProxy = AppSettingsHelper.UseWebProxy;
             WebProxyUrl = AppSettingsHelper.WebProxyUrl;
@@ -205,6 +242,9 @@
 
         public string FhirServerHttpPortStructured { get; set; }
         public string FhirServerHttpsPortStructured { get; set; }
+
+        public string FhirServerHttpPortDocuments { get; set; }
+        public string FhirServerHttpsPortDocuments { get; set; }
 
         public Parameters BodyParameters { get; set; }
 

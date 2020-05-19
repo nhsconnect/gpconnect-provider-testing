@@ -2,12 +2,28 @@
 Feature: FHIR
 
 @1.3.2-IncrementalAndRegression
-Scenario: Fhir Get MetaData
+Scenario: Fhir Get and Check Version of Foundations And Appointments MetaData
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
 		And the Response Resource should be a CapabilityStatement
-		And the CapabilityStatement version should match the GP Connect specification release
+		And the FoundationsAndAppmts CapabilityStatement version should match the GP Connect specification release
+
+@1.5.0-IncrementalAndRegression @structured
+Scenario: Fhir Get and Check Version of Structured MetaData
+	Given I configure the default "StructuredMetaDataRead" request
+	When I make the "MetadataRead" request
+	Then the response status code should indicate success
+		And the Response Resource should be a CapabilityStatement
+		And the Structured CapabilityStatement version should match the GP Connect specification release
+
+@1.5.0-IncrementalAndRegression @Documents
+Scenario: Fhir Get and Check Version of Documents MetaData
+	Given I configure the default "DocumentsMetaDataRead" request
+	When I make the "MetadataRead" request
+	Then the response status code should indicate success
+		And the Response Resource should be a CapabilityStatement
+		And the Documents CapabilityStatement version should match the GP Connect specification release
 
 Scenario: CapabilityStatement profile indicates acceptance of xml and json format
 	Given I configure the default "MetadataRead" request
@@ -172,7 +188,8 @@ Examples:
 | https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Specimen-1			      |
 | https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-ProcedureRequest-1         |
 | https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-ReferralRequest-1          |
-  
+
+@structured  
 Scenario Outline: CapabilityStatement GetStructuredMetaDataRead operation returns correct profile versions
 Given I configure the default "StructuredMetaDataRead" request
 	When I make the "StructuredMetaDataRead" request
@@ -201,6 +218,7 @@ Examples:
 | https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-ProcedureRequest-1/_history/1.3        |
 | https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-ReferralRequest-1/_history/1.2         |
           
+@structured 
 Scenario: CapabilityStatement profile supports the GetStructuredMetaDataRead operation
 Given I configure the default "StructuredMetaDataRead" request
 	When I make the "StructuredMetaDataRead" request

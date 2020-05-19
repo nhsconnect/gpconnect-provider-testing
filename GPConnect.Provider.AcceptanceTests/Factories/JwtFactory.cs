@@ -28,6 +28,7 @@
                 case GpConnectInteraction.LocationRead:
                 case GpConnectInteraction.SearchForFreeSlots:
                 case GpConnectInteraction.StructuredMetaDataRead:
+                case GpConnectInteraction.DocumentsMetaDataRead:
                     jwtHelper.RequestedScope = JwtConst.Scope.kOrganizationRead;
                     break;
                 case GpConnectInteraction.GpcGetCareRecord:
@@ -51,6 +52,12 @@
 
             switch (_gpConnectInteraction)
             {
+                case GpConnectInteraction.DocumentsMetaDataRead:
+                case GpConnectInteraction.DocumentsPatientSearch:
+                case GpConnectInteraction.DocumentsRetrieve:
+                case GpConnectInteraction.DocumentsSearch:
+                    jwtHelper.AuthTokenURL = AppSettingsHelper.JwtAudValueDocuments;
+                    break;
                 case GpConnectInteraction.StructuredMetaDataRead:
                 case GpConnectInteraction.GpcGetStructuredRecord:
                     jwtHelper.AuthTokenURL = AppSettingsHelper.JwtAudValueStructured;
