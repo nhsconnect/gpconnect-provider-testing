@@ -552,6 +552,7 @@ testRunner.Given("I configure the default \"MetadataRead\" request", ((string)(n
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("CapabilityStatement profile supports the GetStructuredMetaDataRead operation")]
         [NUnit.Framework.CategoryAttribute("1.2.6-IncrementalAndRegression")]
+        [NUnit.Framework.CategoryAttribute("structuredrecord")]
         [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Patient-1/_history/1" +
             ".8", null)]
         [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Organization-1/_hist" +
@@ -561,14 +562,14 @@ testRunner.Given("I configure the default \"MetadataRead\" request", ((string)(n
         [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-PractitionerRole-1/_" +
             "history/1.2", null)]
         [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-AllergyIntolerance-1" +
-            "/_history/1.6", null)]
+            "/_history/1.7", null)]
         [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Medication-1/_histor" +
             "y/1.2", null)]
         [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-MedicationStatement-" +
-            "1/_history/1.6", null)]
+            "1/_history/1.7", null)]
         [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-MedicationRequest-1/" +
-            "_history/1.5", null)]
-        [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-List-1/_history/1.1", null)]
+            "_history/1.7", null)]
+        [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-List-1/_history/1.2", null)]
         [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-StructuredRecord-Bundle-1/" +
             "_history/1.3", null)]
         [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-OperationOutcome-1/_histor" +
@@ -576,7 +577,8 @@ testRunner.Given("I configure the default \"MetadataRead\" request", ((string)(n
         public virtual void CapabilityStatementProfileSupportsTheGetStructuredMetaDataReadOperation(string urlToCheck, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "1.2.6-IncrementalAndRegression"};
+                    "1.2.6-IncrementalAndRegression",
+                    "structuredrecord"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));

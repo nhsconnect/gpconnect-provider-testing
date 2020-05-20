@@ -46,6 +46,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _httpSteps.MakeRequest(GpConnectInteraction.SearchForFreeSlots);
         }
 
+        [Given(@"I get Available Free Slots with org type ""(.*)""")]
+        public void GetAvailableFreeSlots(Boolean orgType)
+        {
+            _httpSteps.ConfigureRequest(GpConnectInteraction.SearchForFreeSlots);
+
+            _jwtSteps.SetTheJwtRequestedScopeToOrganizationRead();
+            SetRequiredParametersWithOrgTypeAndATimePeriod(14, orgType);
+
+            _httpSteps.MakeRequest(GpConnectInteraction.SearchForFreeSlots);
+        }
+
         [Given(@"I get Available Free Slots Searching ""(.*)"" days in future")]
         public void GetAvailableFreeSlotsSearchingXDaysInFuture(int days)
         {
