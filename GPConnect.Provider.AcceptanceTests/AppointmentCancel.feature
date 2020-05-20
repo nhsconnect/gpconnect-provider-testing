@@ -348,7 +348,6 @@ Scenario: I perform cancel appointment with participants with absoulte reference
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
-@1.2.7-IncrementalAndRegression
 Scenario: Successfully Cancel an appointment that has serviceCategory populated
 	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1"
 		And I store the Created Appointment
@@ -375,7 +374,6 @@ Scenario: Successfully Cancel an appointment that has serviceCategory populated
 		And the Appointment Not In Use should be valid
 		And One Appointment contains serviceCategory element
 
-@1.2.7-IncrementalAndRegression
 Scenario: Successfully Cancel an appointment that has serviceType populated
 	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1"
 		And I store the Created Appointment
@@ -402,7 +400,6 @@ Scenario: Successfully Cancel an appointment that has serviceType populated
 		And the Appointment Not In Use should be valid
 		And One Appointment contains serviceType element
 
-@1.2.7-IncrementalAndRegression
 Scenario: Successfully Cancel an appointment ensuring backwards compatibility with consumers that do not send ServiceCategory And serviceType expect success
 	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1"
 		And I store the Created Appointment
@@ -429,7 +426,3 @@ Scenario: Successfully Cancel an appointment ensuring backwards compatibility wi
 		And the Appointment PractitionerRole must be valid
 		And the Appointment Not In Use should be valid
 		And One Appointment contains serviceType element
-
-
-
-

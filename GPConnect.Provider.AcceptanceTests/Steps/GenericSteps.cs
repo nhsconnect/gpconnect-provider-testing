@@ -238,7 +238,7 @@
                 {
                     //writes overall stats first
                     file.WriteLine("****************************************************************");
-                    file.WriteLine("Overall Stats from test Run: Total=" + (GlobalContext.CountTestRunPassed + GlobalContext.CountTestRunFailed).ToString() + "  Passed=" + GlobalContext.CountTestRunPassed.ToString() + "  Failed: " + GlobalContext.CountTestRunFailed.ToString());
+                    file.WriteLine("Overall Stats From Test Run: Total=" + (GlobalContext.CountTestRunPassed + GlobalContext.CountTestRunFailed).ToString() + "  Passed=" + GlobalContext.CountTestRunPassed.ToString() + "  Failed: " + GlobalContext.CountTestRunFailed.ToString());
                     file.WriteLine("****************************************************************");
 
                     //Add information about the test run
@@ -260,6 +260,12 @@
                     file.WriteLine("serverPort - Structured HTTPS : " + AppSettingsHelper.ServerHttpsPortStructured);
                     file.WriteLine("serverBase - Structured : " + AppSettingsHelper.ServerBaseStructured);
 
+                    file.WriteLine("UseTLSDocuments Flag : " + AppSettingsHelper.UseTLSDocuments.ToString());
+                    file.WriteLine("jwtAudValueDocuments : " + AppSettingsHelper.JwtAudValueDocuments);
+                    file.WriteLine("serverURL - Documents : " + AppSettingsHelper.ServerUrlDocuments);
+                    file.WriteLine("serverPort - Documents - HTTP : " + AppSettingsHelper.ServerHttpPortDocuments);
+                    file.WriteLine("serverPort - Documents HTTPS : " + AppSettingsHelper.ServerHttpsPortDocuments);
+                    file.WriteLine("serverBase - Documents : " + AppSettingsHelper.ServerBaseDocuments);
 
                     file.WriteLine("useSpineProxy Flag : " + AppSettingsHelper.UseSpineProxy.ToString());
                     file.WriteLine("spineProxyUrl : " + AppSettingsHelper.SpineProxyUrl.ToString());
