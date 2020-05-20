@@ -16,7 +16,7 @@ Scenario: Book single appointment for patient
 Scenario Outline: Book single appointment for patient with optional elements
 	Given I get an existing patients nshNumber
 		And I store the Patient
-	Given I get Available Free Slots
+	Given I get Available Free Slots with org type "<OrgType>" 
 		And I store the Free Slots Bundle
 	Given I configure the default "AppointmentCreate" request
 		And I create an Appointment with org type "<OrgType>" with channel "<DeliveryChannel>" with prac role "<PracRole>"
