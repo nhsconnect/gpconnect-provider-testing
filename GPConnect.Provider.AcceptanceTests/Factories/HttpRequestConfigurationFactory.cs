@@ -265,12 +265,6 @@
             _httpRequestConfiguration.HttpMethod = HttpMethod.Get;
             _httpRequestConfiguration.RequestUrl = "Patient/" + _httpRequestConfiguration.GetRequestId + "/DocumentReference";
             _httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.DocumentsSearch);
-            //_httpRequestConfiguration.RequestParameters.AddParameter("_include", "DocumentReference:subject:9658218873");
-            _httpRequestConfiguration.RequestParameters.AddParameter("_include", "DocumentReference:subject:Patient");
-            _httpRequestConfiguration.RequestParameters.AddParameter("_include", "DocumentReference:custodian:Organization");
-            _httpRequestConfiguration.RequestParameters.AddParameter("_include", "DocumentReference:author:Organization");
-            _httpRequestConfiguration.RequestParameters.AddParameter("_include", "DocumentReference:author:Practitioner");
-            _httpRequestConfiguration.RequestParameters.AddParameter("_revinclude:recurse", "PractitionerRole:practitioner");
 
             return _httpRequestConfiguration;
         }

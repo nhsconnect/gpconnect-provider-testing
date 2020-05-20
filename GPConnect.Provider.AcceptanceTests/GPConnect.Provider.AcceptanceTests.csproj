@@ -254,6 +254,7 @@
     <Compile Include="SearchForFreeSlots.feature.cs" />
     <Compile Include="Security.feature.cs" />
     <Compile Include="SSP.feature.cs" />
+    <Compile Include="Steps\DocumentsSteps.cs" />
     <Compile Include="Steps\StructuredConsultationsSteps.cs" />
     <Compile Include="Steps\StructuredImmunizationsSteps.cs" />
     <Compile Include="Steps\StructuredInvestigationsSteps.cs" />

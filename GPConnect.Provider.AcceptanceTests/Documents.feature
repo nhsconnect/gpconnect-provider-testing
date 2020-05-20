@@ -7,6 +7,8 @@ Scenario: Searching for Documents for a Patient with Documents
 	Given I add an NHS Number to GlobalContext for "patient2"
 	Given I configure the default "DocumentsSearch" request
 		And I set the JWT Requested Scope to Organization Read
-	Then the response status code should indicate success
+		And I set the required parameters for a Documents Search call
+	When I make the "DocumentsSearch" request
+		Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
 
