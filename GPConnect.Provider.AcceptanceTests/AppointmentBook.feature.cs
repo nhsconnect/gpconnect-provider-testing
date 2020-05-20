@@ -126,7 +126,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 18
   testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 19
- testRunner.Given("I get Available Free Slots", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I get Available Free Slots with org type \"{0}\"", orgType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 20
   testRunner.And("I store the Free Slots Bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 21
