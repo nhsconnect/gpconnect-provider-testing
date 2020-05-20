@@ -304,66 +304,6 @@ Scenario: Successfully amend comment and description on an appointment when send
 		And the Appointment DeliveryChannel must be valid
 		And the Appointment PractitionerRole must be valid
 		And the Appointment Not In Use should be valid
-
-#Note : Will fail against Demonstrator as that has stricter validation than the providers and will fail if you attempt to change ServiceCategory
-@1.2.7-IncrementalAndRegression
-Scenario: Successfully amend appointment that has ServiceCategory set attempting to change ServiceCategory from original value in request but provider ignores
-	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1"
-		And I store the Created Appointment
-	Given I configure the default "AppointmentAmend" request
-		And I set the Created Appointment Description to "TestChangedDescription"
-		And I set the Created Appointment Comment to "TestChangedComment"
-		And I set the Created Appointment ServiceCategory to "Test -ServiceCategory"
-	When I make the "AppointmentAmend" request
-	Then the response status code should indicate success
-		And the Response Resource should be an Appointment
-		And the Appointments returned must be in the future
-		And the Appointment Metadata should be valid
-		And the Appointment Status should be valid
-		And the Appointment Start should be valid
-		And the Appointment End should be valid
-		And the Appointment Slots should be valid
-		And the Appointment Participants should be valid and resolvable
-		And the Appointment Priority should be valid
-		And the Appointment Participant Type and Actor should be valid
-		And the Appointment Identifiers should be valid
-		And the Appointment Description should be valid for "TestChangedDescription"
-		And the Appointment Comment should be valid for "TestChangedComment"
-		And the Appointment Created must be valid
-		And the Appointment DeliveryChannel must be valid
-		And the Appointment PractitionerRole must be valid
-		And the Appointment Not In Use should be valid
-		And the Appointment ServiceCategory should NOT be "Test -ServiceCategory"
-
-#Note : Will fail against Demonstrator as that has stricter validation than the providers and will fail if you attempt to change ServiceType
-@1.2.7-IncrementalAndRegression
-Scenario: Successfully amend appointment that has ServiceType set attempting to change ServiceType from original value in request but provider ignores
-	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1"
-		And I store the Created Appointment
-	Given I configure the default "AppointmentAmend" request
-		And I set the Created Appointment Description to "TestChangedDescription"
-		And I set the Created Appointment Comment to "TestChangedComment"
-		And I set the Created Appointment ServiceType to "Test-ServiceType"
-	When I make the "AppointmentAmend" request
-	Then the response status code should indicate success
-		And the Response Resource should be an Appointment
-		And the Appointments returned must be in the future
-		And the Appointment Metadata should be valid
-		And the Appointment Status should be valid
-		And the Appointment Start should be valid
-		And the Appointment End should be valid
-		And the Appointment Slots should be valid
-		And the Appointment Participants should be valid and resolvable
-		And the Appointment Priority should be valid
-		And the Appointment Participant Type and Actor should be valid
-		And the Appointment Identifiers should be valid
-		And the Appointment Description should be valid for "TestChangedDescription"
-		And the Appointment Comment should be valid for "TestChangedComment"
-		And the Appointment Created must be valid
-		And the Appointment DeliveryChannel must be valid
-		And the Appointment PractitionerRole must be valid
-		And the Appointment Not In Use should be valid
-		And the Appointment ServiceType should NOT be "Test-ServiceType"
 	
 @1.2.7-IncrementalAndRegression
 Scenario: Successfully amend appointment ensuring backwards compatibility with consumers that do not send ServiceCategory And serviceType expect success
