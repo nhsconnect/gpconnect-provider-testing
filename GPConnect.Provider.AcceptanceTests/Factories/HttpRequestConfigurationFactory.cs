@@ -62,6 +62,8 @@
                     return DocumentsMetaDataReadConfiguration();
                 case GpConnectInteraction.DocumentsSearch:
                     return DocumentsSearchConfiguration();
+                case GpConnectInteraction.DocumentsPatientSearch:
+                    return DocumentsPatientSearchConfiguration();
                 default:
                     return _httpRequestConfiguration;
             }
@@ -265,6 +267,16 @@
             _httpRequestConfiguration.HttpMethod = HttpMethod.Get;
             _httpRequestConfiguration.RequestUrl = "Patient/" + _httpRequestConfiguration.GetRequestId + "/DocumentReference";
             _httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.DocumentsSearch);
+
+            return _httpRequestConfiguration;
+        }
+
+
+        private static HttpRequestConfiguration DocumentsPatientSearchConfiguration()
+        {
+            _httpRequestConfiguration.HttpMethod = HttpMethod.Get;
+            _httpRequestConfiguration.RequestUrl = "Patient";
+            _httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.DocumentsPatientSearch);
 
             return _httpRequestConfiguration;
         }
