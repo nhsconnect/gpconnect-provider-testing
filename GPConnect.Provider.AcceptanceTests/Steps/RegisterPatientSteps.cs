@@ -823,13 +823,13 @@
             }
         }
 
-        [Given(@"I store the patient in the register patient resource format")]
+        [Then(@"I store the patient in the register patient resource format")]
         public void GivenIStoreThePatientInTheRegisterPatientResourceFormat()
         {
             Patients.Count.ShouldBeGreaterThanOrEqualTo(1, "No patients were returned for the patient search.");
 
             var patient = Patients.First();
-            
+
             var registerPatient = new Patient();
 
             var identifier = patient.Identifier.FirstOrDefault(x => x.System == FhirConst.IdentifierSystems.kNHSNumber);
@@ -843,33 +843,33 @@
 
             if (name != null)
             {
-                registerPatient.Name.Add(NameHelper.CreateOfficialName("GPConnectGivenName", "GPConnectFamilyName"));
+                registerPatient.Name.Add(name);
             }
 
             registerPatient.Gender = patient.Gender ?? AdministrativeGender.Unknown;
             registerPatient.BirthDateElement = patient.BirthDateElement ?? new Date();
 
+            var patientMeta = new Meta();
+            {
+                IEnumerable<string> MetaProfile = new string[] { FhirConst.StructureDefinitionSystems.kPatient };
+                patientMeta.Profile = MetaProfile;
+            }
+            registerPatient.Meta = patientMeta;
+
+            registerPatient.Identifier = new List<Identifier>();
+            var nhsNumber = GlobalContext.PatientNhsNumberMap["patient1"];
+
+            var patientIdentifier = new Identifier(FhirConst.IdentifierSystems.kNHSNumber, nhsNumber);
+            patientIdentifier.Extension.Add(new Extension
+            {
+                Url = FhirConst.StructureDefinitionSystems.kExtCcGpcNhsNumVerification,
+                Value = new CodeableConcept(FhirConst.CodeSystems.kCcNhsNumVerification, "01", "Number present and verified", null)
+            });
+
+            registerPatient.Identifier.Add(patientIdentifier);
+
             _fhirResourceRepository.Patient = registerPatient;
-
-			//SJD 14/08/2019 meta.profile and identifier added to request payload
-			var patientMeta = new Meta();
-			{
-				IEnumerable<string> MetaProfile = new string[] { FhirConst.StructureDefinitionSystems.kPatient };
-				patientMeta.Profile = MetaProfile;
-			}
-			registerPatient.Meta = patientMeta;
-
-			registerPatient.Identifier = new List<Identifier>();
-			var nhsNumber = GlobalContext.PatientNhsNumberMap["patient1"];
-			var patientIdentifier = new Identifier(FhirConst.IdentifierSystems.kNHSNumber, nhsNumber);
-			patientIdentifier.Extension.Add(new Extension
-			{
-				Url = FhirConst.StructureDefinitionSystems.kExtCcGpcNhsNumVerification,
-				Value = new CodeableConcept(FhirConst.CodeSystems.kCcNhsNumVerification, "01", "Number present and verified", null)
-			});
-
-			registerPatient.Identifier.Add(patientIdentifier);
-		}
+        }
 
         [Given(@"I Set the Stored Patient Registration Details Extension")]
         public void GivenISetTheStoredPatientRegistrationDetailsExtension()
