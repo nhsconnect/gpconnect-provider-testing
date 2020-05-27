@@ -173,16 +173,20 @@ Scenario: Register patient with duplicate patient resource parameters
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 			
-Scenario: Register patient which alread exists on the system as a normal patient
-	Given I get an existing patients nshNumber
-		And I store the patient in the register patient resource format
+Scenario: Register patient1 which already exists on the system as a normal patient
+	Given I configure the default "PatientSearch" request
+		And I add a Patient Identifier parameter with default System and Value "patient1"
+		When I make the "PatientSearch" request
+		Then the response should be a Bundle resource of type "searchset"
+		And the response bundle should contain a single Patient resource
+		Then I store the patient in the register patient resource format
 	Given I configure the default "RegisterPatient" request
 		And I add the Stored Patient as a parameter
-	When I make the "RegisterPatient" request
-	Then the response status code should be "409"
+		When I make the "RegisterPatient" request
+		Then the response status code should be "409"
 		And the response should be a OperationOutcome resource with error code "DUPLICATE_REJECTED"
 
-Scenario: Register patient which alread exists on the system as a temporary patient
+Scenario: Register patient which already exists on the system as a temporary patient
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
 		And I add the Stored Patient as a parameter
