@@ -35,6 +35,8 @@
         public List<ReferralRequest> ReferralRequests => GetResources<ReferralRequest>();
         public List<ProcedureRequest> ProcedureRequests => GetResources<ProcedureRequest>();
         public List<Specimen> Specimens => GetResources<Specimen>();
+        public List<DocumentReference> Documents => GetResources<DocumentReference>();
+        public Binary BinaryDocument => (Binary)Resource;
 
         private List<T> GetResources<T>() where T : Resource
         {
@@ -79,7 +81,8 @@
             {typeof(DiagnosticReport), ResourceType.DiagnosticReport},
             {typeof(ReferralRequest), ResourceType.ReferralRequest},
             {typeof(ProcedureRequest), ResourceType.ProcedureRequest},
-            {typeof(Specimen), ResourceType.Specimen}
+            {typeof(Specimen), ResourceType.Specimen},
+            {typeof(DocumentReference), ResourceType.DocumentReference}
 
         };
     }

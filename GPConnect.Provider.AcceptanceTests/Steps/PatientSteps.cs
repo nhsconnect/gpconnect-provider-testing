@@ -642,15 +642,5 @@
             });
         }
 
-        [Given(@"I add an NHS Number to GlobalContext for ""(.*)""")]
-        public void AddAnNhsNumberGlobalContextFor(string patient)
-        {
-            //var nhsNumber = GlobalContext.PatientNhsNumberMap[patient];
-            var nhsNumber = "2";
-            //_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetCareRecordParams.kPatientNHSNumber, NhsNumberHelper.GetDefaultIdentifier(nhsNumber));
-            _httpContext.HttpRequestConfiguration.GetRequestId = nhsNumber;
-        }
-
-
     }
 }

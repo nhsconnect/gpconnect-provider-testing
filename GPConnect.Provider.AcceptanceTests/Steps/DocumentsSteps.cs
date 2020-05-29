@@ -5,6 +5,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using Context;
     using Enum;
     using Hl7.Fhir.Model;
@@ -24,6 +25,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         private List<Slot> Slots => _httpContext.FhirResponse.Slots;
         private List<Schedule> Schedules => _httpContext.FhirResponse.Schedules;
+        private List<DocumentReference> Documents => _httpContext.FhirResponse.Documents;
+        private Binary BinaryDocument => _httpContext.FhirResponse.BinaryDocument;
 
         public DocumentsSteps(HttpContext httpContext, HttpSteps httpSteps, BundleSteps bundleSteps, JwtSteps jwtSteps, HttpRequestConfigurationSteps httpRequestConfigurationSteps, IFhirResourceRepository fhirResourceRepository)
             : base(httpSteps)
@@ -39,19 +42,38 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I set the required parameters for a Documents Search call")]
         public void SetRequiredParametersWithTimePeriod()
         {
-            //_httpRequestConfigurationSteps.GivenIAddTheTimePeriodParametersforDaysStartingTomorrowWithStartEndPrefix(days, "ge", "le");
-            //_httpRequestConfigurationSteps.GivenIAddTheParameterWithTheValue("status", "free");
-            //_httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/Id/ods-organization-code" + '|' + GlobalContext.OdsCodeMap["ORG1"]);
-            //_httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/STU3/CodeSystem/GPConnect-OrganisationType-1" + '|' + "urgent-care");
-            
-
             _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("_include", "DocumentReference:subject:Patient");
             _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("_include", "DocumentReference:custodian:Organization");
             _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("_include", "DocumentReference:author:Organization");
             _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("_include", "DocumentReference:author:Practitioner");
             _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("_revinclude:recurse", "PractitionerRole:practitioner");
+        }
 
+
+        [Then(@"I save a document url for retrieving later")]
+        public void Isaveadocumenturlforretrievinglater()
+        {
+            Documents.Count().ShouldBeGreaterThanOrEqualTo(1, "Fail :Expect atleast One DocumentReference Returned for Test");
+
+            GlobalContext.DocumentURL = Documents.FirstOrDefault().Content.FirstOrDefault().Attachment.Url;
+            Logger.Log.WriteLine("Info : Found Document URL in DocumentReference : " + GlobalContext.DocumentURL);
+
+        }
+
+        [Then(@"I save the binary document from the retrieve")]
+        public void Isavethebinarydocumentfromtheretrieve()
+        {
+            BinaryDocument.ShouldNotBeNull("Fail : Expect Binary Document to have been Returned - failed to retrieve one");
+            
+            
+            File.WriteAllBytes("c:\\testdoc.xml", BinaryDocument.Content);
+
+            //put content of mime encoded doc on  global context so it can be saved into evidence folder
+            
+            //need to add new variable for content on globalcontext
+            //GlobalContext.DocumentURL
         }
 
     }
 }
+

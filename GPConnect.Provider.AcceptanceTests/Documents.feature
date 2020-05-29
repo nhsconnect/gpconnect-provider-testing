@@ -1,21 +1,9 @@
 ﻿@Documents @1.5.0-Full-Pack
 Feature: Documents
 
-Scenario: Searching for Documents for a Patient with Documents
-	#Given I get the Patient for Patient Value "patient2"
-	#	And I store the Patient
-	Given I add an NHS Number to GlobalContext for "patient2"
-	Given I configure the default "DocumentsSearch" request
-		And I set the JWT Requested Scope to Organization Read
-		And I set the required parameters for a Documents Search call
-	When I make the "DocumentsSearch" request
-		Then the response status code should indicate success
-		And the response should be a Bundle resource of type "searchset"
-
-
-Scenario Outline: Documents Patient search response conforms with the GPConnect specification
+Scenario: Documents Patient search and check response conforms with the GPConnect specification
 	Given I configure the default "DocumentsPatientSearch" request
-		And I add a Patient Identifier parameter with default System and Value "<Patient>"
+		And I add a Patient Identifier parameter with default System and Value "patient2"
 	When I make the "DocumentsPatientSearch" request
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
@@ -35,11 +23,38 @@ Scenario Outline: Documents Patient search response conforms with the GPConnect 
 		And the Patient Link should be valid and resolvable
 		And the Patient Contact Telecom use should be valid
 		And the Patient Not In Use should be valid
-	Examples:
-		| Patient   |
-		| patient1  |
-		| patient2  |
-		| patient3  |
-		| patient4  |
-		| patient5  |
-		| patient6  |
+
+Scenario: Searching for Documents on a Patient with Documents
+	Given I configure the default "DocumentsPatientSearch" request
+		And I add a Patient Identifier parameter with default System and Value "patient2"
+		When I make the "DocumentsPatientSearch" request
+		Then the response status code should indicate success
+		Given I store the Patient
+	Given I configure the default "DocumentsSearch" request
+		And I set the JWT Requested Scope to Organization Read
+		And I set the required parameters for a Documents Search call
+	When I make the "DocumentsSearch" request
+		Then the response status code should indicate success
+		And the response should be a Bundle resource of type "searchset"
+
+
+
+
+		
+Scenario: Retrieve a Document for Patient2
+	Given I configure the default "DocumentsPatientSearch" request
+		And I add a Patient Identifier parameter with default System and Value "patient2"
+		When I make the "DocumentsPatientSearch" request
+		Then the response status code should indicate success
+		Given I store the Patient
+	Given I configure the default "DocumentsSearch" request
+		And I set the JWT Requested Scope to Organization Read
+		And I set the required parameters for a Documents Search call
+	When I make the "DocumentsSearch" request
+		Then the response status code should indicate success
+		And the response should be a Bundle resource of type "searchset"
+		And I save a document url for retrieving later
+	Given I configure the default "DocumentsRetrieve" request
+		When I make the "DocumentsRetrieve" request
+		Then the response status code should indicate success
+		And I save the binary document from the retrieve

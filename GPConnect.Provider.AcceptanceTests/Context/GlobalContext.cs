@@ -49,5 +49,6 @@
         public static int CountTestRunPassed { get; set; }
         public static int CountTestRunFailed { get; set; }
 
+        public static string DocumentURL { get; set; }
     }
 }

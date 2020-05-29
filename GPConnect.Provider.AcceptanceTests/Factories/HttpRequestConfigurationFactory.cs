@@ -3,6 +3,7 @@
     using System.Net.Http;
     using Constants;
     using Enum;
+    using GPConnect.Provider.AcceptanceTests.Context;
     using Http;
 
     public class HttpRequestConfigurationFactory
@@ -64,6 +65,8 @@
                     return DocumentsSearchConfiguration();
                 case GpConnectInteraction.DocumentsPatientSearch:
                     return DocumentsPatientSearchConfiguration();
+                case GpConnectInteraction.DocumentsRetrieve:
+                    return DocumentsRetrieveConfiguration();
                 default:
                     return _httpRequestConfiguration;
             }
@@ -277,6 +280,15 @@
             _httpRequestConfiguration.HttpMethod = HttpMethod.Get;
             _httpRequestConfiguration.RequestUrl = "Patient";
             _httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.DocumentsPatientSearch);
+
+            return _httpRequestConfiguration;
+        }
+
+        private static HttpRequestConfiguration DocumentsRetrieveConfiguration()
+        {
+            _httpRequestConfiguration.HttpMethod = HttpMethod.Get;
+            _httpRequestConfiguration.RequestUrl = GlobalContext.DocumentURL;
+            _httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.DocumentsRetrieve);
 
             return _httpRequestConfiguration;
         }

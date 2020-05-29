@@ -226,3 +226,20 @@ Given I configure the default "StructuredMetaDataRead" request
 	And the CapabilityStatement REST Operations should contain "gpc.getstructuredrecord"
 	And the CapabilityStatement Operation "gpc.getstructuredrecord" has url "https://fhir.nhs.uk/STU3/OperationDefinition/GPConnect-GetStructuredRecord-Operation-1/_history/1.15" 
 	
+@1.5.0-IncrementalAndRegression @Documents
+Scenario Outline: CapabilityStatement for Documents returns correct profile versions
+Given I configure the default "DocumentsMetaDataRead" request
+	When I make the "DocumentsMetaDataRead" request
+	Then the response status code should indicate success
+    And the CapabilityStatement Profile should contain the correct reference and version history "<urlToCheck>" 
+Examples: 
+| urlToCheck                                                                                          |
+| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Patient-1/_history/1.8		          |
+| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Organization-1/_history/1.4            |
+| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Practitioner-1/_history/1.2            |
+| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-PractitionerRole-1/_history/1.2        |
+| https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-OperationOutcome-1/_history/1.2              |
+| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-DocumentReference-1/_history/1.2       |
+| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-MedicationStatement-1/_history/1.6     |
+
+          

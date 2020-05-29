@@ -217,6 +217,22 @@
 
                 }
 
+                //Check if Documents Scenario, if so download document to evidence folder
+                if (!string.IsNullOrEmpty(GlobalContext.DocumentURL))
+                {
+                    //write file - 
+
+
+
+                    Console.WriteLine("stop");
+
+                    //clear variable so next test finishing doesnt trigger this function
+                    GlobalContext.DocumentURL = "";
+
+                }
+
+
+
 
                 }
         }

@@ -689,6 +689,50 @@ testRunner.Given("I configure the default \"StructuredMetaDataRead\" request", (
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("CapabilityStatement for Documents returns correct profile versions")]
+        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
+        [NUnit.Framework.CategoryAttribute("Documents")]
+        [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Patient-1/_history/1" +
+            ".8", null)]
+        [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Organization-1/_hist" +
+            "ory/1.4", null)]
+        [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Practitioner-1/_hist" +
+            "ory/1.2", null)]
+        [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-PractitionerRole-1/_" +
+            "history/1.2", null)]
+        [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-OperationOutcome-1/_histor" +
+            "y/1.2", null)]
+        [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-DocumentReference-1/" +
+            "_history/1.2", null)]
+        [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-MedicationStatement-" +
+            "1/_history/1.6", null)]
+        public virtual void CapabilityStatementForDocumentsReturnsCorrectProfileVersions(string urlToCheck, string[] exampleTags)
+        {
+            string[] @__tags = new string[] {
+                    "1.5.0-IncrementalAndRegression",
+                    "Documents"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CapabilityStatement for Documents returns correct profile versions", null, @__tags);
+#line 230
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 231
+testRunner.Given("I configure the default \"DocumentsMetaDataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 232
+ testRunner.When("I make the \"DocumentsMetaDataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 233
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 234
+    testRunner.And(string.Format("the CapabilityStatement Profile should contain the correct reference and version " +
+                        "history \"{0}\"", urlToCheck), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore
