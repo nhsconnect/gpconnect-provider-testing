@@ -1,66 +1,50 @@
 ﻿@fhir @1.5.0-Full-Pack
 Feature: FHIR
 
+##########################################
+#Foundations and Appointments Tests
+##########################################
+
 @1.3.2-IncrementalAndRegression
-Scenario: Fhir Get and Check Version of Foundations And Appointments MetaData
+Scenario: Fhir Get Metadata and Check Version of Foundations And Appointments CapabilityStatement
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
 		And the Response Resource should be a CapabilityStatement
 		And the FoundationsAndAppmts CapabilityStatement version should match the GP Connect specification release
 
-@1.5.0-IncrementalAndRegression @structured
-Scenario: Fhir Get and Check Version of Structured MetaData
-	Given I configure the default "StructuredMetaDataRead" request
-	When I make the "MetadataRead" request
-	Then the response status code should indicate success
-		And the Response Resource should be a CapabilityStatement
-		And the Structured CapabilityStatement version should match the GP Connect specification release
-
-@1.5.0-IncrementalAndRegression @Documents
-Scenario: Fhir Get and Check Version of Documents MetaData
-	Given I configure the default "DocumentsMetaDataRead" request
-	When I make the "MetadataRead" request
-	Then the response status code should indicate success
-		And the Response Resource should be a CapabilityStatement
-		And the Documents CapabilityStatement version should match the GP Connect specification release
-
-Scenario: CapabilityStatement profile indicates acceptance of xml and json format
+Scenario: Foundations CapabilityStatement profile indicates acceptance of xml and json format
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
 		And the CapabilityStatement Format should contain XML and JSON
 
-Scenario: CapabilityStatement profile suppliers software versions present
+Scenario: Foundations CapabilityStatement profile suppliers software versions present
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
 		And the CapabilityStatement Software should be valid
 
-Scenario: CapabilityStatement profile supported fhir version
+Scenario: Foundations CapabilityStatement profile supported fhir version
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
 		And the CapabilityStatement FHIR Version should be "3.0.1"
 
-# github ref 132
-# RMB 29/10/2018
-Scenario: CapabilityStatement profile supports the RegisterPatient operation
+Scenario: Foundations CapabilityStatement profile supports the RegisterPatient operation
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
 		And the CapabilityStatement REST Operations should contain "gpc.registerpatient"
 
-#132 - RMB 29/10/2018
-#292 - PG 30/8/2019 - added check for correct url on operation
-Scenario: CapabilityStatement profile supports the GetStructuredRecord operation
+Scenario: Foundations CapabilityStatement profile supports the GetStructuredRecord operation
 	Given I configure the default "MetadataRead" request
 	When I make the "MetaDataRead" request
 	Then the response status code should indicate success
 	And the CapabilityStatement REST Operations should contain "gpc.getstructuredrecord"
 	And the CapabilityStatement Operation "gpc.getstructuredrecord" has url "https://fhir.nhs.uk/STU3/OperationDefinition/GPConnect-GetStructuredRecord-Operation-1/_history/1.15" 
 	
-Scenario: Fhir content type test where Accept header is JSON and request payload is XML
+Scenario: Foundations Fhir content type test where Accept header is JSON and request payload is XML
 	Given I configure the default "MetadataRead" request
 		And I set the request content type to "application/fhir+xml"
 		And I set the Accept header to "application/fhir+json"
@@ -68,7 +52,7 @@ Scenario: Fhir content type test where Accept header is JSON and request payload
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 
-Scenario: Fhir content type test where Accept header is XML and request payload is JSON
+Scenario: Foundations Fhir content type test where Accept header is XML and request payload is JSON
 	Given I configure the default "MetadataRead" request
 		And I set the request content type to "application/fhir+json"
 		And I set the Accept header to "application/fhir+xml"
@@ -76,7 +60,7 @@ Scenario: Fhir content type test where Accept header is XML and request payload 
 	Then the response status code should indicate success
 		And the response body should be FHIR XML
 
-Scenario: Fhir content type test where _format parameter is JSON and request payload is JSON
+Scenario: Foundations Fhir content type test where _format parameter is JSON and request payload is JSON
 	Given I configure the default "MetadataRead" request
 		And I set the request content type to "application/fhir+json"
 		And I do not send header "Accept"
@@ -85,7 +69,7 @@ Scenario: Fhir content type test where _format parameter is JSON and request pay
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 
-Scenario: Fhir content type test where _format parameter is JSON and request payload is XML
+Scenario: Foundations Fhir content type test where _format parameter is JSON and request payload is XML
 	Given I configure the default "MetadataRead" request
 		And I set the request content type to "application/fhir+xml"
 		And I do not send header "Accept"
@@ -94,7 +78,7 @@ Scenario: Fhir content type test where _format parameter is JSON and request pay
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 
-Scenario: Fhir content type test where _format parameter is XML and request payload is XML
+Scenario: Foundations Fhir content type test where _format parameter is XML and request payload is XML
 	Given I configure the default "MetadataRead" request
 		And I set the request content type to "application/fhir+xml"
 		And I do not send header "Accept"
@@ -103,7 +87,7 @@ Scenario: Fhir content type test where _format parameter is XML and request payl
 	Then the response status code should indicate success
 		And the response body should be FHIR XML
 
-Scenario: Fhir content type test where _format parameter is XML and request payload is JSON
+Scenario: Foundations Fhir content type test where _format parameter is XML and request payload is JSON
 	Given I configure the default "MetadataRead" request
 		And I set the request content type to "application/fhir+json"
 		And I do not send header "Accept"
@@ -112,7 +96,7 @@ Scenario: Fhir content type test where _format parameter is XML and request payl
 	Then the response status code should indicate success
 		And the response body should be FHIR XML
 
-Scenario: Fhir content type test where Accept header is XML and _format parameter is XML
+Scenario: Foundations Fhir content type test where Accept header is XML and _format parameter is XML
 	Given I configure the default "MetadataRead" request
 		And I set the request content type to "application/fhir+xml"
 		And I set the Accept header to "application/fhir+xml"
@@ -121,7 +105,7 @@ Scenario: Fhir content type test where Accept header is XML and _format paramete
 	Then the response status code should indicate success
 		And the response body should be FHIR XML
 
-Scenario: Fhir content type test where Accept header is XML and _format parameter is JSON
+Scenario: Foundations Fhir content type test where Accept header is XML and _format parameter is JSON
 	Given I configure the default "MetadataRead" request
 		And I set the request content type to "application/fhir+xml"
 		And I set the Accept header to "application/fhir+xml"
@@ -130,7 +114,7 @@ Scenario: Fhir content type test where Accept header is XML and _format paramete
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 
-Scenario: Fhir content type test where Accept header is JSON and _format parameter is JSON
+Scenario: Foundations Fhir content type test where Accept header is JSON and _format parameter is JSON
 	Given I configure the default "MetadataRead" request
 		And I set the request content type to "application/fhir+json"
 		And I set the Accept header to "application/fhir+json"
@@ -139,7 +123,7 @@ Scenario: Fhir content type test where Accept header is JSON and _format paramet
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 
-Scenario: Fhir content type test where Accept header is JSON and _format parameter is XML
+Scenario: Foundations Fhir content type test where Accept header is JSON and _format parameter is XML
 	Given I configure the default "MetadataRead" request
 		And I set the request content type to "application/fhir+json"
 		And I set the Accept header to "application/fhir+json"
@@ -148,7 +132,7 @@ Scenario: Fhir content type test where Accept header is JSON and _format paramet
 	Then the response status code should indicate success
 		And the response body should be FHIR XML
 
-Scenario: endpoint should support gzip compression for metadata endpoint and contain the correct payload
+Scenario: Foundations endpoint should support gzip compression for metadata endpoint and contain the correct payload
 	Given I configure the default "MetadataRead" request
 		And I set the Accept-Encoding header to gzip
 	When I make the "MetadataRead" request
@@ -157,7 +141,7 @@ Scenario: endpoint should support gzip compression for metadata endpoint and con
 		And the response body should be FHIR JSON
 		And the Response Resource should be a CapabilityStatement
                   
-Scenario Outline: CapabilityStatement GetMetaDataRead operation returns correct profile versions
+Scenario Outline: Foundations CapabilityStatement returns correct profile versions
 Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
@@ -189,8 +173,147 @@ Examples:
 | https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-ProcedureRequest-1         |
 | https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-ReferralRequest-1          |
 
-@structured  
-Scenario Outline: CapabilityStatement GetStructuredMetaDataRead operation returns correct profile versions
+##########################################
+#Structured Tests
+##########################################
+
+@structured
+Scenario: Fhir Get Metadata and Check Version of Structured CapabilityStatement
+	Given I configure the default "StructuredMetaDataRead" request
+	When I make the "MetadataRead" request
+	Then the response status code should indicate success
+		And the Response Resource should be a CapabilityStatement
+		And the Structured CapabilityStatement version should match the GP Connect specification release
+
+@structured
+Scenario: Structured CapabilityStatement profile indicates acceptance of xml and json format
+	Given I configure the default "StructuredMetaDataRead" request
+	When I make the "StructuredMetaDataRead" request
+	Then the response status code should indicate success
+		And the CapabilityStatement Format should contain XML and JSON
+
+@structured
+Scenario: Structured CapabilityStatement profile suppliers software versions present
+	Given I configure the default "StructuredMetaDataRead" request
+	When I make the "StructuredMetaDataRead" request
+	Then the response status code should indicate success
+		And the CapabilityStatement Software should be valid
+
+@structured
+Scenario: Structured CapabilityStatement profile supported fhir version
+	Given I configure the default "StructuredMetaDataRead" request
+	When I make the "StructuredMetaDataRead" request
+	Then the response status code should indicate success
+		And the CapabilityStatement FHIR Version should be "3.0.1"
+
+@structured
+Scenario: Structured CapabilityStatement profile supports the GetStructuredRecord operation
+	Given I configure the default "StructuredMetaDataRead" request
+	When I make the "StructuredMetaDataRead" request
+	Then the response status code should indicate success
+	And the CapabilityStatement REST Operations should contain "gpc.getstructuredrecord"
+	And the CapabilityStatement Operation "gpc.getstructuredrecord" has url "https://fhir.nhs.uk/STU3/OperationDefinition/GPConnect-GetStructuredRecord-Operation-1/_history/1.15" 
+
+@structured	
+Scenario: Structured Fhir content type test where Accept header is JSON and request payload is XML
+	Given I configure the default "StructuredMetaDataRead" request
+		And I set the request content type to "application/fhir+xml"
+		And I set the Accept header to "application/fhir+json"
+	When I make the "StructuredMetaDataRead" request
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+
+@structured
+Scenario: Structured Fhir content type test where Accept header is XML and request payload is JSON
+	Given I configure the default "StructuredMetaDataRead" request
+		And I set the request content type to "application/fhir+json"
+		And I set the Accept header to "application/fhir+xml"
+	When I make the "StructuredMetaDataRead" request
+	Then the response status code should indicate success
+		And the response body should be FHIR XML
+
+@structured
+Scenario: Structured Fhir content type test where _format parameter is JSON and request payload is JSON
+	Given I configure the default "StructuredMetaDataRead" request
+		And I set the request content type to "application/fhir+json"
+		And I do not send header "Accept"
+		And I add a Format parameter with the Value "application/fhir+json"
+	When I make the "StructuredMetaDataRead" request
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+
+@structured
+Scenario: Structured Fhir content type test where _format parameter is JSON and request payload is XML
+	Given I configure the default "StructuredMetaDataRead" request
+		And I set the request content type to "application/fhir+xml"
+		And I do not send header "Accept"
+		And I add a Format parameter with the Value "application/fhir+json"
+	When I make the "StructuredMetaDataRead" request
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+
+@structured
+Scenario: Structured Fhir content type test where _format parameter is XML and request payload is XML
+	Given I configure the default "StructuredMetaDataRead" request
+		And I set the request content type to "application/fhir+xml"
+		And I do not send header "Accept"
+		And I add a Format parameter with the Value "application/fhir+xml"
+	When I make the "StructuredMetaDataRead" request
+	Then the response status code should indicate success
+		And the response body should be FHIR XML
+
+@structured
+Scenario: Structured Fhir content type test where _format parameter is XML and request payload is JSON
+	Given I configure the default "StructuredMetaDataRead" request
+		And I set the request content type to "application/fhir+json"
+		And I do not send header "Accept"
+		And I add a Format parameter with the Value "application/fhir+xml"
+	When I make the "StructuredMetaDataRead" request
+	Then the response status code should indicate success
+		And the response body should be FHIR XML
+
+@structured
+Scenario: Structured Fhir content type test where Accept header is XML and _format parameter is XML
+	Given I configure the default "StructuredMetaDataRead" request
+		And I set the request content type to "application/fhir+xml"
+		And I set the Accept header to "application/fhir+xml"
+		And I add a Format parameter with the Value "application/fhir+xml"
+	When I make the "StructuredMetaDataRead" request
+	Then the response status code should indicate success
+		And the response body should be FHIR XML
+
+@structured
+Scenario: Structured Fhir content type test where Accept header is XML and _format parameter is JSON
+	Given I configure the default "StructuredMetaDataRead" request
+		And I set the request content type to "application/fhir+xml"
+		And I set the Accept header to "application/fhir+xml"
+		And I add a Format parameter with the Value "application/fhir+json"
+	When I make the "StructuredMetaDataRead" request
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+
+@structured
+Scenario: Structured Fhir content type test where Accept header is JSON and _format parameter is JSON
+	Given I configure the default "StructuredMetaDataRead" request
+		And I set the request content type to "application/fhir+json"
+		And I set the Accept header to "application/fhir+json"
+		And I add a Format parameter with the Value "application/fhir+json"
+	When I make the "StructuredMetaDataRead" request
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+
+@structured
+Scenario: Structured Fhir content type test where Accept header is JSON and _format parameter is XML
+	Given I configure the default "StructuredMetaDataRead" request
+		And I set the request content type to "application/fhir+json"
+		And I set the Accept header to "application/fhir+json"
+		And I add a Format parameter with the Value "application/fhir+xml"
+	When I make the "StructuredMetaDataRead" request
+	Then the response status code should indicate success
+		And the response body should be FHIR XML
+
+@structured
+Scenario Outline: Structured CapabilityStatement returns correct profile versions
 Given I configure the default "StructuredMetaDataRead" request
 	When I make the "StructuredMetaDataRead" request
 	Then the response status code should indicate success
@@ -217,17 +340,141 @@ Examples:
 | https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Specimen-1/_history/1.3                |
 | https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-ProcedureRequest-1/_history/1.3        |
 | https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-ReferralRequest-1/_history/1.2         |
-          
-@structured 
-Scenario: CapabilityStatement profile supports the GetStructuredMetaDataRead operation
-Given I configure the default "StructuredMetaDataRead" request
-	When I make the "StructuredMetaDataRead" request
-	Then the response status code should indicate success
-	And the CapabilityStatement REST Operations should contain "gpc.getstructuredrecord"
-	And the CapabilityStatement Operation "gpc.getstructuredrecord" has url "https://fhir.nhs.uk/STU3/OperationDefinition/GPConnect-GetStructuredRecord-Operation-1/_history/1.15" 
-	
+
+
+##########################################
+#Document Tests
+##########################################
+
 @1.5.0-IncrementalAndRegression @Documents
-Scenario Outline: CapabilityStatement for Documents returns correct profile versions
+Scenario: Fhir Get Metadata and Check Version of Documents CapabilityStatement
+	Given I configure the default "DocumentsMetaDataRead" request
+	When I make the "MetadataRead" request
+	Then the response status code should indicate success
+		And the Response Resource should be a CapabilityStatement
+		And the Documents CapabilityStatement version should match the GP Connect specification release
+
+@1.5.0-IncrementalAndRegression @Documents
+Scenario: Documents CapabilityStatement profile indicates acceptance of xml and json format
+	Given I configure the default "DocumentsMetaDataRead" request
+	When I make the "DocumentsMetaDataRead" request
+	Then the response status code should indicate success
+		And the CapabilityStatement Format should contain XML and JSON
+
+@1.5.0-IncrementalAndRegression @Documents
+Scenario: Documents CapabilityStatement profile suppliers software versions present
+	Given I configure the default "DocumentsMetaDataRead" request
+	When I make the "DocumentsMetaDataRead" request
+	Then the response status code should indicate success
+		And the CapabilityStatement Software should be valid
+
+@1.5.0-IncrementalAndRegression @Documents
+Scenario: Documents CapabilityStatement profile supported fhir version
+	Given I configure the default "DocumentsMetaDataRead" request
+	When I make the "DocumentsMetaDataRead" request
+	Then the response status code should indicate success
+		And the CapabilityStatement FHIR Version should be "3.0.1"
+
+@1.5.0-IncrementalAndRegression @Documents
+Scenario: Documents Fhir content type test where Accept header is JSON and request payload is XML
+	Given I configure the default "DocumentsMetaDataRead" request
+		And I set the request content type to "application/fhir+xml"
+		And I set the Accept header to "application/fhir+json"
+	When I make the "DocumentsMetaDataRead" request
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+
+@1.5.0-IncrementalAndRegression @Documents
+Scenario: Documents Fhir content type test where Accept header is XML and request payload is JSON
+	Given I configure the default "DocumentsMetaDataRead" request
+		And I set the request content type to "application/fhir+json"
+		And I set the Accept header to "application/fhir+xml"
+	When I make the "DocumentsMetaDataRead" request
+	Then the response status code should indicate success
+		And the response body should be FHIR XML
+
+@1.5.0-IncrementalAndRegression @Documents
+Scenario: Documents Fhir content type test where _format parameter is JSON and request payload is JSON
+	Given I configure the default "DocumentsMetaDataRead" request
+		And I set the request content type to "application/fhir+json"
+		And I do not send header "Accept"
+		And I add a Format parameter with the Value "application/fhir+json"
+	When I make the "DocumentsMetaDataRead" request
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+
+@1.5.0-IncrementalAndRegression @Documents
+Scenario: Documents Fhir content type test where _format parameter is JSON and request payload is XML
+	Given I configure the default "DocumentsMetaDataRead" request
+		And I set the request content type to "application/fhir+xml"
+		And I do not send header "Accept"
+		And I add a Format parameter with the Value "application/fhir+json"
+	When I make the "DocumentsMetaDataRead" request
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+
+@1.5.0-IncrementalAndRegression @Documents
+Scenario: Documents Fhir content type test where _format parameter is XML and request payload is XML
+	Given I configure the default "DocumentsMetaDataRead" request
+		And I set the request content type to "application/fhir+xml"
+		And I do not send header "Accept"
+		And I add a Format parameter with the Value "application/fhir+xml"
+	When I make the "DocumentsMetaDataRead" request
+	Then the response status code should indicate success
+		And the response body should be FHIR XML
+
+@1.5.0-IncrementalAndRegression @Documents
+Scenario: Documents Fhir content type test where _format parameter is XML and request payload is JSON
+	Given I configure the default "DocumentsMetaDataRead" request
+		And I set the request content type to "application/fhir+json"
+		And I do not send header "Accept"
+		And I add a Format parameter with the Value "application/fhir+xml"
+	When I make the "DocumentsMetaDataRead" request
+	Then the response status code should indicate success
+		And the response body should be FHIR XML
+
+@1.5.0-IncrementalAndRegression @Documents
+Scenario: Documents Fhir content type test where Accept header is XML and _format parameter is XML
+	Given I configure the default "DocumentsMetaDataRead" request
+		And I set the request content type to "application/fhir+xml"
+		And I set the Accept header to "application/fhir+xml"
+		And I add a Format parameter with the Value "application/fhir+xml"
+	When I make the "DocumentsMetaDataRead" request
+	Then the response status code should indicate success
+		And the response body should be FHIR XML
+
+@1.5.0-IncrementalAndRegression @Documents
+Scenario: Documents Fhir content type test where Accept header is XML and _format parameter is JSON
+	Given I configure the default "DocumentsMetaDataRead" request
+		And I set the request content type to "application/fhir+xml"
+		And I set the Accept header to "application/fhir+xml"
+		And I add a Format parameter with the Value "application/fhir+json"
+	When I make the "DocumentsMetaDataRead" request
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+
+@1.5.0-IncrementalAndRegression @Documents
+Scenario: Documents Fhir content type test where Accept header is JSON and _format parameter is JSON
+	Given I configure the default "DocumentsMetaDataRead" request
+		And I set the request content type to "application/fhir+json"
+		And I set the Accept header to "application/fhir+json"
+		And I add a Format parameter with the Value "application/fhir+json"
+	When I make the "DocumentsMetaDataRead" request
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+
+@1.5.0-IncrementalAndRegression @Documents
+Scenario: Documents Fhir content type test where Accept header is JSON and _format parameter is XML
+	Given I configure the default "DocumentsMetaDataRead" request
+		And I set the request content type to "application/fhir+json"
+		And I set the Accept header to "application/fhir+json"
+		And I add a Format parameter with the Value "application/fhir+xml"
+	When I make the "DocumentsMetaDataRead" request
+	Then the response status code should indicate success
+		And the response body should be FHIR XML
+
+@1.5.0-IncrementalAndRegression @Documents
+Scenario Outline: Documents CapabilityStatement returns correct profile versions
 Given I configure the default "DocumentsMetaDataRead" request
 	When I make the "DocumentsMetaDataRead" request
 	Then the response status code should indicate success
@@ -241,5 +488,3 @@ Examples:
 | https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-OperationOutcome-1/_history/1.2              |
 | https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-DocumentReference-1/_history/1.2       |
 | https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-MedicationStatement-1/_history/1.6     |
-
-          
