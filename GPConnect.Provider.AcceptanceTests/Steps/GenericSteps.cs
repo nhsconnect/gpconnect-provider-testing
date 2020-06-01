@@ -217,24 +217,24 @@
 
                 }
 
-                //Check if Documents Scenario, if so download document to evidence folder
+                //Check if Retrieve Documents Scenario, if so download document to evidence folder
                 if (!string.IsNullOrEmpty(GlobalContext.DocumentURL))
                 {
                     //write file - 
+                    File.WriteAllBytes(Path.Combine(scenarioDirectory, "Documents-Saved-binary"), GlobalContext.DocumentContent);
 
+                    //Write Binary Metadata
+                    string BinaryMetadata = "ID : " + GlobalContext.DocumentID + "\nContentType : " + GlobalContext.DocumentContentType + "\n";
+                    File.WriteAllText((Path.Combine(scenarioDirectory, "Documents-Saved-binary-Metadata.txt")), BinaryMetadata);
 
-
-                    Console.WriteLine("stop");
-
-                    //clear variable so next test finishing doesnt trigger this function
+                    //clear variable so next test finishing doesnt trigger this function unless another document retrieve
                     GlobalContext.DocumentURL = "";
+                    GlobalContext.DocumentID = "";
+                    GlobalContext.DocumentContentType = "";
 
                 }
-
-
-
-
-                }
+                
+            }
         }
 
         [BeforeTestRun]

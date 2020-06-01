@@ -65,13 +65,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             BinaryDocument.ShouldNotBeNull("Fail : Expect Binary Document to have been Returned - failed to retrieve one");
             
-            
-            File.WriteAllBytes("c:\\testdoc.xml", BinaryDocument.Content);
+            //put binary content and metdata onto globalcontext so teardown function can save file and metadata to evidence folder
+            GlobalContext.DocumentContent = BinaryDocument.Content;
 
-            //put content of mime encoded doc on  global context so it can be saved into evidence folder
-            
-            //need to add new variable for content on globalcontext
-            //GlobalContext.DocumentURL
+            GlobalContext.DocumentID = BinaryDocument.Id;
+            GlobalContext.DocumentContentType = BinaryDocument.ContentType;
         }
 
     }

@@ -50,5 +50,8 @@
         public static int CountTestRunFailed { get; set; }
 
         public static string DocumentURL { get; set; }
+        public static byte[] DocumentContent { get; set; }
+        public static string DocumentID { get; set; }
+        public static string DocumentContentType { get; set; }
     }
 }
