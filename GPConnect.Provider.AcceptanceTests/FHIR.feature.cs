@@ -1274,13 +1274,13 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Documents Fhir content type test where _format parameter is XML and request paylo" +
             "ad is XML")]
         [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
-        [NUnit.Framework.CategoryAttribute("Documentsd")]
+        [NUnit.Framework.CategoryAttribute("Documents")]
         public virtual void DocumentsFhirContentTypeTestWhere_FormatParameterIsXMLAndRequestPayloadIsXML()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Documents Fhir content type test where _format parameter is XML and request paylo" +
                     "ad is XML", null, new string[] {
                         "1.5.0-IncrementalAndRegression",
-                        "Documentsd"});
+                        "Documents"});
 #line 417
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -1502,6 +1502,177 @@ testRunner.Given("I configure the default \"DocumentsMetaDataRead\" request", ((
 #line 481
     testRunner.And(string.Format("the CapabilityStatement Profile should contain the correct reference and version " +
                         "history \"{0}\"", urlToCheck), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Documents CapabilityStatement profile supports the Patient read operation")]
+        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
+        [NUnit.Framework.CategoryAttribute("Documents")]
+        public virtual void DocumentsCapabilityStatementProfileSupportsThePatientReadOperation()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Documents CapabilityStatement profile supports the Patient read operation", null, new string[] {
+                        "1.5.0-IncrementalAndRegression",
+                        "Documents"});
+#line 493
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 494
+ testRunner.Given("I configure the default \"DocumentsMetaDataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 495
+ testRunner.When("I make the \"DocumentsMetaDataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 496
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 497
+  testRunner.And("the CapabilityStatement REST Resources should contain the \"Patient\" Resource with" +
+                    " the \"Read\" Interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Documents CapabilityStatement profile supports the Patient search operation")]
+        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
+        [NUnit.Framework.CategoryAttribute("Documents")]
+        public virtual void DocumentsCapabilityStatementProfileSupportsThePatientSearchOperation()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Documents CapabilityStatement profile supports the Patient search operation", null, new string[] {
+                        "1.5.0-IncrementalAndRegression",
+                        "Documents"});
+#line 500
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 501
+ testRunner.Given("I configure the default \"DocumentsMetaDataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 502
+ testRunner.When("I make the \"DocumentsMetaDataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 503
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 504
+  testRunner.And("the CapabilityStatement REST Resources should contain the \"Patient\" Resource with" +
+                    " the \"SearchType\" Interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Documents CapabilityStatement profile supports the Binary Read operation")]
+        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
+        [NUnit.Framework.CategoryAttribute("Documents")]
+        public virtual void DocumentsCapabilityStatementProfileSupportsTheBinaryReadOperation()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Documents CapabilityStatement profile supports the Binary Read operation", null, new string[] {
+                        "1.5.0-IncrementalAndRegression",
+                        "Documents"});
+#line 507
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 508
+ testRunner.Given("I configure the default \"DocumentsMetaDataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 509
+ testRunner.When("I make the \"DocumentsMetaDataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 510
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 511
+  testRunner.And("the CapabilityStatement REST Resources should contain the \"Binary\" Resource with " +
+                    "the \"Read\" Interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Documents CapabilityStatement profile supports the DocumentReference search opera" +
+            "tion")]
+        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
+        [NUnit.Framework.CategoryAttribute("Documents")]
+        public virtual void DocumentsCapabilityStatementProfileSupportsTheDocumentReferenceSearchOperation()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Documents CapabilityStatement profile supports the DocumentReference search opera" +
+                    "tion", null, new string[] {
+                        "1.5.0-IncrementalAndRegression",
+                        "Documents"});
+#line 514
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 515
+ testRunner.Given("I configure the default \"DocumentsMetaDataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 516
+ testRunner.When("I make the \"DocumentsMetaDataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 517
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 518
+  testRunner.And("the CapabilityStatement REST Resources should contain the \"DocumentReference\" Res" +
+                    "ource with the \"SearchType\" Interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Check Documents CapabilityStatement includes specific searchInclude")]
+        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
+        [NUnit.Framework.CategoryAttribute("Documents")]
+        [NUnit.Framework.TestCaseAttribute("DocumentReference:subject:Patient", null)]
+        [NUnit.Framework.TestCaseAttribute("DocumentReference:custodian:Organization", null)]
+        [NUnit.Framework.TestCaseAttribute("DocumentReference:author:Organization", null)]
+        [NUnit.Framework.TestCaseAttribute("DocumentReference:author:Practitioner", null)]
+        public virtual void CheckDocumentsCapabilityStatementIncludesSpecificSearchInclude(string searchInclude, string[] exampleTags)
+        {
+            string[] @__tags = new string[] {
+                    "1.5.0-IncrementalAndRegression",
+                    "Documents"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check Documents CapabilityStatement includes specific searchInclude", null, @__tags);
+#line 521
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 522
+ testRunner.Given("I configure the default \"DocumentsMetaDataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 523
+ testRunner.When("I make the \"DocumentsMetaDataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 524
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 525
+ testRunner.And(string.Format("the Documents CapabilityStatement has a searchInclude called \"{0}\"", searchInclude), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Check Documents CapabilityStatement includes specific searchParams")]
+        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
+        [NUnit.Framework.CategoryAttribute("Documents")]
+        [NUnit.Framework.TestCaseAttribute("subject", "Patient", null)]
+        [NUnit.Framework.TestCaseAttribute("created", "date", null)]
+        [NUnit.Framework.TestCaseAttribute("facility", "token", null)]
+        [NUnit.Framework.TestCaseAttribute("author", "Organization", null)]
+        [NUnit.Framework.TestCaseAttribute("type", "token", null)]
+        [NUnit.Framework.TestCaseAttribute("custodian", "Organization", null)]
+        [NUnit.Framework.TestCaseAttribute("description", "string", null)]
+        public virtual void CheckDocumentsCapabilityStatementIncludesSpecificSearchParams(string searchParam, string searchParamType, string[] exampleTags)
+        {
+            string[] @__tags = new string[] {
+                    "1.5.0-IncrementalAndRegression",
+                    "Documents"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check Documents CapabilityStatement includes specific searchParams", null, @__tags);
+#line 534
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 535
+ testRunner.Given("I configure the default \"DocumentsMetaDataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 536
+ testRunner.When("I make the \"DocumentsMetaDataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 537
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 538
+ testRunner.And(string.Format("the Documents CapabilityStatement has a searchParam called \"{0}\" of type \"{1}\"", searchParam, searchParamType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

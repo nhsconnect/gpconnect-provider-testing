@@ -151,14 +151,14 @@
         }
 
         //PG 12-4-2019 #225 - Check that CapabilityStatement includes specified searchInclude
-        [Then(@"the CapabilityStatement has a searchInclude called ""(.*)""")]
-        public void theCapabilityStatementhasasearchIncludecalled(string searchIncludeToCheck)
+        [Then(@"the Foundations CapabilityStatement has a searchInclude called ""(.*)""")]
+        public void theFoundationsCapabilityStatementhasasearchIncludecalled(string searchIncludeToCheck)
         {
             CapabilityStatements.ForEach(capabilityStatement =>
             {
                 capabilityStatement.Rest.ForEach(rest =>
                 {
-                    //Get Handle to Slot Resouce
+                    //Get Handle to Slot Resource
                     var slotResource = rest.Resource.FirstOrDefault(r => r.Type == ResourceType.Slot);
 
                     //find searchinclude passed in.
@@ -166,6 +166,49 @@
 
                     //Assert That Text Is Found
                     searchInclude.ShouldNotBeNull("Not Found searchInclude: " + searchIncludeToCheck);
+
+                });
+            });
+        }
+
+        [Then(@"the Documents CapabilityStatement has a searchInclude called ""(.*)""")]
+        public void theDocumentsCapabilityStatementhasasearchIncludecalled(string searchIncludeToCheck)
+        {
+            CapabilityStatements.ForEach(capabilityStatement =>
+            {
+                capabilityStatement.Rest.ForEach(rest =>
+                {
+                    //Get Handle to DocumentReference Resource
+                    var DocResource = rest.Resource.FirstOrDefault(r => r.Type == ResourceType.DocumentReference);
+
+                    //find searchinclude passed in.
+                    var searchInclude = DocResource.SearchIncludeElement.FirstOrDefault(i => i.ToString() == searchIncludeToCheck);
+
+                    //Assert That Text Is Found
+                    searchInclude.ShouldNotBeNull("Not Found searchInclude: " + searchIncludeToCheck);
+
+                });
+            });
+        }
+
+        [Then(@"the Documents CapabilityStatement has a searchParam called ""(.*)"" of type ""(.*)""")]
+        public void theDocumentsCapabilityStatementhasasearchParamcalled(string searchParamToCheck, string searchParamTypeToCheck)
+        {
+            CapabilityStatements.ForEach(capabilityStatement =>
+            {
+                capabilityStatement.Rest.ForEach(rest =>
+                {
+                    //Get Handle to DocumentReference Resource
+                    var DocResource = rest.Resource.FirstOrDefault(r => r.Type == ResourceType.DocumentReference);
+
+                    //find searchParams
+                    var searchParams = DocResource.SearchParam.FirstOrDefault(i => i.Name.ToString() == searchParamToCheck);
+
+                    //Assert That Param Is Found
+                    searchParams.ShouldNotBeNull("Not Found searchParam: " + searchParamToCheck);
+
+                    //Assert that p[arm Type is Correct
+                    searchParams.Type.ToString().ToLower().ShouldBe(searchParamTypeToCheck.ToLower(), "Fail : Search Param : " + searchParamToCheck + " - Type is NOT Correct - Should be : " + searchParamTypeToCheck + " - But Was : " + searchParams.Type.ToString());
 
                 });
             });

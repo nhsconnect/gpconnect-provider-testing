@@ -1040,8 +1040,8 @@ this.ScenarioInitialize(scenarioInfo);
 #line 459
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 460
- testRunner.And("the CapabilityStatement has a searchInclude called \"Location:managingOrganization" +
-                    "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the Foundations CapabilityStatement has a searchInclude called \"Location:managing" +
+                    "Organization\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

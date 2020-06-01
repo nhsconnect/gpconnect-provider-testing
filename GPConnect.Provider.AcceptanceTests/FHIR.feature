@@ -488,3 +488,61 @@ Examples:
 | https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-OperationOutcome-1/_history/1.2              |
 | https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-DocumentReference-1/_history/1.2       |
 | https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-MedicationStatement-1/_history/1.6     |
+
+@1.5.0-IncrementalAndRegression @Documents
+Scenario: Documents CapabilityStatement profile supports the Patient read operation
+	Given I configure the default "DocumentsMetaDataRead" request
+	When I make the "DocumentsMetaDataRead" request
+	Then the response status code should indicate success
+		And the CapabilityStatement REST Resources should contain the "Patient" Resource with the "Read" Interaction
+
+@1.5.0-IncrementalAndRegression @Documents
+Scenario: Documents CapabilityStatement profile supports the Patient search operation
+	Given I configure the default "DocumentsMetaDataRead" request
+	When I make the "DocumentsMetaDataRead" request
+	Then the response status code should indicate success
+		And the CapabilityStatement REST Resources should contain the "Patient" Resource with the "SearchType" Interaction
+
+@1.5.0-IncrementalAndRegression @Documents
+Scenario: Documents CapabilityStatement profile supports the Binary Read operation
+	Given I configure the default "DocumentsMetaDataRead" request
+	When I make the "DocumentsMetaDataRead" request
+	Then the response status code should indicate success
+		And the CapabilityStatement REST Resources should contain the "Binary" Resource with the "Read" Interaction		
+
+@1.5.0-IncrementalAndRegression @Documents
+Scenario: Documents CapabilityStatement profile supports the DocumentReference search operation
+	Given I configure the default "DocumentsMetaDataRead" request
+	When I make the "DocumentsMetaDataRead" request
+	Then the response status code should indicate success
+		And the CapabilityStatement REST Resources should contain the "DocumentReference" Resource with the "SearchType" Interaction
+
+@1.5.0-IncrementalAndRegression @Documents
+Scenario Outline: Check Documents CapabilityStatement includes specific searchInclude
+	Given I configure the default "DocumentsMetaDataRead" request
+	When I make the "DocumentsMetaDataRead" request
+	Then the response status code should indicate success	
+	And the Documents CapabilityStatement has a searchInclude called "<searchInclude>"
+	Examples: 
+	| searchInclude                            |
+	| DocumentReference:subject:Patient        |
+	| DocumentReference:custodian:Organization |
+	| DocumentReference:author:Organization    |
+	| DocumentReference:author:Practitioner    |
+
+@1.5.0-IncrementalAndRegression @Documents
+Scenario Outline: Check Documents CapabilityStatement includes specific searchParams
+	Given I configure the default "DocumentsMetaDataRead" request
+	When I make the "DocumentsMetaDataRead" request
+	Then the response status code should indicate success	
+	And the Documents CapabilityStatement has a searchParam called "<searchParam>" of type "<searchParamType>"
+	Examples: 
+	| searchParam | searchParamType |
+	| subject     | Patient         |
+	| created     | date            |
+	| facility    | token           |
+	| author      | Organization    |
+	| type        | token           |
+	| custodian   | Organization    |
+	| description | string          |
+	

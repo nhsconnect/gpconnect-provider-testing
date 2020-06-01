@@ -457,7 +457,7 @@ Scenario Outline: Searching for free slots with org type and code searchFilter s
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success	
-	And the CapabilityStatement has a searchInclude called "Location:managingOrganization"
+	And the Foundations CapabilityStatement has a searchInclude called "Location:managingOrganization"
 
 @1.2.7-IncrementalAndRegression
 Scenario: Search for a slots expecting a Schedule with serviceCategory populated
