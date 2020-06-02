@@ -487,7 +487,7 @@ Examples:
 | https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-PractitionerRole-1/_history/1.2        |
 | https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-OperationOutcome-1/_history/1.2              |
 | https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-DocumentReference-1/_history/1.2       |
-| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-MedicationStatement-1/_history/1.6     |
+| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-MedicationStatement-1/_history/1.3     |
 
 @1.5.0-IncrementalAndRegression @Documents
 Scenario: Documents CapabilityStatement profile supports the Patient read operation
@@ -538,11 +538,10 @@ Scenario Outline: Check Documents CapabilityStatement includes specific searchPa
 	And the Documents CapabilityStatement has a searchParam called "<searchParam>" of type "<searchParamType>"
 	Examples: 
 	| searchParam | searchParamType |
-	| subject     | Patient         |
 	| created     | date            |
 	| facility    | token           |
-	| author      | Organization    |
+	| author      | token           |
 	| type        | token           |
-	| custodian   | Organization    |
+	| custodian   | token           |
 	| description | string          |
 	

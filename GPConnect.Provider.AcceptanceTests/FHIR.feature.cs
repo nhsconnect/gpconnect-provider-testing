@@ -1479,7 +1479,7 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-DocumentReference-1/" +
             "_history/1.2", null)]
         [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-MedicationStatement-" +
-            "1/_history/1.6", null)]
+            "1/_history/1.3", null)]
         public virtual void DocumentsCapabilityStatementReturnsCorrectProfileVersions(string urlToCheck, string[] exampleTags)
         {
             string[] @__tags = new string[] {
@@ -1645,12 +1645,11 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Check Documents CapabilityStatement includes specific searchParams")]
         [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         [NUnit.Framework.CategoryAttribute("Documents")]
-        [NUnit.Framework.TestCaseAttribute("subject", "Patient", null)]
         [NUnit.Framework.TestCaseAttribute("created", "date", null)]
         [NUnit.Framework.TestCaseAttribute("facility", "token", null)]
-        [NUnit.Framework.TestCaseAttribute("author", "Organization", null)]
+        [NUnit.Framework.TestCaseAttribute("author", "token", null)]
         [NUnit.Framework.TestCaseAttribute("type", "token", null)]
-        [NUnit.Framework.TestCaseAttribute("custodian", "Organization", null)]
+        [NUnit.Framework.TestCaseAttribute("custodian", "token", null)]
         [NUnit.Framework.TestCaseAttribute("description", "string", null)]
         public virtual void CheckDocumentsCapabilityStatementIncludesSpecificSearchParams(string searchParam, string searchParamType, string[] exampleTags)
         {
