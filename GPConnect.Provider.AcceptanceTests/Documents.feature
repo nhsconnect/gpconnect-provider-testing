@@ -6,7 +6,7 @@ Feature: Documents
 ##########################################
 
 
-Scenario: Searching for Documents on a Patient with Documents
+Scenario: Search for Documents on a Patient with Documents
 	Given I configure the default "DocumentsPatientSearch" request
 		And I add a Patient Identifier parameter with default System and Value "patient2"
 		When I make the "DocumentsPatientSearch" request
@@ -18,6 +18,26 @@ Scenario: Searching for Documents on a Patient with Documents
 	When I make the "DocumentsSearch" request
 		Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
+
+
+Scenario Outline: Search for Patient Documents within a time period
+	Given I configure the default "DocumentsPatientSearch" request
+		And I add a Patient Identifier parameter with default System and Value "patient2"
+		When I make the "DocumentsPatientSearch" request
+		Then the response status code should indicate success
+		Given I store the Patient
+	Given I configure the default "DocumentsSearch" request
+		And I set the JWT Requested Scope to Organization Read
+		And I set the required parameters for a Documents Search call
+		Then I set the created search parameters with a time period of "<Days>" days
+	When I make the "DocumentsSearch" request
+		Then the response status code should indicate success
+		And the response should be a Bundle resource of type "searchset"
+Examples:
+		| Days	|
+		| 8		|
+		#| 0		|
+		#| 14	|
 
 
 ##########################################
@@ -42,6 +62,16 @@ Scenario: Retrieve a Document for Patient2
 		When I make the "DocumentsRetrieve" request
 		Then the response status code should indicate success
 		And I save the binary document from the retrieve
+
+
+Scenario: Attempt to Retrieve a non existent Document 
+	Given I change the document to retrieve to one that doesnt exist
+	Given I configure the default "DocumentsRetrieve" request
+		When I make the "DocumentsRetrieve" request
+		Then I clear the saved document url
+		Then the response status code should be "404"
+		And the response should be a OperationOutcome resource with error code "NO_RECORD_FOUND"
+		
 
 
 ##########################################

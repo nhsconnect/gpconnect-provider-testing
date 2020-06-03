@@ -8,6 +8,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     using System.IO;
     using Context;
     using Enum;
+    using GPConnect.Provider.AcceptanceTests.Helpers;
+    using GPConnect.Provider.AcceptanceTests.Http;
     using Hl7.Fhir.Model;
     using Repository;
     using Shouldly;
@@ -64,13 +66,34 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void Isavethebinarydocumentfromtheretrieve()
         {
             BinaryDocument.ShouldNotBeNull("Fail : Expect Binary Document to have been Returned - failed to retrieve one");
-            
-            //put binary content and metdata onto globalcontext so teardown function can save file and metadata to evidence folder
+           
             GlobalContext.DocumentContent = BinaryDocument.Content;
-
             GlobalContext.DocumentID = BinaryDocument.Id;
             GlobalContext.DocumentContentType = BinaryDocument.ContentType;
         }
+
+        [Given(@"I change the document to retrieve to one that doesnt exist")]
+        public void Ichangethedocumenttoretrievetoonethatdoesntexist()
+        {
+            var httpRequestConfiguration = new HttpRequestConfiguration();
+            GlobalContext.DocumentURL = httpRequestConfiguration.EndpointAddress + "/Binary/99999999999";
+        }
+
+        [Then(@"I clear the saved document url")]
+        public void Iclearthesaveddocumenturl()
+        {
+            GlobalContext.DocumentURL = "";
+        }
+
+
+        [Then(@"I set the created search parameters with a time period of ""(.*)"" days")]
+        public void SetRequiredParametersWithTimePeriod(int days)
+        {
+            var val = TimePeriodHelper.GetTimePeriodStartDateTomorrowEndDateDays(days);
+            Given($"I add the parameter \"created\" with the value \"ge{val.Start}\"");
+            Given($"I add the parameter \"created\" with the value \"le{val.End}\"");
+        }
+
 
     }
 }
