@@ -87,11 +87,27 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
 
         [Then(@"I set the created search parameters with a time period of ""(.*)"" days")]
-        public void SetRequiredParametersWithTimePeriod(int days)
+        public void Isetthecreatedsearchparameterswithatimeperiodofdays(int days)
         {
             var val = TimePeriodHelper.GetTimePeriodStartDateTomorrowEndDateDays(days);
             Given($"I add the parameter \"created\" with the value \"ge{val.Start}\"");
             Given($"I add the parameter \"created\" with the value \"le{val.End}\"");
+        }
+
+        [Then(@"I set the created search parameter to less than ""(.*)"" days ago")]
+        public void Isetthecreatedsearchparametestolessthandaysago(int days)
+        {
+            var date = DateTime.UtcNow.Date.ToLocalTime();
+            var val = new FhirDateTime(date.AddDays(-days));
+            Given($"I add the parameter \"created\" with the value \"le{val}\"");
+        }
+
+        [Then(@"I set the created search parameter to greater than ""(.*)"" days ago")]
+        public void Isetthecreatedsearchparametertogreaterthandaysago(int days)
+        {
+            var date = DateTime.UtcNow.Date.ToLocalTime();
+            var val = new FhirDateTime(date.AddDays(-days));
+            Given($"I add the parameter \"created\" with the value \"ge{val}\"");
         }
 
 
