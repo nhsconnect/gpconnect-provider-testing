@@ -5,7 +5,6 @@ Feature: Documents
 #Search For Documents Tests
 ##########################################
 
-
 Scenario: Search for Documents on a Patient with Documents
 	Given I configure the default "DocumentsPatientSearch" request
 		And I add a Patient Identifier parameter with default System and Value "patient2"
@@ -20,6 +19,20 @@ Scenario: Search for Documents on a Patient with Documents
 		And the response should be a Bundle resource of type "searchset"
 		And I Check the returned DocumentReference is Valid
 		And I Check the returned DocumentReference Do Not Include Not In Use Fields
+
+
+Scenario: Search for Documents without Mandatory include Params expect fail
+	Given I configure the default "DocumentsPatientSearch" request
+		And I add a Patient Identifier parameter with default System and Value "patient2"
+		When I make the "DocumentsPatientSearch" request
+		Then the response status code should indicate success
+		Given I store the Patient
+	Given I configure the default "DocumentsSearch" request
+		And I set the JWT Requested Scope to Organization Read
+	When I make the "DocumentsSearch" request
+		Then the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
+		
 
 Scenario Outline: Search for Patient Documents created within a time period
 	Given I configure the default "DocumentsPatientSearch" request
@@ -36,9 +49,7 @@ Scenario Outline: Search for Patient Documents created within a time period
 		And the response should be a Bundle resource of type "searchset"
 Examples:
 		| Days	|
-		| 2		|
-		#| 14	|
-
+		| 365	|
 
 Scenario Outline: Search for Patient Documents created less than a date
 	Given I configure the default "DocumentsPatientSearch" request
@@ -57,7 +68,6 @@ Examples:
 		| Days	|
 		| 2		|
 
-
 Scenario Outline: Search for Patient Documents created greater than a date
 	Given I configure the default "DocumentsPatientSearch" request
 		And I add a Patient Identifier parameter with default System and Value "patient2"
@@ -75,13 +85,10 @@ Examples:
 		| Days |
 		| 365  |
 		
-
-
 ##########################################
 #Retrieve  Documents Tests
 ##########################################
-
-		
+	
 Scenario: Retrieve a Document for Patient2
 	Given I configure the default "DocumentsPatientSearch" request
 		And I add a Patient Identifier parameter with default System and Value "patient2"
@@ -102,7 +109,6 @@ Scenario: Retrieve a Document for Patient2
 		And I Check the returned Binary Document is Valid
 		And I Check the returned Binary Document Do Not Include Not In Use Fields
 
-
 Scenario: Attempt to Retrieve a non existent Document 
 	Given I change the document to retrieve to one that doesnt exist
 	Given I configure the default "DocumentsRetrieve" request
@@ -111,8 +117,6 @@ Scenario: Attempt to Retrieve a non existent Document
 		Then the response status code should be "404"
 		And the response should be a OperationOutcome resource with error code "NO_RECORD_FOUND"
 		
-
-
 ##########################################
 #Documents Search/Find Patients Tests
 ##########################################
