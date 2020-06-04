@@ -29,6 +29,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         private List<Schedule> Schedules => _httpContext.FhirResponse.Schedules;
         private List<DocumentReference> Documents => _httpContext.FhirResponse.Documents;
         private Binary BinaryDocument => _httpContext.FhirResponse.BinaryDocument;
+        private List<Patient> Patients => _httpContext.FhirResponse.Patients;
 
         public DocumentsSteps(HttpContext httpContext, HttpSteps httpSteps, BundleSteps bundleSteps, JwtSteps jwtSteps, HttpRequestConfigurationSteps httpRequestConfigurationSteps, IFhirResourceRepository fhirResourceRepository)
             : base(httpSteps)
@@ -66,7 +67,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void Isavethebinarydocumentfromtheretrieve()
         {
             BinaryDocument.ShouldNotBeNull("Fail : Expect Binary Document to have been Returned - failed to retrieve one");
-           
+
             GlobalContext.DocumentContent = BinaryDocument.Content;
             GlobalContext.DocumentID = BinaryDocument.Id;
             GlobalContext.DocumentContentType = BinaryDocument.ContentType;
@@ -111,6 +112,96 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
 
+        [Then(@"I Check the returned DocumentReference is Valid")]
+        public void ICheckthereturnedDocumentReferenceisValid()
+        {
+            Documents.Count().ShouldBeGreaterThanOrEqualTo(1, "Fail :Expect atleast One DocumentReference Returned for Test");
+
+            Documents.ForEach(doc =>
+            {
+                //Check ID
+                doc.Id.ShouldNotBeNullOrEmpty();
+
+                //Check Meta.Profile
+                CheckForValidMetaDataInResource(doc, FhirConst.StructureDefinitionSystems.kDocumentReference);
+
+
+                //Check identifier
+                doc.Identifier.Count.ShouldBeGreaterThan(0, "Fail : There should be at least 1 Identifier system/value pair");
+                doc.Identifier.ForEach(identifier =>
+                {
+                    identifier.System.Equals(FhirConst.ValueSetSystems.kCrossCareIdentifier).ShouldBeTrue("Fail : Cross Care Setting Identifier NOT Found");
+                    identifier.Value.ShouldNotBeNullOrEmpty("Fail : Identifier Value Is Null or Not Empty - Expect Value");
+                });
+
+                //check status
+                doc.Status.ShouldBe(DocumentReferenceStatus.Current, "Fail : Status should be set to value current");
+
+                //Check Type (should be codable concept with snomed code or a type.text
+                if (doc.Type.Coding.Count() >= 1)
+                {
+                    doc.Type.Coding.ForEach(code =>
+                    {
+                        code.System.Equals(FhirConst.CodeSystems.kCCSnomed);
+                        code.Code.ShouldNotBeNullOrEmpty();
+                        code.Display.ShouldNotBeNullOrEmpty();
+                    });
+                }
+                else
+                {
+                    doc.Type.Text.ShouldNotBeNullOrEmpty("Fail : DocumentReference Type should be either a codable concept with a snomed code or have type.text populated");
+                }
+
+                //Check Subject/patient
+                doc.Subject.Reference.ShouldNotBeNullOrEmpty("Fail : Patient Reference should be included in DocumentReference");
+                Patients.Where(p => p.Id == (doc.Subject.Reference.Replace("Patient/", ""))).Count().ShouldBe(1, "Fail : Patient Not Found in Bundle");
+
+                //check indexed
+                doc.Indexed.ShouldBeOfType<DateTimeOffset>();
+
+                //check content.attachment
+                doc.Content.ForEach(content =>
+                {
+                    content.Attachment.Size.ShouldNotBeNull("Fail : Content Attachment Size should not be null");
+                    content.Attachment.ContentType.ShouldNotBeNullOrEmpty("Fail : ContentType should be populated");
+                });
+
+
+            });
+
+        }
+
+        [Then(@"I Check the returned DocumentReference Do Not Include Not In Use Fields")]
+        public void ICheckthereturnedDocumentReferenceDoNotIncludeNotInUseFields()
+        {
+            Documents.ForEach(doc =>
+            {
+                doc.DocStatus.ShouldBeNull("Fail :  DocumentReference - DocStatus element Should not be used - Not In Use Field");
+                doc.Class.ShouldBeNull("Fail :  DocumentReference - Class element Should not be used - Not In Use Field");
+                doc.Authenticator.ShouldBeNull("Fail :  DocumentReference - Authenticator element Should not be used - Not In Use Field");
+                doc.Content.ForEach(content =>
+                {
+                    content.Attachment.Data.ShouldBeNull("Fail :  DocumentReference - Content.Attachment.Data element Should not be used - Not In Use Field");
+                });
+                doc.RelatesTo.Count().ShouldBe(0, "Fail :  DocumentReference - RelatesTo element Should not be used - Not In Use Field");
+                doc.SecurityLabel.Count().ShouldBe(0, "Fail :  DocumentReference - SecurityLabel element Should not be used - Not In Use Field");
+            });
+
+        }
+
+        [Then(@"I Check the returned Binary Document is Valid")]
+        public void ICheckthereturnedBinaryDocumentisValid()
+        {
+            BinaryDocument.ContentType.ShouldNotBeNullOrEmpty("Fail : Binary Document Should be sent with a ContentType Element populated");
+            BinaryDocument.Content.ShouldNotBeNull("Fail : Binary Document Should be sent with a Content Element populated");
+        }
+
+        [Then(@"I Check the returned Binary Document Do Not Include Not In Use Fields")]
+        public void ICheckthereturnedBinaryDocumentDoNotIncludeNotInUseFields()
+        {
+            BinaryDocument.SecurityContext.ShouldBeNull("Fail :  Binary Document - SecurityContext element Should not be used - Not In Use Field");
+
+        }
     }
 }
 

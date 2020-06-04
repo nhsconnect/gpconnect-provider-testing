@@ -18,7 +18,8 @@ Scenario: Search for Documents on a Patient with Documents
 	When I make the "DocumentsSearch" request
 		Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
-
+		And I Check the returned DocumentReference is Valid
+		And I Check the returned DocumentReference Do Not Include Not In Use Fields
 
 Scenario Outline: Search for Patient Documents created within a time period
 	Given I configure the default "DocumentsPatientSearch" request
@@ -98,6 +99,8 @@ Scenario: Retrieve a Document for Patient2
 		When I make the "DocumentsRetrieve" request
 		Then the response status code should indicate success
 		And I save the binary document from the retrieve
+		And I Check the returned Binary Document is Valid
+		And I Check the returned Binary Document Do Not Include Not In Use Fields
 
 
 Scenario: Attempt to Retrieve a non existent Document 
