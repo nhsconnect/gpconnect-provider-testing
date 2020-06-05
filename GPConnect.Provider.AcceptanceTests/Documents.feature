@@ -51,6 +51,23 @@ Scenario Outline: Search for Documents using author parameter
 		| orgCode |
 		| A20047  |
 
+Scenario Outline: Search for Documents using author parameter but with invalid identifier
+	Given I configure the default "DocumentsPatientSearch" request
+		And I add a Patient Identifier parameter with default System and Value "patient2"
+		When I make the "DocumentsPatientSearch" request
+		Then the response status code should indicate success
+		Given I store the Patient
+	Given I configure the default "DocumentsSearch" request
+		And I set the JWT Requested Scope to Organization Read
+		And I set the required parameters for a Documents Search call
+		And I set the author parameters with an invalid identifier for a Documents Search call to "<orgCode>"
+	When I make the "DocumentsSearch" request
+		Then the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
+	Examples:
+		| orgCode |
+		| A20047  |
+
 Scenario Outline: Search for Patient Documents created within a date period
 	Given I configure the default "DocumentsPatientSearch" request
 		And I add a Patient Identifier parameter with default System and Value "patient2"
@@ -101,6 +118,30 @@ Scenario Outline: Search for Patient Documents created greater than a date
 Examples:
 		| Days |
 		| 365  |
+
+Scenario: Search for Documents with an invalid parameter
+	Given I configure the default "DocumentsPatientSearch" request
+		And I add a Patient Identifier parameter with default System and Value "patient2"
+		When I make the "DocumentsPatientSearch" request
+		Then the response status code should indicate success
+		Given I store the Patient
+	Given I configure the default "DocumentsSearch" request
+		And I set the JWT Requested Scope to Organization Read
+		And I set the required parameters for a Documents Search call
+		And I set an invalid parameter for a Documents Search call
+	When I make the "DocumentsSearch" request
+		Then the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
+	
+Scenario: Search for Documents on a Patient that doesnt exist
+	Given I configure the default "DocumentsSearch" request
+		And I set the JWT Requested Scope to Organization Read
+		And I set the required parameters for a Documents Search call
+		And I change the patient logical id to a non existent id
+	When I make the "DocumentsSearch" request
+		Then the response status code should be "404"
+		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
+		
 		
 ##########################################
 #Retrieve  Documents Tests

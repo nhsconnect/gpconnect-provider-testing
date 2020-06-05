@@ -57,6 +57,18 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("author", "https://fhir.nhs.uk/Id/ods-organization-code" + '|' + orgCode);
         }
 
+        [Given(@"I set the author parameters with an invalid identifier for a Documents Search call to ""(.*)""")]
+        public void IsettheauthorparameterswithaninvalididentifierforaDocumentsSearchcallto(string orgCode)
+        {
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("author", "https://bad-identifier" + '|' + orgCode);
+        }
+
+        [Given(@"I set an invalid parameter for a Documents Search call")]
+        public void IsetaninvalidparameterforaDocumentsSearchcall()
+        {
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("BadParameter","BadParamValue");
+        }
+
         [Then(@"I save a document url for retrieving later")]
         public void Isaveadocumenturlforretrievinglater()
         {
@@ -84,12 +96,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             GlobalContext.DocumentURL = httpRequestConfiguration.EndpointAddress + "/Binary/99999999999";
         }
 
+        [Given(@"I change the patient logical id to a non existent id")]
+        public void Ichangethepatientlogicalidtoanonexistantid()
+        {
+            _httpContext.HttpRequestConfiguration.RequestUrl = "Patient/" + "9999999999999" + "/DocumentReference";
+        }
+        
         [Then(@"I clear the saved document url")]
         public void Iclearthesaveddocumenturl()
         {
             GlobalContext.DocumentURL = "";
         }
-
 
         [Then(@"I set the created search parameters with a time period of ""(.*)"" days")]
         public void Isetthecreatedsearchparameterswithatimeperiodofdays(int days)
