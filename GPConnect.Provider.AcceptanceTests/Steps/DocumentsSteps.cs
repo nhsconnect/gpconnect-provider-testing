@@ -41,7 +41,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _fhirResourceRepository = fhirResourceRepository;
         }
 
-
         [Given(@"I set the required parameters for a Documents Search call")]
         public void SetRequiredParametersWithTimePeriod()
         {
@@ -52,6 +51,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("_revinclude:recurse", "PractitionerRole:practitioner");
         }
 
+        [Given(@"I set the author parameters for a Documents Search call to ""(.*)""")]
+        public void IsettheauthorparametersforaDocumentsSearchcall(string orgCode)
+        {
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("author", "https://fhir.nhs.uk/Id/ods-organization-code" + '|' + orgCode);
+        }
 
         [Then(@"I save a document url for retrieving later")]
         public void Isaveadocumenturlforretrievinglater()
