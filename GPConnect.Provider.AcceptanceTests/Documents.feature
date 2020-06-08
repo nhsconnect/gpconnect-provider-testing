@@ -142,7 +142,6 @@ Scenario: Search for Documents on a Patient that doesnt exist
 		Then the response status code should be "404"
 		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
 		
-		
 ##########################################
 #Retrieve  Documents Tests
 ##########################################
