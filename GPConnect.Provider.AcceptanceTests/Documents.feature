@@ -423,7 +423,7 @@ Scenario: Documents Patient search for a patient with a inactive flag should ret
 		And the response should be a Bundle resource of type "searchset"
 		And the response bundle should contain "0" entries
 
-	Scenario: Documents Patient search for a No Consent Patient search gets a valid response
+Scenario: Documents Patient search for a No Consent Patient search gets a valid response
 	Given I configure the default "DocumentsPatientSearch" request
 		And I add a Patient Identifier parameter with default System and Value "patient15"
 	When I make the "DocumentsPatientSearch" request
