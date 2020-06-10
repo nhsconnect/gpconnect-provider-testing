@@ -196,6 +196,7 @@
     <Compile Include="Data\ODSCodeMap.cs" />
     <Compile Include="Data\NHSNoMap.cs" />
     <Compile Include="Data\PDS.cs" />
+    <Compile Include="Steps\StructuredDiarySteps.cs" />
     <Compile Include="StructuredDiary.feature.cs" />
     <Compile Include="StructuredDocuments.feature.cs" />
     <Compile Include="Enum\GpConnectInteraction.cs" />

@@ -48,6 +48,8 @@
             public const string kInvestigationsSearch = "investigationSearchPeriod";
             public const string kReferrals = "includeReferrals";
             public const string kReferralSearch = "referralSearchPeriod";
+            public const string kDiary = "includeDiaryEntries";
+            public const string kDiarySearch = "diaryEntriesSearchDate";
 
             public const string kStartDate = "start";
             public const string kEndDate = "end";
@@ -56,6 +58,7 @@
 // github ref 127 RMB 5/11/2018            public const string kMedicationDatePeriod = "medicationDatePeriod";
             public const string kMedicationDatePeriod = "medicationSearchFromDate";			
             public const string kTimePeriod = "timePeriod";
+
         }
 
         internal static class Resources

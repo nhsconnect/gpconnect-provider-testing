@@ -22,7 +22,7 @@ Scenario: Search for Documents on a Patient with Documents
 
 Scenario: Search for Documents on a Patient with NO Documents
 	Given I configure the default "DocumentsPatientSearch" request
-		And I add a Patient Identifier parameter with default System and Value "patient1"
+		And I add a Patient Identifier parameter with default System and Value "patient3"
 		When I make the "DocumentsPatientSearch" request
 		Then the response status code should indicate success
 		Given I store the Patient
