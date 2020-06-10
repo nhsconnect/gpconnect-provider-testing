@@ -1,4 +1,4 @@
-﻿@structured @structuredinvestigations @1.5.0-Full-Pack
+﻿@Structured @StructuredInvestigations @1.5.0-Full-Pack
 Feature: StructuredInvestigations
 	
 @1.5.0-IncrementalAndRegression

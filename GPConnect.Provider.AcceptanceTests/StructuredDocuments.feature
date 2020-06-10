@@ -1,4 +1,4 @@
-﻿@Documents @1.5.0-Full-Pack @1.5.0-IncrementalAndRegression
+﻿@Structured @StructuredDocuments @1.5.0-Full-Pack @1.5.0-IncrementalAndRegression
 Feature: Documents
 
 ##########################################

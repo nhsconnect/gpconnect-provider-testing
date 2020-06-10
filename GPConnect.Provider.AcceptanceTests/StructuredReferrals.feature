@@ -1,4 +1,4 @@
-﻿@structured @structuredreferrals @1.5.0-Full-Pack
+﻿@Structured @StructuredReferrals @1.5.0-Full-Pack
 Feature: StructuredReferrals
 	
 @1.5.0-IncrementalAndRegression

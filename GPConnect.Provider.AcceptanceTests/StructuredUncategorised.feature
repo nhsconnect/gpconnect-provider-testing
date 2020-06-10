@@ -1,4 +1,4 @@
-﻿@structured @structureduncategorised @1.5.0-Full-Pack
+﻿@Structured @StructuredUncategorised @1.5.0-Full-Pack
 Feature: StructuredUncategorised
 	
 @1.3.1-IncrementalAndRegression @1.3.2-IncrementalAndRegression

@@ -19,8 +19,8 @@ namespace GPConnect.Provider.AcceptanceTests
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("StructuredUncategorised")]
-    [NUnit.Framework.CategoryAttribute("structured")]
-    [NUnit.Framework.CategoryAttribute("structureduncategorised")]
+    [NUnit.Framework.CategoryAttribute("Structured")]
+    [NUnit.Framework.CategoryAttribute("StructuredUncategorised")]
     [NUnit.Framework.CategoryAttribute("1.5.0-Full-Pack")]
     public partial class StructuredUncategorisedFeature
     {
@@ -35,8 +35,8 @@ namespace GPConnect.Provider.AcceptanceTests
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "StructuredUncategorised", null, ProgrammingLanguage.CSharp, new string[] {
-                        "structured",
-                        "structureduncategorised",
+                        "Structured",
+                        "StructuredUncategorised",
                         "1.5.0-Full-Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }

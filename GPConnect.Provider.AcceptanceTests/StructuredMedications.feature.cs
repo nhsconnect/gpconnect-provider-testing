@@ -19,8 +19,8 @@ namespace GPConnect.Provider.AcceptanceTests
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("StructuredMedications")]
-    [NUnit.Framework.CategoryAttribute("structured")]
-    [NUnit.Framework.CategoryAttribute("structuredmedications")]
+    [NUnit.Framework.CategoryAttribute("Structured")]
+    [NUnit.Framework.CategoryAttribute("StructuredMedications")]
     [NUnit.Framework.CategoryAttribute("1.5.0-Full-Pack")]
     public partial class StructuredMedicationsFeature
     {
@@ -35,8 +35,8 @@ namespace GPConnect.Provider.AcceptanceTests
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "StructuredMedications", null, ProgrammingLanguage.CSharp, new string[] {
-                        "structured",
-                        "structuredmedications",
+                        "Structured",
+                        "StructuredMedications",
                         "1.5.0-Full-Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }

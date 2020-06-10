@@ -196,7 +196,7 @@
     <Compile Include="Data\ODSCodeMap.cs" />
     <Compile Include="Data\NHSNoMap.cs" />
     <Compile Include="Data\PDS.cs" />
-    <Compile Include="Documents.feature.cs" />
+    <Compile Include="StructuredDocuments.feature.cs" />
     <Compile Include="Enum\GpConnectInteraction.cs" />
     <Compile Include="Extensions\BaseExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
@@ -254,7 +254,7 @@
     <Compile Include="SearchForFreeSlots.feature.cs" />
     <Compile Include="Security.feature.cs" />
     <Compile Include="SSP.feature.cs" />
-    <Compile Include="Steps\DocumentsSteps.cs" />
+    <Compile Include="Steps\StructuredDocumentsSteps.cs" />
     <Compile Include="Steps\StructuredConsultationsSteps.cs" />
     <Compile Include="Steps\StructuredImmunizationsSteps.cs" />
     <Compile Include="Steps\StructuredInvestigationsSteps.cs" />
@@ -310,7 +310,8 @@
     <Compile Include="StructuredUncategorised.feature.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Documents.feature" />
+    <None Include="StructuredDiary.feature" />
+    <None Include="StructuredDocuments.feature" />
     <None Include="StructuredConsultations.feature" />
     <None Include="StructuredImmunizations.feature" />
     <None Include="StructuredInvestigations.feature" />

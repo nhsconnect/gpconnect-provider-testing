@@ -17,7 +17,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     using static Hl7.Fhir.Model.Slot;
 
     [Binding]
-    public class DocumentsSteps : BaseSteps
+    public class StructuredDocumentsSteps : BaseSteps
     {
         private readonly HttpContext _httpContext;
         private readonly BundleSteps _bundleSteps;
@@ -31,7 +31,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         private Binary BinaryDocument => _httpContext.FhirResponse.BinaryDocument;
         private List<Patient> Patients => _httpContext.FhirResponse.Patients;
 
-        public DocumentsSteps(HttpContext httpContext, HttpSteps httpSteps, BundleSteps bundleSteps, JwtSteps jwtSteps, HttpRequestConfigurationSteps httpRequestConfigurationSteps, IFhirResourceRepository fhirResourceRepository)
+        public StructuredDocumentsSteps(HttpContext httpContext, HttpSteps httpSteps, BundleSteps bundleSteps, JwtSteps jwtSteps, HttpRequestConfigurationSteps httpRequestConfigurationSteps, IFhirResourceRepository fhirResourceRepository)
             : base(httpSteps)
         {
             _httpContext = httpContext;
