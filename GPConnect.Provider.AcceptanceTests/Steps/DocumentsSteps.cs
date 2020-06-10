@@ -223,6 +223,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             BinaryDocument.SecurityContext.ShouldBeNull("Fail :  Binary Document - SecurityContext element Should not be used - Not In Use Field");
 
         }
+
+        [Then(@"The Bundle should contain NO Documents")]
+        public void TheBundleshouldcontainNODocuments()
+        {            
+            Documents.Count().ShouldBe(0, "Fail :Expect NO DocumentReferences Returned for Test");
+        }
     }
 }
 
