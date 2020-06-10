@@ -141,6 +141,22 @@ Scenario: Search for Documents on a Patient that doesnt exist
 	When I make the "DocumentsSearch" request
 		Then the response status code should be "404"
 		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
+
+Scenario: Search for Documents on a patient which exists on the system as a temporary patient
+	Given I get the next Patient to register and store it
+	Given I configure the default "RegisterPatient" request
+		And I add the Stored Patient as a parameter
+	When I make the "RegisterPatient" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "searchset"
+		And the response bundle should contain a single Patient resource
+	Given I store the Patient
+	Given I configure the default "DocumentsSearch" request
+		And I set the JWT Requested Scope to Organization Read
+		And I set the required parameters for a Documents Search call
+	When I make the "DocumentsSearch" request
+	Then the response status code should be "404"
+		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
 		
 ##########################################
 #Retrieve  Documents Tests
