@@ -61,7 +61,7 @@ namespace GPConnect.Provider.AcceptanceTests.Logger
             throw new NotImplementedException();
         }
 
-        [AfterScenario]
+        [AfterScenario(Order = 4)]
         public static void HandleScenarioFailure()
         {
             if (ScenarioContext.Current.TestError != null || AppSettingsHelper.TraceAllScenarios)

@@ -133,7 +133,7 @@
             Log.WriteLine("Scenario: " + ScenarioContext.Current.ScenarioInfo.Title);
         }
 
-        [AfterScenario]
+        [AfterScenario(Order = 3)]
         public void SaveLogOfOutput()
         {
             var traceDirectory = GlobalContext.TraceDirectory;

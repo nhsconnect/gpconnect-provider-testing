@@ -17,6 +17,7 @@
             public const string kInvestigations = "887191000000108";
             public const string kOutboundReferrals = "792931000000107";
             public const string kObservationCommentNoteCode = "37331000000100";
+            public const string kDiary = "714311000000108";
         }
 
 
@@ -268,6 +269,7 @@
             public const string kHeadings = "?????";
             public const string kInvestigations = "Investigations and Results";
             public const string kOutboundReferrals = "Outbound referral";
+            public const string kDiary = "Patient recall administration";
 
         }
     }

@@ -133,20 +133,16 @@
 
                 //Check extension[problemSignificance]
                 List<Extension> problemExtensions = problem.Extension.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kExtProblemSignificance)).ToList();
-                problemExtensions.Count.ShouldBe(1, "Fail : problemSignificance not detected and is mandatory on Problem ID : " + problem.Id );
+                problemExtensions.Count.ShouldBe(1, "Fail : problemSignificance not detected and is mandatory on Problem ID : " + problem.Id);
                 Code clinicalSetting = (Code)problemExtensions.First().Value;
                 clinicalSetting.Value.ShouldBeOneOf("major", "minor");
 
                 //Check identifier
-                problem.Identifier.Count.ShouldBeGreaterThan(0, "There should be at least 1 Identifier system/value pair");
+                problem.Identifier.Count.ShouldBeGreaterThan(0, "There should be at least 1 Identifier system/value pair on the Problem");
                 problem.Identifier.ForEach(identifier =>
                 {
-                    identifier.System.Equals(FhirConst.ValueSetSystems.kCrossCareIdentifier).ShouldBeTrue("Cross Care Setting Identfier NOT Found");
-
-                    //identifier.Value format is still being debated, hence notnull check
+                    identifier.System.Equals(FhirConst.ValueSetSystems.kCrossCareIdentifier).ShouldBeTrue("Cross Care Setting Identifier NOT Found");
                     identifier.Value.ShouldNotBeNullOrEmpty("Identifier Value Is Null or Not Valid");
-                    //Guid guidResult;
-                    //Guid.TryParse(identifier.Value, out guidResult).ShouldBeTrue("Immunization identifier GUID is not valid or Null");
                 });
 
                 //Check clinicalStatus
@@ -164,7 +160,6 @@
 
                 //CheckSubejct/patient
                 Patients.Where(p => p.Id == (problem.Subject.Reference.Replace("Patient/", ""))).Count().ShouldBe(1, "Patient Not Found in Bundle");
-
 
             });
 

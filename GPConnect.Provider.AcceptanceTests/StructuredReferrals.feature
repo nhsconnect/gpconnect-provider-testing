@@ -46,6 +46,9 @@ Scenario: Verify Referrals structured record for a Patient with Referrals associ
 		#commented out to flush out issue with problmes not coming down whilist issue of snomed code for list being wrong is sorted.
 		#And I Check the Referrals List is Valid
 		And The Structured List Does Not Include Not In Use Fields	
+		########
+		#### Check step below is complete , doesnt look like it
+		######### 
 		And I Check the ReferralRequests are Valid
 		#And I Check the ReferralRequests Do Not Include Not in Use Fields
 		And I Check The Problems List
