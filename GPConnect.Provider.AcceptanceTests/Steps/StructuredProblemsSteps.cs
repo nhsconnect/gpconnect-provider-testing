@@ -178,6 +178,14 @@
             });
         }
 
+        [Then(@"I Check No Problem Resources are Included")]
+        public void ThenICheckNoProblemResourcesareIncluded()
+        {
+            Problems.ToList().Count().ShouldBe(0, "Fail : NO Problems should be included in the response as per Data requirements");
+            Logger.Log.WriteLine("NO Problems have been included in the bundle");
+        }
+
+
         [Given(@"I add the problems parameter with filterStatus ""(.*)""")]
         public void GivenIAddTheProblemsParameterWithfilterStatus(string value)
         {

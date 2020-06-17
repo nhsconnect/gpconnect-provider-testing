@@ -11,7 +11,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
     using Enum;
     using GPConnect.Provider.AcceptanceTests.Helpers;
     using GPConnect.Provider.AcceptanceTests.Http;
+    using GPConnect.Provider.AcceptanceTests.Logger;
     using Hl7.Fhir.Model;
+    using Hl7.Fhir.Serialization;
+    using Newtonsoft.Json.Linq;
+    using NUnit.Framework;
     using Repository;
     using Shouldly;
     using TechTalk.SpecFlow;
@@ -27,7 +31,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         private readonly IFhirResourceRepository _fhirResourceRepository;
 
         private Bundle Bundle => _httpContext.FhirResponse.Bundle;
-        private List<List> Lists => _httpContext.FhirResponse.Lists;
+        private List<Hl7.Fhir.Model.List> Lists => _httpContext.FhirResponse.Lists;
         private List<Patient> Patients => _httpContext.FhirResponse.Patients;
         private List<ProcedureRequest> ProcedureRequests => _httpContext.FhirResponse.ProcedureRequests;
         private List<Condition> Problems => _httpContext.FhirResponse.Conditions;
@@ -42,7 +46,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _fhirResourceRepository = fhirResourceRepository;
         }
 
-
         [Given(@"I add the Diary parameter")]
         public void GivenIAddTheInvestigationsParameter()
         {
@@ -51,20 +54,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
         }
 
-        //[Given(@"I add the investigations data parameter with future start date")]
-        //public void GivenIAddTheinvestigationsDataParameterWithFutureStartDate()
-        //{
-        //    var futureStartDate = DateTime.UtcNow.AddDays(+10);
-        //    var futureEndDate = DateTime.UtcNow.AddDays(+15);
-        //    var startDate = futureStartDate.ToString("yyyy-MM-dd");
-        //    var endDate = futureEndDate.ToString("yyyy-MM-dd");
+        [Then(@"I add the Diary Search date parameter with a past date ""(.*)"" days ago")]
+        public void GivenIaddtheDiarySearchdateparameterwithapastdate(int days)
+        {            
+            var pastSearchDate = DateTime.UtcNow.AddDays(-days);            
+            var searchBeforeDate = pastSearchDate.ToString("yyyy-MM-dd");
 
-        //    IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
-        //        Tuple.Create(FhirConst.GetStructuredRecordParams.kInvestigationsSearch, (Base)FhirHelper.GetTimePeriod(startDate, endDate)),
-        //    };
-        //    _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kInvestigations, tuples);
-        //}
-
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kDiarySearch, (Base)FhirHelper.GetStartDate(searchBeforeDate)),
+            };
+            _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kDiary, tuples);
+        }
 
         [Then(@"I Check the Diary List is Valid")]
         public void ThenIChecktheDiaryListareValid()
@@ -77,31 +77,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             diaryLists.ForEach(diaryList =>
             {
-                //Check Meta.profile
-                CheckForValidMetaDataInResource(diaryList, FhirConst.StructureDefinitionSystems.kList);
-
-                //Check Status
-                diaryList.Status.ToString().ToLower().ShouldBe("current", "Diary List Status is NOT set to current");
-
-                //Check Mode
-                diaryList.Mode.ShouldBeOfType<ListMode>("Mode List is of wrong type.");
-                diaryList.Mode.ToString().ToLower().ShouldBe("snapshot", "List Status is NOT set to snapshot");
-
-                //Check title
-                diaryList.Title.ShouldBe(FhirConst.ListTitles.kDiary, "Investigations List Title is Incorrect");
-
-                //Check code
-                diaryList.Code.Coding.ForEach(coding =>
-                {
-                    coding.System.ShouldBeOneOf("http://snomed.info/sct", "http://read.info/readv2", "http://read.info/ctv3", "https://fhir.hl7.org.uk/Id/emis-drug-codes", "https://fhir.hl7.org.uk/Id/egton-codes", "https://fhir.hl7.org.uk/Id/multilex-drug-codes", "https://fhir.hl7.org.uk/Id/resipuk-gemscript-drug-codes");
-                    coding.Display.ShouldNotBeNullOrEmpty("Display Should not be Null or Empty");
-                });
-
-                //Check Patient
-                Patients.Where(p => p.Id == (diaryList.Subject.Reference.Replace("Patient/", ""))).Count().ShouldBe(1, "Patient Not Found in Bundle");
-
-                //check number of Diary -ProcedureRequest's matches number in list
-                ProcedureRequests.Count().ShouldBe(diaryList.Entry.Count(), "Number of ProcedureRequest's does not match the number in the Diary List");
+                //Check Common Diary List elements
+                CheckCommonDiaryListElementsAreValid(diaryList);
 
                 //Check each Entry/Item/Reference points to a resource that exists
                 bool found = false;
@@ -120,11 +97,41 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
                 //Check we found atleast One ProcedureRequest Linked in list
                 found.ShouldBeTrue("Fail : Diary List should be linked to atleast one ProcedureRequest");
-
+                
                 Logger.Log.WriteLine("Completed Mandatory checks on Diary List");
             });
         }
 
+        public void CheckCommonDiaryListElementsAreValid(Hl7.Fhir.Model.List diaryList)
+        {
+            //Check Meta.profile
+            CheckForValidMetaDataInResource(diaryList, FhirConst.StructureDefinitionSystems.kList);
+
+            //Check Status
+            diaryList.Status.ToString().ToLower().ShouldBe("current", "Diary List Status is NOT set to current");
+
+            //Check Mode
+            diaryList.Mode.ShouldBeOfType<ListMode>("Mode List is of wrong type.");
+            diaryList.Mode.ToString().ToLower().ShouldBe("snapshot", "List Status is NOT set to snapshot");
+
+            //Check title
+            diaryList.Title.ShouldBe(FhirConst.ListTitles.kDiary, "Investigations List Title is Incorrect");
+
+            //Check code
+            diaryList.Code.Coding.ForEach(coding =>
+            {
+                coding.System.ShouldBeOneOf("http://snomed.info/sct", "http://read.info/readv2", "http://read.info/ctv3", "https://fhir.hl7.org.uk/Id/emis-drug-codes", "https://fhir.hl7.org.uk/Id/egton-codes", "https://fhir.hl7.org.uk/Id/multilex-drug-codes", "https://fhir.hl7.org.uk/Id/resipuk-gemscript-drug-codes");
+                coding.Display.ShouldNotBeNullOrEmpty("Display Should not be Null or Empty");
+            });
+
+            //Check Patient
+            Patients.Where(p => p.Id == (diaryList.Subject.Reference.Replace("Patient/", ""))).Count().ShouldBe(1, "Patient Not Found in Bundle");
+
+            //check number of Diary -ProcedureRequest's matches number in list
+            ProcedureRequests.Count().ShouldBe(diaryList.Entry.Count(), "Number of ProcedureRequest's does not match the number in the Diary List");
+
+            Logger.Log.WriteLine("Diary List Common Elements Verified");
+        }
 
         [Then(@"I Check the Diary ProcedureRequests are Valid")]
         public void ThenIChecktheProcedureRequestareValid()
@@ -165,12 +172,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 string refType = Regex.Replace(proc.Requester.Agent.Reference, pattern, "$1");
                 refType.ShouldBeOneOf("Practitioner", "Organization");
 
-
-
-
+                Logger.Log.WriteLine("Diary ProcedureRequest Validated with ID: " + proc.Id);
             });
         }
-
 
         [Then(@"I Check the Diary ProcedureRequests Do Not Include Not in Use Fields")]
         public void ThenIChecktheProcedureRequestDoNotIncludeNotinUseFields()
@@ -190,7 +194,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 procs.RelevantHistory.Count().ShouldBe(0, "Fail :  ProcedureRequest - RelevantHistory element Should not be used - Not In Use Field");
             });
         }
-
 
         [Then(@"Check a Problem is linked to ProcedureRequest and that it is also included")]
         public void ThenCheckaProblemislinkedtoProcedureRequestandthatitisalsoincluded()
@@ -226,7 +229,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         }
 
-
         public void VerifyResourceReferenceExists(string refTypeToFind, string refToFind)
         {
             //Switch on Clinical Item type
@@ -252,6 +254,93 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             Logger.Log.WriteLine("Found Linked resource : " + resourceID + " Of Type : " + resourceType);
 
+        }
+
+        [Then(@"I Check Diary list contains a note and emptyReason when no data in section")]
+        public void ThenICheckDiarylistcontainsanoteandemptyReasonwhennodatainsection()
+        {
+            //Check atleast one Diary List exists using Snomed Code
+            Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kDiary).ToList().Count().ShouldBe(1, "Failed to Find ONE Diary list using Snomed Code.");
+
+            //Get  Diary list
+            var diaryLists = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kDiary).ToList();
+
+            diaryLists.ForEach(diaryList =>
+            {
+                //Check Common Diary List elements
+                CheckCommonDiaryListElementsAreValid(diaryList);
+
+                //Check Note Element
+                var noteFoundFlag = false;
+                var noteMatch = diaryList.Note.Where(note => note.Text.Contains("Information not available"));
+
+                if (noteMatch.Count() >= 1)
+                {
+                    noteMatch.Count().ShouldBeGreaterThanOrEqualTo(1, "Unable to Find Note : Information not available");
+                    noteFoundFlag = true;
+                }
+
+                if (noteFoundFlag)
+                {
+                    Log.WriteLine("Found Note : Information not available");
+                }
+                else
+                {
+                    Log.WriteLine("Note with message Information not available Not Found");
+                    noteFoundFlag.ShouldBeTrue("Note with message Information not available Not Found");
+                }
+
+                //Check EmptyReason
+                diaryList.EmptyReason.ShouldNotBeNull("EmptyReason should not be null for List: ");
+                diaryList.EmptyReason.Coding.Count.ShouldBe(1);
+                diaryList.EmptyReason.Coding.First().System.ShouldBe(FhirConst.StructureDefinitionSystems.kListEmptyReason);
+                diaryList.EmptyReason.Coding.First().Code.ShouldBe("no-content-recorded");
+                diaryList.EmptyReason.Coding.First().Display.ShouldBe("No Content Recorded");
+            });
+        }
+
+        [Then(@"I Check the Diary ProcedureRequests are Within the ""(.*)"" days ago Search Range using Occurrence element")]
+        public void ThenIChecktheDiaryProcedureRequestsareWithintheSearchRange(int days)
+        {            
+            //check atleast one ProcuedreRequest
+            ProcedureRequests.ToList().Count().ShouldBeGreaterThan(0, "Error Should be Atleast One ProcedureRequest in response as per Data requirements");
+
+            var pastSearchDate = DateTime.UtcNow.AddDays(-days);
+            FhirDateTime fhirPastSearchDate = new FhirDateTime(pastSearchDate);
+
+            ProcedureRequests.ForEach(proc =>
+            {
+                proc.Occurrence.ShouldNotBeNull("Fail : Diary ProcedureRequest Occurrence Should not be NULL or Empty on a diary Search request. ProcedureRequest ID: " + proc.Id);
+
+                if (proc.Occurrence.GetType() == typeof(FhirDateTime))
+                {
+                    FhirDateTime occurrenceDateTime = (FhirDateTime)proc.Occurrence;
+                    
+                    if (!(occurrenceDateTime <= fhirPastSearchDate))
+                    {
+                        Assert.Fail("Fail : Diary ProcedureRequest Occurrence Date is not Less than or equal to the search date on ID: " + proc.Id);
+                    }
+
+                    Logger.Log.WriteLine("Info : Found Diary ProcedureRequest Occurrence Date Less than or equal to Search date");
+                }
+                else if (proc.Occurrence.GetType() == typeof(Period))
+                {
+                    Period occurrencePeriod = (Period)proc.Occurrence;
+                    FhirDateTime fhirOccurrenceStartDate = new FhirDateTime(occurrencePeriod.Start);
+
+                    if (!(fhirOccurrenceStartDate <= fhirPastSearchDate))
+                    {
+                        Assert.Fail("Fail : Diary ProcedureRequest Occurrence Period Start Date is not Less than or equal to the search date on ID: " + proc.Id);
+                    }
+
+                    Logger.Log.WriteLine("Info : Found Diary ProcedureRequest Occurrence Period Start Date Less than or equal to Search date");
+                }
+                else if (proc.Occurrence.GetType() == typeof(Timing))
+                {
+                    Assert.Fail("Fail : Diary ProcedureRequest Occurrence Should be a DateTime or a Period for a Diary Search. on ID: " + proc.Id);
+                }
+                
+            });
         }
 
     }
