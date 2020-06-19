@@ -72,10 +72,10 @@ Scenario: Search for Diary Entries for a Patient with No Diary Entries
 		And I Check Diary list contains a note and emptyReason when no data in section
 		And The Structured List Does Not Include Not In Use Fields	
 
-Scenario: Search for Diary Entries Before a Past Date on a Patient with Diary Entries
+Scenario Outline: Search for Diary Entries Before a Past Date on a Patient with Diary Entries
 	Given I configure the default "GpcGetStructuredRecord" request
-		And I add an NHS Number parameter for "patient3"
-		Then I add the Diary Search date parameter with a past date "20" days ago
+		And I add an NHS Number parameter for "<Patient>"
+		Then I add the Diary Search date parameter with a past date "<DaysinPastToSearch>" days ago
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "collection"
@@ -83,16 +83,19 @@ Scenario: Search for Diary Entries Before a Past Date on a Patient with Diary En
 		And the patient resource in the bundle should contain meta data profile and version id
 		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
-		And the Bundle should be valid for patient "patient3"
+		And the Bundle should be valid for patient "<Patient>"
 		And check that the bundle does not contain any duplicate resources
 		And check the response does not contain an operation outcome
 		And the Patient Id should be valid
 		And the Practitioner Id should be valid
 		And the Organization Id should be valid 
-		And the Bundle should contain "1" lists
+		And the Bundle should contain "<NumberOfListsExpected>" lists
 		And I Check the Diary List is Valid
 		And The Structured List Does Not Include Not In Use Fields	
 		And I Check the Diary ProcedureRequests are Valid
 		And I Check the Diary ProcedureRequests Do Not Include Not in Use Fields		
-		And I Check the Diary ProcedureRequests are Within the "20" days ago Search Range using Occurrence element
-		
+		And I Check the Diary ProcedureRequests are Within the "<DaysinPastToSearch>" days ago Search Range using Occurrence element
+		Examples: 
+		| Patient  | DaysinPastToSearch | NumberOfListsExpected |
+		| patient2 | 20                 | 2                     |
+		| patient3 | 20                 | 1                     |
