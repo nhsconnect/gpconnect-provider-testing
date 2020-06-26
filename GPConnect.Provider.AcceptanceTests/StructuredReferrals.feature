@@ -43,21 +43,16 @@ Scenario: Verify Referrals structured record for a Patient with Referrals associ
 		And the Patient Id should be valid
 		And the Practitioner Id should be valid
 		And the Organization Id should be valid 
-		#commented out to flush out issue with problmes not coming down whilist issue of snomed code for list being wrong is sorted.
-		#And I Check the Referrals List is Valid
+		And I Check the Referrals List is Valid
 		And The Structured List Does Not Include Not In Use Fields	
-		########
-		#### Check step below is complete , doesnt look like it
-		######### 
 		And I Check the ReferralRequests are Valid
-		#And I Check the ReferralRequests Do Not Include Not in Use Fields
+		And I Check the ReferralRequests Do Not Include Not in Use Fields
 		And I Check The Problems List
 		And I Check The Problems List Does Not Include Not In Use Fields
 		And I Check The Problems Resources are Valid
 		And I check The Problem Resources Do Not Include Not In Use Fields
 		And the Bundle should contain "2" lists
-		#add check that a problem is linked to a ReferralRequest
-		#And Check a Problem is linked to an "Observation" that is also included in the response with its list
+		And Check a Problem is linked to ReferralRequest and that it is also included		
 
 @1.5.0-IncrementalAndRegression
 Scenario: Retrieve Referrals structured record for a patient that has no Referrals data
@@ -77,6 +72,9 @@ Scenario: Retrieve Referrals structured record for a patient that has no Referra
 		And the Organization Id should be valid 
 		And check structured list contains a note and emptyReason when no data in section
 		And check the response does not contain an operation outcome
+
+		#Add test for Data-in transit and confidental warnming messages
+		#fix current tests used in meds and allergies to pass in different pateitn for each warnign message, 13 and 16
 	
 @1.5.0-IncrementalAndRegression		
 Scenario: Retrieve the Referrals data structured record with period dates equal to current date expected success and no operation outcome

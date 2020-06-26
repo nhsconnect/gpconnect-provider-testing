@@ -107,11 +107,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             GlobalContext.DocumentURL = "";
         }
-
-        [Then(@"I set the created search parameters with a time period of ""(.*)"" days")]
-        public void Isetthecreatedsearchparameterswithatimeperiodofdays(int days)
+        
+        [Then(@"I set the documents search parameters le to today and ge to 365 days ago")]
+        public void Isetthedocumentssearchparametersletotodayandgeto365daysago()
         {
-            var val = TimePeriodHelper.GetTimePeriodStartDateTomorrowEndDateDays(days);
+            var val = TimePeriodHelper.GetTimePeriodStartDateTomorrowEndDateDays(365);
             Given($"I add the parameter \"created\" with the value \"ge{val.Start}\"");
             Given($"I add the parameter \"created\" with the value \"le{val.End}\"");
         }

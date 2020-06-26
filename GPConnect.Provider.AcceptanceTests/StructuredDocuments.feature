@@ -82,7 +82,7 @@ Scenario Outline: Search for Documents using author parameter but with invalid i
 		| orgCode |
 		| A20047  |
 
-Scenario Outline: Search for Patient Documents created within a date period
+Scenario: Search for Patient Documents created within a last 365 days
 	Given I configure the default "DocumentsPatientSearch" request
 		And I add a Patient Identifier parameter with default System and Value "patient2"
 		When I make the "DocumentsPatientSearch" request
@@ -91,13 +91,10 @@ Scenario Outline: Search for Patient Documents created within a date period
 	Given I configure the default "DocumentsSearch" request
 		And I set the JWT Requested Scope to Organization Read
 		And I set the required parameters for a Documents Search call
-		Then I set the created search parameters with a time period of "<Days>" days
+		Then I set the documents search parameters le to today and ge to 365 days ago
 	When I make the "DocumentsSearch" request
 		Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
-Examples:
-		| Days	|
-		| 365	|
 
 Scenario Outline: Search for Patient Documents created less than a date
 	Given I configure the default "DocumentsPatientSearch" request

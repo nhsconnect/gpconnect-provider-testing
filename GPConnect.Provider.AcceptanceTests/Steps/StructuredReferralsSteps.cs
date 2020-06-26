@@ -21,7 +21,7 @@
         private List<List> Lists => _httpContext.FhirResponse.Lists;
         private List<Patient> Patients => _httpContext.FhirResponse.Patients;
         private Bundle Bundle => _httpContext.FhirResponse.Bundle;
-        
+        private List<Condition> Problems => _httpContext.FhirResponse.Conditions;
 
         public StructuredReferralsSteps(HttpSteps httpSteps, HttpContext httpContext)
             : base(httpSteps)
@@ -148,46 +148,6 @@
             });
         }
 
-        //public void VerifyResourceReferenceExists(string refTypeToFind, string refToFind)
-        //{
-        //    //Switch on Clinical Item type
-        //    switch (refTypeToFind)
-        //    {
-        //        case "DiagnosticReport":
-        //            CheckResourceExists(ResourceType.DiagnosticReport, refToFind);
-        //            break;
-
-        //        case "ProcedureRequest":
-        //            CheckResourceExists(ResourceType.ProcedureRequest, refToFind);
-        //            break;
-
-        //        case "Specimen":
-        //            CheckResourceExists(ResourceType.Specimen, refToFind);
-        //            break;
-
-        //        case "Observation":
-        //            CheckResourceExists(ResourceType.Observation, refToFind);
-        //            break;
-
-        //        //unknown type ignore - could be not supported message
-        //        default:
-        //            Logger.Log.WriteLine("Ignored, Entry/Item/Reference for : " + refTypeToFind);
-        //            break;
-        //    }
-        //}
-
-
-        //public void CheckResourceExists<T>(T resourceType, string resourceID)
-        //{
-        //    Bundle.GetResources()
-        //                   .Where(resource => resource.ResourceType.Equals(resourceType))
-        //                   .Where(resource => resource.Id == resourceID)
-        //                   .ToList().Count().ShouldBe(1, "Fail : Linked Resource Not Contained in Response - type : " + resourceType + " - ID : " + resourceID);
-
-        //    Logger.Log.WriteLine("Found Linked resource : " + resourceID + " Of Type : " + resourceType);
-
-        //}
-
         [Given(@"I add the Referrals data parameter with current date")]
         public void GivenIAddTheReferralsParameterWithCurrentDate()
         {
@@ -239,6 +199,69 @@
             };
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kReferrals, tuples);
         }
+
+
+        [Then(@"Check a Problem is linked to ReferralRequest and that it is also included")]
+        public void ThenCheckaProblemislinkedtoReferralRequestandthatitisalsoincluded()
+        {
+            var found = false;
+            string refToFind = "";
+
+            foreach (var p in Problems)
+            {
+                Condition problem = (Condition)p;
+                List<Extension> problemRelatedContentExtensions = p.Extension.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kExtProblemRelatedContent)).ToList();
+
+                foreach (var rcc in problemRelatedContentExtensions)
+                {
+                    ResourceReference rr = (ResourceReference)rcc.Value;
+                    if (rr.Reference.StartsWith("ReferralRequest/"))
+                    {
+                        string pattern = @"(.*)(/)(.*)";
+                        refToFind = Regex.Replace(rr.Reference, pattern, "$3");
+                        found = true;
+                        Logger.Log.WriteLine("Info : Problem - Found Linked to a ReferralRequest - with ID : " + refToFind);
+                        break;
+                    }
+                }
+                if (found)
+                    break;
+            };
+
+            found.ShouldBeTrue("Fail : No Problems found to be linked to a  ReferralRequest");
+
+            //check that Linked Clinical resource has been included in response.
+            VerifyResourceReferenceExists("ReferralRequest", refToFind);
+
+        }
+
+        public void VerifyResourceReferenceExists(string refTypeToFind, string refToFind)
+        {
+            //Switch on Clinical Item type
+            switch (refTypeToFind)
+            {
+                case "ReferralRequest":
+                    CheckResourceExists(ResourceType.ReferralRequest, refToFind);
+                    break;
+
+                //unknown type ignore - could be not supported message
+                default:
+                    Logger.Log.WriteLine("Ignored, Entry/Item/Reference for : " + refTypeToFind);
+                    break;
+            }
+        }
+
+        public void CheckResourceExists<T>(T resourceType, string resourceID)
+        {
+            Bundle.GetResources()
+                           .Where(resource => resource.ResourceType.Equals(resourceType))
+                           .Where(resource => resource.Id == resourceID)
+                           .ToList().Count().ShouldBe(1, "Fail : Linked Resource Not Contained in Response - type : " + resourceType + " - ID : " + resourceID);
+
+            Logger.Log.WriteLine("Found Linked resource : " + resourceID + " Of Type : " + resourceType);
+
+        }
+
 
 
     }
