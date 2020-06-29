@@ -65,6 +65,18 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             };
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kDiary, tuples);
         }
+        
+        [Then(@"I add the Diary Search date parameter of ""(.*)"" days in future")]
+        public void GivenIaddtheDiarySearchdateparameterofdaysinfuture(int days)
+        {
+            var futureSearchDate = DateTime.UtcNow.AddDays(days);
+            var searchBeforeDate = futureSearchDate.ToString("yyyy-MM-dd");
+
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kDiarySearch, (Base)FhirHelper.GetStartDate(searchBeforeDate)),
+            };
+            _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kDiary, tuples);
+        }
 
         [Then(@"I Check the Diary List is Valid")]
         public void ThenIChecktheDiaryListareValid()
@@ -299,14 +311,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             });
         }
 
-        [Then(@"I Check the Diary ProcedureRequests are Within the ""(.*)"" days ago Search Range using Occurrence element")]
-        public void ThenIChecktheDiaryProcedureRequestsareWithintheSearchRange(int days)
+        [Then(@"I Check the Diary ProcedureRequests Occurrence Dates are atleast ""(.*)"" days in Future")]
+        public void ThenIChecktheDiaryProcedureRequestsOccurrenceDatesareatleastdaysinFuture(int days)
         {            
             //check atleast one ProcuedreRequest
             ProcedureRequests.ToList().Count().ShouldBeGreaterThan(0, "Error Should be Atleast One ProcedureRequest in response as per Data requirements");
 
-            var pastSearchDate = DateTime.UtcNow.AddDays(-days);
-            FhirDateTime fhirPastSearchDate = new FhirDateTime(pastSearchDate);
+            var futureSearchDate = DateTime.UtcNow.AddDays(days);
+            FhirDateTime fhirSearchDate = new FhirDateTime(futureSearchDate);
 
             ProcedureRequests.ForEach(proc =>
             {
@@ -316,24 +328,24 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 {
                     FhirDateTime occurrenceDateTime = (FhirDateTime)proc.Occurrence;
                     
-                    if (!(occurrenceDateTime <= fhirPastSearchDate))
+                    if (!(occurrenceDateTime >= fhirSearchDate))
                     {
-                        Assert.Fail("Fail : Diary ProcedureRequest Occurrence Date is not Less than or equal to the search date on ID: " + proc.Id);
+                        Assert.Fail("Fail : Diary ProcedureRequest Occurrence Date is not Greater than or equal to the search date on ID: " + proc.Id + " - Occurance Date :" + occurrenceDateTime + " - SearchDate :" + fhirSearchDate);
                     }
 
-                    Logger.Log.WriteLine("Info : Found Diary ProcedureRequest Occurrence Date Less than or equal to Search date");
+                    Logger.Log.WriteLine("Info : Found Diary ProcedureRequest Occurrence Date Greater than or equal to Search date");
                 }
                 else if (proc.Occurrence.GetType() == typeof(Period))
                 {
                     Period occurrencePeriod = (Period)proc.Occurrence;
                     FhirDateTime fhirOccurrenceStartDate = new FhirDateTime(occurrencePeriod.Start);
 
-                    if (!(fhirOccurrenceStartDate <= fhirPastSearchDate))
+                    if (!(fhirOccurrenceStartDate >= fhirSearchDate))
                     {
-                        Assert.Fail("Fail : Diary ProcedureRequest Occurrence Period Start Date is not Less than or equal to the search date on ID: " + proc.Id);
+                        Assert.Fail("Fail : Diary ProcedureRequest Occurrence Period Start Date is not Greater than or equal to the search date on ID: " + proc.Id + " - Occurance Date :" + fhirOccurrenceStartDate + " - SearchDate :" + fhirSearchDate);
                     }
 
-                    Logger.Log.WriteLine("Info : Found Diary ProcedureRequest Occurrence Period Start Date Less than or equal to Search date");
+                    Logger.Log.WriteLine("Info : Found Diary ProcedureRequest Occurrence Period Start Date Greater than or equal to Search date");
                 }
                 else if (proc.Occurrence.GetType() == typeof(Timing))
                 {
@@ -342,6 +354,18 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 
             });
         }
+
+        [Given(@"I set a Diary Search date to ""([^ ""]*)""")]
+        public void GivenIsetaDiarySearchdateto(string searchDate)
+        {
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kDiarySearch, (Base)FhirHelper.GetStartDate(searchDate)),
+            };
+            _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kDiary, tuples);
+        }
+
+
+       
 
     }
 }

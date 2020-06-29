@@ -72,10 +72,10 @@ Scenario: Search for Diary Entries for a Patient with No Diary Entries
 		And I Check Diary list contains a note and emptyReason when no data in section
 		And The Structured List Does Not Include Not In Use Fields	
 
-Scenario Outline: Search for Diary Entries Before a Past Date on a Patient with Diary Entries
+Scenario Outline: Search for Diary Entries with Todays Date and a Future Date on a Patient with Diary Entries
 	Given I configure the default "GpcGetStructuredRecord" request
-		And I add an NHS Number parameter for "<Patient>"
-		Then I add the Diary Search date parameter with a past date "<DaysinPastToSearch>" days ago
+		And I add an NHS Number parameter for "patient2"
+		Then I add the Diary Search date parameter of "<DaysInFutureToSearch>" days in future
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "collection"
@@ -83,19 +83,45 @@ Scenario Outline: Search for Diary Entries Before a Past Date on a Patient with 
 		And the patient resource in the bundle should contain meta data profile and version id
 		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
-		And the Bundle should be valid for patient "<Patient>"
+		And the Bundle should be valid for patient "patient2"
 		And check that the bundle does not contain any duplicate resources
 		And check the response does not contain an operation outcome
 		And the Patient Id should be valid
 		And the Practitioner Id should be valid
 		And the Organization Id should be valid 
-		And the Bundle should contain "<NumberOfListsExpected>" lists
 		And I Check the Diary List is Valid
 		And The Structured List Does Not Include Not In Use Fields	
 		And I Check the Diary ProcedureRequests are Valid
 		And I Check the Diary ProcedureRequests Do Not Include Not in Use Fields		
-		And I Check the Diary ProcedureRequests are Within the "<DaysinPastToSearch>" days ago Search Range using Occurrence element
+		And I Check the Diary ProcedureRequests Occurrence Dates are atleast "<DaysInFutureToSearch>" days in Future
 		Examples: 
-		| Patient  | DaysinPastToSearch | NumberOfListsExpected |
-		| patient2 | 20                 | 2                     |
-		| patient3 | 20                 | 1                     |
+	    | DaysInFutureToSearch |
+	    | 0                    |
+	    | 180                  |
+		
+Scenario: Search for Diary Entries with a Past Date Expect Fail
+	Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "patient2"
+		Then I add the Diary Search date parameter with a past date "20" days ago
+	When I make the "GpcGetStructuredRecord" request
+		Then the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
+
+Scenario Outline: Search for Diary Entries with invalid date values
+	Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "patient1"
+		And I set a Diary Search date to "<InvalidSearchDate>" 
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should be "422"
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
+	Examples:
+		| InvalidSearchDate          |
+		| X2014                      |
+		| X2014-02                   |
+		| X2015-10-23T11:08:32       |
+		| X2015-10-23T11:08:32+00:00 |
+		|                            |
+		| 2014                       |
+		| 2014-02                    |
+		| null                       |
+		
