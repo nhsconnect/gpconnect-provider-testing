@@ -311,32 +311,29 @@ this.ScenarioInitialize(scenarioInfo);
   testRunner.And("I Check the Diary ProcedureRequests are Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 95
   testRunner.And("I Check the Diary ProcedureRequests Do Not Include Not in Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 96
-  testRunner.And(string.Format("I Check the Diary ProcedureRequests Occurrence Dates are atleast \"{0}\" days in Fu" +
-                        "ture", daysInFutureToSearch), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Search for Diary Entries with a Past and Current Date Expect Fail")]
-        public virtual void SearchForDiaryEntriesWithAPastAndCurrentDateExpectFail()
+        [NUnit.Framework.DescriptionAttribute("Search for Diary Entries with a Past Date Expect Fail")]
+        public virtual void SearchForDiaryEntriesWithAPastDateExpectFail()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Search for Diary Entries with a Past and Current Date Expect Fail", null, ((string[])(null)));
-#line 102
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Search for Diary Entries with a Past Date Expect Fail", null, ((string[])(null)));
+#line 101
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 103
+#line 102
  testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 104
+#line 103
   testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 105
+#line 104
   testRunner.Then("I add the Diary Search date parameter with a past date \"20\" days ago", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 106
+#line 105
  testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 107
+#line 106
   testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 108
+#line 107
   testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
                     "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -356,20 +353,20 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void SearchForDiaryEntriesWithInvalidDateValues(string invalidSearchDate, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Search for Diary Entries with invalid date values", null, exampleTags);
-#line 110
+#line 109
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 111
+#line 110
  testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 112
+#line 111
   testRunner.And("I add an NHS Number parameter for \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 113
+#line 112
   testRunner.And(string.Format("I set a Diary Search date to \"{0}\"", invalidSearchDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 114
+#line 113
  testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 115
+#line 114
  testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 116
+#line 115
   testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
                     "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden

@@ -177,13 +177,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
                 //Check authoredOn
                 proc.AuthoredOn.ShouldNotBeNullOrEmpty("Fail : Diary ProcedureRequest - AuthoredOn should be populated with a dateTime");
-
-                //Check requester
-                proc.Requester.Agent.Reference.ShouldNotBeNullOrEmpty("Fail : Requester.Agent.Reference Should be populated with either a Practitioner or Organization Reference");
-                string pattern = @"(.*)(/.*)";
-                string refType = Regex.Replace(proc.Requester.Agent.Reference, pattern, "$1");
-                refType.ShouldBeOneOf("Practitioner", "Organization");
-
+               
                 Logger.Log.WriteLine("Diary ProcedureRequest Validated with ID: " + proc.Id);
             });
         }
@@ -308,50 +302,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 diaryList.EmptyReason.Coding.First().System.ShouldBe(FhirConst.StructureDefinitionSystems.kListEmptyReason);
                 diaryList.EmptyReason.Coding.First().Code.ShouldBe("no-content-recorded");
                 diaryList.EmptyReason.Coding.First().Display.ShouldBe("No Content Recorded");
-            });
-        }
-
-        [Then(@"I Check the Diary ProcedureRequests Occurrence Dates are atleast ""(.*)"" days in Future")]
-        public void ThenIChecktheDiaryProcedureRequestsOccurrenceDatesareatleastdaysinFuture(int days)
-        {            
-            //check atleast one ProcuedreRequest
-            ProcedureRequests.ToList().Count().ShouldBeGreaterThan(0, "Error Should be Atleast One ProcedureRequest in response as per Data requirements");
-
-            var futureSearchDate = DateTime.UtcNow.AddDays(days);
-            FhirDateTime fhirSearchDate = new FhirDateTime(futureSearchDate);
-
-            ProcedureRequests.ForEach(proc =>
-            {
-                proc.Occurrence.ShouldNotBeNull("Fail : Diary ProcedureRequest Occurrence Should not be NULL or Empty on a diary Search request. ProcedureRequest ID: " + proc.Id);
-
-                if (proc.Occurrence.GetType() == typeof(FhirDateTime))
-                {
-                    FhirDateTime occurrenceDateTime = (FhirDateTime)proc.Occurrence;
-                    
-                    if (!(occurrenceDateTime >= fhirSearchDate))
-                    {
-                        Assert.Fail("Fail : Diary ProcedureRequest Occurrence Date is not Greater than or equal to the search date on ID: " + proc.Id + " - Occurance Date :" + occurrenceDateTime + " - SearchDate :" + fhirSearchDate);
-                    }
-
-                    Logger.Log.WriteLine("Info : Found Diary ProcedureRequest Occurrence Date Greater than or equal to Search date");
-                }
-                else if (proc.Occurrence.GetType() == typeof(Period))
-                {
-                    Period occurrencePeriod = (Period)proc.Occurrence;
-                    FhirDateTime fhirOccurrenceStartDate = new FhirDateTime(occurrencePeriod.Start);
-
-                    if (!(fhirOccurrenceStartDate >= fhirSearchDate))
-                    {
-                        Assert.Fail("Fail : Diary ProcedureRequest Occurrence Period Start Date is not Greater than or equal to the search date on ID: " + proc.Id + " - Occurance Date :" + fhirOccurrenceStartDate + " - SearchDate :" + fhirSearchDate);
-                    }
-
-                    Logger.Log.WriteLine("Info : Found Diary ProcedureRequest Occurrence Period Start Date Greater than or equal to Search date");
-                }
-                else if (proc.Occurrence.GetType() == typeof(Timing))
-                {
-                    Assert.Fail("Fail : Diary ProcedureRequest Occurrence Should be a DateTime or a Period for a Diary Search. on ID: " + proc.Id);
-                }
-                
             });
         }
 

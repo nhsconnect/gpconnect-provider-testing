@@ -93,7 +93,6 @@ Scenario Outline: Search for Diary Entries with Todays Date and a Future Date on
 		And The Structured List Does Not Include Not In Use Fields	
 		And I Check the Diary ProcedureRequests are Valid
 		And I Check the Diary ProcedureRequests Do Not Include Not in Use Fields		
-		And I Check the Diary ProcedureRequests Occurrence Dates are atleast "<DaysInFutureToSearch>" days in Future
 		Examples: 
 	    | DaysInFutureToSearch |
 	    | 0                    |

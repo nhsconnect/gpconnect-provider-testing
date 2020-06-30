@@ -346,6 +346,27 @@
             });
         }
 
+        [Then(@"the Patient ManagingOrganization Should be Valid")]
+        public void ThenthePatientManagingOrganizationShouldbeValidandincludedintheBundle()
+        {
+            Patients.ForEach(patient =>
+            {
+                patient.ManagingOrganization.ShouldNotBeNull("Fail : Patient ManagingOrganization Should not be null - mandatory element");
+
+                if (patient.ManagingOrganization != null)
+                {
+                    var reference = patient.ManagingOrganization.Reference;
+
+                    reference.ShouldStartWith("Organization/");
+
+                    var resource = _httpSteps.GetResourceForRelativeUrl(GpConnectInteraction.OrganizationRead, reference);
+
+                    resource.GetType().ShouldBe(typeof(Organization));
+
+                }
+            });
+        }
+
         [Then(@"the Patient should exclude disallowed fields")]
         public void ThePatientShouldExcludeFields()
         {
@@ -544,6 +565,15 @@
             Patients.ForEach(patient =>
             {
                 patient.Gender.ShouldBeOfType<AdministrativeGender>($"Patient Gender is not a valid value within the value set {FhirConst.CodeSystems.kAdministrativeGender}");
+            });
+        }
+
+        [Then(@"the Patient DOB should be valid")]
+        public void ThePatientDOBShouldBeValid()
+        {
+            Patients.ForEach(patient =>
+            {
+                patient.BirthDate.ShouldNotBeNullOrEmpty("Fail Patient DOB should not be null or empty");
             });
         }
 
