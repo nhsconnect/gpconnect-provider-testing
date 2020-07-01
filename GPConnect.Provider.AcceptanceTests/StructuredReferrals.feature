@@ -72,10 +72,22 @@ Scenario: Retrieve Referrals structured record for a patient that has no Referra
 		And the Organization Id should be valid 
 		And check structured list contains a note and emptyReason when no data in section
 		And check the response does not contain an operation outcome
-
-		#Add test for Data-in transit and confidental warnming messages
-		#fix current tests used in meds and allergies to pass in different pateitn for each warnign message, 13 and 16
 	
+@1.5.0-IncrementalAndRegression
+Scenario Outline: Patient with Referrals Has Warnings and Associated Notes
+	Given I configure the default "GpcGetStructuredRecord" request 
+		And I add an NHS Number parameter for "<Patient>"
+		And I add the Referrals parameter
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate success
+		And the Bundle should contain "1" lists
+		And Check the list contains the following warning "<Warning>"
+		And Check the warning "<Warning>" has associated note "<Note>"
+	Examples:
+	| Patient | Warning		         | Note |
+	|patient16| confidential-items   | Items excluded due to confidentiality and/or patient preferences.                                                           |
+	|patient13| data-in-transit      | Patient record transfer from previous GP practice not yet complete; information recorded before dd-Mmm-yyyy may be missing. |
+
 @1.5.0-IncrementalAndRegression		
 Scenario: Retrieve the Referrals data structured record with period dates equal to current date expected success and no operation outcome
 	Given I configure the default "GpcGetStructuredRecord" request

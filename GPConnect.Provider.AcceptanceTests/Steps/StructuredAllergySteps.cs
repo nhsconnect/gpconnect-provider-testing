@@ -307,7 +307,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 if (found.Count() == 1)
                     Log.WriteLine("Found Warning : " + WarningToCheckFor + " in List : " +list.Title);
                 
-                found.Count().ShouldBe(1, "Unable to Find Warning : " + WarningToCheckFor + " in LIst : " + list.Title);
+                found.Count().ShouldBe(1, "Unable to Find Warning : " + WarningToCheckFor + " in List : " + list.Title);
             });
         }
 

@@ -365,7 +365,7 @@ Scenario:  structured record for a patient that is not in the database
 @1.3.1-IncrementalAndRegression
 Scenario Outline: Structured Allergies Patient Has multiple Warnings and Associated Notes
 	Given I configure the default "GpcGetStructuredRecord" request 
-		And I add an NHS Number parameter for "patient16"
+		And I add an NHS Number parameter for "<Patient>"
 		And I add the allergies parameter with resolvedAllergies set to "false"
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
@@ -373,6 +373,6 @@ Scenario Outline: Structured Allergies Patient Has multiple Warnings and Associa
 		And Check the list contains the following warning "<Warning>"
 		And Check the warning "<Warning>" has associated note "<Note>"
 	Examples:
-	| Warning             | Note                                                                                                                       |
-	| confidential-items   | Items excluded due to confidentiality and/or patient preferences.                                                           |
-	| data-in-transit      | Patient record transfer from previous GP practice not yet complete; information recorded before dd-Mmm-yyyy may be missing. |
+	| Patient | Warning		         | Note |
+	|patient16| confidential-items   | Items excluded due to confidentiality and/or patient preferences.                                                           |
+	|patient13| data-in-transit      | Patient record transfer from previous GP practice not yet complete; information recorded before dd-Mmm-yyyy may be missing. |

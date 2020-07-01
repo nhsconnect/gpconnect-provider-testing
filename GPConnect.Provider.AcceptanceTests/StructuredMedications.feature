@@ -373,7 +373,7 @@ Scenario:  structured record for a patient that has inactive flag
 @1.3.1-IncrementalAndRegression
 Scenario Outline: Structured Medications Patient Has multiple Warnings and Associated Notes
 	Given I configure the default "GpcGetStructuredRecord" request 
-		And I add an NHS Number parameter for "patient16"
+		And I add an NHS Number parameter for "patient13"
 		And I add the medication parameter with includePrescriptionIssues set to "true"
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
