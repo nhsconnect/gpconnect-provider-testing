@@ -72,7 +72,8 @@ Scenario: Retrieve Referrals structured record for a patient that has no Referra
 		And the Organization Id should be valid 
 		And check structured list contains a note and emptyReason when no data in section
 		And check the response does not contain an operation outcome
-	
+
+#Demonstrator does not have this data, so test will fail against it
 @1.5.0-IncrementalAndRegression
 Scenario Outline: Patient with Referrals Has Warnings and Associated Notes
 	Given I configure the default "GpcGetStructuredRecord" request 
