@@ -223,7 +223,7 @@ Scenario Outline: Documents Patient Search and check response conforms with the 
 		And the Patient MaritalStatus should be valid
 		And the Patient Deceased should be valid
 		And the Patient Telecom should be valid
-		And the Patient ManagingOrganization Should be Valid and included in the Bundle
+		And the Patient ManagingOrganization Should be Valid
 		And the Patient GeneralPractitioner Practitioner should be valid and resolvable
 		And the Patient should exclude disallowed fields
 		And the Patient Link should be valid and resolvable
