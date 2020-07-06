@@ -31,8 +31,7 @@
         {
             _httpContext = httpContext;
         }
-
-                 
+   
         [Given(@"I add the Investigations parameter")]
         public void GivenIAddTheInvestigationsParameter()
         {
@@ -40,7 +39,6 @@
             param.Name = FhirConst.GetStructuredRecordParams.kInvestigations;
             _httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
         }
-
 
         [Then(@"I Check the Investigations List is Valid")] 
         public void ThenIChecktheInvestigationsListsareValid()
@@ -235,7 +233,6 @@
 
         }
 
-
         [Then(@"I Check the DiagnosticReports Do Not Include Not in Use Fields")]
         public void ThenIChecktheDiagnosticReportsDoNotIncludeNotinUseFields()
         {
@@ -248,7 +245,6 @@
                 diag.PresentedForm.Count().ShouldBe(0, "Fail :  DiagnosticReport - PresentedForm element Should not be used - Not In Use Field");
             });
         }
-
 
         [Then(@"I Check the ProcedureRequests are Valid")]
         public void ThenIChecktheProcedureRequestareValid()
@@ -282,7 +278,6 @@
             });
         }
 
-
         [Then(@"I Check the ProcedureRequests Do Not Include Not in Use Fields")]
         public void ThenIChecktheProcedureRequestDoNotIncludeNotinUseFields()
         {
@@ -306,7 +301,6 @@
                 procs.RelevantHistory.Count().ShouldBe(0, "Fail :  ProcedureRequest - RelevantHistory element Should not be used - Not In Use Field");
             });
         }
-
 
         [Then(@"I Check the Specimens are Valid")]
         public void ThenIChecktheSpecimensareValid()
@@ -374,7 +368,6 @@
                     break;
             }
         }
-
 
         public void CheckResourceExists<T>(T resourceType, string resourceID)
         {
@@ -513,10 +506,6 @@
 
         }
 
-
-        //And I Check the Test report Filing is Valid
-        //And I Check the Test report Filing Do Not Include Not in Use Fields
-
         [Then(@"I Check the Test report Filing is Valid")]
         public void ThenIChecktheTestreportFilingisValid()
         {
@@ -558,8 +547,7 @@
 
         }
 
-
-            [Then(@"I Check the Test report Filing Do Not Include Not in Use Fields")]
+        [Then(@"I Check the Test report Filing Do Not Include Not in Use Fields")]
         public void ThenIChecktheTestreportFilingDoNotIncludeNotiNUseFields()
         {
             bool found = false;
@@ -586,9 +574,6 @@
 
             found.ShouldBeTrue("Fail : No Test Report Filing found as per data requirements");
         }
-
-
-
 
     }
 }
