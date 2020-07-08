@@ -13,7 +13,7 @@
     using GPConnect.Provider.AcceptanceTests.Steps;
   	using GPConnect.Provider.AcceptanceTests.Logger;
     using NUnit.Framework;
-  
+
     [Binding]
     public sealed class StructuredMedicationSteps : BaseSteps
     {
@@ -1096,15 +1096,20 @@
         {
             MedicationRequests.ForEach(medRequest =>
             {
-                if(medRequest.Status.Equals(MedicationRequest.MedicationRequestStatus.Stopped))
+                if((medRequest.Intent.Equals(MedicationRequest.MedicationRequestIntent.Plan)) && (medRequest.Status.Equals(MedicationRequest.MedicationRequestStatus.Stopped)))
                 {
                     Extension endReason = medRequest.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationRequestEndReason);
                     endReason.ShouldNotBeNull();
                     endReason.GetExtension("statusChangeDate").ShouldNotBeNull();
                     endReason.GetExtension("statusReason").ShouldNotBeNull();
-// Added 1.2.0 RMB 8/8/2018
                     endReason.GetExtension("statusReason").Equals("No information available");					
                 }
+                else if((medRequest.Intent.Equals(MedicationRequest.MedicationRequestIntent.Order)) && (medRequest.Status.Equals(MedicationRequest.MedicationRequestStatus.Stopped)))
+                {
+                    Extension endReason = medRequest.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationRequestEndReason);
+                    endReason.ShouldBeNull();
+                }
+
             });
         }
 
