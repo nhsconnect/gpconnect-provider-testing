@@ -262,11 +262,8 @@
             // Added github ref 89 // RMB 9/10/2018
             public const string kEndedAllergies = "Ended allergies (record artifact)";
             public const string kMedications = "Medications and medical devices";
-
             public const string kConsultations = "List of consultations";
             public const string kConsultation = "Surgery Consultation";
-            public const string kTopics = "?????";
-            public const string kHeadings = "?????";
             public const string kInvestigations = "Investigations and Results";
             public const string kOutboundReferrals = "Outbound referral";
             public const string kDiary = "Patient recall administration";

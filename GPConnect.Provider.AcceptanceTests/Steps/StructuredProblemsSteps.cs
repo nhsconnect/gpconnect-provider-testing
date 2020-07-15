@@ -116,6 +116,21 @@
 
         }
 
+        [Then(@"I Check There is No Problems List")]
+        public void ThenICheckThereisNoProblemsList()
+        {
+            //Check there is NO Problems List with snomed code
+            Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kProblems).ToList().Count().ShouldBe(0, "Fail : NO Problems List Should Exist for this Patient");
+
+        }
+
+        [Then(@"I Check There are No Problem Resources Included")]
+        public void ThenICheckThereareNoProblemResourcesIncluded()
+        {
+            //check No Problems
+            Problems.ToList().Count().ShouldBe(0, "Fail : Should be No Problems in response as per Data requirements");
+        }
+
         [Then(@"I Check The Problems Resources are Valid")]
         public void ThenIChecktheProblemsareValid()
         {
@@ -623,6 +638,80 @@
                     break;
             }
         }
+
+
+        [Then(@"I Check that a problem is linked to another problem")]
+        public void ThenICheckthataproblemislinkedtoanotherproblem()
+        {
+            //check atleast two problems
+            Problems.ToList().Count().ShouldBeGreaterThan(1, "Error Should be Atleast Two Problems Related in response as per Data requirements");
+
+            var foundParenttoChildRelationShip = false;
+            string pattern = @"(.*)(/)(.*)";
+
+            //Loop each Problem
+            Problems.ForEach(problem =>
+            {
+                //reset vars each loop
+                var parentProbRef = "";
+                var childProbRef = "";
+                var childRelatedRefValue = "";
+                var parentRelatedRefValue = "";
+
+                //check if problem has related problem extension
+                List<Extension> ChildRelatedProblemExtensions = problem.Extension.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kExtProblem)).ToList();
+                
+                //loop and find a child or sibling with a parent
+                ChildRelatedProblemExtensions.ForEach(childExtension =>
+                {
+                    //Check if found a child or sibling
+                    var typeChildExt = childExtension.Extension.Where(e => e.Url == "type" 
+                        && ((((Hl7.Fhir.Model.Code)e.Value).Value == "Child") || (((Hl7.Fhir.Model.Code)e.Value).Value == "Sibling")));
+                    
+                    if (typeChildExt.Count() > 0)
+                    {
+                        parentProbRef = problem.Id;
+
+                        //Get Target and Reference contained on child or sibling
+                        var childTargetRefExt = (childExtension.Extension.Where(e => e.Url == "target")).FirstOrDefault().Value;
+                        var childRefValue = ((Hl7.Fhir.Model.ResourceReference)childTargetRefExt).Reference;
+                        childRelatedRefValue = Regex.Replace(childRefValue, pattern, "$3");
+
+                        //Now find matching Parent
+                        Problems.ForEach(prob =>
+                        {
+                                childProbRef = prob.Id;
+                            
+                                //check if problem has related problem extension
+                                List<Extension> parentRelatedProblemExtensions = prob.Extension.Where(ext => ext.Url.Equals(FhirConst.StructureDefinitionSystems.kExtProblem)).ToList();
+
+                                //loop and find a child or sibling with a parent
+                                parentRelatedProblemExtensions.ForEach(parentExtension =>
+                                {
+                                    var typeParentExt = parentExtension.Extension.Where(e => e.Url == "type" && (((Hl7.Fhir.Model.Code)e.Value).Value == "Parent"));
+                                    if (typeParentExt.Count() > 0)
+                                    {
+                                        //Get Target and Reference contained on child or sibling
+                                        var parentTargetRefExt = (parentExtension.Extension.Where(e => e.Url == "target")).FirstOrDefault().Value;
+                                        var parentRefValue = ((Hl7.Fhir.Model.ResourceReference)parentTargetRefExt).Reference;
+                                        parentRelatedRefValue = Regex.Replace(parentRefValue, pattern, "$3");
+
+                                        //Check relationships are correct
+                                        if (parentProbRef == parentRelatedRefValue && childProbRef == childRelatedRefValue)
+                                        {
+                                            foundParenttoChildRelationShip = true;
+                                            Logger.Log.WriteLine("INFO : Found Problem linked to another problem. \nParent :" + parentProbRef + "\nChild :" + childProbRef);
+                                        }
+                                    }
+                                });
+                        });
+                    }
+                });
+            });
+
+            foundParenttoChildRelationShip.ShouldBeTrue("Fail : Problems linked to Problems Test has Not Found a Parent-Child relationship or Parent-Sibling Relationship as per data requirements");
+        }
+
 
     }
 }

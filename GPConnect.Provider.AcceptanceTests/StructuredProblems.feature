@@ -30,9 +30,34 @@ Scenario: Verify response for a Patient with Problems linked to all supported cl
 		And Check a Problem is linked to an "AllergyIntolerance" that is also included in the response with its list
 		And Check a Problem is linked to an "Immunization" that is also included in the response with its list
 		And Check a Problem is linked to an "Observation" that is also included in the response with its list
-		And Check that a Problem is linked via context to a consultation but only a reference is sent in response
-		# Unable to check problems linked to other problems due to TPP not supporting this.
+		And Check that a Problem is linked via context to a consultation but only a reference is sent in response 
 
+#Expect this test to fail for TPP as they do not support Problems linked to Problems
+@1.3.2-IncrementalAndRegression
+Scenario: Verify response for a Patient with Problems linked to other Problems
+	Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "patient2"
+		And I add the Problems parameter
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "collection"
+		And the response meta profile should be for "structured"
+		And the patient resource in the bundle should contain meta data profile and version id
+		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
+		And if the response bundle contains an organization resource it should contain meta data profile and version id
+		And the Bundle should be valid for patient "patient2"
+		And the Patient Id should be valid
+		And the Practitioner Id should be valid
+		And the Organization Id should be valid
+		And check that the bundle does not contain any duplicate resources
+		And I Check that a problem is linked to another problem
+		And I Check The Problems List
+		And I Check The Problems List Does Not Include Not In Use Fields
+		And I Check The Problems Resources are Valid
+		And I check The Problem Resources Do Not Include Not In Use Fields
+		And check the response does not contain an operation outcome
+		
+		
 Scenario Outline: Retrieve problems structured record with status partParameter expected success
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
