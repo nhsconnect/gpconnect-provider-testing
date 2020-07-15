@@ -67,9 +67,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
         
         [Then(@"I add the Diary Search date parameter of ""(.*)"" days in future")]
-        public void GivenIaddtheDiarySearchdateparameterofdaysinfuture(int days)
+        public void GivenIaddtheDiarySearchdateparameterofdaysinfuture(int years)
         {
-            var futureSearchDate = DateTime.UtcNow.AddDays(days);
+            var futureSearchDate = DateTime.UtcNow.AddYears(years);
             var searchBeforeDate = futureSearchDate.ToString("yyyy-MM-dd");
 
             IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {

@@ -79,7 +79,7 @@ Scenario: Search for Diary Entries for a Patient with No Diary Entries
 Scenario Outline: Search for Diary Entries with Todays Date and a Future Date on a Patient with Diary Entries
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
-		Then I add the Diary Search date parameter of "<DaysInFutureToSearch>" days in future
+		Then I add the Diary Search date parameter of "<YearsInFutureToSearch>" days in future
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "collection"
@@ -98,9 +98,9 @@ Scenario Outline: Search for Diary Entries with Todays Date and a Future Date on
 		And I Check the Diary ProcedureRequests are Valid
 		And I Check the Diary ProcedureRequests Do Not Include Not in Use Fields		
 		Examples: 
-	    | DaysInFutureToSearch |
-	    | 0                    |
-	    | 180                  |
+	    | YearsInFutureToSearch |
+	    | 0                     |
+	    | 10                    |
 		
 Scenario: Search for Diary Entries with a Past Date Expect Fail
 	Given I configure the default "GpcGetStructuredRecord" request

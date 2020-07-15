@@ -262,8 +262,8 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Search for Diary Entries with Todays Date and a Future Date on a Patient with Dia" +
             "ry Entries")]
         [NUnit.Framework.TestCaseAttribute("0", null)]
-        [NUnit.Framework.TestCaseAttribute("180", null)]
-        public virtual void SearchForDiaryEntriesWithTodaysDateAndAFutureDateOnAPatientWithDiaryEntries(string daysInFutureToSearch, string[] exampleTags)
+        [NUnit.Framework.TestCaseAttribute("10", null)]
+        public virtual void SearchForDiaryEntriesWithTodaysDateAndAFutureDateOnAPatientWithDiaryEntries(string yearsInFutureToSearch, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Search for Diary Entries with Todays Date and a Future Date on a Patient with Dia" +
                     "ry Entries", null, exampleTags);
@@ -275,7 +275,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 81
   testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 82
-  testRunner.Then(string.Format("I add the Diary Search date parameter of \"{0}\" days in future", daysInFutureToSearch), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.Then(string.Format("I add the Diary Search date parameter of \"{0}\" days in future", yearsInFutureToSearch), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 83
  testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 84
