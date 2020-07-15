@@ -25,6 +25,8 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		And the Practitioner Id should be valid
 		And the Organization Id should be valid
 		And check the response does not contain an operation outcome
+		And I Check There is No Problems List
+		And I Check No Problem Resources are Included
 
 	Examples:
 		| Patient   |

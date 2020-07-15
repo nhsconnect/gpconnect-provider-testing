@@ -49,6 +49,7 @@ Scenario: Search for Diary Entries for a Patient with Diary Entries and No Probl
 		And the Bundle should contain "1" lists
 		And I Check the Diary List is Valid
 		And The Structured List Does Not Include Not In Use Fields	
+		And I Check There is No Problems List
 		And I Check No Problem Resources are Included
 		And I Check the Diary ProcedureRequests are Valid
 		And I Check the Diary ProcedureRequests Do Not Include Not in Use Fields

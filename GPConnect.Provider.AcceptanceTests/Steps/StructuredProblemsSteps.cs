@@ -121,14 +121,14 @@
         {
             //Check there is NO Problems List with snomed code
             Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kProblems).ToList().Count().ShouldBe(0, "Fail : NO Problems List Should Exist for this Patient");
-
+            Logger.Log.WriteLine("INFO : NO Problem List has been included in the bundle");
         }
 
-        [Then(@"I Check There are No Problem Resources Included")]
-        public void ThenICheckThereareNoProblemResourcesIncluded()
+        [Then(@"I Check No Problem Resources are Included")]
+        public void ThenICheckNoProblemResourcesareIncluded()
         {
-            //check No Problems
-            Problems.ToList().Count().ShouldBe(0, "Fail : Should be No Problems in response as per Data requirements");
+            Problems.ToList().Count().ShouldBe(0, "Fail : NO Problems should be included in the response as per Data requirements");
+            Logger.Log.WriteLine("INFO : NO Problems have been included in the bundle");
         }
 
         [Then(@"I Check The Problems Resources are Valid")]
@@ -192,14 +192,6 @@
                 problem.Evidence.Count().ShouldBe(0, "Problem Check Failed : Evidence is a Not In Use Field");
             });
         }
-
-        [Then(@"I Check No Problem Resources are Included")]
-        public void ThenICheckNoProblemResourcesareIncluded()
-        {
-            Problems.ToList().Count().ShouldBe(0, "Fail : NO Problems should be included in the response as per Data requirements");
-            Logger.Log.WriteLine("NO Problems have been included in the bundle");
-        }
-
 
         [Given(@"I add the problems parameter with filterStatus ""(.*)""")]
         public void GivenIAddTheProblemsParameterWithfilterStatus(string value)

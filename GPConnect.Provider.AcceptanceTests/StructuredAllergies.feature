@@ -25,6 +25,8 @@ Scenario Outline: Retrieve the allergy structured record section for a patient i
 		And the Bundle should contain the correct number of allergies
 		And the Lists are valid for a patient with allergies
 		And check the response does not contain an operation outcome
+		And I Check There is No Problems List
+		And I Check No Problem Resources are Included
 	Examples:
 		| Patient   |
 		| patient3  |
@@ -32,10 +34,8 @@ Scenario Outline: Retrieve the allergy structured record section for a patient i
 		| patient6  |
 		| patient7  |
 		| patient8  |
-# git hub ref 144		| patient11 |
 		| patient12 |
 		| patient13 |
-## removed github ref 91 		| patient15 |
 
 @1.3.2-IncrementalAndRegression
 Scenario Outline: Retrieve the allergy structured record section for a patient including resolved allergies with linked Problems

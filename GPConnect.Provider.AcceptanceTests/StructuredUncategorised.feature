@@ -23,8 +23,10 @@ Scenario: Verify Uncategorised structured record for a Patient with Uncategorise
 		And The Observation List is Valid
 		And The Structured List Does Not Include Not In Use Fields
 		And check the response does not contain an operation outcome
+		And I Check There is No Problems List
+		And I Check No Problem Resources are Included
 
-#PG 19-2-2020 - Added for 1.3.2 - To check that associated problmes and the problems list are sent.
+#PG 19-2-2020 - Added for 1.3.2 - To check that associated problems and the problems list are sent.
 @1.3.2-IncrementalAndRegression
 Scenario: Verify Uncategorised structured record for a Patient with Uncategorised data associated to Problems
 	Given I configure the default "GpcGetStructuredRecord" request
