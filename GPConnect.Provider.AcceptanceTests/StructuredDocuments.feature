@@ -1,6 +1,9 @@
 ﻿@Structured @StructuredDocuments @1.5.0-Full-Pack @1.5.0-IncrementalAndRegression
 Feature: Documents
 
+# These Tests are only Testing this Structured Area in isolation and Not with other Areas or Combinations of Include Parameters
+# Tests around Multiple Structured Areas in one Request are tested in the MultipleRequests Feature
+
 ##########################################
 #Search For Documents Tests
 ##########################################

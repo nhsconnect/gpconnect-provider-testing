@@ -1,5 +1,8 @@
 ﻿@Structured @StructuredReferrals @1.5.0-Full-Pack
 Feature: StructuredReferrals
+
+# These Tests are only Testing this Structured Area in isolation and Not with other Areas or Combinations of Include Parameters
+# Tests around Multiple Structured Areas in one Request are tested in the MultipleRequests Feature
 	
 @1.5.0-IncrementalAndRegression
 Scenario: Verify Referrals structured record for a Patient with Referrals not linked to any problems

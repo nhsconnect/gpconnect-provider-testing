@@ -1,6 +1,9 @@
 ﻿@Structured @StructuredDiary @1.5.0-Full-Pack @1.5.0-IncrementalAndRegression
 Feature: StructuredDiary
 
+# These Tests are only Testing this Structured Area in isolation and Not with other Areas or Combinations of Include Parameters
+# Tests around Multiple Structured Areas in one Request are tested in the MultipleRequests Feature
+
 Scenario: Search for Diary Entries for a Patient with Diary Entries With Problems Associated
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
