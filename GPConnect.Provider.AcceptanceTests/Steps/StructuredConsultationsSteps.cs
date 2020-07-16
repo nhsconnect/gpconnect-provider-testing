@@ -300,6 +300,14 @@
             }); //end loop all topics
 
 
+        }
+
+        [Then(@"I Check one Topic is linked to a problem")]
+        public void ThenICheckoneTopicislinkedtoaproblem()
+        {
+            //Get all Topic lists
+            var AllTopicLists = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kTopics).ToList();
+
             //Check Atleast One Topic is linked to a Problem (as per data requirements)
             var found = false;
             AllTopicLists.ForEach(topicList =>
@@ -307,7 +315,7 @@
                 try
                 {
                     var problemHeaders = topicList.Extension.Where(e => e.Url == FhirConst.StructureDefinitionSystems.kExtProblem).ToList();
-                 
+
                     //check each Problem reference exists in bundle
                     string pattern = @"(.*/)(.*)";
                     problemHeaders.ForEach(problemHeader =>
@@ -335,7 +343,7 @@
                 {
                 }
 
-                
+
             });
 
             //check had atleast one topic is related to a problem as per data requirements for test

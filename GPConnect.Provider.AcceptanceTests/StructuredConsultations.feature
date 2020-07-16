@@ -1,6 +1,45 @@
 ﻿@Structured @StructuredConsultations @1.5.0-Full-Pack
 Feature: StructuredConsultations
 
+# These Tests are only Testing this Structured Area in isolation and Not with other Areas or Combinations of Include Parameters
+# Tests around Multiple Structured Areas in one Request are tested in the MultipleRequests Feature
+
+@1.3.2-IncrementalAndRegression
+Scenario: Verify Consultations Response for a Patient with Topic or Headings linked to all supported clinical items and No Problems Linked
+	Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "patient3"
+		And I add the includeConsultations parameter only
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "collection"
+		And the response meta profile should be for "structured"
+		And the patient resource in the bundle should contain meta data profile and version id
+		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
+		And if the response bundle contains an organization resource it should contain meta data profile and version id
+		And check that the bundle does not contain any duplicate resources
+		And the Bundle should be valid for patient "patient3"
+		And the Patient Id should be valid
+		And the Practitioner Id should be valid
+		And the Organization Id should be valid 
+		And I Check the Consultations List is Valid
+		And The Consultations List Does Not Include Not In Use Fields
+		And I Check the Encounters are Valid
+		And I Check the Encounters Do Not Include Not in Use Fields
+		And I Check the Consultation Lists are Valid
+		And I Check All The Consultation Lists Do Not Include Not In Use Fields
+		And I Check the Topic Lists are Valid
+		And I Check the Heading Lists are Valid	
+		And check the response does not contain an operation outcome
+		And I Check There is No Problems List
+		And I Check No Problem Resources are Included
+		And I Check that a Topic or Heading is linked to an "AllergyIntolerance" and that is included in response with a list
+		And I Check that a Topic or Heading is linked to an "Immunization" and that is included in response with a list
+		And I Check that a Topic or Heading is linked to an "Observation" and that is included in response with a list
+		#Add in check for Diary entries linked to topic or heading as above
+		And I Check that a Topic or Heading is linked to an "MedicationRequest" and that is included in response with a list
+		And Check the MedicationRequests have a link to a medication that has been included in response
+		And Check there is a MedicationStatement resource that is linked to the MedicationRequest and Medication
+
 @1.3.2-IncrementalAndRegression
 Scenario: Verify Consultations Response for a Patient with Topic or Headings linked to all supported clinical items and a problem
 	Given I configure the default "GpcGetStructuredRecord" request
@@ -25,6 +64,7 @@ Scenario: Verify Consultations Response for a Patient with Topic or Headings lin
 		And I Check the Consultation Lists are Valid
 		And I Check All The Consultation Lists Do Not Include Not In Use Fields
 		And I Check the Topic Lists are Valid
+		And I Check one Topic is linked to a problem
 		And I Check the Heading Lists are Valid	
 		And check the response does not contain an operation outcome
 		And I Check The Problems List
