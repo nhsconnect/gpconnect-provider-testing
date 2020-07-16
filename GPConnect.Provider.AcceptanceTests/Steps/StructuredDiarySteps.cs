@@ -95,7 +95,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 //Check each Entry/Item/Reference points to a resource that exists
                 bool found = false;
                 string pattern = @"(.*/)(.*)";
-                diaryList.Entry.Count().ShouldBeGreaterThan(1, "Fail : Atleast One Diary ProcedureRequest entry should be on the Diary List");
+                diaryList.Entry.Count().ShouldBeGreaterThan(0, "Fail : Atleast One Diary ProcedureRequest entry should be on the Diary List");
                 diaryList.Entry.ForEach(entry =>
                 {
                     string refToFind = Regex.Replace(entry.Item.Reference, pattern, "$2");
@@ -149,7 +149,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ThenIChecktheProcedureRequestareValid()
         {
             //check atleast one
-            ProcedureRequests.ToList().Count().ShouldBeGreaterThan(0, "Error Should be Atleast One ProcedureRequest in response as per Data requirements");
+            ProcedureRequests.ToList().Count().ShouldBeGreaterThan(0, "Error Should be Atleast One Diary ProcedureRequest in response as per Data requirements");
 
             ProcedureRequests.ForEach(proc =>
             {
