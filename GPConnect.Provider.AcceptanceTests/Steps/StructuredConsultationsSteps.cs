@@ -218,7 +218,7 @@
                                 .Where(resource => resource.ResourceType.Equals(ResourceType.List))
                                 .Where(resource => resource.Id == refToFind)
                                 .ToList().Count().ShouldBe(1, "Topic List resource Not Found");
-                    Logger.Log.WriteLine("Consultations List - Verified the Linked Topic has been included In the Bundle: " + refToFind);
+                    Logger.Log.WriteLine("Consultation List - Verified the Linked Topic has been included In the Bundle: " + refToFind);
                 });
 
                 Logger.Log.WriteLine("Completed Mandatory checks on Consultation List : " + consultationList.Id);
@@ -746,14 +746,14 @@
                 if (resourcetypeToCheck == "MedicationRequest")
                 {
                     a.Item.Reference.ShouldStartWith(("MedicationStatement" + "/"));
-                    //Check resource has been inluded in response
+                    //Check resource has been included in response
                     VerifyResourceReferenceExists("MedicationStatement", refToFind);
                     foundClinicalItemOnList = true;
                 }
                 else
                 {
                     a.Item.Reference.ShouldStartWith((resourcetypeToCheck + "/"));
-                    //Check resource has been inluded in response
+                    //Check resource has been included in response
                     VerifyResourceReferenceExists(resourcetypeToCheck, refToFind);
                     foundClinicalItemOnList = true;
                 }
@@ -764,7 +764,7 @@
             Logger.Log.WriteLine("Info : List Found for : " + resourcetypeToCheck + "- contains references to clinical item of type : " + resourcetypeToCheck);
 
 
-            //check count of item linked on list with items of that type in bundle as itegrity check
+            //check count of item linked on list with items of that type in bundle as integrity check
             switch (resourcetypeToCheck)
             {
                 case "AllergyIntolerance":

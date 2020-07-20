@@ -29,9 +29,6 @@
                 case GpConnectInteraction.SearchForFreeSlots:
                 case GpConnectInteraction.StructuredMetaDataRead:
                 case GpConnectInteraction.DocumentsMetaDataRead:
-                case GpConnectInteraction.DocumentsPatientSearch:
-                case GpConnectInteraction.DocumentsRetrieve:
-                case GpConnectInteraction.DocumentsSearch:
                     jwtHelper.RequestedScope = JwtConst.Scope.kOrganizationRead;
                     break;
                 case GpConnectInteraction.GpcGetCareRecord:
@@ -40,6 +37,9 @@
                 case GpConnectInteraction.PatientRead:
                 case GpConnectInteraction.AppointmentSearch:
                 case GpConnectInteraction.AppointmentRead:
+                case GpConnectInteraction.DocumentsPatientSearch:
+                case GpConnectInteraction.DocumentsRetrieve:
+                case GpConnectInteraction.DocumentsSearch:
                     jwtHelper.RequestedScope = JwtConst.Scope.kPatientRead;
                     break;
                 case GpConnectInteraction.RegisterPatient:

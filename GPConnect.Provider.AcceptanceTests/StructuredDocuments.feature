@@ -15,7 +15,6 @@ Scenario: Search for Documents on a Patient with Documents
 		Then the response status code should indicate success
 		Given I store the Patient
 	Given I configure the default "DocumentsSearch" request
-		And I set the JWT Requested Scope to Organization Read
 		And I set the required parameters for a Documents Search call
 	When I make the "DocumentsSearch" request
 		Then the response status code should indicate success
@@ -30,7 +29,6 @@ Scenario: Search for Documents on a Patient with NO Documents
 		Then the response status code should indicate success
 		Given I store the Patient
 	Given I configure the default "DocumentsSearch" request
-		And I set the JWT Requested Scope to Organization Read
 		And I set the required parameters for a Documents Search call
 	When I make the "DocumentsSearch" request
 		Then the response status code should indicate success
@@ -44,7 +42,6 @@ Scenario: Search for Documents without Mandatory include Params expect fail
 		Then the response status code should indicate success
 		Given I store the Patient
 	Given I configure the default "DocumentsSearch" request
-		And I set the JWT Requested Scope to Organization Read
 	When I make the "DocumentsSearch" request
 		Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
@@ -56,7 +53,6 @@ Scenario Outline: Search for Documents using author parameter
 		Then the response status code should indicate success
 		Given I store the Patient
 	Given I configure the default "DocumentsSearch" request
-		And I set the JWT Requested Scope to Organization Read
 		And I set the required parameters for a Documents Search call
 		And I set the author parameters for a Documents Search call to "<orgCode>"
 	When I make the "DocumentsSearch" request
@@ -75,7 +71,6 @@ Scenario Outline: Search for Documents using author parameter but with invalid i
 		Then the response status code should indicate success
 		Given I store the Patient
 	Given I configure the default "DocumentsSearch" request
-		And I set the JWT Requested Scope to Organization Read
 		And I set the required parameters for a Documents Search call
 		And I set the author parameters with an invalid identifier for a Documents Search call to "<orgCode>"
 	When I make the "DocumentsSearch" request
@@ -92,7 +87,6 @@ Scenario: Search for Patient Documents created within a last 365 days
 		Then the response status code should indicate success
 		Given I store the Patient
 	Given I configure the default "DocumentsSearch" request
-		And I set the JWT Requested Scope to Organization Read
 		And I set the required parameters for a Documents Search call
 		Then I set the documents search parameters le to today and ge to 365 days ago
 	When I make the "DocumentsSearch" request
@@ -106,7 +100,6 @@ Scenario Outline: Search for Patient Documents created less than a date
 		Then the response status code should indicate success
 		Given I store the Patient
 	Given I configure the default "DocumentsSearch" request
-		And I set the JWT Requested Scope to Organization Read
 		And I set the required parameters for a Documents Search call		
 		Then I set the created search parameter to less than "<Days>" days ago
 	When I make the "DocumentsSearch" request
@@ -123,7 +116,6 @@ Scenario Outline: Search for Patient Documents created greater than a date
 		Then the response status code should indicate success
 		Given I store the Patient
 	Given I configure the default "DocumentsSearch" request
-		And I set the JWT Requested Scope to Organization Read
 		And I set the required parameters for a Documents Search call		
 		Then I set the created search parameter to greater than "<Days>" days ago
 	When I make the "DocumentsSearch" request
@@ -140,7 +132,6 @@ Scenario: Search for Documents with an invalid parameter
 		Then the response status code should indicate success
 		Given I store the Patient
 	Given I configure the default "DocumentsSearch" request
-		And I set the JWT Requested Scope to Organization Read
 		And I set the required parameters for a Documents Search call
 		And I set an invalid parameter for a Documents Search call
 	When I make the "DocumentsSearch" request
@@ -149,7 +140,6 @@ Scenario: Search for Documents with an invalid parameter
 	
 Scenario: Search for Documents on a Patient that doesnt exist
 	Given I configure the default "DocumentsSearch" request
-		And I set the JWT Requested Scope to Organization Read
 		And I set the required parameters for a Documents Search call
 		And I change the patient logical id to a non existent id
 	When I make the "DocumentsSearch" request
@@ -166,7 +156,6 @@ Scenario: Search for Documents on a patient which exists on the system as a temp
 		And the response bundle should contain a single Patient resource
 	Given I store the Patient
 	Given I configure the default "DocumentsSearch" request
-		And I set the JWT Requested Scope to Organization Read
 		And I set the required parameters for a Documents Search call
 	When I make the "DocumentsSearch" request
 	Then the response status code should be "404"
@@ -183,7 +172,6 @@ Scenario: Retrieve a Document for Patient2
 		Then the response status code should indicate success
 		Given I store the Patient
 	Given I configure the default "DocumentsSearch" request
-		And I set the JWT Requested Scope to Organization Read
 		And I set the required parameters for a Documents Search call
 	When I make the "DocumentsSearch" request
 		Then the response status code should indicate success

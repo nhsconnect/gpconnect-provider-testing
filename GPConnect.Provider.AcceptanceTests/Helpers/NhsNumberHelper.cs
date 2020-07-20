@@ -56,7 +56,7 @@
                 total = total + (digit * (10 - i));
             }
 
-            var checkDigit = (11 - (total % 11) % 11);
+            var checkDigit = (11 - total % 11) % 11;
 
             return checkDigit == int.Parse(nhsNumber.Substring(9, 1));
         }
