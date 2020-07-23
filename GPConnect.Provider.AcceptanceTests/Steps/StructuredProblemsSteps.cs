@@ -156,8 +156,8 @@
                 problem.Identifier.Count.ShouldBeGreaterThan(0, "There should be at least 1 Identifier system/value pair on the Problem");
                 problem.Identifier.ForEach(identifier =>
                 {
-                    identifier.System.Equals(FhirConst.ValueSetSystems.kCrossCareIdentifier).ShouldBeTrue("Cross Care Setting Identifier NOT Found");
-                    identifier.Value.ShouldNotBeNullOrEmpty("Identifier Value Is Null or Not Valid");
+                    identifier.System.ShouldNotBeNullOrEmpty("Identifier System Is Null or Empty - Should be populated");
+                    identifier.Value.ShouldNotBeNullOrEmpty("Identifier Value Is Null or Empty - Should be populated");
                 });
 
                 //Check clinicalStatus
@@ -658,7 +658,7 @@
                 {
                     //Check if found a child or sibling
                     var typeChildExt = childExtension.Extension.Where(e => e.Url == "type" 
-                        && ((((Hl7.Fhir.Model.Code)e.Value).Value == "Child") || (((Hl7.Fhir.Model.Code)e.Value).Value == "Sibling")));
+                        && ((((Hl7.Fhir.Model.Code)e.Value).Value.ToLower() == "child") || (((Hl7.Fhir.Model.Code)e.Value).Value.ToLower() == "sibling")));
                     
                     if (typeChildExt.Count() > 0)
                     {
@@ -680,7 +680,7 @@
                                 //loop and find a child or sibling with a parent
                                 parentRelatedProblemExtensions.ForEach(parentExtension =>
                                 {
-                                    var typeParentExt = parentExtension.Extension.Where(e => e.Url == "type" && (((Hl7.Fhir.Model.Code)e.Value).Value == "Parent"));
+                                    var typeParentExt = parentExtension.Extension.Where(e => e.Url == "type" && (((Hl7.Fhir.Model.Code)e.Value).Value.ToLower() == "parent"));
                                     if (typeParentExt.Count() > 0)
                                     {
                                         //Get Target and Reference contained on child or sibling
