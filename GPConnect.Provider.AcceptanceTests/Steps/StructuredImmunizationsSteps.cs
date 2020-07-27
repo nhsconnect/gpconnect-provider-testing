@@ -80,16 +80,12 @@
                        clinicalSetting.Coding.First().Display.ShouldNotBeNullOrEmpty();
                    }
              
-                 //Check Identfier
+                 //Check Identifier
                 immunization.Identifier.Count.ShouldBeGreaterThan(0, "There should be at least 1 Identifier system/value pair");
                 immunization.Identifier.ForEach(identifier =>
                    {
-                           identifier.System.Equals(FhirConst.ValueSetSystems.kCrossCareIdentifier).ShouldBeTrue("Cross Care Setting Identfier NOT Found");
-
-                           //identifier.Value format is still being debated, hence notnull check
-                           identifier.Value.ShouldNotBeNullOrEmpty("Identifier Value Is Null or Not Valid");
-                            //Guid guidResult;
-                            //Guid.TryParse(identifier.Value, out guidResult).ShouldBeTrue("Immunization identifier GUID is not valid or Null");
+                       identifier.System.ShouldNotBeNullOrEmpty("Identifier System Is Null or Empty - Should be populated");
+                       identifier.Value.ShouldNotBeNullOrEmpty("Identifier Value Is Null or Not Valid");
                    });
                
                 //Check Status

@@ -151,7 +151,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 doc.Identifier.Count.ShouldBeGreaterThan(0, "Fail : There should be at least 1 Identifier system/value pair");
                 doc.Identifier.ForEach(identifier =>
                 {
-                    identifier.System.Equals(FhirConst.ValueSetSystems.kCrossCareIdentifier).ShouldBeTrue("Fail : Cross Care Setting Identifier NOT Found");
+                    identifier.System.ShouldNotBeNullOrEmpty("Identifier System Is Null or Empty - Should be populated");
                     identifier.Value.ShouldNotBeNullOrEmpty("Fail : Identifier Value Is Null or Not Empty - Expect Value");
                 });
 

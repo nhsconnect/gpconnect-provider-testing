@@ -450,12 +450,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 					var identifier = allergy.Identifier.First();
 					identifier.System.ShouldNotBeNullOrWhiteSpace("Identifier system must be set to 'https://fhir.nhs.uk/Id/cross-care-setting-identifier'");
 					FhirConst.ValueSetSystems.kVsAllergyIntoleranceIdentifierSystem.Equals(identifier.System).ShouldBeTrue();
-
-                    //new code to check for valid guid in the identifier by PG 10/4/2019 For ticket #190
-                    //Guid guidResult;
-                    //Guid.TryParse(identifier.Value, out guidResult).ShouldBeTrue("AllergyIntolerance identifier GUID is not valid or Null");
                     identifier.Value.ShouldNotBeNullOrEmpty("AllergyIntolerance identifier Cannot be null or Empty Value");
-
 
                 }
 			});

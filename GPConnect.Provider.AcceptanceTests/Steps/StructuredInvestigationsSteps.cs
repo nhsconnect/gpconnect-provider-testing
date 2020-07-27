@@ -125,6 +125,7 @@
                 diagnostic.Identifier.Count.ShouldBeGreaterThan(0, "There should be at least 1 Identifier system/value pair");
                 diagnostic.Identifier.ForEach(identifier =>
                 {
+                    identifier.System.ShouldNotBeNullOrEmpty("Identifier System Is Null or Empty - Should be populated");
                     identifier.Value.ShouldNotBeNullOrEmpty("Fail : No Identifier found when resource should have a unique Identifier");
                 });
 
@@ -320,6 +321,7 @@
                 specimen.Identifier.Count.ShouldBeGreaterThan(0, "There should be at least 1 Identifier system/value pair");
                 specimen.Identifier.ForEach(identifier =>
                 {
+                    identifier.System.ShouldNotBeNullOrEmpty("Identifier System Is Null or Empty - Should be populated");
                     identifier.Value.ShouldNotBeNullOrEmpty("Fail : No Identifier found when resource should have a unique Identifier");
                 });
 
@@ -524,6 +526,7 @@
                     obs.Identifier.Count.ShouldBeGreaterThan(0, "There should be at least 1 Identifier system/value pair on the Test report Filing");
                     obs.Identifier.ForEach(identifier =>
                     {
+                        identifier.System.ShouldNotBeNullOrEmpty("Identifier System Is Null or Empty - Should be populated");
                         identifier.Value.ShouldNotBeNullOrEmpty("Fail : No Identifier found when Test report Filing should have a unique Identifier");
                     });
 
