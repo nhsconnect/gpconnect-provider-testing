@@ -587,7 +587,7 @@
 			var endDate = futureDate.ToString("yyyy-MM-dd");
 
 			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
-				Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationsMostRecent, (Base) new Integer(3)),
+				Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationsMostRecent, (Base) new PositiveInt(3)),
 			};
 			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kConsultations, tuples);
 		}
@@ -602,8 +602,8 @@
 
 
 			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
-				Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationsMostRecent, (Base) new Integer(4)),
-				Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationSearch, (Base)FhirHelper.GetTimePeriod(startDate, endDate))
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationsMostRecent, (Base) new PositiveInt(4)),
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationSearch, (Base)FhirHelper.GetTimePeriod(startDate, endDate))
 			};
 			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kConsultations, tuples);
 		}
