@@ -70,7 +70,40 @@ Scenario: Verify Investigations structured record for a Patient with Investigati
 		And I Check the Test report Filing is Valid
 		And I Check the Test report Filing Do Not Include Not in Use Fields
 		And the Bundle should contain "2" lists
-		
+
+#The Aspects covered in this test have been split out from the main tests above as some providers do not support ProcedureRequests at this time.
+@1.5.0-IncrementalAndRegression
+Scenario: Verify Investigations structured record for a Patient with DiagnosticReports Linked to ProcedureRequests
+	Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "patient3"
+		And I add the Investigations parameter
+	When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "collection"
+		And the response meta profile should be for "structured"
+		And the patient resource in the bundle should contain meta data profile and version id
+		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
+		And if the response bundle contains an organization resource it should contain meta data profile and version id
+		And the Bundle should be valid for patient "patient3"
+	    And check that the bundle does not contain any duplicate resources
+		And check the response does not contain an operation outcome
+		And the Patient Id should be valid
+		And the Practitioner Id should be valid
+		And the Organization Id should be valid 
+		And the Bundle should contain "1" lists
+		And I Check the Investigations List is Valid
+		And The Structured List Does Not Include Not In Use Fields	
+		And I Check the DiagnosticReports are Valid and Linked to a ProcedureRequest
+		And I Check the DiagnosticReports Do Not Include Not in Use Fields
+		And I Check the ProcedureRequests are Valid		
+		And I Check the ProcedureRequests Do Not Include Not in Use Fields
+		And I Check the Specimens are Valid		
+		And I Check the Specimens Do Not Include Not in Use Fields
+		And I Check the Test report Filing is Valid
+		And I Check the Test report Filing Do Not Include Not in Use Fields
+		And I Check There is No Problems List
+		And I Check No Problem Resources are Included
+
 
 @1.5.0-IncrementalAndRegression
 Scenario: Retrieve Investigations structured record for a patient that has no Investigations data

@@ -103,11 +103,40 @@
         [Then(@"I Check the DiagnosticReports are Valid")]
         public void ThenIChecktheDiagnosticReportsareValid()
         {
+            CheckDiagnosticReportCommonElements();
+
+        }
+
+
+        [Then(@"I Check the DiagnosticReports are Valid and Linked to a ProcedureRequest")]
+        public void ThenIChecktheDiagnosticReportsareValidandLinkedtoaProcedureRequest()
+        {
+            CheckDiagnosticReportCommonElements();
+            CheckProcedureRequestLinkedToDiagnosticReport();
+        }
+
+
+
+        [Then(@"I Check the DiagnosticReports Do Not Include Not in Use Fields")]
+        public void ThenIChecktheDiagnosticReportsDoNotIncludeNotinUseFields()
+        {
+            DiagnosticReports.ForEach(diag =>
+            {
+                diag.Effective.ShouldBeNull("Fail :  DiagnosticReport - effective element Should not be used - Not In Use Field");
+                diag.Context.ShouldBeNull("Fail :  DiagnosticReport - context element Should not be used - Not In Use Field");
+                diag.ImagingStudy.Count().ShouldBe(0,"Fail :  DiagnosticReport - imagingStudy element Should not be used - Not In Use Field");
+                diag.Image.Count().ShouldBe(0, "Fail :  DiagnosticReport - image element Should not be used - Not In Use Field");
+                diag.PresentedForm.Count().ShouldBe(0, "Fail :  DiagnosticReport - PresentedForm element Should not be used - Not In Use Field");
+            });
+        }
+
+
+        public void CheckDiagnosticReportCommonElements()
+        {
             //check atleast one
             DiagnosticReports.ToList().Count().ShouldBeGreaterThan(0, "Error Should be Atleast One DiagnosticReport in response as per Data requirements");
 
-            //bool foundResult = false;
-            bool foundProcedureRequest = false;
+            //bool foundProcedureRequest = false;
             bool foundSpecimen = false;
             bool foundlinkedTestGroup = false;
             bool foundSpecimenLinkedToTestGroup = false;
@@ -121,7 +150,7 @@
                 //Check Meta.profile
                 CheckForValidMetaDataInResource(diagnostic, FhirConst.StructureDefinitionSystems.kDiagnosticReport);
 
-                //Check Identfier
+                //Check Identifier
                 diagnostic.Identifier.Count.ShouldBeGreaterThan(0, "There should be at least 1 Identifier system/value pair");
                 diagnostic.Identifier.ForEach(identifier =>
                 {
@@ -129,25 +158,8 @@
                     identifier.Value.ShouldNotBeNullOrEmpty("Fail : No Identifier found when resource should have a unique Identifier");
                 });
 
-                //check atleast one diagnosticReport is linked to a Procedurerequest(and included in bundle) as per data requirements
                 string refToCheck = "";
                 string pattern = @"(.*)(/)(.*)";
-
-                if (diagnostic.BasedOn != null)
-                {
-                    if (diagnostic.BasedOn.Count() >= 1)
-                    {
-                        refToCheck = diagnostic.BasedOn.First().Reference;
-                        if (refToCheck.StartsWith("ProcedureRequest/"))
-                        {
-                            string refToFind = Regex.Replace(refToCheck, pattern, "$3");
-                            //check Resource Exists
-                            VerifyResourceReferenceExists("ProcedureRequest", refToFind);
-                            Logger.Log.WriteLine("Info : Found and Verified ProcedureRequest");
-                            foundProcedureRequest = true;
-                        }
-                    }
-                }
 
                 //Check Status
                 diagnostic.Status.ToString().ShouldNotBeNull("DiagnosticReport Status should not be null");
@@ -224,9 +236,7 @@
 
             });
 
-            
             //Check Data Requirements were met
-            foundProcedureRequest.ShouldBeTrue("Fail : No link to a ProcedureRequest found on any DiagnosticReport as per data requirements");
             foundSpecimen.ShouldBeTrue("Fail : No link to a Specimen found on any DiagnosticReport");
             foundlinkedTestGroup.ShouldBeTrue("fail : No link to a Test Group found on any DiagnosticReport");
             foundSpecimenLinkedToTestGroup.ShouldBeTrue("fail : No link to a Specimen from a Test group Found");
@@ -234,18 +244,44 @@
 
         }
 
-        [Then(@"I Check the DiagnosticReports Do Not Include Not in Use Fields")]
-        public void ThenIChecktheDiagnosticReportsDoNotIncludeNotinUseFields()
+        public void CheckProcedureRequestLinkedToDiagnosticReport()
         {
-            DiagnosticReports.ForEach(diag =>
+
+             //check atleast one
+            DiagnosticReports.ToList().Count().ShouldBeGreaterThan(0, "Error Should be Atleast One DiagnosticReport in response as per Data requirements");
+
+            bool foundProcedureRequest = false;
+
+            DiagnosticReports.ForEach(diagnostic =>
             {
-                diag.Effective.ShouldBeNull("Fail :  DiagnosticReport - effective element Should not be used - Not In Use Field");
-                diag.Context.ShouldBeNull("Fail :  DiagnosticReport - context element Should not be used - Not In Use Field");
-                diag.ImagingStudy.Count().ShouldBe(0,"Fail :  DiagnosticReport - imagingStudy element Should not be used - Not In Use Field");
-                diag.Image.Count().ShouldBe(0, "Fail :  DiagnosticReport - image element Should not be used - Not In Use Field");
-                diag.PresentedForm.Count().ShouldBe(0, "Fail :  DiagnosticReport - PresentedForm element Should not be used - Not In Use Field");
+
+                ////check atleast one diagnosticReport is linked to a Procedurerequest(and included in bundle) as per data requirements
+                string refToCheck = "";
+                string pattern = @"(.*)(/)(.*)";
+
+                if (diagnostic.BasedOn != null)
+                {
+                    if (diagnostic.BasedOn.Count() >= 1)
+                    {
+                        refToCheck = diagnostic.BasedOn.First().Reference;
+                        if (refToCheck.StartsWith("ProcedureRequest/"))
+                        {
+                            string refToFind = Regex.Replace(refToCheck, pattern, "$3");
+                            //check Resource Exists
+                            VerifyResourceReferenceExists("ProcedureRequest", refToFind);
+                            Logger.Log.WriteLine("Info : Found and Verified ProcedureRequest");
+                            foundProcedureRequest = true;
+                        }
+                    }
+                }
+
+                //Check Data Requirements were met
+                foundProcedureRequest.ShouldBeTrue("Fail : No link to a ProcedureRequest found on any DiagnosticReport as per data requirements");
+
             });
+
         }
+
 
         [Then(@"I Check the ProcedureRequests are Valid")]
         public void ThenIChecktheProcedureRequestareValid()
