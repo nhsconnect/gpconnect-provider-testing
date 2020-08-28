@@ -12,7 +12,7 @@
     using static Hl7.Fhir.Model.Parameters;
     using GPConnect.Provider.AcceptanceTests.Helpers;
     using System.Text.RegularExpressions;
-
+   
     [Binding]
     public sealed class StructuredInvestigationsSteps : BaseSteps
     {
@@ -373,7 +373,10 @@
             {
                 specimen.Parent.Count().ShouldBe(0, "Fail :  Specimen - Parent element Should not be used - Not In Use Field");
                 specimen.Request.Count().ShouldBe(0, "Fail :  Specimen - Request element Should not be used - Not In Use Field");
-                specimen.Collection.Method.ShouldBeNull("Fail :  Specimen - Collection element Should not be used - Not In Use Field");
+                if (specimen.Collection != null)
+                {
+                    specimen.Collection.Method.ShouldBeNull("Fail :  Specimen - Collection element Should not be used - Not In Use Field");
+                }
                 specimen.Processing.Count().ShouldBe(0, "Fail :  Specimen - Processing element Should not be used - Not In Use Field");
                 specimen.Container.Count().ShouldBe(0, "Fail :  Specimen - Container element Should not be used - Not In Use Field");
             });
