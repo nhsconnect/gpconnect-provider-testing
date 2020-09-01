@@ -27,8 +27,6 @@ Scenario: Verify Investigations structured record for a Patient with Investigati
 		And The Structured List Does Not Include Not In Use Fields	
 		And I Check the DiagnosticReports are Valid
 		And I Check the DiagnosticReports Do Not Include Not in Use Fields
-		And I Check the ProcedureRequests are Valid		
-		And I Check the ProcedureRequests Do Not Include Not in Use Fields
 		And I Check the Specimens are Valid		
 		And I Check the Specimens Do Not Include Not in Use Fields
 		And I Check the Test report Filing is Valid
@@ -58,8 +56,6 @@ Scenario: Verify Investigations structured record for a Patient with Investigati
 		And The Structured List Does Not Include Not In Use Fields	
 		And I Check the DiagnosticReports are Valid
 		And I Check the DiagnosticReports Do Not Include Not in Use Fields
-		And I Check the ProcedureRequests are Valid		
-		And I Check the ProcedureRequests Do Not Include Not in Use Fields
 		And I Check the Specimens are Valid		
 		And I Check the Specimens Do Not Include Not in Use Fields
 		And I Check The Problems List
