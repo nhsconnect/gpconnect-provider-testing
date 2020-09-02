@@ -52,14 +52,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
         [Given(@"I set the author parameters for a Documents Search call to ""(.*)""")]
-        public void IsettheauthorparametersforaDocumentsSearchcall(string orgCode)
+        public void IsettheauthorparametersforaDocumentsSearchcall(string code)
         {
+            var orgCode = GlobalContext.OdsCodeMap[code];
             _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("author", "https://fhir.nhs.uk/Id/ods-organization-code" + '|' + orgCode);
         }
 
         [Given(@"I set the author parameters with an invalid identifier for a Documents Search call to ""(.*)""")]
-        public void IsettheauthorparameterswithaninvalididentifierforaDocumentsSearchcallto(string orgCode)
+        public void IsettheauthorparameterswithaninvalididentifierforaDocumentsSearchcallto(string code)
         {
+            var orgCode = GlobalContext.OdsCodeMap[code];
             _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("author", "https://bad-identifier" + '|' + orgCode);
         }
 

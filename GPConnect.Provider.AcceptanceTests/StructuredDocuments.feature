@@ -46,7 +46,7 @@ Scenario: Search for Documents without Mandatory include Params expect fail
 		Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
-Scenario Outline: Search for Documents using author parameter
+Scenario: Search for Documents using author parameter
 	Given I configure the default "DocumentsPatientSearch" request
 		And I add a Patient Identifier parameter with default System and Value "patient2"
 		When I make the "DocumentsPatientSearch" request
@@ -54,17 +54,14 @@ Scenario Outline: Search for Documents using author parameter
 		Given I store the Patient
 	Given I configure the default "DocumentsSearch" request
 		And I set the required parameters for a Documents Search call
-		And I set the author parameters for a Documents Search call to "<orgCode>"
+		And I set the author parameters for a Documents Search call to "ORG1"
 	When I make the "DocumentsSearch" request
 		Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
 		And I Check the returned DocumentReference is Valid
 		And I Check the returned DocumentReference Do Not Include Not In Use Fields
-	Examples:
-		| orgCode |
-		| A20047  |
 
-Scenario Outline: Search for Documents using author parameter but with invalid identifier
+Scenario: Search for Documents using author parameter but with invalid identifier
 	Given I configure the default "DocumentsPatientSearch" request
 		And I add a Patient Identifier parameter with default System and Value "patient2"
 		When I make the "DocumentsPatientSearch" request
@@ -72,13 +69,10 @@ Scenario Outline: Search for Documents using author parameter but with invalid i
 		Given I store the Patient
 	Given I configure the default "DocumentsSearch" request
 		And I set the required parameters for a Documents Search call
-		And I set the author parameters with an invalid identifier for a Documents Search call to "<orgCode>"
+		And I set the author parameters with an invalid identifier for a Documents Search call to "ORG1"
 	When I make the "DocumentsSearch" request
 		Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
-	Examples:
-		| orgCode |
-		| A20047  |
 
 Scenario: Search for Patient Documents created within a last 365 days
 	Given I configure the default "DocumentsPatientSearch" request
