@@ -445,3 +445,4 @@ Scenario: Documents Patient search for a No Consent Patient search gets a valid 
 		And the response bundle should contain "1" entries
 		And the Patient Id should be valid
 		And the required cacheing headers should be present in the response
+
