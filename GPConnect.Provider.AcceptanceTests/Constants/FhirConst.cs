@@ -264,7 +264,7 @@
             public const string kMedications = "Medications and medical devices";
             public const string kConsultations = "List of consultations";
             public const string kConsultation = "Surgery Consultation";
-            public const string kInvestigations = "Investigations and Results";
+            public const string kInvestigations = "Investigations and results";
             public const string kOutboundReferrals = "Outbound referral";
             public const string kDiary = "Patient recall administration";
 

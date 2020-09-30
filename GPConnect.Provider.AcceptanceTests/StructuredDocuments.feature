@@ -383,16 +383,6 @@ Scenario Outline: Documents Patient search should error if multiple parameters v
 		| identifier       | patient1   | identifier        | patient2   |
 		| identifier       | patient2   | identifier        | patient1   |
 
-Scenario: Documents Patient Search include count and sort parameters
-	Given I configure the default "DocumentsPatientSearch" request
-		And I add a Patient Identifier parameter with default System and Value "patient2"
-		And I add the parameter "_count" with the value "1"
-		And I add the parameter "_sort" with the value "status"
-	When I make the "DocumentsPatientSearch" request
-	Then the response status code should indicate success
-		And the response should be a Bundle resource of type "searchset"
-		And the response bundle should contain "1" entries
-
 Scenario: Documents Patient search valid response check caching headers exist
 	Given I configure the default "DocumentsPatientSearch" request
 		And I add a Patient Identifier parameter with default System and Value "patient2"
