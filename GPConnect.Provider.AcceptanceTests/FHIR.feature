@@ -539,9 +539,6 @@ Scenario Outline: Check Documents CapabilityStatement includes specific searchPa
 	Examples: 
 	| searchParam | searchParamType |
 	| created     | date            |
-	| facility    | token           |
 	| author      | token           |
-	| type        | token           |
-	| custodian   | token           |
 	| description | string          |
 	

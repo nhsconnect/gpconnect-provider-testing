@@ -1687,10 +1687,7 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.CategoryAttribute("StructuredDocuments")]
         [NUnit.Framework.CategoryAttribute("Structured")]
         [NUnit.Framework.TestCaseAttribute("created", "date", null)]
-        [NUnit.Framework.TestCaseAttribute("facility", "token", null)]
         [NUnit.Framework.TestCaseAttribute("author", "token", null)]
-        [NUnit.Framework.TestCaseAttribute("type", "token", null)]
-        [NUnit.Framework.TestCaseAttribute("custodian", "token", null)]
         [NUnit.Framework.TestCaseAttribute("description", "string", null)]
         public virtual void CheckDocumentsCapabilityStatementIncludesSpecificSearchParams(string searchParam, string searchParamType, string[] exampleTags)
         {
