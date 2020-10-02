@@ -35,17 +35,37 @@
             _httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
         }
 
-		[Given(@"I add a madeUp immunizations part parameter")]
-		public void GivenIAddAMadeUpImmunizationsPartParameter()
+        [Given(@"I add a madeUp immunizations part parameter")]
+        public void GivenIAddAMadeUpImmunizationsPartParameter()
 		{
 			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
-				Tuple.Create("madeUp", (Base)new FhirString ("madeUpValue1")),
-			};
+                Tuple.Create("madeUp", (Base)new FhirString ("madeUpValue1")),
+            };
 			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kImmunizations, tuples);
 
 		}
 
-		[Then(@"The Immunization Resources are Valid")]
+        [Given(@"I add a NotGiven immunizations part parameter")]
+        public void GivenIAddNotGivenImmunizationsPartParameter()
+        {
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kImmsNotGiven,(Base)new FhirBoolean(true)),
+            };
+            _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kImmunizations, tuples);
+
+        }
+
+        [Given(@"I add a Dissent immunizations part parameter")]
+        public void GivenIAddDissentImmunizationsPartParameter()
+        {
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kImmsDissent, (Base)new FhirBoolean(true)),
+            };
+            _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kImmunizations, tuples);
+
+        }
+
+        [Then(@"The Immunization Resources are Valid")]
         public void GivenTheImmunizationResourcesAreValid()
         {
             //Check atleast One Immunization

@@ -327,12 +327,12 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Structured request sent with multpile parameters expected success and no operatio" +
+        [NUnit.Framework.DescriptionAttribute("Structured request sent with multiple parameters expected success and no operatio" +
             "n outcome")]
         [NUnit.Framework.CategoryAttribute("1.3.2-IncrementalAndRegression")]
-        public virtual void StructuredRequestSentWithMultpileParametersExpectedSuccessAndNoOperationOutcome()
+        public virtual void StructuredRequestSentWithMultipleParametersExpectedSuccessAndNoOperationOutcome()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured request sent with multpile parameters expected success and no operatio" +
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured request sent with multiple parameters expected success and no operatio" +
                     "n outcome", null, new string[] {
                         "1.3.2-IncrementalAndRegression"});
 #line 90
@@ -365,6 +365,384 @@ this.ScenarioInitialize(scenarioInfo);
                     "d", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 103
   testRunner.And("check the response does not contain an operation outcome", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Structured request sent with invalid parameter combination 1 expected failure")]
+        public virtual void StructuredRequestSentWithInvalidParameterCombination1ExpectedFailure()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured request sent with invalid parameter combination 1 expected failure", null, ((string[])(null)));
+#line 108
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 109
+ testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 110
+  testRunner.And("I add an NHS Number parameter for \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 111
+  testRunner.And("I add the includeConsultations parameter only", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 112
+  testRunner.And("I add the medications parameter to search from \"3\" years back", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 113
+ testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 114
+ testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 115
+  testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
+                    "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Structured request sent with invalid parameter combination 2 expected failure")]
+        public virtual void StructuredRequestSentWithInvalidParameterCombination2ExpectedFailure()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured request sent with invalid parameter combination 2 expected failure", null, ((string[])(null)));
+#line 117
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 118
+ testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 119
+  testRunner.And("I add an NHS Number parameter for \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 120
+  testRunner.And("I add the includeConsultations parameter only", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 121
+  testRunner.And("I add the uncategorised data parameter with date permutations \"2014\" and \"2015\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 122
+ testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 123
+ testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 124
+  testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
+                    "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Structured request sent with invalid parameter combination 3 expected failure")]
+        public virtual void StructuredRequestSentWithInvalidParameterCombination3ExpectedFailure()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured request sent with invalid parameter combination 3 expected failure", null, ((string[])(null)));
+#line 126
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 127
+ testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 128
+  testRunner.And("I add an NHS Number parameter for \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 129
+  testRunner.And("I add the includeConsultations parameter only", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 130
+  testRunner.And("I add the problems parameter with filterSignificance \"major\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 131
+ testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 132
+ testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 133
+  testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
+                    "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Structured request sent with invalid parameter combination 4 expected failure")]
+        public virtual void StructuredRequestSentWithInvalidParameterCombination4ExpectedFailure()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured request sent with invalid parameter combination 4 expected failure", null, ((string[])(null)));
+#line 135
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 136
+ testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 137
+  testRunner.And("I add an NHS Number parameter for \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 138
+  testRunner.And("I add the includeConsultations parameter only", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 139
+  testRunner.And("I add the problems parameter with filterStatus \"active\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 140
+ testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 141
+ testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 142
+  testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
+                    "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Structured request sent with invalid parameter combination 5 expected failure")]
+        public virtual void StructuredRequestSentWithInvalidParameterCombination5ExpectedFailure()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured request sent with invalid parameter combination 5 expected failure", null, ((string[])(null)));
+#line 144
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 145
+ testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 146
+  testRunner.And("I add an NHS Number parameter for \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 147
+  testRunner.And("I add the includeConsultations parameter only", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 148
+  testRunner.And("I add the Referrals data parameter with date permutations \"2014\" and \"2016\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 149
+ testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 150
+ testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 151
+  testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
+                    "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Structured request sent with invalid parameter combination 6 expected failure")]
+        public virtual void StructuredRequestSentWithInvalidParameterCombination6ExpectedFailure()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured request sent with invalid parameter combination 6 expected failure", null, ((string[])(null)));
+#line 153
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 154
+ testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 155
+  testRunner.And("I add an NHS Number parameter for \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 156
+  testRunner.And("I add the includeConsultations parameter only", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 157
+  testRunner.Then("I add the Diary Search date parameter with a past date \"20\" days ago", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 158
+ testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 159
+ testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 160
+  testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
+                    "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Structured request sent with invalid parameter combination 7 expected failure")]
+        public virtual void StructuredRequestSentWithInvalidParameterCombination7ExpectedFailure()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured request sent with invalid parameter combination 7 expected failure", null, ((string[])(null)));
+#line 162
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 163
+ testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 164
+  testRunner.And("I add an NHS Number parameter for \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 165
+  testRunner.And("I add the includeConsultations parameter only", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 166
+  testRunner.And("I add a NotGiven immunizations part parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 167
+ testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 168
+ testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 169
+  testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
+                    "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Structured request sent with invalid parameter combination 8 expected failure")]
+        public virtual void StructuredRequestSentWithInvalidParameterCombination8ExpectedFailure()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured request sent with invalid parameter combination 8 expected failure", null, ((string[])(null)));
+#line 171
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 172
+ testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 173
+  testRunner.And("I add an NHS Number parameter for \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 174
+  testRunner.And("I add the includeConsultations parameter only", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 175
+  testRunner.And("I add a Dissent immunizations part parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 176
+ testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 177
+ testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 178
+  testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
+                    "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Structured request sent with invalid parameter combination 9 expected failure")]
+        public virtual void StructuredRequestSentWithInvalidParameterCombination9ExpectedFailure()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured request sent with invalid parameter combination 9 expected failure", null, ((string[])(null)));
+#line 181
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 182
+ testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 183
+  testRunner.And("I add an NHS Number parameter for \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 184
+  testRunner.And("I add the Problems parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 185
+  testRunner.And("I add the medications parameter to search from \"3\" years back", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 186
+ testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 187
+ testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 188
+  testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
+                    "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Structured request sent with invalid parameter combination 10 expected failure")]
+        public virtual void StructuredRequestSentWithInvalidParameterCombination10ExpectedFailure()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured request sent with invalid parameter combination 10 expected failure", null, ((string[])(null)));
+#line 190
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 191
+ testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 192
+  testRunner.And("I add an NHS Number parameter for \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 193
+  testRunner.And("I add the Problems parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 194
+  testRunner.And("I add the uncategorised data parameter with date permutations \"2014\" and \"2015\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 195
+ testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 196
+ testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 197
+  testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
+                    "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Structured request sent with invalid parameter combination 11 expected failure")]
+        public virtual void StructuredRequestSentWithInvalidParameterCombination11ExpectedFailure()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured request sent with invalid parameter combination 11 expected failure", null, ((string[])(null)));
+#line 199
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 200
+ testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 201
+  testRunner.And("I add an NHS Number parameter for \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 202
+  testRunner.And("I add the Problems parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 203
+  testRunner.And("I add the Referrals data parameter with date permutations \"2014\" and \"2016\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 204
+ testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 205
+ testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 206
+  testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
+                    "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Structured request sent with invalid parameter combination 12 expected failure")]
+        public virtual void StructuredRequestSentWithInvalidParameterCombination12ExpectedFailure()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured request sent with invalid parameter combination 12 expected failure", null, ((string[])(null)));
+#line 208
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 209
+ testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 210
+  testRunner.And("I add an NHS Number parameter for \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 211
+  testRunner.And("I add the Problems parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 212
+  testRunner.Then("I add the Diary Search date parameter with a past date \"20\" days ago", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 213
+ testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 214
+ testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 215
+  testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
+                    "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Structured request sent with invalid parameter combination 13 expected failure")]
+        public virtual void StructuredRequestSentWithInvalidParameterCombination13ExpectedFailure()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured request sent with invalid parameter combination 13 expected failure", null, ((string[])(null)));
+#line 217
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 218
+ testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 219
+  testRunner.And("I add an NHS Number parameter for \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 220
+  testRunner.And("I add the Problems parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 221
+  testRunner.And("I add a NotGiven immunizations part parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 222
+ testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 223
+ testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 224
+  testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
+                    "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Structured request sent with invalid parameter combination 14 expected failure")]
+        public virtual void StructuredRequestSentWithInvalidParameterCombination14ExpectedFailure()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured request sent with invalid parameter combination 14 expected failure", null, ((string[])(null)));
+#line 226
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 227
+ testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 228
+  testRunner.And("I add an NHS Number parameter for \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 229
+  testRunner.And("I add the Problems parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 230
+  testRunner.And("I add a Dissent immunizations part parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 231
+ testRunner.When("I make the \"GpcGetStructuredRecord\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 232
+ testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 233
+  testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
+                    "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

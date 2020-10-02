@@ -51,6 +51,8 @@
             public const string kReferralSearch = "referralSearchPeriod";
             public const string kDiary = "includeDiaryEntries";
             public const string kDiarySearch = "diaryEntriesSearchDate";
+            public const string kImmsNotGiven = "includeNotGiven";
+            public const string kImmsDissent = "includeDissentConsent";
 
             public const string kStartDate = "start";
             public const string kEndDate = "end";
