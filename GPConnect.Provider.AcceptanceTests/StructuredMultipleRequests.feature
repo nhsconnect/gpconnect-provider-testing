@@ -233,7 +233,16 @@ Scenario: Structured request sent with invalid parameter combination 14 expected
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
 		
-		
+Scenario: Structured request sent for consultations and problems expect success
+	Given I configure the default "GpcGetStructuredRecord" request
+		And I add an NHS Number parameter for "patient2"
+		And I add the includeConsultations parameter only
+		And I add the Problems parameter
+    When I make the "GpcGetStructuredRecord" request
+	Then the response status code should indicate success
+		And check that the bundle does not contain any duplicate resources
+		And the patient resource in the bundle should contain meta data profile and version id
+		And check the response does not contain an operation outcome		
 
 
 

@@ -38,7 +38,6 @@
             _httpContext = httpContext;
         }
 
-
         [Given(@"I add the Problems parameter")]
         public void GivenIAddTheProblemsParameter()
         {
@@ -113,7 +112,6 @@
             problemsList.Meta.VersionId.ShouldBeNull("List Meta.VersionId is Not Supposed to be Sent - Not In Use Field");
             problemsList.Meta.LastUpdated.ShouldBeNull("List Meta.LastUpdated is Not Supposed to be Sent - Not In Use Field");
             problemsList.Source.ShouldBeNull("List Source is Not Supposed to be Sent - Not In Use Field");
-
         }
 
         [Then(@"I Check There is No Problems List")]
@@ -169,15 +167,13 @@
                 //Check assertedDate
                 problem.AssertedDate.ShouldNotBeNull();
 
-                //Check asserter               
+                //Check asserter
                 if (!(problem.Asserter.Reference.Contains("Practitioner/") || problem.Asserter.Display.Contains("Unknown")))
                     NUnit.Framework.Assert.Fail("Problem Asserter.Reference should either be a Practitioner Reference or Asserter Display should be Unknown");
 
                 //CheckSubejct/patient
                 Patients.Where(p => p.Id == (problem.Subject.Reference.Replace("Patient/", ""))).Count().ShouldBe(1, "Patient Not Found in Bundle");
-
             });
-
         }
 
         [Then(@"I check The Problem Resources Do Not Include Not In Use Fields")]
@@ -224,7 +220,6 @@
         [Given(@"I add the problems parameter including repeating filter pairs")]
         public void GivenIAddTheProblemsParameterIncludingRepeatingFilterPairs()
         {
-
             IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
                 Tuple.Create(FhirConst.GetStructuredRecordParams.kProblemsStatus, (Base)new Code ("active")),
                 Tuple.Create(FhirConst.GetStructuredRecordParams.kProblemsSignificance, (Base)new Code ("minor")),
@@ -234,7 +229,6 @@
             IEnumerable<Tuple<string, Base>> tuples2 = new Tuple<string, Base>[] {
                 Tuple.Create(FhirConst.GetStructuredRecordParams.kProblemsStatus, (Base)new Code("inactive")),
                 Tuple.Create(FhirConst.GetStructuredRecordParams.kProblemsSignificance, (Base)new Code("major")),
-
             };
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kProblems, tuples2);
         }
@@ -246,13 +240,12 @@
                 Tuple.Create("madeUpProblems", (Base)new Code ("madeUpProblemsValue1")),
             };
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kProblems, tuples);
-
         }
 
         [Then(@"Check a Problem is Linked to a MedicationRequest resource that has been included in the response")]
         public void ThenCheckaProblemisLinkedtoaMedicationRequestresourcethathasbeenincludedintheresponse()
         {
-            //check there is atleast one problem with a MedicationRequest linked            
+            //check there is atleast one problem with a MedicationRequest linked
             var found = false;
             string refToFind = "";
 
@@ -279,7 +272,6 @@
 
             //check that MedicationRequest linked has been included in response.
             VerifyResourceReferenceExists("MedicationRequest", refToFind);
-
         }
 
         [Then(@"Check the MedicationRequests have a link to a medication that has been included in response")]
@@ -346,12 +338,10 @@
                 medRequestFound.ShouldBeTrue("Fail : No link to a MedicationRequest found on MedicationStatement - ID : " + medS.Id);
 
                 medStatementFound = true;
-
             });
 
             medStatementFound.ShouldBeTrue("Fail : No MedicationStatements found");
             Logger.Log.WriteLine("Info : Found MedicationStatements");
-
         }
 
         [Then(@"Check the Medications List resource has been included in response")]
@@ -376,7 +366,6 @@
             foundMedStatement.ShouldBeTrue("Fail : No MedicationStatements Linked on Medications List");
             Logger.Log.WriteLine("Info : Found MedicationStatements Linked on Medications List");
         }
-
 
         [Then(@"Check a Problem is linked to an ""(.*)"" that is also included in the response with its list")]
         public void ThenCheckaProblemislinkedtoanthatisalsoincludedintheresponsewithalist(string resourceType)
@@ -411,7 +400,7 @@
             VerifyResourceReferenceExists(resourceType, refToFind);
 
             //Check List is Present
-            //Switch on Clinical Item type 
+            //Switch on Clinical Item type
             Hl7.Fhir.Model.List listToCheck = new Hl7.Fhir.Model.List();
 
             switch (resourceType)
@@ -445,7 +434,6 @@
                     Logger.Log.WriteLine("Info : Ignored, ResourceType for : " + resourceType);
                     break;
             }
-                    
 
             //Check List has atleast one link to a Clinical of item of correct type
             bool foundClinicalItemOnList = false;
@@ -463,16 +451,15 @@
             foundClinicalItemOnList.ShouldBeTrue("Fail : List for : " + resourceType + "-Does not contain any references to clinical item of type : " + resourceType);
             Logger.Log.WriteLine("Info : List Found for : " + resourceType + "- contains references to clinical item of type : " + resourceType);
 
-
             //check count of item linked on list with items of that type in bundle as itegrity check
             switch (resourceType)
             {
                 case "AllergyIntolerance":
                     ActiveAllergyIntolerances.Count().ShouldBe(listToCheck.Entry.Count(), "Fail : Clinical Item Count does Not Match list Entry Count for resource type : " + resourceType);
-                    Logger.Log.WriteLine("Info : Passed Count Check for ResourceType  : " + resourceType + " - Bundle count equal to list entry count of : " + listToCheck.Entry.Count().ToString() );
+                    Logger.Log.WriteLine("Info : Passed Count Check for ResourceType  : " + resourceType + " - Bundle count equal to list entry count of : " + listToCheck.Entry.Count().ToString());
                     break;
 
-                case "Observation": 
+                case "Observation":
                     //uncat - these are not always uncategorised data resources as they are used for other purposes so cannot do a stright
                     //count check against list and resources. all items on list will be checked that they have been included above which covers checking the list
                     //Observations.Count().ShouldBe(listToCheck.Entry.Count(), "Fail : Clinical Item Count does Not Match list Entry Count for resource type : " + resourceType);
@@ -494,10 +481,7 @@
                     Logger.Log.WriteLine("Ignored Count Chcek for ResourceType : " + resourceType);
                     break;
             }
-
-
         }
-
 
         [Then(@"Check that a Problem is linked via context to a consultation but only a reference is sent in response")]
         public void ThenCheckthataProblemislinkedtoaconsultationbutonlyareferenceissentinresponse()
@@ -532,8 +516,7 @@
             Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kConsultation)
                 .ToList().Count()
                 .ShouldBe(0, "Fail :Consultation List Found - Expect No Consultation List is sent");
-           Logger.Log.WriteLine("Info : No Consultation List Found as Expected");
-
+            Logger.Log.WriteLine("Info : No Consultation List Found as Expected");
 
             //Check Consultations List is not Included
             Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kConsultations)
@@ -541,21 +524,17 @@
                 .ShouldBe(0, "Fail : Found atleast 1 Consultations list using Snomed Code. - Expect NONE");
             Logger.Log.WriteLine("Info : No Consultations List Found as Expected");
 
-
             //Check No Heading List is sent
             Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kHeadings)
                 .ToList().Count()
                 .ShouldBe(0, "Fail : Found atleast 1 Heading list using Snomed Code. - Expect NONE");
             Logger.Log.WriteLine("Info : No Heading List Found as Expected");
 
-
             //Check No Topic List is sent
             Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kTopics)
                 .ToList().Count()
                 .ShouldBe(0, "Fail : Found atleast 1 Topic list using Snomed Code. - Expect NONE");
             Logger.Log.WriteLine("Info : No Topic List Found as Expected");
-
-            
         }
 
         public void CheckResourceExists<T>(T resourceType, string resourceID)
@@ -577,7 +556,6 @@
             {
                 count.ShouldBe(1, "Fail : Resource NOT Found : " + resourceType.ToString() + " - Missing ID : " + resourceID);
             }
-
         }
 
         public void VerifyResourceReferenceExists(string refTypeToFind, string fullRefToFind)
@@ -631,7 +609,6 @@
             }
         }
 
-
         [Then(@"I Check that a problem is linked to another problem")]
         public void ThenICheckthataproblemislinkedtoanotherproblem()
         {
@@ -652,14 +629,14 @@
 
                 //check if problem has related problem extension
                 List<Extension> ChildRelatedProblemExtensions = problem.Extension.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kExtProblem)).ToList();
-                
+
                 //loop and find a child or sibling with a parent
                 ChildRelatedProblemExtensions.ForEach(childExtension =>
                 {
                     //Check if found a child or sibling
-                    var typeChildExt = childExtension.Extension.Where(e => e.Url == "type" 
+                    var typeChildExt = childExtension.Extension.Where(e => e.Url == "type"
                         && ((((Hl7.Fhir.Model.Code)e.Value).Value.ToLower() == "child") || (((Hl7.Fhir.Model.Code)e.Value).Value.ToLower() == "sibling")));
-                    
+
                     if (typeChildExt.Count() > 0)
                     {
                         parentProbRef = problem.Id;
@@ -672,30 +649,30 @@
                         //Now find matching Parent
                         Problems.ForEach(prob =>
                         {
-                                childProbRef = prob.Id;
-                            
-                                //check if problem has related problem extension
-                                List<Extension> parentRelatedProblemExtensions = prob.Extension.Where(ext => ext.Url.Equals(FhirConst.StructureDefinitionSystems.kExtProblem)).ToList();
+                            childProbRef = prob.Id;
 
-                                //loop and find a child or sibling with a parent
-                                parentRelatedProblemExtensions.ForEach(parentExtension =>
+                            //check if problem has related problem extension
+                            List<Extension> parentRelatedProblemExtensions = prob.Extension.Where(ext => ext.Url.Equals(FhirConst.StructureDefinitionSystems.kExtProblem)).ToList();
+
+                            //loop and find a child or sibling with a parent
+                            parentRelatedProblemExtensions.ForEach(parentExtension =>
+                            {
+                                var typeParentExt = parentExtension.Extension.Where(e => e.Url == "type" && (((Hl7.Fhir.Model.Code)e.Value).Value.ToLower() == "parent"));
+                                if (typeParentExt.Count() > 0)
                                 {
-                                    var typeParentExt = parentExtension.Extension.Where(e => e.Url == "type" && (((Hl7.Fhir.Model.Code)e.Value).Value.ToLower() == "parent"));
-                                    if (typeParentExt.Count() > 0)
-                                    {
                                         //Get Target and Reference contained on child or sibling
                                         var parentTargetRefExt = (parentExtension.Extension.Where(e => e.Url == "target")).FirstOrDefault().Value;
-                                        var parentRefValue = ((Hl7.Fhir.Model.ResourceReference)parentTargetRefExt).Reference;
-                                        parentRelatedRefValue = Regex.Replace(parentRefValue, pattern, "$3");
+                                    var parentRefValue = ((Hl7.Fhir.Model.ResourceReference)parentTargetRefExt).Reference;
+                                    parentRelatedRefValue = Regex.Replace(parentRefValue, pattern, "$3");
 
                                         //Check relationships are correct
                                         if (parentProbRef == parentRelatedRefValue && childProbRef == childRelatedRefValue)
-                                        {
-                                            foundParenttoChildRelationShip = true;
-                                            Logger.Log.WriteLine("INFO : Found Problem linked to another problem. \nParent :" + parentProbRef + "\nChild :" + childProbRef);
-                                        }
+                                    {
+                                        foundParenttoChildRelationShip = true;
+                                        Logger.Log.WriteLine("INFO : Found Problem linked to another problem. \nParent :" + parentProbRef + "\nChild :" + childProbRef);
                                     }
-                                });
+                                }
+                            });
                         });
                     }
                 });
@@ -703,7 +680,5 @@
 
             foundParenttoChildRelationShip.ShouldBeTrue("Fail : Problems linked to Problems Test has Not Found a Parent-Child relationship or Parent-Sibling Relationship as per data requirements");
         }
-
-
     }
 }

@@ -20,7 +20,6 @@
             public const string kDiary = "714311000000108";
         }
 
-
         internal static class GetCareRecordParams
         {
             public const string kPatientNHSNumber = "patientNHSNumber";
@@ -35,16 +34,18 @@
             public const string kPatientNHSNumber = "patientNHSNumber";
             public const string kAllergies = "includeAllergies";
             public const string kMedication = "includeMedication";
-			//sara testing notes 29/08/19
-			public const string kImmunizations = "includeImmunisations";
-			public const string kUncategorised = "includeUncategorisedData";
-			public const string kUncategorisedData = "uncategorisedDataSearchPeriod";
-			public const string kConsultations = "includeConsultations";
-			public const string kConsultationSearch = "consultationSearchPeriod";
-			public const string kConsultationsMostRecent= "includeNumberOfMostRecent";
-			public const string kProblems = "includeProblems";
-			public const string kProblemsStatus = "filterStatus";
-			public const string kProblemsSignificance = "filterSignificance";
+
+            //sara testing notes 29/08/19
+            public const string kImmunizations = "includeImmunisations";
+
+            public const string kUncategorised = "includeUncategorisedData";
+            public const string kUncategorisedData = "uncategorisedDataSearchPeriod";
+            public const string kConsultations = "includeConsultations";
+            public const string kConsultationSearch = "consultationSearchPeriod";
+            public const string kConsultationsMostRecent = "includeNumberOfMostRecent";
+            public const string kProblems = "includeProblems";
+            public const string kProblemsStatus = "filterStatus";
+            public const string kProblemsSignificance = "filterSignificance";
             public const string kInvestigations = "includeInvestigations";
             public const string kInvestigationsSearch = "investigationSearchPeriod";
             public const string kReferrals = "includeReferrals";
@@ -57,11 +58,12 @@
             public const string kStartDate = "start";
             public const string kEndDate = "end";
             public const string kResolvedAllergies = "includeResolvedAllergies";
-            public const string kPrescriptionIssues  = "includePrescriptionIssues";
-// github ref 127 RMB 5/11/2018            public const string kMedicationDatePeriod = "medicationDatePeriod";
-            public const string kMedicationDatePeriod = "medicationSearchFromDate";			
-            public const string kTimePeriod = "timePeriod";
+            public const string kPrescriptionIssues = "includePrescriptionIssues";
 
+            // github ref 127 RMB 5/11/2018            public const string kMedicationDatePeriod = "medicationDatePeriod";
+            public const string kMedicationDatePeriod = "medicationSearchFromDate";
+
+            public const string kTimePeriod = "timePeriod";
         }
 
         internal static class Resources
@@ -101,6 +103,7 @@
 
             //STU3
             public const string kNameUse = "http://hl7.org/fhir/name-use";
+
             public const string kContactPointSystem = "http://hl7.org/fhir/stu3/contact-point-system";
             public const string kNContactPointUse = "http://hl7.org/fhir/stu3/contact-point-use";
             public const string kAddressUse = "http://hl7.org/fhir/stu3/address-use";
@@ -135,6 +138,7 @@
 
             //HL7
             public const string kVsNameUse = "http://hl7.org/fhir/stu3/valueset-name-use.html";
+
             public const string kVsContactPointSystem = "http://hl7.org/fhir/stu3/valueset-contact-point-system.html";
             public const string kVsNContactPointUse = "http://hl7.org/fhir/stu3/valueset-contact-point-use.html";
             public const string kVsAddressUse = "http://hl7.org/fhir/stu3/valueset-address-use.html";
@@ -143,9 +147,10 @@
             public const string kVsEncounterParticipantType = "http://hl7.org/fhir/ValueSet/encounter-participant-type";
             public const string kVsRelationshipStatus = "http://hl7.org/fhir/ValueSet/v2-0131";
             public const string kVsNullFlavour = "http://hl7.org/fhir/ValueSet/v3-NullFlavor";
-			
+
             // Added for 1.2.0 RMB 7/8/2018
-			public const string kVsAllergyIntoleranceIdentifierSystem = "https://fhir.nhs.uk/Id/cross-care-setting-identifier";
+            public const string kVsAllergyIntoleranceIdentifierSystem = "https://fhir.nhs.uk/Id/cross-care-setting-identifier";
+
             public const string kCrossCareIdentifier = "https://fhir.nhs.uk/Id/cross-care-setting-identifier";
             public const string kVsAllergyIntoleranceClinicalStatus = "http://hl7.org/fhir/stu3/valueset-allergy-clinical-status.html";
             public const string kVsAllergyIntoleranceCategory = "http://hl7.org/fhir/stu3/valueset-allergy-intolerance-category.html";
@@ -166,6 +171,7 @@
         {
             //EXTENSIONS
             public const string kExtGpcPractitioner = "https://fhir.nhs.uk/STU3/StructureDefinition/extension-gpconnect-practitioner-1";
+
             public const string kExtRegistrationStatus = "https://fhir.nhs.uk/StructureDefinition/extension-registration-status-1";
             public const string kExtRegistrationType = "https://fhir.nhs.uk/StructureDefinition/extension-registration-type-1";
             public const string kExtRegistrationPeriod = "https://fhir.nhs.uk/StructureDefinition/extension-registration-period-1";
@@ -190,6 +196,7 @@
 
             //Structures
             public const string kPractitioner = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Practitioner-1";
+
             public const string kPatient = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Patient-1";
             public const string kOrganisation = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Organization-1";
             public const string kLocation = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Location-1";
@@ -198,9 +205,11 @@
             public const string kSlot = "https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-Slot-1";
             public const string kSchedule = "https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-Schedule-1";
             public const string kGpcSearchSet = "https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-Searchset-Bundle-1";
-			// Amended to https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-StructuredRecord-Bundle-1  RMB 14/8/2018
+
+            // Amended to https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-StructuredRecord-Bundle-1  RMB 14/8/2018
             public const string kGpcStructuredRecordBundle = "https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-StructuredRecord-Bundle-1";
-			public const string kAllergyIntolerance = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-AllergyIntolerance-1";
+
+            public const string kAllergyIntolerance = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-AllergyIntolerance-1";
             public const string kMedication = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Medication-1";
             public const string kMedicationStatement = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-MedicationStatement-1";
             public const string kMedicationRequest = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-MedicationRequest-1";
@@ -219,28 +228,30 @@
             public const string kDocumentReference = "https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-DocumentReference-1";
 
             // git hub ref 158
-            // RMB 9/1/19			
-            public const string kListEmptyReason = "https://fhir.nhs.uk/STU3/CodeSystem/CareConnect-ListEmptyReasonCode-1";			
+            // RMB 9/1/19
+            public const string kListEmptyReason = "https://fhir.nhs.uk/STU3/CodeSystem/CareConnect-ListEmptyReasonCode-1";
 
             //Extensions
-            public const string kCCExtNhsCommunication =        "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-NHSCommunication-1";
-            public const string kExtCcGpcRegDetails =           "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-RegistrationDetails-1";
-            public const string kCCExtEthnicCategory =          "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-EthnicCategory-1";
-            public const string kCcExtReligiousAffiliation =    "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-ReligiousAffiliation-1";
-            public const string kCCExtPatientCadaver =          "http://hl7.org/fhir/StructureDefinition/patient-cadavericDonor";
-            public const string kCCExtResidentialStatus =       "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-ResidentialStatus-1";
-            public const string kCCExtTreatmentCategory =       "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-TreatmentCategory-1";
-            public const string kExtCcGpcNhsNumVerification =   "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-NHSNumberVerificationStatus-1";
-            public const string kExtCcGpcMainLoc =              "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-MainLocation-1";
-            public const string kOrgzPeriod =                   "http://hl7.org/fhir/StructureDefinition/organization-period";
+            public const string kCCExtNhsCommunication = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-NHSCommunication-1";
+
+            public const string kExtCcGpcRegDetails = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-RegistrationDetails-1";
+            public const string kCCExtEthnicCategory = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-EthnicCategory-1";
+            public const string kCcExtReligiousAffiliation = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-ReligiousAffiliation-1";
+            public const string kCCExtPatientCadaver = "http://hl7.org/fhir/StructureDefinition/patient-cadavericDonor";
+            public const string kCCExtResidentialStatus = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-ResidentialStatus-1";
+            public const string kCCExtTreatmentCategory = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-TreatmentCategory-1";
+            public const string kExtCcGpcNhsNumVerification = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-NHSNumberVerificationStatus-1";
+            public const string kExtCcGpcMainLoc = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-MainLocation-1";
+            public const string kOrgzPeriod = "http://hl7.org/fhir/StructureDefinition/organization-period";
 
             public const string kAppointmentCancellationReason = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-GPConnect-AppointmentCancellationReason-1";
             public const string kAppointmentBookingOrganization = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-GPConnect-BookingOrganisation-1";
 
             public const string kPractitionerRoleExt = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-GPConnect-PractitionerRole-1";
-            public const string kDeliveryChannelExt ="https://fhir.nhs.uk/STU3/StructureDefinition/Extension-GPConnect-DeliveryChannel-1";
-			// added 1.2.1 RMB 1/10/2018
-            public const string kDeliveryChannel2Ext ="https://fhir.nhs.uk/STU3/StructureDefinition/Extension-GPConnect-DeliveryChannel-2";			
+            public const string kDeliveryChannelExt = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-GPConnect-DeliveryChannel-1";
+
+            // added 1.2.1 RMB 1/10/2018
+            public const string kDeliveryChannel2Ext = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-GPConnect-DeliveryChannel-2";
 
             public const string kAllergyEndExt = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-AllergyIntoleranceEnd-1";
 
@@ -260,8 +271,6 @@
         {
             public const string kActiveAllergies = "Allergies and adverse reactions";
             public const string kResolvedAllergies = "Ended allergies";
-
-            // Added github ref 89 // RMB 9/10/2018
             public const string kEndedAllergies = "Ended allergies (record artifact)";
             public const string kMedications = "Medications and medical devices";
             public const string kConsultations = "List of consultations";
@@ -270,6 +279,28 @@
             public const string kOutboundReferrals = "Outbound referral";
             public const string kDiary = "Patient recall administration";
 
+            //Secondary Lists
+            public const string kSecConsultMedications = "Consultations - medications contained in consultations";
+
+            public const string kSecConsultProblems = "Consultations - problems contained in consultations";
+            public const string kSecConsultUncat = "Consultations - uncategorised data contained in consultations";
+            public const string kSecProblemsMedications = "Problems - medications related to problems";
+            public const string kSecProblemsUncat = "Problems - uncategorised data related to problems";
+        }
+
+        internal static class SecondaryListCodeAndDisplayValues
+        {
+            public const string kSecConsultMedicationsCode = "consultations-medications-contained-in-consultations";
+            public const string kSecConsultProblemsCode = "consultations-problems-contained-in-consultations";
+            public const string kSecConsultUncatCode = "consultations-uncategorised-data-contained-in-consultations";
+            public const string kSecProblemsMedicationsCode = "problems-medications-related-to-problems";
+            public const string kSecProblemsUncatCode = "problems-uncategorised-data-related-to-problems";
+
+            public const string kSecConsultMedicationsDisplay = "Consultations - medications contained in consultations";
+            public const string kSecConsultProblemsDisplay = "Consultations - problems contained in consultations";
+            public const string kSecConsultUncatDisplay = "Consultations - uncategorised data contained in consultations";
+            public const string kSecProblemsMedicationsDisplay = "Problems - medications related to problems";
+            public const string kSecProblemsUncatDisplay = "Problems - uncategorised data related to problems";
         }
     }
 }

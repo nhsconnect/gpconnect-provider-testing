@@ -35,13 +35,14 @@ Scenario: Verify Consultations Response for a Patient with Topic or Headings lin
 		And I Check The Problems List Does Not Include Not In Use Fields
 		And I Check The Problems Resources are Valid
 		And I check The Problem Resources Do Not Include Not In Use Fields
-		And I Check that a Topic or Heading is linked to an "AllergyIntolerance" and that is included in response with a list
-		And I Check that a Topic or Heading is linked to an "Immunization" and that is included in response with a list
 		And I Check that a Topic or Heading is linked to an "Observation" and that is included in response with a list
 		And I Check that a Topic or Heading is linked to an "MedicationRequest" and that is included in response with a list
 		And Check the MedicationRequests have a link to a medication that has been included in response
 		And Check there is a MedicationStatement resource that is linked to the MedicationRequest and Medication
-
+		And I Check the Consultation Medications Secondary List is Valid
+		And I Check the Consultation Problems Secondary List is Valid
+		And I Check the Consultation Uncategorised Secondary List is Valid
+		
 Scenario: Verify Consultations structured record for a Patient includeConsultation and consultationSearchPeriod partParameter
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"

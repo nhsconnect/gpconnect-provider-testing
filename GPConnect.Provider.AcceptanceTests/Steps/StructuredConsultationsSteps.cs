@@ -47,7 +47,7 @@
         public void ThenIChecktheConsultationsListisValid()
         {
             //Check for List using Snomed Code
-            Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kConsultations).ToList().Count().ShouldBe(1, "Failed to Find ONE Consultations list using Snomed Code." );
+            Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kConsultations).ToList().Count().ShouldBe(1, "Failed to Find ONE Consultations list using Snomed Code.");
             var consultationsList = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kConsultations).First();
 
             //Check Code display has correct display value
@@ -85,19 +85,17 @@
                 Bundle.GetResources()
                             .Where(resource => resource.ResourceType.Equals(ResourceType.Encounter))
                             .Where(resource => resource.Id == refToFind)
-                            .ToList().Count().ShouldBe(1,"Encounter resource type Not Found");
+                            .ToList().Count().ShouldBe(1, "Encounter resource type Not Found");
             });
 
             //Check each encounter reference is included on a consultation
-            var ConsultationLists = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kConsultation ).ToList();
+            var ConsultationLists = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kConsultation).ToList();
             ConsultationLists.ForEach(list =>
-            {                 
+            {
                 consultationsList.Entry.Where(entry => entry.Item.Reference == list.Encounter.Reference).Count().ShouldBe(1, "Encounter Reference on Consultation not found in Consultations List :" + list.Encounter.Reference);
             });
 
             Logger.Log.WriteLine("Completed Mandatory Checks on Consultations List");
-
-
         }
 
         [Then(@"The Consultations List Does Not Include Not In Use Fields")]
@@ -156,11 +154,8 @@
                     });
                 });
 
-               found.ShouldBeTrue("Failed to Find Participant.type with value of AUTH");
-                
+                found.ShouldBeTrue("Failed to Find Participant.type with value of AUTH");
             });
-
-
         }
 
         [Then(@"I Check the Encounters Do Not Include Not in Use Fields")]
@@ -185,7 +180,7 @@
                 encounter.PartOf.ShouldBeNull("Failed Encounter Check: IncomingReferral Should not be used - Not In Use Field");
             });
         }
-   
+
         [Then(@"I Check the Consultation Lists are Valid")]
         public void ThenIChecktheConsultationListsareValid()
         {
@@ -219,8 +214,6 @@
 
                 Logger.Log.WriteLine("Completed Mandatory checks on Consultation List : " + consultationList.Id);
             });
-
-
         }
 
         [Then(@"I Check All The Consultation Lists Do Not Include Not In Use Fields")]
@@ -252,7 +245,6 @@
 
             AllTopicLists.ForEach(topicList =>
             {
-
                 // Check Code display has correct display value
                 topicList.Code.Coding.First().Display.ShouldBe("Topic (EHR)");
 
@@ -292,10 +284,7 @@
                         }
                     }
                 }
-                        
             }); //end loop all topics
-
-
         }
 
         [Then(@"I Check one Topic is linked to a problem")]
@@ -328,18 +317,12 @@
                                         .ToList().Count();
                             if (count >= 1)
                                 found = true;
-
                         });
-
                     });
-
-
                 }
                 catch (Exception)
                 {
                 }
-
-
             });
 
             //check had atleast one topic is related to a problem as per data requirements for test
@@ -393,19 +376,17 @@
                         VerifyResourceReferenceExists(refTypeToFind, refToFind);
                     }
                 }
-
             });
         }
 
         [Given(@"I add a madeUp consultation part parameter")]
-		public void GivenIAddAMadeUpConsultationPartParameter()
-		{
-			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
-				Tuple.Create("madeUp", (Base)new FhirString ("madeUpValue1")),
-			};
-			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kConsultations, tuples);
-
-		}
+        public void GivenIAddAMadeUpConsultationPartParameter()
+        {
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+                Tuple.Create("madeUp", (Base)new FhirString ("madeUpValue1")),
+            };
+            _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kConsultations, tuples);
+        }
 
         public void CheckResourceExists<T>(T resourceType, string resourceID)
         {
@@ -415,9 +396,8 @@
                            .ToList().Count().ShouldBe(1, "Fail : Linked Resource Not Contained in Response - type : " + resourceType + " - ID : " + resourceID);
 
             Logger.Log.WriteLine("Found Linked resource : " + resourceID + " Of Type : " + resourceType);
-
         }
-        
+
         public void VerifyResourceReferenceExists(string refTypeToFind, string refToFind)
         {
             //Switch on Clinical Item type
@@ -487,151 +467,145 @@
             CodeableConcept orderedBy = (CodeableConcept)listToCheck.OrderedBy;
             orderedBy.Coding.Count.Equals(1);
             orderedBy.Coding.First().System.Equals(FhirConst.CodeSystems.kListOrder);
-
         }
 
-
         [Given(@"I add the includeConsultations parameter only")]
-		public void GivenIAddTheConsultationsParameterOnly()
-		{
-			ParameterComponent param = new ParameterComponent();
-			param.Name = FhirConst.GetStructuredRecordParams.kConsultations;
-			_httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
-		}
+        public void GivenIAddTheConsultationsParameterOnly()
+        {
+            ParameterComponent param = new ParameterComponent();
+            param.Name = FhirConst.GetStructuredRecordParams.kConsultations;
+            _httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
+        }
 
-		[Given(@"I add malformed Consultations request partParameter only")]
-		public void GivenIAddMalformedConsultationsRequestPartParameterOnly()
-		{
-			ParameterComponent param = new ParameterComponent();
-			param.Name = FhirConst.GetStructuredRecordParams.kConsultationSearch;
-			_httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
-		}
+        [Given(@"I add malformed Consultations request partParameter only")]
+        public void GivenIAddMalformedConsultationsRequestPartParameterOnly()
+        {
+            ParameterComponent param = new ParameterComponent();
+            param.Name = FhirConst.GetStructuredRecordParams.kConsultationSearch;
+            _httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
+        }
 
-		[Given(@"I add the consultation parameter with consultationSearchPeriod partParameter")]
-		public void GivenIAddTheConsultationParameterWithConsultationSearchPeriodParameter()
-		{
-			var backDate = DateTime.UtcNow.AddYears(-2);
-			var futureDate = DateTime.UtcNow.AddDays(-1);
-			var startDate = backDate.ToString("yyyy-MM-dd");
-			var endDate = futureDate.ToString("yyyy-MM-dd");
+        [Given(@"I add the consultation parameter with consultationSearchPeriod partParameter")]
+        public void GivenIAddTheConsultationParameterWithConsultationSearchPeriodParameter()
+        {
+            var backDate = DateTime.UtcNow.AddYears(-2);
+            var futureDate = DateTime.UtcNow.AddDays(-1);
+            var startDate = backDate.ToString("yyyy-MM-dd");
+            var endDate = futureDate.ToString("yyyy-MM-dd");
 
-			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
-				Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationSearch, (Base)FhirHelper.GetTimePeriod(startDate, endDate)),
-			};
-			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kConsultations, tuples);
-		}
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationSearch, (Base)FhirHelper.GetTimePeriod(startDate, endDate)),
+            };
+            _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kConsultations, tuples);
+        }
 
-		[Given(@"I add the consultation parameter with consultationSearchPeriod partParameter in the future")]
-		public void GivenIAddTheConsultationParameterWithConsultationSearchPeriodParameterInTheFuture()
-		{
-			var backDate = DateTime.UtcNow.AddDays(1);
-			var futureDate = DateTime.UtcNow.AddDays(1);
-			var startDate = backDate.ToString("yyyy-MM-dd");
-			var endDate = futureDate.ToString("yyyy-MM-dd");
+        [Given(@"I add the consultation parameter with consultationSearchPeriod partParameter in the future")]
+        public void GivenIAddTheConsultationParameterWithConsultationSearchPeriodParameterInTheFuture()
+        {
+            var backDate = DateTime.UtcNow.AddDays(1);
+            var futureDate = DateTime.UtcNow.AddDays(1);
+            var startDate = backDate.ToString("yyyy-MM-dd");
+            var endDate = futureDate.ToString("yyyy-MM-dd");
 
-			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
-				Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationSearch, (Base)FhirHelper.GetTimePeriod(startDate, endDate)),
-			};
-			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kConsultations, tuples);
-		}
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationSearch, (Base)FhirHelper.GetTimePeriod(startDate, endDate)),
+            };
+            _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kConsultations, tuples);
+        }
 
+        [Given(@"I add the consultation parameter with startDate only")]
+        public void GivenIAddTheConsultationParameterWithStartDateOnly()
+        {
+            var backDate = DateTime.UtcNow.AddYears(-2);
+            var futureDate = DateTime.UtcNow.AddDays(-1);
+            var startDate = backDate.ToString("yyyy-MM-dd");
+            //var endDate = futureDate.ToString("yyyy-MM-dd");
 
-		[Given(@"I add the consultation parameter with startDate only")]
-		public void GivenIAddTheConsultationParameterWithStartDateOnly()
-		{
-			var backDate = DateTime.UtcNow.AddYears(-2);
-			var futureDate = DateTime.UtcNow.AddDays(-1);
-			var startDate = backDate.ToString("yyyy-MM-dd");
-			//var endDate = futureDate.ToString("yyyy-MM-dd");
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationSearch, (Base)FhirHelper.GetTimePeriod(startDate, null)),
+            };
+            _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kConsultations, tuples);
+        }
 
-			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
-				Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationSearch, (Base)FhirHelper.GetTimePeriod(startDate, null)),
-			};
-			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kConsultations, tuples);
-		}
+        [Given(@"I add the consultation parameter with endDate only")]
+        public void GivenIAddTheConsultationParameterWithEndDateOnly()
+        {
+            var backDate = DateTime.UtcNow.AddDays(-1);
+            var futureDate = DateTime.UtcNow.AddDays(-1);
+            //var startDate = backDate.ToString("yyyy-MM-dd");
+            var endDate = futureDate.ToString("yyyy-MM-dd");
 
-		[Given(@"I add the consultation parameter with endDate only")]
-		public void GivenIAddTheConsultationParameterWithEndDateOnly()
-		{
-			var backDate = DateTime.UtcNow.AddDays(-1);
-			var futureDate = DateTime.UtcNow.AddDays(-1);
-			//var startDate = backDate.ToString("yyyy-MM-dd");
-			var endDate = futureDate.ToString("yyyy-MM-dd");
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationSearch, (Base)FhirHelper.GetTimePeriod(null,endDate)),
+            };
+            _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kConsultations, tuples);
+        }
 
-			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
-				Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationSearch, (Base)FhirHelper.GetTimePeriod(null,endDate)),
-			};
-			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kConsultations, tuples);
-		}
+        [Given(@"I add the consultation parameter with consultationSearchPeriod partParameter startDate greater than endDate")]
+        public void GivenIAddTheConsultationParameterWithConsultationSearchPeriodParameterStartDateGreaterThanEndDate()
+        {
+            var backDate = DateTime.UtcNow.AddDays(-5);
+            var futureDate = DateTime.UtcNow.AddDays(-6);
+            var startDate = backDate.ToString("yyyy-MM-dd");
+            var endDate = futureDate.ToString("yyyy-MM-dd");
 
-		[Given(@"I add the consultation parameter with consultationSearchPeriod partParameter startDate greater than endDate")]
-		public void GivenIAddTheConsultationParameterWithConsultationSearchPeriodParameterStartDateGreaterThanEndDate()
-		{
-			var backDate = DateTime.UtcNow.AddDays(-5);
-			var futureDate = DateTime.UtcNow.AddDays(-6);
-			var startDate = backDate.ToString("yyyy-MM-dd");
-			var endDate = futureDate.ToString("yyyy-MM-dd");
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationSearch, (Base)FhirHelper.GetTimePeriod(startDate, endDate)),
+            };
+            _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kConsultations, tuples);
+        }
 
-			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
-				Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationSearch, (Base)FhirHelper.GetTimePeriod(startDate, endDate)),
-			};
-			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kConsultations, tuples);
-		}
+        [Given(@"I add the consultation parameter with consultationsMostRecent partParameter")]
+        public void GivenIAddTheConsultationParameterWithConsultationMostRecentPartParameter()
+        {
+            var backDate = DateTime.UtcNow.AddDays(-10);
+            var futureDate = DateTime.UtcNow.AddDays(-5);
+            var startDate = backDate.ToString("yyyy-MM-dd");
+            var endDate = futureDate.ToString("yyyy-MM-dd");
 
-		[Given(@"I add the consultation parameter with consultationsMostRecent partParameter")]
-		public void GivenIAddTheConsultationParameterWithConsultationMostRecentPartParameter()
-		{
-			var backDate = DateTime.UtcNow.AddDays(-10);
-			var futureDate = DateTime.UtcNow.AddDays(-5);
-			var startDate = backDate.ToString("yyyy-MM-dd");
-			var endDate = futureDate.ToString("yyyy-MM-dd");
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationsMostRecent, (Base) new PositiveInt(3)),
+            };
+            _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kConsultations, tuples);
+        }
 
-			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
-				Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationsMostRecent, (Base) new PositiveInt(3)),
-			};
-			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kConsultations, tuples);
-		}
+        [Given(@"I add the consultation parameter with both partParameters")]
+        public void GivenIAddTheConsultationParameterWithWithBothPartParameter()
+        {
+            var backDate = DateTime.UtcNow.AddDays(-10);
+            var futureDate = DateTime.UtcNow.AddDays(-5);
+            var startDate = backDate.ToString("yyyy-MM-dd");
+            var endDate = futureDate.ToString("yyyy-MM-dd");
 
-		[Given(@"I add the consultation parameter with both partParameters")]
-		public void GivenIAddTheConsultationParameterWithWithBothPartParameter()
-		{
-			var backDate = DateTime.UtcNow.AddDays(-10);
-			var futureDate = DateTime.UtcNow.AddDays(-5);
-			var startDate = backDate.ToString("yyyy-MM-dd");
-			var endDate = futureDate.ToString("yyyy-MM-dd");
-
-
-			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
                 Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationsMostRecent, (Base) new PositiveInt(4)),
                 Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationSearch, (Base)FhirHelper.GetTimePeriod(startDate, endDate))
-			};
-			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kConsultations, tuples);
-		}
+            };
+            _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kConsultations, tuples);
+        }
 
+        [Given(@"I send an unknownConsultations parameterName containing valid part parameter")]
+        public void GivenISendAnUnknownConsultationsParameterNameContainingValidPartParameters()
+        {
+            var backDate = DateTime.UtcNow.AddDays(-10);
+            var futureDate = DateTime.UtcNow.AddDays(5);
+            var startDate = backDate.ToString("yyyy-MM-dd");
+            var endDate = futureDate.ToString("yyyy-MM-dd");
 
-		[Given(@"I send an unknownConsultations parameterName containing valid part parameter")]
-		public void GivenISendAnUnknownConsultationsParameterNameContainingValidPartParameters()
-		{
-			var backDate = DateTime.UtcNow.AddDays(-10);
-			var futureDate = DateTime.UtcNow.AddDays(5);
-			var startDate = backDate.ToString("yyyy-MM-dd");
-			var endDate = futureDate.ToString("yyyy-MM-dd");
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationSearch, (Base)FhirHelper.GetTimePeriod(startDate, endDate)),
+            };
+            _httpContext.HttpRequestConfiguration.BodyParameters.Add("unknownConsultations", tuples);
+        }
 
-			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
-				Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationSearch, (Base)FhirHelper.GetTimePeriod(startDate, endDate)),
-			};
-			_httpContext.HttpRequestConfiguration.BodyParameters.Add("unknownConsultations", tuples);
-		}
-
-		[Given(@"I set a consultations period parameter ""([^ ""]*)"" to ""([^ ""]*)""")]
-		public void GivenISetAConsultationsPeriodParameterTo(string startDate, string endDate)
-		{
-					   			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
-				Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationSearch, (Base)FhirHelper.GetTimePeriod(startDate, endDate))
-			};
-			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kConsultations, tuples);
-
-		}
+        [Given(@"I set a consultations period parameter ""([^ ""]*)"" to ""([^ ""]*)""")]
+        public void GivenISetAConsultationsPeriodParameterTo(string startDate, string endDate)
+        {
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationSearch, (Base)FhirHelper.GetTimePeriod(startDate, endDate))
+            };
+            _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kConsultations, tuples);
+        }
 
         [Then(@"I Check that a Topic or Heading is linked to an ""(.*)"" and that is included in response with a list")]
         public void GivenICheckthataTopicorHeadingislinkedtoanandthatisincludedinresponsewithalist(string resourcetypeToCheck)
@@ -664,12 +638,11 @@
                 }
             });
 
-
             //If Not on a Topic - Check If ResourceType is linked on a Heading
             if (!foundAndVerified)
             {
                 var AllHeadingLists = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kHeadings).ToList();
-                
+
                 //loop all topics grabbing all Clinical item refs
                 AllHeadingLists.ForEach(headingList =>
                 {
@@ -690,110 +663,118 @@
                             }
                         }
                     }
-
                 });
-
             }
 
             foundAndVerified.ShouldBeTrue("Fail : Expected Clinical Item of type : " + resourcetypeToCheck + " - to be Linked to a Topic or Heading");
-
-            //check clinical item has the correct list in response
-            Hl7.Fhir.Model.List listToCheck = new Hl7.Fhir.Model.List();
-            switch (resourcetypeToCheck)
-            {
-                case "AllergyIntolerance":
-                    Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kActiveAllergies).ToList().Count().ShouldBe(1, "Fail : 0 or more than one Active Allergies lists Detected - Expected 1");
-                    listToCheck = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kActiveAllergies).First();
-                    Logger.Log.WriteLine("Info : Found Allergies List with Snomed ID : " + FhirConst.GetSnoMedParams.kActiveAllergies);
-                    break;
-
-                case "Observation": //uncat
-                    Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kUncategorised).ToList().Count().ShouldBe(1, "Fail : 0 or more than one Observation list Detected - Expected 1");
-                    listToCheck = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kUncategorised).First();
-                    Logger.Log.WriteLine("Info : Found Observation List with Snomed ID : " + FhirConst.GetSnoMedParams.kUncategorised);
-                    break;
-
-                case "Immunization":
-                    Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kImmunizations).ToList().Count().ShouldBe(1, "Fail : 0 or more than one Immunizations list Detected - Expected 1");
-                    listToCheck = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kImmunizations).First();
-                    Logger.Log.WriteLine("Info : Found Immunization List with Snomed ID : " + FhirConst.GetSnoMedParams.kImmunizations);
-                    break;
-
-                case "MedicationRequest":
-                    Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kMeds).ToList().Count().ShouldBe(1, "Fail : 0 or more than one Medication list Detected - Expected 1");
-                    listToCheck = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kMeds).First();
-                    Logger.Log.WriteLine("Info : Found Medications List with Snomed ID : " + FhirConst.GetSnoMedParams.kMeds);
-                    break;
-
-                //unknown type ignore - could be not supported message
-                default:
-                    Logger.Log.WriteLine("Info : Ignored, ResourceType for : " + resourcetypeToCheck);
-                    break;
-            }
-
-            //Check all Items on List are in response
-            bool foundClinicalItemOnList = false;
-            listToCheck.Entry.ForEach(a =>
-            {
-                string pattern = @"(.*)(/)(.*)";
-                string refToFind = Regex.Replace(a.Item.Reference, pattern, "$3");
-
-                //Check references is to the type wanted
-                if (resourcetypeToCheck == "MedicationRequest")
-                {
-                    a.Item.Reference.ShouldStartWith(("MedicationStatement" + "/"));
-                    //Check resource has been included in response
-                    VerifyResourceReferenceExists("MedicationStatement", refToFind);
-                    foundClinicalItemOnList = true;
-                }
-                else
-                {
-                    a.Item.Reference.ShouldStartWith((resourcetypeToCheck + "/"));
-                    //Check resource has been included in response
-                    VerifyResourceReferenceExists(resourcetypeToCheck, refToFind);
-                    foundClinicalItemOnList = true;
-                }
-         
-            });
-
-            foundClinicalItemOnList.ShouldBeTrue("Fail : List for : " + resourcetypeToCheck + "-Does not contain any references to clinical item of type : " + resourcetypeToCheck);
-            Logger.Log.WriteLine("Info : List Found for : " + resourcetypeToCheck + "- contains references to clinical item of type : " + resourcetypeToCheck);
-
-
-            //check count of item linked on list with items of that type in bundle as integrity check
-            switch (resourcetypeToCheck)
-            {
-                case "AllergyIntolerance":
-                    ActiveAllergyIntolerances.Count().ShouldBe(listToCheck.Entry.Count(), "Fail : Clinical Item Count does Not Match list Entry Count for resource type : " + resourcetypeToCheck);
-                    Logger.Log.WriteLine("Info : Passed Count Check for ResourceType  : " + resourcetypeToCheck + " - Bundle count equal to list entry count of : " + listToCheck.Entry.Count().ToString());
-                    break;
-
-                case "Observation": //uncat
-                    //uncat - these are not always uncategorised data resources as they are used for other purposes so cannot do a stright
-                    //count check against list and resources. all items on list will be checked that they have been included above which covers checking the list
-                    //Observations.Count().ShouldBe(listToCheck.Entry.Count(), "Fail : Clinical Item Count does Not Match list Entry Count for resource type : " + resourcetypeToCheck);
-                    //Logger.Log.WriteLine("Info : Passed Count Check for ResourceType  : " + resourcetypeToCheck + " - Bundle count equal to list entry count of : " + listToCheck.Entry.Count().ToString());
-                    break;
-
-                case "Immunization":
-                    Immunizations.Count().ShouldBe(listToCheck.Entry.Count(), "Fail : Clinical Item Count does Not Match list Entry Count for resource type : " + resourcetypeToCheck);
-                    Logger.Log.WriteLine("Info : Passed Count Check for ResourceType  : " + resourcetypeToCheck + " - Bundle count equal to list entry count of : " + listToCheck.Entry.Count().ToString());
-                    break;
-
-                case "MedicationRequest":
-                    MedicationStatements.Count().ShouldBe(listToCheck.Entry.Count(), "Fail : Clinical Item Count does Not Match list Entry Count for resource type : MedicationStatements" );
-                    Logger.Log.WriteLine("Info : Passed Count Check for ResourceType  : " + resourcetypeToCheck + " - Bundle count equal to list entry count of : " + listToCheck.Entry.Count().ToString());
-                    break;
-
-                //unknown type ignore - could be not supported message
-                default:
-                    Logger.Log.WriteLine("Ignored Count Chcek for ResourceType : " + resourcetypeToCheck);
-                    break;
-            }
-
         }
 
+        [Then(@"I Check the Consultation Medications Secondary List is Valid")]
+        public void ThenIChecktheConsultationMedicationsSecondaryListisValid()
+        {
+            //Check List Exists and has correct title/code/display
+            Lists.Where(l => l.Title == FhirConst.ListTitles.kSecConsultMedications).Count().ShouldBe(1, "Fail - No Secondary List Found with Title : " + FhirConst.ListTitles.kSecConsultMedications);
+            var list1 = Lists.Where(l => l.Title == FhirConst.ListTitles.kSecConsultMedications).FirstOrDefault();
+            list1.Title.ShouldBe(FhirConst.ListTitles.kSecConsultMedications, "Fail - No Secondary List Found with Title: " + FhirConst.ListTitles.kSecConsultMedications);
+            list1.Code.Coding.First().Code.ShouldBe(FhirConst.SecondaryListCodeAndDisplayValues.kSecConsultMedicationsCode, "Fail : Secondary List : " + FhirConst.ListTitles.kSecConsultMedications + " -- Failed Code Check");
+            list1.Code.Coding.First().Display.ShouldBe(FhirConst.SecondaryListCodeAndDisplayValues.kSecConsultMedicationsDisplay, "Fail : Secondary List : " + FhirConst.ListTitles.kSecConsultMedications + " -- Failed Display Check");
+
+            //common function to check Mandatory List elements
+            checkCommonMandatoryStructuredList(list1);
+
+            //Check Entries on List
+            MedicationRequests.Count().ShouldBeGreaterThan(0, "Fail : No Medication Requests Found in Response - Test expects Links to Medications");
+            list1.Entry.Count().ShouldBeGreaterThan(0, "Fail : Secondary list Should Have MedicationReqests Linked - None Found");
+            if (MedicationRequests.Count() != list1.Entry.Count())
+            {
+                MedicationRequests.Count().ShouldBe(list1.Entry.Count(), "Number of MedicationRequests does not match the number on the List");
+            }
+            else
+            {
+                list1.Entry.ForEach(entry =>
+                {
+                    string guidToFind = entry.Item.Reference.Replace("MedicationRequest/", "");
+                    MedicationRequests.Where(i => i.Id == guidToFind).Count().ShouldBe(1, "Not Found Reference to MedicationRequests");
+                    Logger.Log.WriteLine("Info : Found MedicationRequests linked on List and Verified It was Contained in Bundle -ID : " + guidToFind);
+                });
+            }
+            Logger.Log.WriteLine("Info : Validated Secondary list with Title : " + FhirConst.ListTitles.kSecConsultMedications);
+        }
+
+        [Then(@"I Check the Consultation Problems Secondary List is Valid")]
+        public void ThenIChecktheConsultatioProblemsSecondaryListisValid()
+        {
+            //Check List Exists and has correct title/code/display
+            Lists.Where(l => l.Title == FhirConst.ListTitles.kSecConsultProblems).Count().ShouldBe(1, "Fail - No Secondary List Found with Title : " + FhirConst.ListTitles.kSecConsultProblems);
+            var list2 = Lists.Where(l => l.Title == FhirConst.ListTitles.kSecConsultProblems).FirstOrDefault();
+            list2.Title.ShouldBe(FhirConst.ListTitles.kSecConsultProblems, "Fail - No Secondary List Found with Title: " + FhirConst.ListTitles.kSecConsultProblems);
+            list2.Code.Coding.First().Code.ShouldBe(FhirConst.SecondaryListCodeAndDisplayValues.kSecConsultProblemsCode, "Fail : Secondary List : " + FhirConst.ListTitles.kSecConsultProblems + " -- Failed Code Check");
+            list2.Code.Coding.First().Display.ShouldBe(FhirConst.SecondaryListCodeAndDisplayValues.kSecConsultProblemsDisplay, "Fail : Secondary List : " + FhirConst.ListTitles.kSecConsultProblems + " -- Failed Display Check");
+
+            //common function to check Mandatory List elements
+            checkCommonMandatoryStructuredList(list2);
+
+            //Check Entries on List
+            Problems.Count().ShouldBeGreaterThan(0, "Fail : No Problems Found in Response - Test expects Links to Problems");
+            list2.Entry.Count().ShouldBeGreaterThan(0, "Fail : Secondary list Should Have Problems Linked - None Found");
+            if (Problems.Count() != list2.Entry.Count())
+            {
+                Problems.Count().ShouldBe(list2.Entry.Count(), "Number of Problems does not match the number on the List");
+            }
+            else
+            {
+                list2.Entry.ForEach(entry =>
+                {
+                    string guidToFind = entry.Item.Reference.Replace("Condition/", "");
+                    Problems.Where(i => i.Id == guidToFind).Count().ShouldBe(1, "Not Found Reference to Problem");
+                    Logger.Log.WriteLine("Info : Found Problem linked on List and Verified It was Contained in Bundle -ID : " + guidToFind);
+                });
+            }
+            Logger.Log.WriteLine("Info : Validated Secondary list with Title : " + FhirConst.ListTitles.kSecConsultProblems);
+        }
+
+        [Then(@"I Check the Consultation Uncategorised Secondary List is Valid")]
+        public void ThenIChecktheConsultatioUncategorisedSecondaryListisValid()
+        {
+            //Check List Exists and has correct title/code/display
+            Lists.Where(l => l.Title == FhirConst.ListTitles.kSecConsultUncat).Count().ShouldBe(1, "Fail - No Secondary List Found with Title : " + FhirConst.ListTitles.kSecConsultUncat);
+            var list3 = Lists.Where(l => l.Title == FhirConst.ListTitles.kSecConsultUncat).FirstOrDefault();
+            list3.Title.ShouldBe(FhirConst.ListTitles.kSecConsultUncat, "Fail - No Secondary List Found with Title: " + FhirConst.ListTitles.kSecConsultUncat);
+            list3.Code.Coding.First().Code.ShouldBe(FhirConst.SecondaryListCodeAndDisplayValues.kSecConsultUncatCode, "Fail : Secondary List : " + FhirConst.ListTitles.kSecConsultUncat + " -- Failed Code Check");
+            list3.Code.Coding.First().Display.ShouldBe(FhirConst.SecondaryListCodeAndDisplayValues.kSecConsultUncatDisplay, "Fail : Secondary List : " + FhirConst.ListTitles.kSecConsultUncat + " -- Failed Display Check");
+            //common function to check Mandatory List elements
+            checkCommonMandatoryStructuredList(list3);
+
+            //Check Entries on List
+            Observations.Count().ShouldBeGreaterThan(0, "Fail : No Observations Found in Response - Test expects Links to Observations");
+            list3.Entry.Count().ShouldBeGreaterThan(0, "Fail : Secondary list Should Have Observations Linked - None Found");
+
+            //can have observations that are not uncategorised, so cannot do a check of number of observations in bundle vs list items
+            list3.Entry.ForEach(entry =>
+            {
+                string guidToFind = entry.Item.Reference.Replace("Observation/", "");
+                Observations.Where(i => i.Id == guidToFind).Count().ShouldBe(1, "Not Found Reference to Observations");
+                Logger.Log.WriteLine("Info : Found Observation linked on List and Verified It was Contained in Bundle -ID : " + guidToFind);
+            });
+
+            Logger.Log.WriteLine("Info : Validated Secondary list with Title : " + FhirConst.ListTitles.kSecConsultUncat);
+        }
+
+        public void checkCommonMandatoryStructuredList(List listToCheck)
+        {
+            //Check Meta.profile
+            CheckForValidMetaDataInResource(listToCheck, FhirConst.StructureDefinitionSystems.kList);
+
+            //Check Status
+            listToCheck.Status.ShouldBeOfType<List.ListStatus>("Status List is of wrong type.");
+            listToCheck.Status.ToString().ToLower().ShouldBe("current", "List Status is NOT set to completed");
+
+            //Check Mode
+            listToCheck.Mode.ShouldBeOfType<ListMode>("Mode List is of wrong type.");
+            listToCheck.Mode.ToString().ToLower().ShouldBe("snapshot", "List Status is NOT set to completed");
+
+            //Check Patient
+            Patients.Where(p => p.Id == (listToCheck.Subject.Reference.Replace("Patient/", ""))).Count().ShouldBe(1, "Patient Not Found in Bundle");
+        }
     }
-
-
 }
