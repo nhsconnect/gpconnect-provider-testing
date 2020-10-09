@@ -683,21 +683,21 @@
             checkCommonMandatoryStructuredList(list1);
 
             //Check Entries on List
-            MedicationRequests.Count().ShouldBeGreaterThan(0, "Fail : No Medication Requests Found in Response - Test expects Links to Medications");
-            list1.Entry.Count().ShouldBeGreaterThan(0, "Fail : Secondary list Should Have MedicationReqests Linked - None Found");
-            if (MedicationRequests.Count() != list1.Entry.Count())
+            MedicationStatements.Count().ShouldBeGreaterThan(0, "Fail : No Medication Statements Found in Response - Test expects Links to Medications");
+            list1.Entry.Count().ShouldBeGreaterThan(0, "Fail : Secondary list Should Have Medication Statements Linked - None Found");
+            //if (MedicationStatements.Count() != list1.Entry.Count())
+            //{
+            //    MedicationStatements.Count().ShouldBe(list1.Entry.Count(), "Number of Medication Statements does not match the number on the List");
+            //}
+            //else
+            //{
+            list1.Entry.ForEach(entry =>
             {
-                MedicationRequests.Count().ShouldBe(list1.Entry.Count(), "Number of MedicationRequests does not match the number on the List");
-            }
-            else
-            {
-                list1.Entry.ForEach(entry =>
-                {
-                    string guidToFind = entry.Item.Reference.Replace("MedicationRequest/", "");
-                    MedicationRequests.Where(i => i.Id == guidToFind).Count().ShouldBe(1, "Not Found Reference to MedicationRequests");
-                    Logger.Log.WriteLine("Info : Found MedicationRequests linked on List and Verified It was Contained in Bundle -ID : " + guidToFind);
-                });
-            }
+                string guidToFind = entry.Item.Reference.Replace("MedicationStatement/", "");
+                MedicationStatements.Where(i => i.Id == guidToFind).Count().ShouldBe(1, "Not Found Reference to MedicationStatement on List : " + FhirConst.ListTitles.kSecConsultMedications);
+                Logger.Log.WriteLine("Info : Found MedicationStatement linked on List and Verified It was Contained in Bundle -ID : " + guidToFind);
+            });
+            //}
             Logger.Log.WriteLine("Info : Validated Secondary list with Title : " + FhirConst.ListTitles.kSecConsultMedications);
         }
 
@@ -718,18 +718,18 @@
             Problems.Count().ShouldBeGreaterThan(0, "Fail : No Problems Found in Response - Test expects Links to Problems");
             list2.Entry.Count().ShouldBeGreaterThan(0, "Fail : Secondary list Should Have Problems Linked - None Found");
             if (Problems.Count() != list2.Entry.Count())
-            {
-                Problems.Count().ShouldBe(list2.Entry.Count(), "Number of Problems does not match the number on the List");
-            }
-            else
-            {
+                //{
+                //    Problems.Count().ShouldBe(list2.Entry.Count(), "Number of Problems does not match the number on the List");
+                //}
+                //else
+                //{
                 list2.Entry.ForEach(entry =>
                 {
                     string guidToFind = entry.Item.Reference.Replace("Condition/", "");
                     Problems.Where(i => i.Id == guidToFind).Count().ShouldBe(1, "Not Found Reference to Problem");
                     Logger.Log.WriteLine("Info : Found Problem linked on List and Verified It was Contained in Bundle -ID : " + guidToFind);
                 });
-            }
+            //}
             Logger.Log.WriteLine("Info : Validated Secondary list with Title : " + FhirConst.ListTitles.kSecConsultProblems);
         }
 

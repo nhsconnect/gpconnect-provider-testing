@@ -141,7 +141,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 33
   testRunner.And("I Check the Test report Filing Do Not Include Not in Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 34
-  testRunner.And("I Check There is No Problems List", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I Check There is No Primary Problems List", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 35
   testRunner.And("I Check No Problem Resources are Included", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -208,9 +208,9 @@ this.ScenarioInitialize(scenarioInfo);
 #line 60
   testRunner.And("I Check the Specimens Do Not Include Not in Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 61
-  testRunner.And("I Check The Problems List", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I Check The Primary Problems List", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 62
-  testRunner.And("I Check The Problems List Does Not Include Not In Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I Check The Primary Problems List Does Not Include Not In Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 63
   testRunner.And("I Check The Problems Resources are Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 64
@@ -297,7 +297,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 99
   testRunner.And("I Check the Test report Filing Do Not Include Not in Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 100
-  testRunner.And("I Check There is No Problems List", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I Check There is No Primary Problems List", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 101
   testRunner.And("I Check No Problem Resources are Included", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden

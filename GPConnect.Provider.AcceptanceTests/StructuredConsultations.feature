@@ -31,8 +31,6 @@ Scenario: Verify Consultations Response for a Patient with Topic or Headings lin
 		And I Check one Topic is linked to a problem
 		And I Check the Heading Lists are Valid	
 		And check the response does not contain an operation outcome
-		And I Check The Problems List
-		And I Check The Problems List Does Not Include Not In Use Fields
 		And I Check The Problems Resources are Valid
 		And I check The Problem Resources Do Not Include Not In Use Fields
 		And I Check that a Topic or Heading is linked to an "Observation" and that is included in response with a list
@@ -42,7 +40,8 @@ Scenario: Verify Consultations Response for a Patient with Topic or Headings lin
 		And I Check the Consultation Medications Secondary List is Valid
 		And I Check the Consultation Problems Secondary List is Valid
 		And I Check the Consultation Uncategorised Secondary List is Valid
-		
+		And I Check The Secondary Problems List Does Not Include Not In Use Fields
+
 Scenario: Verify Consultations structured record for a Patient includeConsultation and consultationSearchPeriod partParameter
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
@@ -267,33 +266,3 @@ Examples:
 		| 2015-12-01                 | 2016-02                    |
 		| 2015-12-01                 | null                       |
 		| 2018                       | 2019                       |
-
-@1.3.1-IncrementalAndRegression
-Scenario: Verify Problems Linked to Consultations are included and valid in response
-	Given I configure the default "GpcGetStructuredRecord" request
-		And I add an NHS Number parameter for "patient2"
-		And I add the includeConsultations parameter only
-	When I make the "GpcGetStructuredRecord" request
-	Then the response status code should indicate success
-		And the response should be a Bundle resource of type "collection"
-		And the response meta profile should be for "structured"
-		And the patient resource in the bundle should contain meta data profile and version id
-		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
-		And if the response bundle contains an organization resource it should contain meta data profile and version id
-		And the Bundle should be valid for patient "patient2"
-		And the Patient Id should be valid
-		And the Practitioner Id should be valid
-		And the Organization Id should be valid 
-		And I Check the Consultations List is Valid
-		And The Consultations List Does Not Include Not In Use Fields
-		And I Check the Encounters are Valid
-		And I Check the Encounters Do Not Include Not in Use Fields
-		And I Check the Consultation Lists are Valid
-		And I Check All The Consultation Lists Do Not Include Not In Use Fields
-		And I Check the Topic Lists are Valid
-		And I Check the Heading Lists are Valid
-		And I Check The Problems List
-		And I Check The Problems List Does Not Include Not In Use Fields	
-		And I Check The Problems Resources are Valid
-		And I check The Problem Resources Do Not Include Not In Use Fields
-		And check the response does not contain an operation outcome

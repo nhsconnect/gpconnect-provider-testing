@@ -243,6 +243,38 @@ Scenario: Structured request sent for consultations and problems expect success
 		And check that the bundle does not contain any duplicate resources
 		And the patient resource in the bundle should contain meta data profile and version id
 		And check the response does not contain an operation outcome		
+		#Consultations Checks Below
+		And I Check the Consultations List is Valid
+		And The Consultations List Does Not Include Not In Use Fields
+		And I Check the Encounters are Valid
+		And I Check the Encounters Do Not Include Not in Use Fields
+		And I Check the Consultation Lists are Valid
+		And I Check All The Consultation Lists Do Not Include Not In Use Fields
+		And I Check the Topic Lists are Valid
+		And I Check one Topic is linked to a problem
+		And I Check the Heading Lists are Valid	
+		And I Check The Problems Resources are Valid
+		And I check The Problem Resources Do Not Include Not In Use Fields
+		And I Check that a Topic or Heading is linked to an "Observation" and that is included in response with a list
+		And I Check that a Topic or Heading is linked to an "MedicationRequest" and that is included in response with a list
+		And Check the MedicationRequests have a link to a medication that has been included in response
+		And Check there is a MedicationStatement resource that is linked to the MedicationRequest and Medication
+		And I Check the Consultation Medications Secondary List is Valid
+		And I Check the Consultation Problems Secondary List is Valid
+		And I Check the Consultation Uncategorised Secondary List is Valid
+		And I Check The Secondary Problems List Does Not Include Not In Use Fields
+		#Problems Checks Below
+		And I Check The Primary Problems List
+		And I Check The Primary Problems List Does Not Include Not In Use Fields
+		And I Check The Problems Resources are Valid
+		And I check The Problem Resources Do Not Include Not In Use Fields
+		And Check a Problem is Linked to a MedicationRequest resource that has been included in the response
+		And Check the MedicationRequests have a link to a medication that has been included in response
+		And Check there is a MedicationStatement resource that is linked to the MedicationRequest and Medication
+		And Check a Problem is linked to an "Observation" that is also included in the response with its list
+		And I Check the Problems Uncategorised Secondary List is Valid
+		And I Check the Problems Medications Secondary List is Valid
+
 
 
 

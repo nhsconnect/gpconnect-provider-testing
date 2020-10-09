@@ -774,6 +774,72 @@ this.ScenarioInitialize(scenarioInfo);
                     "d", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 245
   testRunner.And("check the response does not contain an operation outcome", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 247
+  testRunner.And("I Check the Consultations List is Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 248
+  testRunner.And("The Consultations List Does Not Include Not In Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 249
+  testRunner.And("I Check the Encounters are Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 250
+  testRunner.And("I Check the Encounters Do Not Include Not in Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 251
+  testRunner.And("I Check the Consultation Lists are Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 252
+  testRunner.And("I Check All The Consultation Lists Do Not Include Not In Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 253
+  testRunner.And("I Check the Topic Lists are Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 254
+  testRunner.And("I Check one Topic is linked to a problem", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 255
+  testRunner.And("I Check the Heading Lists are Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 256
+  testRunner.And("I Check The Problems Resources are Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 257
+  testRunner.And("I check The Problem Resources Do Not Include Not In Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 258
+  testRunner.And("I Check that a Topic or Heading is linked to an \"Observation\" and that is include" +
+                    "d in response with a list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 259
+  testRunner.And("I Check that a Topic or Heading is linked to an \"MedicationRequest\" and that is i" +
+                    "ncluded in response with a list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 260
+  testRunner.And("Check the MedicationRequests have a link to a medication that has been included i" +
+                    "n response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 261
+  testRunner.And("Check there is a MedicationStatement resource that is linked to the MedicationReq" +
+                    "uest and Medication", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 262
+  testRunner.And("I Check the Consultation Medications Secondary List is Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 263
+  testRunner.And("I Check the Consultation Problems Secondary List is Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 264
+  testRunner.And("I Check the Consultation Uncategorised Secondary List is Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 265
+  testRunner.And("I Check The Secondary Problems List Does Not Include Not In Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 267
+  testRunner.And("I Check The Primary Problems List", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 268
+  testRunner.And("I Check The Primary Problems List Does Not Include Not In Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 269
+  testRunner.And("I Check The Problems Resources are Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 270
+  testRunner.And("I check The Problem Resources Do Not Include Not In Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 271
+  testRunner.And("Check a Problem is Linked to a MedicationRequest resource that has been included " +
+                    "in the response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 272
+  testRunner.And("Check the MedicationRequests have a link to a medication that has been included i" +
+                    "n response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 273
+  testRunner.And("Check there is a MedicationStatement resource that is linked to the MedicationReq" +
+                    "uest and Medication", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 274
+  testRunner.And("Check a Problem is linked to an \"Observation\" that is also included in the respon" +
+                    "se with its list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 275
+  testRunner.And("I Check the Problems Uncategorised Secondary List is Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 276
+  testRunner.And("I Check the Problems Medications Secondary List is Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

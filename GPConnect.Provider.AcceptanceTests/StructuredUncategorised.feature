@@ -26,7 +26,7 @@ Scenario: Verify Uncategorised structured record for a Patient with Uncategorise
 		And The Observation List is Valid
 		And The Structured List Does Not Include Not In Use Fields
 		And check the response does not contain an operation outcome
-		And I Check There is No Problems List
+		And I Check There is No Primary Problems List
 		And I Check No Problem Resources are Included
 
 #PG 19-2-2020 - Added for 1.3.2 - To check that associated problems and the problems list are sent.
@@ -53,8 +53,8 @@ Scenario: Verify Uncategorised structured record for a Patient with Uncategorise
 		And The Observation List is Valid
 		And The Structured List Does Not Include Not In Use Fields
 		And check the response does not contain an operation outcome
-		And I Check The Problems List
-		And I Check The Problems List Does Not Include Not In Use Fields
+		And I Check The Primary Problems List
+		And I Check The Primary Problems List Does Not Include Not In Use Fields
 		And I Check The Problems Resources are Valid
 		And I check The Problem Resources Do Not Include Not In Use Fields
 		And Check a Problem is linked to an "Observation" that is also included in the response with its list

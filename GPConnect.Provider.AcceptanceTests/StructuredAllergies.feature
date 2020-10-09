@@ -28,7 +28,7 @@ Scenario Outline: Retrieve the allergy structured record section for a patient i
 		And the Bundle should contain the correct number of allergies
 		And the Lists are valid for a patient with allergies
 		And check the response does not contain an operation outcome
-		And I Check There is No Problems List
+		And I Check There is No Primary Problems List
 		And I Check No Problem Resources are Included
 	Examples:
 		| Patient   |
@@ -64,8 +64,8 @@ Scenario Outline: Retrieve the allergy structured record section for a patient i
 		And the Bundle should contain the correct number of allergies
 		And the Lists are valid for a patient with allergies
 		And check the response does not contain an operation outcome
-		And I Check The Problems List
-		And I Check The Problems List Does Not Include Not In Use Fields
+		And I Check The Primary Problems List
+		And I Check The Primary Problems List Does Not Include Not In Use Fields
 		And I Check The Problems Resources are Valid
 		And I check The Problem Resources Do Not Include Not In Use Fields
 		And Check a Problem is linked to an "AllergyIntolerance" that is also included in the response with its list
@@ -132,8 +132,8 @@ Scenario Outline: Retrieve the allergy structured record for a patient with prob
 		And the Bundle should contain the correct number of allergies
 		And the Lists are valid for a patient with allergies
 		And check the response does not contain an operation outcome
-		And I Check The Problems List
-		And I Check The Problems List Does Not Include Not In Use Fields
+		And I Check The Primary Problems List
+		And I Check The Primary Problems List Does Not Include Not In Use Fields
 		And I Check The Problems Resources are Valid
 		And I check The Problem Resources Do Not Include Not In Use Fields
 		And Check a Problem is linked to an "AllergyIntolerance" that is also included in the response with its list

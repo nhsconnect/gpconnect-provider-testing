@@ -46,7 +46,7 @@
             _httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
         }
 
-        [Then(@"I Check The Problems List")]
+        [Then(@"I Check The Primary Problems List")]
         public void ThenICheckTheProblemsList()
         {
             //Check there is ONE Problems List with snomed code
@@ -98,8 +98,8 @@
             }
         }
 
-        [Then(@"I Check The Problems List Does Not Include Not In Use Fields")]
-        public void ThenICheckTheProblemsListDoesNotIncludeNotInUseFields()
+        [Then(@"I Check The Primary Problems List Does Not Include Not In Use Fields")]
+        public void ThenICheckThePrimaryProblemsListDoesNotIncludeNotInUseFields()
         {
             //Check there is ONE Problems List with snomed code
             Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kProblems).ToList().Count().ShouldBe(1, "Failed to Find ONE Problems list using Snomed Code.");
@@ -114,7 +114,23 @@
             problemsList.Source.ShouldBeNull("List Source is Not Supposed to be Sent - Not In Use Field");
         }
 
-        [Then(@"I Check There is No Problems List")]
+        [Then(@"I Check The Secondary Problems List Does Not Include Not In Use Fields")]
+        public void ThenICheckTheSecondaryProblemsListDoesNotIncludeNotInUseFields()
+        {
+            //Check there is ONE Problems List with snomed code
+            Lists.Where(l => l.Code.Coding.First().Code == FhirConst.SecondaryListCodeAndDisplayValues.kSecConsultProblemsCode).ToList().Count().ShouldBe(1, "Failed to Find ONE Secondary Problems list using Code.");
+
+            //Get Var to List
+            var problemsList = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.SecondaryListCodeAndDisplayValues.kSecConsultProblemsCode).First();
+
+            //Check that - Not In Use Fields are not present
+            problemsList.Id.ShouldBeNull("List Id is Not Supposed to be Sent - Not In Use Field");
+            problemsList.Meta.VersionId.ShouldBeNull("List Meta.VersionId is Not Supposed to be Sent - Not In Use Field");
+            problemsList.Meta.LastUpdated.ShouldBeNull("List Meta.LastUpdated is Not Supposed to be Sent - Not In Use Field");
+            problemsList.Source.ShouldBeNull("List Source is Not Supposed to be Sent - Not In Use Field");
+        }
+
+        [Then(@"I Check There is No Primary Problems List")]
         public void ThenICheckThereisNoProblemsList()
         {
             //Check there is NO Problems List with snomed code
@@ -398,89 +414,6 @@
 
             //check that Linked Clinical resource has been included in response.
             VerifyResourceReferenceExists(resourceType, refToFind);
-
-            //Check List is Present
-            //Switch on Clinical Item type
-            Hl7.Fhir.Model.List listToCheck = new Hl7.Fhir.Model.List();
-
-            switch (resourceType)
-            {
-                case "AllergyIntolerance":
-                    Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kActiveAllergies).ToList().Count().ShouldBe(1, "Fail : 0 or more than one Active Allergies lists Detected - Expected 1");
-                    listToCheck = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kActiveAllergies).First();
-                    Logger.Log.WriteLine("Info : Found Allergies List with Snomed ID : " + FhirConst.GetSnoMedParams.kActiveAllergies);
-                    break;
-
-                case "Observation": //uncat
-                    Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kUncategorised).ToList().Count().ShouldBe(1, "Fail : 0 or more than one Observation list Detected - Expected 1");
-                    listToCheck = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kUncategorised).First();
-                    Logger.Log.WriteLine("Info : Found Observation List with Snomed ID : " + FhirConst.GetSnoMedParams.kUncategorised);
-                    break;
-
-                case "Immunization":
-                    Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kImmunizations).ToList().Count().ShouldBe(1, "Fail : 0 or more than 1 Immunization list Detected - Expected 1");
-                    listToCheck = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kImmunizations).First();
-                    Logger.Log.WriteLine("Info : Found Immunization List with Snomed ID : " + FhirConst.GetSnoMedParams.kImmunizations);
-                    break;
-
-                case "Condition":
-                    Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kProblems).ToList().Count().ShouldBe(1, "Fail : 0 or more than 1 Problems list Detected - Expected 1");
-                    listToCheck = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kProblems).First();
-                    Logger.Log.WriteLine("Info : Found Problems List with Snomed ID : " + FhirConst.GetSnoMedParams.kProblems);
-                    break;
-
-                //unknown type ignore - could be not supported message
-                default:
-                    Logger.Log.WriteLine("Info : Ignored, ResourceType for : " + resourceType);
-                    break;
-            }
-
-            //Check List has atleast one link to a Clinical of item of correct type
-            bool foundClinicalItemOnList = false;
-
-            listToCheck.Entry.ForEach(a =>
-            {
-                //Check references is to a AllergyIntolerance
-                a.Item.Reference.ShouldStartWith((resourceType + "/"));
-
-                //Checkresource has been inluded in response
-                VerifyResourceReferenceExists(resourceType, a.Item.Reference);
-                foundClinicalItemOnList = true;
-            });
-
-            foundClinicalItemOnList.ShouldBeTrue("Fail : List for : " + resourceType + "-Does not contain any references to clinical item of type : " + resourceType);
-            Logger.Log.WriteLine("Info : List Found for : " + resourceType + "- contains references to clinical item of type : " + resourceType);
-
-            //check count of item linked on list with items of that type in bundle as itegrity check
-            switch (resourceType)
-            {
-                case "AllergyIntolerance":
-                    ActiveAllergyIntolerances.Count().ShouldBe(listToCheck.Entry.Count(), "Fail : Clinical Item Count does Not Match list Entry Count for resource type : " + resourceType);
-                    Logger.Log.WriteLine("Info : Passed Count Check for ResourceType  : " + resourceType + " - Bundle count equal to list entry count of : " + listToCheck.Entry.Count().ToString());
-                    break;
-
-                case "Observation":
-                    //uncat - these are not always uncategorised data resources as they are used for other purposes so cannot do a stright
-                    //count check against list and resources. all items on list will be checked that they have been included above which covers checking the list
-                    //Observations.Count().ShouldBe(listToCheck.Entry.Count(), "Fail : Clinical Item Count does Not Match list Entry Count for resource type : " + resourceType);
-                    //Logger.Log.WriteLine("Info : Passed Count Check for ResourceType  : " + resourceType + " - Bundle count equal to list entry count of : " + listToCheck.Entry.Count().ToString());
-                    break;
-
-                case "Immunization":
-                    Immunizations.Count().ShouldBe(listToCheck.Entry.Count(), "Fail : Clinical Item Count does Not Match list Entry Count for resource type : " + resourceType);
-                    Logger.Log.WriteLine("Info : Passed Count Check for ResourceType  : " + resourceType + " - Bundle count equal to list entry count of : " + listToCheck.Entry.Count().ToString());
-                    break;
-
-                case "Condition":
-                    Problems.Count().ShouldBe(listToCheck.Entry.Count(), "Fail : Clinical Item Count does Not Match list Entry Count for resource type : " + resourceType);
-                    Logger.Log.WriteLine("Info : Passed Count Check for ResourceType  : " + resourceType + " - Bundle count equal to list entry count of : " + listToCheck.Entry.Count().ToString());
-                    break;
-
-                //unknown type ignore - could be not supported message
-                default:
-                    Logger.Log.WriteLine("Ignored Count Chcek for ResourceType : " + resourceType);
-                    break;
-            }
         }
 
         [Then(@"Check that a Problem is linked via context to a consultation but only a reference is sent in response")]
@@ -660,13 +593,13 @@
                                 var typeParentExt = parentExtension.Extension.Where(e => e.Url == "type" && (((Hl7.Fhir.Model.Code)e.Value).Value.ToLower() == "parent"));
                                 if (typeParentExt.Count() > 0)
                                 {
-                                        //Get Target and Reference contained on child or sibling
-                                        var parentTargetRefExt = (parentExtension.Extension.Where(e => e.Url == "target")).FirstOrDefault().Value;
+                                    //Get Target and Reference contained on child or sibling
+                                    var parentTargetRefExt = (parentExtension.Extension.Where(e => e.Url == "target")).FirstOrDefault().Value;
                                     var parentRefValue = ((Hl7.Fhir.Model.ResourceReference)parentTargetRefExt).Reference;
                                     parentRelatedRefValue = Regex.Replace(parentRefValue, pattern, "$3");
 
-                                        //Check relationships are correct
-                                        if (parentProbRef == parentRelatedRefValue && childProbRef == childRelatedRefValue)
+                                    //Check relationships are correct
+                                    if (parentProbRef == parentRelatedRefValue && childProbRef == childRelatedRefValue)
                                     {
                                         foundParenttoChildRelationShip = true;
                                         Logger.Log.WriteLine("INFO : Found Problem linked to another problem. \nParent :" + parentProbRef + "\nChild :" + childProbRef);
@@ -679,6 +612,82 @@
             });
 
             foundParenttoChildRelationShip.ShouldBeTrue("Fail : Problems linked to Problems Test has Not Found a Parent-Child relationship or Parent-Sibling Relationship as per data requirements");
+        }
+
+        [Then(@"I Check the Problems Medications Secondary List is Valid")]
+        public void ThenIChecktheProblemsMedicationsSecondaryListisValid()
+        {
+            //Check List Exists and has correct title/code/display
+            Lists.Where(l => l.Title == FhirConst.ListTitles.kSecProblemsMedications).Count().ShouldBe(1, "Fail - No Secondary List Found with Title : " + FhirConst.ListTitles.kSecProblemsMedications);
+            var list1 = Lists.Where(l => l.Title == FhirConst.ListTitles.kSecProblemsMedications).FirstOrDefault();
+            list1.Title.ShouldBe(FhirConst.ListTitles.kSecProblemsMedications, "Fail - No Secondary List Found with Title: " + FhirConst.ListTitles.kSecProblemsMedications);
+            list1.Code.Coding.First().Code.ShouldBe(FhirConst.SecondaryListCodeAndDisplayValues.kSecProblemsMedicationsCode, "Fail : Secondary List : " + FhirConst.ListTitles.kSecProblemsMedications + " -- Failed Code Check");
+            list1.Code.Coding.First().Display.ShouldBe(FhirConst.SecondaryListCodeAndDisplayValues.kSecProblemsMedicationsDisplay, "Fail : Secondary List : " + FhirConst.ListTitles.kSecProblemsMedications + " -- Failed Display Check");
+
+            //common function to check Mandatory List elements
+            checkCommonMandatoryStructuredList(list1);
+
+            //Check Entries on List
+            MedicationStatements.Count().ShouldBeGreaterThan(0, "Fail : No Medication Statements Found in Response - Test expects Links to Medications");
+            list1.Entry.Count().ShouldBeGreaterThan(0, "Fail : Secondary list Should Have Medication Statements Linked - None Found");
+            //if (MedicationStatements.Count() != list1.Entry.Count())
+            //{
+            //    MedicationStatements.Count().ShouldBe(list1.Entry.Count(), "Number of Medication Statements does not match the number on the List");
+            //}
+            //else
+            //{
+            list1.Entry.ForEach(entry =>
+            {
+                string guidToFind = entry.Item.Reference.Replace("MedicationStatement/", "");
+                MedicationStatements.Where(i => i.Id == guidToFind).Count().ShouldBe(1, "Not Found Reference to MedicationStatement On List : " + FhirConst.ListTitles.kSecProblemsMedications);
+                Logger.Log.WriteLine("Info : Found MedicationStatement linked on List and Verified It was Contained in Bundle -ID : " + guidToFind);
+            });
+            //}
+            Logger.Log.WriteLine("Info : Validated Secondary list with Title : " + FhirConst.ListTitles.kSecProblemsMedications);
+        }
+
+        [Then(@"I Check the Problems Uncategorised Secondary List is Valid")]
+        public void ThenIChecktheProblemsUncategorisedSecondaryListisValid()
+        {
+            //Check List Exists and has correct title/code/display
+            Lists.Where(l => l.Title == FhirConst.ListTitles.kSecProblemsUncat).Count().ShouldBe(1, "Fail - No Secondary List Found with Title : " + FhirConst.ListTitles.kSecProblemsUncat);
+            var list2 = Lists.Where(l => l.Title == FhirConst.ListTitles.kSecProblemsUncat).FirstOrDefault();
+            list2.Title.ShouldBe(FhirConst.ListTitles.kSecProblemsUncat, "Fail - No Secondary List Found with Title: " + FhirConst.ListTitles.kSecProblemsUncat);
+            list2.Code.Coding.First().Code.ShouldBe(FhirConst.SecondaryListCodeAndDisplayValues.kSecProblemsUncatCode, "Fail : Secondary List : " + FhirConst.ListTitles.kSecProblemsUncat + " -- Failed Code Check");
+            list2.Code.Coding.First().Display.ShouldBe(FhirConst.SecondaryListCodeAndDisplayValues.kSecProblemsUncatDisplay, "Fail : Secondary List : " + FhirConst.ListTitles.kSecProblemsUncat + " -- Failed Display Check");
+            //common function to check Mandatory List elements
+            checkCommonMandatoryStructuredList(list2);
+
+            //Check Entries on List
+            Observations.Count().ShouldBeGreaterThan(0, "Fail : No Observations Found in Response - Test expects Links to Observations");
+            list2.Entry.Count().ShouldBeGreaterThan(0, "Fail : Secondary list Should Have Observations Linked - None Found");
+
+            //can have observations that are not uncategorised, so cannot do a check of number of observations in bundle vs list items
+            list2.Entry.ForEach(entry =>
+            {
+                string guidToFind = entry.Item.Reference.Replace("Observation/", "");
+                Observations.Where(i => i.Id == guidToFind).Count().ShouldBe(1, "Not Found Reference to Observation : ID : " + guidToFind);
+                Logger.Log.WriteLine("Info : Found Observation linked on List and Verified It was Contained in Bundle -ID : " + guidToFind);
+            });
+
+            Logger.Log.WriteLine("Info : Validated Secondary list with Title : " + FhirConst.ListTitles.kSecProblemsUncat);
+        }
+
+        public void checkCommonMandatoryStructuredList(List listToCheck)
+        {
+            //Check Meta.profile
+            CheckForValidMetaDataInResource(listToCheck, FhirConst.StructureDefinitionSystems.kList);
+
+            //Check Status
+            listToCheck.Status.ShouldBeOfType<List.ListStatus>("Status List is of wrong type.");
+            listToCheck.Status.ToString().ToLower().ShouldBe("current", "List Status is NOT set to completed");
+
+            //Check Mode
+            listToCheck.Mode.ShouldBeOfType<ListMode>("Mode List is of wrong type.");
+            listToCheck.Mode.ToString().ToLower().ShouldBe("snapshot", "List Status is NOT set to completed");
+
+            //Check Patient
+            Patients.Where(p => p.Id == (listToCheck.Subject.Reference.Replace("Patient/", ""))).Count().ShouldBe(1, "Patient Not Found in Bundle");
         }
     }
 }
