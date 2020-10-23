@@ -76,13 +76,13 @@ namespace GPConnect.Provider.AcceptanceTests
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Verify Consultations Response for a Patient with Topic or Headings linked to all " +
-            "supported clinical items and a problem")]
+        [NUnit.Framework.DescriptionAttribute("Verify Consultations Response for a Patient with Topic or Headings linked to clin" +
+            "ical items and a problem")]
         [NUnit.Framework.CategoryAttribute("1.3.2-IncrementalAndRegression")]
-        public virtual void VerifyConsultationsResponseForAPatientWithTopicOrHeadingsLinkedToAllSupportedClinicalItemsAndAProblem()
+        public virtual void VerifyConsultationsResponseForAPatientWithTopicOrHeadingsLinkedToClinicalItemsAndAProblem()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verify Consultations Response for a Patient with Topic or Headings linked to all " +
-                    "supported clinical items and a problem", null, new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verify Consultations Response for a Patient with Topic or Headings linked to clin" +
+                    "ical items and a problem", null, new string[] {
                         "1.3.2-IncrementalAndRegression"});
 #line 8
 this.ScenarioInitialize(scenarioInfo);

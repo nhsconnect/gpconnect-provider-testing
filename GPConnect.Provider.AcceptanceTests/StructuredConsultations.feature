@@ -5,7 +5,7 @@ Feature: StructuredConsultations
 # Tests around Multiple Structured Areas in one Request are tested in the MultipleRequests Feature
 
 @1.3.2-IncrementalAndRegression
-Scenario: Verify Consultations Response for a Patient with Topic or Headings linked to all supported clinical items and a problem
+Scenario: Verify Consultations Response for a Patient with Topic or Headings linked to clinical items and a problem
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
 		And I add the includeConsultations parameter only
