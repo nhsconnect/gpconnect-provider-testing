@@ -1506,7 +1506,7 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-OperationOutcome-1/_histor" +
             "y/1.2", null)]
         [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-DocumentReference-1/" +
-            "_history/1.2", null)]
+            "_history/1.3", null)]
         [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-Searchset-Bundle-1/_histor" +
             "y/1.3", null)]
         public virtual void DocumentsCapabilityStatementReturnsCorrectProfileVersions(string urlToCheck, string[] exampleTags)
