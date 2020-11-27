@@ -442,19 +442,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 		//PG 10-4-2019 #190 - Updated Code to check that GUID is valid
 		private void TheAllergyIntoleranceIdentifierShouldBeValid()
 		{
-			AllAllergyIntolerances.ForEach(allergy =>
-			{
-				allergy.Identifier.Count.ShouldBeGreaterThan(0, "There should be at least 1 Identifier system/value pair");
-				if (allergy.Identifier.Count == 1)
-				{
-					var identifier = allergy.Identifier.First();
-					identifier.System.ShouldNotBeNullOrWhiteSpace("Identifier system must be set to 'https://fhir.nhs.uk/Id/cross-care-setting-identifier'");
-					FhirConst.ValueSetSystems.kVsAllergyIntoleranceIdentifierSystem.Equals(identifier.System).ShouldBeTrue();
-                    identifier.Value.ShouldNotBeNullOrEmpty("AllergyIntolerance identifier Cannot be null or Empty Value");
-
+            AllAllergyIntolerances.ForEach(allergy =>
+            {
+                allergy.Identifier.Count.ShouldBeGreaterThan(0, "There should be at least 1 Identifier system/value pair");
+                if (allergy.Identifier.Count == 1)
+                {
+                    var identifier = allergy.Identifier.First();
+                    identifier.System.ShouldNotBeNullOrWhiteSpace("AllergyIntolerance Identifier System Cannot be null or Empty");
+                    identifier.Value.ShouldNotBeNullOrEmpty("AllergyIntolerance Identifier Value Cannot be null or Empty Value");
                 }
-			});
-		}
+            });
+        }
 
 		private void TheAllergyIntoleranceClinicalStatusShouldbeValid()
 		{

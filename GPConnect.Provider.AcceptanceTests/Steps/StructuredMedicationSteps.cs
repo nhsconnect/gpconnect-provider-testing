@@ -408,13 +408,12 @@
         {
             MedicationStatements.ForEach(medStatement =>
             {
-				medStatement.Identifier.Count.ShouldBeGreaterThan(0,"There should be at least 1 Identifier system/value pair");
+                medStatement.Identifier.Count.ShouldBeGreaterThan(0, "There should be at least 1 Identifier system/value pair");
                 if (medStatement.Identifier.Count == 1)
                 {
-                    var identifier = medStatement.Identifier.First();				
-					identifier.System.ShouldNotBeNullOrWhiteSpace("Identifier system must be set to 'https://fhir.nhs.uk/Id/cross-care-setting-identifier'");
-					FhirConst.ValueSetSystems.kVsAllergyIntoleranceIdentifierSystem.Equals(identifier.System).ShouldBeTrue();
-                    identifier.Value.ShouldNotBeNullOrEmpty("MedicationStatement identifier Cannot be null or Empty Value");
+                    var identifier = medStatement.Identifier.First();
+                    identifier.System.ShouldNotBeNullOrWhiteSpace("MedicationStatement Identifier System Cannot be null or Empty");
+                    identifier.Value.ShouldNotBeNullOrEmpty("MedicationStatement Identifier Value Cannot be null or Empty Value");
                 }
             });
         }					
@@ -848,13 +847,12 @@
         {
             MedicationRequests.ForEach(medRequest =>
             {
-				medRequest.Identifier.Count.ShouldBeGreaterThan(0,"There should be at least 1 Identifier system/value pair");
+                medRequest.Identifier.Count.ShouldBeGreaterThan(0, "There should be at least 1 Identifier system/value pair");
                 if (medRequest.Identifier.Count == 1)
                 {
-                    var identifier = medRequest.Identifier.First();				
-					identifier.System.ShouldNotBeNullOrWhiteSpace("Identifier system must be set to 'https://fhir.nhs.uk/Id/cross-care-setting-identifier'");
-					FhirConst.ValueSetSystems.kVsAllergyIntoleranceIdentifierSystem.Equals(identifier.System).ShouldBeTrue();					
-					identifier.Value.ShouldNotBeNull("Identifier value is Mandatory and a GUID");					
+                    var identifier = medRequest.Identifier.First();
+                    identifier.System.ShouldNotBeNullOrWhiteSpace("MedicationRequest Identifier System Cannot be null or Empty");
+                    identifier.Value.ShouldNotBeNullOrEmpty("MedicationRequest Identifier Value Cannot be null or Empty Value");
                 }
             });
         }
