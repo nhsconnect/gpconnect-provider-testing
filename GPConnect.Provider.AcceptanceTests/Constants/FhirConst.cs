@@ -99,7 +99,7 @@
             public const string kCcLanguageAbilityProficiency = "https://fhir.nhs.uk/STU3/CodeSystem/CareConnect-LanguageAbilityProficiency-1";
             public const string kCcNhsNumVerification = "https://fhir.nhs.uk/STU3/CodeSystem/CareConnect-NHSNumberVerificationStatus-1";
             public const string kCcPresriptionType = "https://fhir.nhs.uk/STU3/CodeSystem/CareConnect-PrescriptionType-1";
-            public const string kCcPartipationType = "http://terminology.hl7.org/CodeSystem/v3-ParticipationType";
+            public const string kCcPartipationType = "https://fhir.nhs.uk/STU3/CodeSystem/GPConnect-ParticipantType-1";
 
             //STU3
             public const string kNameUse = "http://hl7.org/fhir/name-use";
