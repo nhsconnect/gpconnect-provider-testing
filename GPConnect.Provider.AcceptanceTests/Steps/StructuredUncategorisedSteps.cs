@@ -168,7 +168,7 @@
             var obvList = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kUncategorised).First();
 
             //Check title
-            obvList.Title.ShouldBe("Miscellaneous record", "List Title is Incorrect");
+            obvList.Title.ShouldBe("Uncategorised data", "List Title is Incorrect");
             CheckForValidMetaDataInResource(obvList, FhirConst.StructureDefinitionSystems.kList);
 
             //Check Status
