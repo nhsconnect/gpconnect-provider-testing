@@ -148,7 +148,7 @@
                     {
                         type.Coding.ForEach(code =>
                         {
-                            if (code.System == FhirConst.CodeSystems.kCcPartipationType && code.Code == "AUTH")
+                            if (code.System == FhirConst.CodeSystems.kCcPartipationType && code.Code == "REC")
                                 found = true;
                         });
                     });
