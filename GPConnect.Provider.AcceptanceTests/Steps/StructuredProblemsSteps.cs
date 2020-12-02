@@ -433,9 +433,9 @@
                         string pattern = @"(.*/)(.*)";
                         string refToFind = Regex.Replace(p.Context.Reference, pattern, "$2");
 
-                        //check doesnt exist in bundle
-                        Encounters.Where(e => e.Id == refToFind).Count().ShouldBe(0, "Fail : Found Context Linked Encounter in bundle when there are Not supposed to be any returned for a problems only call - Bad ID : " + p.Context.Reference);
-                        Logger.Log.WriteLine("Info : Encounter Reference Checked and Encounter resource is not included in bundle with ID : " + p.Context.Reference);
+                        //check exists in bundle
+                        Encounters.Where(e => e.Id == refToFind).Count().ShouldBe(1, "Fail : Context Linked Encounter NOT found in bundle when it should BE - missing id: " + p.Context.Reference);
+                        Logger.Log.WriteLine("Info : Encounter Reference has been included in bundle with ID : " + p.Context.Reference);
                         found = true;
                     }
                 }
