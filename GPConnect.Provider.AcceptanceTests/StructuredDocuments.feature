@@ -178,13 +178,14 @@ Scenario: Retrieve a Document for Patient2
 		And I Check the returned Binary Document is Valid
 		And I Check the returned Binary Document Do Not Include Not In Use Fields
 
-Scenario: Attempt to Retrieve a non existent Document 
-	Given I change the document to retrieve to one that doesnt exist
-	Given I configure the default "DocumentsRetrieve" request
-		When I make the "DocumentsRetrieve" request
-		Then I clear the saved document url
-		Then the response status code should be "404"
-		And the response should be a OperationOutcome resource with error code "NO_RECORD_FOUND"
+		#Removed from Pack as URL for retrieve of documents is not known upfront and maybe different to main endpoint address
+		#Scenario: Attempt to Retrieve a non existent Document 
+		#	Given I change the document to retrieve to one that doesnt exist
+		#	Given I configure the default "DocumentsRetrieve" request
+		#		When I make the "DocumentsRetrieve" request
+		#		Then I clear the saved document url
+		#		Then the response status code should be "404"
+		#		And the response should be a OperationOutcome resource with error code "NO_RECORD_FOUND"
 		
 ##########################################
 #Documents Search/Find Patients Tests

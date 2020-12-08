@@ -68,7 +68,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I set an invalid parameter for a Documents Search call")]
         public void IsetaninvalidparameterforaDocumentsSearchcall()
         {
-            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("BadParameter","BadParamValue");
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("BadParameter", "BadParamValue");
         }
 
         [Then(@"I save a document url for retrieving later")]
@@ -78,7 +78,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             GlobalContext.DocumentURL = Documents.FirstOrDefault().Content.FirstOrDefault().Attachment.Url;
             Logger.Log.WriteLine("Info : Found Document URL in DocumentReference : " + GlobalContext.DocumentURL);
-
         }
 
         [Then(@"I save the binary document from the retrieve")]
@@ -94,8 +93,22 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I change the document to retrieve to one that doesnt exist")]
         public void Ichangethedocumenttoretrievetoonethatdoesntexist()
         {
-            var httpRequestConfiguration = new HttpRequestConfiguration();
-            GlobalContext.DocumentURL = httpRequestConfiguration.EndpointAddress + "/Binary/99999999999";
+            //WIP - This is not finished as work was stopped as endpoint to retrieve document may
+            //be different to document endpoint and we cannot know that to request a fake doc
+
+            //var httpRequestConfiguration = new HttpRequestConfiguration();
+            ////GlobalContext.DocumentURL = "/Binary/99999999999";
+
+            ////Make Fake document address to generate error condition
+            //if (AppSettingsHelper.UseTLSDocuments)
+            //{
+            //    //create fake address from real endpoint address and adding fake doc id
+            //    GlobalContext.DocumentURL = "https://" + AppSettingsHelper.ServerUrlDocuments + AppSettingsHelper.ServerBaseDocuments + "/Binary/99999999999";
+            //}
+            //else
+            //{
+            //    GlobalContext.DocumentURL = "http://" + AppSettingsHelper.ServerUrlDocuments + ":" + AppSettingsHelper.ServerHttpPortDocuments + AppSettingsHelper.ServerBaseDocuments + "/Binary/99999999999";
+            //}
         }
 
         [Given(@"I change the patient logical id to a non existent id")]
@@ -103,13 +116,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             _httpContext.HttpRequestConfiguration.RequestUrl = "Patient/" + "9999999999999" + "/DocumentReference";
         }
-        
+
         [Then(@"I clear the saved document url")]
         public void Iclearthesaveddocumenturl()
         {
             GlobalContext.DocumentURL = "";
         }
-        
+
         [Then(@"I set the documents search parameters le to today and ge to 365 days ago")]
         public void Isetthedocumentssearchparametersletotodayandgeto365daysago()
         {
@@ -134,7 +147,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Given($"I add the parameter \"created\" with the value \"ge{val}\"");
         }
 
-
         [Then(@"I Check the returned DocumentReference is Valid")]
         public void ICheckthereturnedDocumentReferenceisValid()
         {
@@ -147,7 +159,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
                 //Check Meta.Profile
                 CheckForValidMetaDataInResource(doc, FhirConst.StructureDefinitionSystems.kDocumentReference);
-
 
                 //Check identifier
                 doc.Identifier.Count.ShouldBeGreaterThan(0, "Fail : There should be at least 1 Identifier system/value pair");
@@ -188,10 +199,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     content.Attachment.Size.ShouldNotBeNull("Fail : Content Attachment Size should not be null");
                     content.Attachment.ContentType.ShouldNotBeNullOrEmpty("Fail : ContentType should be populated");
                 });
-
-
             });
-
         }
 
         [Then(@"I Check the returned DocumentReference Do Not Include Not In Use Fields")]
@@ -209,7 +217,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 doc.RelatesTo.Count().ShouldBe(0, "Fail :  DocumentReference - RelatesTo element Should not be used - Not In Use Field");
                 doc.SecurityLabel.Count().ShouldBe(0, "Fail :  DocumentReference - SecurityLabel element Should not be used - Not In Use Field");
             });
-
         }
 
         [Then(@"I Check the returned Binary Document is Valid")]
@@ -223,14 +230,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void ICheckthereturnedBinaryDocumentDoNotIncludeNotInUseFields()
         {
             BinaryDocument.SecurityContext.ShouldBeNull("Fail :  Binary Document - SecurityContext element Should not be used - Not In Use Field");
-
         }
 
         [Then(@"The Bundle should contain NO Documents")]
         public void TheBundleshouldcontainNODocuments()
-        {            
+        {
             Documents.Count().ShouldBe(0, "Fail :Expect NO DocumentReferences Returned for Test");
         }
     }
 }
-
