@@ -705,11 +705,11 @@
         public void ThenIChecktheConsultatioProblemsSecondaryListisValid()
         {
             //Check List Exists and has correct title/code/display
-            Lists.Where(l => l.Title == FhirConst.ListTitles.kSecConsultProblems).Count().ShouldBe(1, "Fail - No Secondary List Found with Title : " + FhirConst.ListTitles.kSecConsultProblems);
+            Lists.Where(l => l.Title == FhirConst.ListTitles.kSecConsultProblems).Count().ShouldBe(1, "Fail - No Consultations Secondary Problems List Found with Title : " + FhirConst.ListTitles.kSecConsultProblems);
             var list2 = Lists.Where(l => l.Title == FhirConst.ListTitles.kSecConsultProblems).FirstOrDefault();
-            list2.Title.ShouldBe(FhirConst.ListTitles.kSecConsultProblems, "Fail - No Secondary List Found with Title: " + FhirConst.ListTitles.kSecConsultProblems);
-            list2.Code.Coding.First().Code.ShouldBe(FhirConst.SecondaryListCodeAndDisplayValues.kSecConsultProblemsCode, "Fail : Secondary List : " + FhirConst.ListTitles.kSecConsultProblems + " -- Failed Code Check");
-            list2.Code.Coding.First().Display.ShouldBe(FhirConst.SecondaryListCodeAndDisplayValues.kSecConsultProblemsDisplay, "Fail : Secondary List : " + FhirConst.ListTitles.kSecConsultProblems + " -- Failed Display Check");
+            list2.Title.ShouldBe(FhirConst.ListTitles.kSecConsultProblems, "Fail - No Consultations Secondary Problems List Found with Title: " + FhirConst.ListTitles.kSecConsultProblems);
+            list2.Code.Coding.First().Code.ShouldBe(FhirConst.SecondaryListCodeAndDisplayValues.kSecConsultProblemsCode, "Fail : Consultations Secondary Problems List : " + FhirConst.ListTitles.kSecConsultProblems + " -- Failed Code Check");
+            list2.Code.Coding.First().Display.ShouldBe(FhirConst.SecondaryListCodeAndDisplayValues.kSecConsultProblemsDisplay, "Fail : Consultations Secondary Problems List : " + FhirConst.ListTitles.kSecConsultProblems + " -- Failed Display Check");
 
             //common function to check Mandatory List elements
             checkCommonMandatoryStructuredList(list2);

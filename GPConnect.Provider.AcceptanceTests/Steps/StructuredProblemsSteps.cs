@@ -47,16 +47,16 @@
         }
 
         [Then(@"I Check The Primary Problems List")]
-        public void ThenICheckTheProblemsList()
+        public void ThenICheckThePrimaryProblemsList()
         {
             //Check there is ONE Problems List with snomed code
-            Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kProblems).ToList().Count().ShouldBe(1, "Failed to Find ONE Problems list using Snomed Code.");
+            Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kProblems).ToList().Count().ShouldBe(1, "Failed to Find ONE Primary Problems list using Snomed Code.");
 
             //Get Var to List
             var problemsList = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kProblems).First();
 
             //Check title
-            problemsList.Title.ShouldBe("Problems", "Problems List Title is Incorrect");
+            problemsList.Title.ShouldBe("Problems", "Primary Problems List Title is Incorrect");
 
             //Check Meta.profile
             CheckForValidMetaDataInResource(problemsList, FhirConst.StructureDefinitionSystems.kList);
@@ -98,6 +98,58 @@
             }
         }
 
+        [Then(@"I Check The Problems Secondary Problems List")]
+        public void ThenICheckTheSecondaryProblemsList()
+        {
+            //Check there is ONE Problems List with snomed code
+            Lists.Where(l => l.Code.Coding.First().Code == FhirConst.SecondaryListCodeAndDisplayValues.kSecProblemsNotRelatedToPrimaryQueryCode).ToList().Count().ShouldBe(1, "Failed to Find ONE Problems Secondary Problems list using Code.");
+
+            //Get Var to List
+            var problemsList = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.SecondaryListCodeAndDisplayValues.kSecProblemsNotRelatedToPrimaryQueryCode).First();
+
+            //Check title
+            problemsList.Title.ShouldBe(FhirConst.ListTitles.kSecProblemsNotRelatedToPrimary, "Problems Secondary Problems List Title is Incorrect");
+
+            //Check Meta.profile
+            CheckForValidMetaDataInResource(problemsList, FhirConst.StructureDefinitionSystems.kList);
+
+            //Check Status
+            problemsList.Status.ShouldBeOfType<List.ListStatus>("Status List is of wrong type.");
+            problemsList.Status.ToString().ToLower().ShouldBe("current", "List Status is NOT set to completed");
+
+            //Check Mode
+            problemsList.Mode.ShouldBeOfType<ListMode>("Mode List is of wrong type.");
+            problemsList.Mode.ToString().ToLower().ShouldBe("snapshot", "List Status is NOT set to completed");
+
+            //Check Code
+            problemsList.Code.Coding.ForEach(coding =>
+            {
+                coding.System.ShouldBeOneOf("http://snomed.info/sct", "http://read.info/readv2", "http://read.info/ctv3", "https://fhir.hl7.org.uk/Id/emis-drug-codes", "https://fhir.hl7.org.uk/Id/egton-codes", "https://fhir.hl7.org.uk/Id/multilex-drug-codes", "https://fhir.hl7.org.uk/Id/resipuk-gemscript-drug-codes", "https://fhir.nhs.uk/STU3/CodeSystem/GPConnect-SecondaryListValues-1");
+                coding.Display.ShouldNotBeNullOrEmpty("Display Should not be Null or Empty");
+            });
+
+            //Check subject/patient ref
+            Patients.Where(p => p.Id == (problemsList.Subject.Reference.Replace("Patient/", ""))).Count().ShouldBe(1, "Patient Not Found in Bundle");
+
+            //check number of Problems matches number in list
+            if (Problems.Count() != problemsList.Entry.Count())
+            {
+                Problems.Count().ShouldBe(problemsList.Entry.Count(), "Number of Problems does not match the number in the List");
+            }
+            else
+            {
+                //Check each references condition is present in bundle
+                problemsList.Entry.ForEach(entry =>
+                {
+                    string guidToFind = entry.Item.Reference.Replace("Condition/", "");
+                    Problems
+                        .Where(resource => resource.ResourceType.Equals(ResourceType.Condition))
+                        .Where(c => c.Id == guidToFind)
+                        .Count().ShouldBe(1, "Not Found Reference to Condition");
+                });
+            }
+        }
+
         [Then(@"I Check The Primary Problems List Does Not Include Not In Use Fields")]
         public void ThenICheckThePrimaryProblemsListDoesNotIncludeNotInUseFields()
         {
@@ -114,14 +166,14 @@
             problemsList.Source.ShouldBeNull("List Source is Not Supposed to be Sent - Not In Use Field");
         }
 
-        [Then(@"I Check The Secondary Problems List Does Not Include Not In Use Fields")]
+        [Then(@"I Check The Problems Secondary Problems List Does Not Include Not In Use Fields")]
         public void ThenICheckTheSecondaryProblemsListDoesNotIncludeNotInUseFields()
         {
             //Check there is ONE Problems List with snomed code
-            Lists.Where(l => l.Code.Coding.First().Code == FhirConst.SecondaryListCodeAndDisplayValues.kSecConsultProblemsCode).ToList().Count().ShouldBe(1, "Failed to Find ONE Secondary Problems list using Code.");
+            Lists.Where(l => l.Code.Coding.First().Code == FhirConst.SecondaryListCodeAndDisplayValues.kSecProblemsNotRelatedToPrimaryQueryCode).ToList().Count().ShouldBe(1, "Failed to Find ONE Secondary Problems list using Code.");
 
             //Get Var to List
-            var problemsList = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.SecondaryListCodeAndDisplayValues.kSecConsultProblemsCode).First();
+            var problemsList = Lists.Where(l => l.Code.Coding.First().Code == FhirConst.SecondaryListCodeAndDisplayValues.kSecProblemsNotRelatedToPrimaryQueryCode).First();
 
             //Check that - Not In Use Fields are not present
             problemsList.Id.ShouldBeNull("List Id is Not Supposed to be Sent - Not In Use Field");
@@ -134,8 +186,16 @@
         public void ThenICheckThereisNoProblemsList()
         {
             //Check there is NO Problems List with snomed code
-            Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kProblems).ToList().Count().ShouldBe(0, "Fail : NO Problems List Should Exist for this Patient");
-            Logger.Log.WriteLine("INFO : NO Problem List has been included in the bundle");
+            Lists.Where(l => l.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kProblems).ToList().Count().ShouldBe(0, "Fail : NO Primary Problems List Should Exist for this Patient");
+            Logger.Log.WriteLine("INFO : NO Primary Problem List has been included in the bundle");
+        }
+
+        [Then(@"I Check There is No Problems Secondary Problems List")]
+        public void ThenICheckThereisNoSecondaryProblemsList()
+        {
+            //Check there is NO Problems List with snomed code
+            Lists.Where(l => l.Code.Coding.First().Code == FhirConst.SecondaryListCodeAndDisplayValues.kSecConsultMedicationsCode).ToList().Count().ShouldBe(0, "Fail : NO Secondary Problems List Should Exist for this Patient");
+            Logger.Log.WriteLine("INFO : NO Secondary Problem List has been included in the bundle");
         }
 
         [Then(@"I Check No Problem Resources are Included")]

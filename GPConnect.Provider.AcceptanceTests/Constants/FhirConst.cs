@@ -286,21 +286,36 @@
             public const string kSecConsultUncat = "Consultations - uncategorised data contained in consultations";
             public const string kSecProblemsMedications = "Problems - medications related to problems";
             public const string kSecProblemsUncat = "Problems - uncategorised data related to problems";
+            public const string kSecProblemsNotRelatedToPrimary = "Problems - linked problems not relating to the primary query";
         }
 
         internal static class SecondaryListCodeAndDisplayValues
         {
+            //Consult
+            //Code
             public const string kSecConsultMedicationsCode = "consultations-medications-contained-in-consultations";
+
             public const string kSecConsultProblemsCode = "consultations-problems-contained-in-consultations";
             public const string kSecConsultUncatCode = "consultations-uncategorised-data-contained-in-consultations";
-            public const string kSecProblemsMedicationsCode = "problems-medications-related-to-problems";
-            public const string kSecProblemsUncatCode = "problems-uncategorised-data-related-to-problems";
 
+            //Display
             public const string kSecConsultMedicationsDisplay = "Consultations - medications contained in consultations";
+
             public const string kSecConsultProblemsDisplay = "Consultations - problems contained in consultations";
             public const string kSecConsultUncatDisplay = "Consultations - uncategorised data contained in consultations";
+
+            //Problems
+            //Code
+            public const string kSecProblemsMedicationsCode = "problems-medications-related-to-problems";
+
+            public const string kSecProblemsUncatCode = "problems-uncategorised-data-related-to-problems";
+            public const string kSecProblemsNotRelatedToPrimaryQueryCode = "problems-linked-problems-not-relating-to-the-primary-query";
+
+            //Display
             public const string kSecProblemsMedicationsDisplay = "Problems - medications related to problems";
+
             public const string kSecProblemsUncatDisplay = "Problems - uncategorised data related to problems";
+            public const string kSecProblemsNotRelatedToPrimaryQueryDisplay = "Problems - linked problems not relating to the primary query";
         }
     }
 }

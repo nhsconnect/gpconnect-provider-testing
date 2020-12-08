@@ -27,7 +27,7 @@ Scenario: Verify Referrals structured record for a Patient with Referrals not li
 		And The Structured List Does Not Include Not In Use Fields	
 		And I Check the ReferralRequests are Valid
 		And I Check the ReferralRequests Do Not Include Not in Use Fields
-		And I Check There is No Primary Problems List
+		And I Check There is No Problems Secondary Problems List
 		And I Check No Problem Resources are Included
 
 @1.5.0-IncrementalAndRegression
@@ -52,8 +52,8 @@ Scenario: Verify Referrals structured record for a Patient with Referrals associ
 		And The Structured List Does Not Include Not In Use Fields	
 		And I Check the ReferralRequests are Valid
 		And I Check the ReferralRequests Do Not Include Not in Use Fields
-		And I Check The Primary Problems List
-		And I Check The Primary Problems List Does Not Include Not In Use Fields
+		And I Check The Problems Secondary Problems List
+		And I Check The Problems Secondary Problems List Does Not Include Not In Use Fields
 		And I Check The Problems Resources are Valid
 		And I check The Problem Resources Do Not Include Not In Use Fields
 		And the Bundle should contain "2" lists

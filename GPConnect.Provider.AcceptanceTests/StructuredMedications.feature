@@ -28,7 +28,7 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		And the Practitioner Id should be valid
 		And the Organization Id should be valid
 		And check the response does not contain an operation outcome
-		And I Check There is No Primary Problems List
+		And I Check There is No Problems Secondary Problems List
 		And I Check No Problem Resources are Included
 
 	Examples:
@@ -62,8 +62,8 @@ Scenario Outline: Retrieve the medication structured record section for a patien
 		And the Practitioner Id should be valid
 		And the Organization Id should be valid
 		And check the response does not contain an operation outcome
-		And I Check The Primary Problems List
-		And I Check The Primary Problems List Does Not Include Not In Use Fields
+		And I Check The Problems Secondary Problems List
+		And I Check The Problems Secondary Problems List Does Not Include Not In Use Fields
 		And I Check The Problems Resources are Valid
 		And I check The Problem Resources Do Not Include Not In Use Fields
 		And Check a Problem is Linked to a MedicationRequest resource that has been included in the response
@@ -98,6 +98,8 @@ Scenario Outline: Retrieve the medication structured record for a patient with n
 		And the Practitioner Id should be valid
 		And the Organization Id should be valid
 		And check the response does not contain an operation outcome
+		And I Check There is No Problems Secondary Problems List
+		And I Check No Problem Resources are Included
 	Examples:
 		| Patient  |
 		| patient3 |
@@ -128,8 +130,8 @@ Scenario Outline: Retrieve the medication structured record for a patient with p
 		And the Practitioner Id should be valid
 		And the Organization Id should be valid
 		And check the response does not contain an operation outcome
-		And I Check The Primary Problems List
-		And I Check The Primary Problems List Does Not Include Not In Use Fields
+		And I Check The Problems Secondary Problems List
+		And I Check The Problems Secondary Problems List Does Not Include Not In Use Fields
 		And I Check The Problems Resources are Valid
 		And I check The Problem Resources Do Not Include Not In Use Fields
 		And Check a Problem is Linked to a MedicationRequest resource that has been included in the response

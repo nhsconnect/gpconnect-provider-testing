@@ -31,7 +31,7 @@ Scenario: Verify Investigations structured record for a Patient with Investigati
 		And I Check the Specimens Do Not Include Not in Use Fields
 		And I Check the Test report Filing is Valid
 		And I Check the Test report Filing Do Not Include Not in Use Fields
-		And I Check There is No Primary Problems List
+		And I Check There is No Problems Secondary Problems List
 		And I Check No Problem Resources are Included
 
 @1.5.0-IncrementalAndRegression
@@ -58,8 +58,8 @@ Scenario: Verify Investigations structured record for a Patient with Investigati
 		And I Check the DiagnosticReports Do Not Include Not in Use Fields
 		And I Check the Specimens are Valid		
 		And I Check the Specimens Do Not Include Not in Use Fields
-		And I Check The Primary Problems List
-		And I Check The Primary Problems List Does Not Include Not In Use Fields
+		And I Check The Problems Secondary Problems List
+		And I Check The Problems Secondary Problems List Does Not Include Not In Use Fields
 		And I Check The Problems Resources are Valid
 		And I check The Problem Resources Do Not Include Not In Use Fields
 		And Check a Problem is linked to DiagnosticReport and that it is also included
@@ -97,7 +97,7 @@ Scenario: Verify Investigations structured record for a Patient with DiagnosticR
 		And I Check the Specimens Do Not Include Not in Use Fields
 		And I Check the Test report Filing is Valid
 		And I Check the Test report Filing Do Not Include Not in Use Fields
-		And I Check There is No Primary Problems List
+		And I Check There is No Problems Secondary Problems List
 		And I Check No Problem Resources are Included
 
 
