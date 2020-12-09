@@ -5,6 +5,7 @@
     using Enum;
     using GPConnect.Provider.AcceptanceTests.Context;
     using Http;
+    using NUnit.Framework;
 
     public class HttpRequestConfigurationFactory
     {
@@ -25,48 +26,70 @@
             {
                 case GpConnectInteraction.GpcGetCareRecord:
                     return GetCareRecordConfiguration();
+
                 case GpConnectInteraction.GpcGetStructuredRecord:
                     return GetStructuredRecordConfiguration();
+
                 case GpConnectInteraction.OrganizationSearch:
                     return OrganizationSearchConfiguration();
+
                 case GpConnectInteraction.OrganizationRead:
                     return OrganizationReadConfiguration();
+
                 case GpConnectInteraction.PractitionerSearch:
                     return PractitionerSearchConfiguration();
+
                 case GpConnectInteraction.PractitionerRead:
                     return PractitionerReadConfiguration();
+
                 case GpConnectInteraction.PatientSearch:
                     return PatientSearchConfiguration();
+
                 case GpConnectInteraction.PatientRead:
                     return PatientReadConfiguration();
+
                 case GpConnectInteraction.LocationRead:
                     return LocationReadConfiguration();
+
                 case GpConnectInteraction.RegisterPatient:
                     return RegisterPatientConfiguration();
+
                 case GpConnectInteraction.SearchForFreeSlots:
                     return SearchForFreeSlotsConfiguration();
+
                 case GpConnectInteraction.AppointmentCreate:
                     return AppointmentCreateConfiguration();
+
                 case GpConnectInteraction.AppointmentSearch:
                     return AppointmentSearchConfiguration();
+
                 case GpConnectInteraction.AppointmentAmend:
                     return AppointmentAmendConfiguration();
+
                 case GpConnectInteraction.AppointmentCancel:
                     return AppointmentCancelConfiguration();
+
                 case GpConnectInteraction.AppointmentRead:
                     return AppointmentReadConfiguration();
+
                 case GpConnectInteraction.MetadataRead:
                     return MetadataReadConfiguration();
-				case GpConnectInteraction.StructuredMetaDataRead:
-					return StructuredMetaDataReadConfiguration();
+
+                case GpConnectInteraction.StructuredMetaDataRead:
+                    return StructuredMetaDataReadConfiguration();
+
                 case GpConnectInteraction.DocumentsMetaDataRead:
                     return DocumentsMetaDataReadConfiguration();
+
                 case GpConnectInteraction.DocumentsSearch:
                     return DocumentsSearchConfiguration();
+
                 case GpConnectInteraction.DocumentsPatientSearch:
                     return DocumentsPatientSearchConfiguration();
+
                 case GpConnectInteraction.DocumentsRetrieve:
                     return DocumentsRetrieveConfiguration();
+
                 default:
                     return _httpRequestConfiguration;
             }
@@ -77,7 +100,7 @@
             _httpRequestConfiguration.HttpMethod = HttpMethod.Post;
             _httpRequestConfiguration.RequestUrl = "Patient/$gpc.getcarerecord";
             _httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.GpcGetCareRecord);
-            
+
             return _httpRequestConfiguration;
         }
 
@@ -89,7 +112,6 @@
 
             return _httpRequestConfiguration;
         }
-
 
         private static HttpRequestConfiguration OrganizationSearchConfiguration()
         {
@@ -244,16 +266,16 @@
             return _httpRequestConfiguration;
         }
 
-		//SJD added for 1.2.6 
-		private static HttpRequestConfiguration StructuredMetaDataReadConfiguration()
-		{
-			_httpRequestConfiguration.HttpMethod = HttpMethod.Get;
+        //SJD added for 1.2.6
+        private static HttpRequestConfiguration StructuredMetaDataReadConfiguration()
+        {
+            _httpRequestConfiguration.HttpMethod = HttpMethod.Get;
             _httpRequestConfiguration.RequestUrl = "metadata";
 
-			_httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.StructuredMetaDataRead);
+            _httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.StructuredMetaDataRead);
 
-			return _httpRequestConfiguration;
-		}
+            return _httpRequestConfiguration;
+        }
 
         private static HttpRequestConfiguration DocumentsMetaDataReadConfiguration()
         {
@@ -274,7 +296,6 @@
             return _httpRequestConfiguration;
         }
 
-
         private static HttpRequestConfiguration DocumentsPatientSearchConfiguration()
         {
             _httpRequestConfiguration.HttpMethod = HttpMethod.Get;
@@ -287,11 +308,18 @@
         private static HttpRequestConfiguration DocumentsRetrieveConfiguration()
         {
             _httpRequestConfiguration.HttpMethod = HttpMethod.Get;
-            _httpRequestConfiguration.RequestUrl = GlobalContext.DocumentURL;
             _httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.DocumentsRetrieve);
+
+            if (GlobalContext.DocumentURL != null)
+            {
+                _httpRequestConfiguration.RequestUrl = _httpRequestConfiguration.SpineProxyAddress + "/" + GlobalContext.DocumentURL;
+            }
+            else
+            {
+                Assert.Fail("Fail : No Document URL exists to be able to retrieve");
+            }
 
             return _httpRequestConfiguration;
         }
-
     }
 }

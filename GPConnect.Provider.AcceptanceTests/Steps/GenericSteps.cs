@@ -109,9 +109,6 @@
             GlobalContext.PractionerCodeMap = PractitionerCodeMapImporter.LoadCsv(practitionerCodeMapCSV);
         }
 
-
-
-
         [BeforeScenario(Order = 0)]
         public void InitializeContainer()
         {
@@ -171,7 +168,6 @@
                     Log.WriteLine("Exception writing FhirContext to Output File");
                 }
 
-
                 //Output JSON trace
                 if (AppSettingsHelper.TraceOutputJSONResponse)
                 {
@@ -184,7 +180,6 @@
                     {
                         Log.WriteLine("Warning : Exception writing JSONResponse to Output File - May not be A JSON Response");
                     }
-
                 }
 
                 //Output JWT trace
@@ -201,7 +196,6 @@
                     }
                 }
 
-
                 //output Pretty Printed Request body
                 if (AppSettingsHelper.TraceOutputJSONRequestBody)
                 {
@@ -214,26 +208,34 @@
                     {
                         Log.WriteLine("Warning : Exception writing JSONRequestBody to Output File - May Not be a JSON RequestBody");
                     }
-
                 }
 
                 //Check if Retrieve Documents Scenario, if so download document to evidence folder
                 if (!string.IsNullOrEmpty(GlobalContext.DocumentURL))
                 {
-                    //write file - 
-                    File.WriteAllBytes(Path.Combine(scenarioDirectory, "Documents-Saved-binary"), GlobalContext.DocumentContent);
+                    //if have any data to write to file as binary
+                    try
+                    {
+                        if (GlobalContext.DocumentContent != null)
+                        {
+                            //write file -
+                            File.WriteAllBytes(Path.Combine(scenarioDirectory, "Documents-Saved-binary"), GlobalContext.DocumentContent);
 
-                    //Write Binary Metadata
-                    string BinaryMetadata = "ID : " + GlobalContext.DocumentID + "\nContentType : " + GlobalContext.DocumentContentType + "\n";
-                    File.WriteAllText((Path.Combine(scenarioDirectory, "Documents-Saved-binary-Metadata.txt")), BinaryMetadata);
+                            //Write Binary Metadata
+                            string BinaryMetadata = "ID : " + GlobalContext.DocumentID + "\nContentType : " + GlobalContext.DocumentContentType + "\n";
+                            File.WriteAllText((Path.Combine(scenarioDirectory, "Documents-Saved-binary-Metadata.txt")), BinaryMetadata);
 
-                    //clear variable so next test finishing doesnt trigger this function unless another document retrieve
-                    GlobalContext.DocumentURL = "";
-                    GlobalContext.DocumentID = "";
-                    GlobalContext.DocumentContentType = "";
-
+                            //clear variable so next test finishing doesnt trigger this function unless another document retrieve
+                            GlobalContext.DocumentURL = "";
+                            GlobalContext.DocumentID = "";
+                            GlobalContext.DocumentContentType = "";
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        //Do Nothing
+                    }
                 }
-                
             }
         }
 
@@ -249,7 +251,6 @@
             //output test run summary file
             if (ReportingConfiguration.FileReportingEnabled)
             {
-
                 using (System.IO.StreamWriter file = new System.IO.StreamWriter(GlobalContext.TraceDirectory + @"\TestRunLog.txt"))
                 {
                     //writes overall stats first
@@ -302,28 +303,25 @@
                         //Output test results with or without error message
                         if (ReportingConfiguration.FileReportingOutputFailureMessage)
                         {
-
-                                //If have error message for test then output 
-                                if (!string.IsNullOrEmpty(entry.FailureMessage))
-                                {
-
-                                     //Write Test Result
-                                    if(!lastEntryFailed)
-                                        file.Write("----------------------------------------------------------------\n");
-
-                                    file.Write(entry.TestRunDateTime.ToLocalTime() + "," + entry.Testname + "," + entry.TestResult + "\n");
-
-                                    file.Write(entry.FailureMessage + "\n");
+                            //If have error message for test then output
+                            if (!string.IsNullOrEmpty(entry.FailureMessage))
+                            {
+                                //Write Test Result
+                                if (!lastEntryFailed)
                                     file.Write("----------------------------------------------------------------\n");
 
-                                lastEntryFailed = true;
-                                }
-                                //No failure so dont output a lines around pass entry
-                                else
-                                {
-                                    file.Write(entry.TestRunDateTime.ToLocalTime() + "," + entry.Testname + "," + entry.TestResult + "\n");
-                                    lastEntryFailed = false;
+                                file.Write(entry.TestRunDateTime.ToLocalTime() + "," + entry.Testname + "," + entry.TestResult + "\n");
 
+                                file.Write(entry.FailureMessage + "\n");
+                                file.Write("----------------------------------------------------------------\n");
+
+                                lastEntryFailed = true;
+                            }
+                            //No failure so dont output a lines around pass entry
+                            else
+                            {
+                                file.Write(entry.TestRunDateTime.ToLocalTime() + "," + entry.Testname + "," + entry.TestResult + "\n");
+                                lastEntryFailed = false;
                             }
                         }
                         //output without error message
@@ -332,11 +330,8 @@
                             file.Write(entry.TestRunDateTime.ToLocalTime() + "," + entry.Testname + "," + entry.TestResult + "\n");
                         }
                     }
- 
                 }
-
             }
         }
-
     }
 }
