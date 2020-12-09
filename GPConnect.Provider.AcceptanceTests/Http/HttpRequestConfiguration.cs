@@ -5,6 +5,7 @@
     using System.Net;
     using System.Net.Http;
     using Constants;
+    using GPConnect.Provider.AcceptanceTests.Context;
     using Helpers;
     using Hl7.Fhir.Model;
     using Logger;
@@ -25,7 +26,6 @@
             SetDefaultHeaders();
         }
 
-        
         public string SspProtocol = "https://";
 
         public bool UseTlsFoundationsAndAppmts => ScenarioContext.Current.Get<bool>("useTLSFoundationsAndAppmts");
@@ -36,7 +36,6 @@
 
         public bool UseTlsDocuments => ScenarioContext.Current.Get<bool>("useTLSDocuments");
         public string ProtocolDocuments => UseTlsDocuments ? "https://" : "http://";
-
 
         // Web Proxy
         public bool UseWebProxy { get; set; }
@@ -55,11 +54,10 @@
         public string SpineProxyPort { get; set; }
 
         public string SpineProxyAddress => SspProtocol + SpineProxyUrl + ":" + SpineProxyPort;
-        
 
         // Raw Request
         public string RequestMethod { get; set; }
-        
+
         public string RequestUrl { get; set; }
 
         public string RequestUrlParameters { get; set; }
@@ -98,27 +96,28 @@
                     if (UseTlsStructured)
                     {
                         return ProtocolStructured + ((FhirServerPortStructured != "") ? FhirServerUrlStructured + FhirServerFhirBaseStructured : FhirServerUrlStructured + FhirServerFhirBaseStructured);
-
                     }
                     else
                     {
                         return ProtocolStructured + ((FhirServerPortStructured != "") ? FhirServerUrlStructured + ":" + FhirServerPortStructured + FhirServerFhirBaseStructured : FhirServerUrlStructured + FhirServerFhirBaseStructured);
-
                     }
                 }
                 //Documents
-                else if (currentInteraction == SpineConst.InteractionIds.DocumentsMetaDataRead || currentInteraction == SpineConst.InteractionIds.DocumentsPatientSearch || currentInteraction == SpineConst.InteractionIds.DocumentsRetrieve || currentInteraction == SpineConst.InteractionIds.DocumentsSearch)
+                else if (currentInteraction == SpineConst.InteractionIds.DocumentsMetaDataRead || currentInteraction == SpineConst.InteractionIds.DocumentsPatientSearch || currentInteraction == SpineConst.InteractionIds.DocumentsSearch)
                 {
                     if (UseTlsDocuments)
                     {
                         return ProtocolDocuments + ((FhirServerPortDocuments != "") ? FhirServerUrlDocuments + FhirServerFhirBaseDocuments : FhirServerUrlDocuments + FhirServerFhirBaseDocuments);
-
                     }
                     else
                     {
                         return ProtocolDocuments + ((FhirServerPortDocuments != "") ? FhirServerUrlDocuments + ":" + FhirServerPortDocuments + FhirServerFhirBaseDocuments : FhirServerUrlStructured + FhirServerFhirBaseDocuments);
-
                     }
+                }
+                //Documents Retrieve
+                else if (currentInteraction == SpineConst.InteractionIds.DocumentsRetrieve)
+                {
+                    return GlobalContext.DocumentURL;
                 }
                 //Foundations and Appointments
                 else
@@ -126,15 +125,12 @@
                     if (UseTlsFoundationsAndAppmts)
                     {
                         return ProtocolFoundationsAndAppmts + ((FhirServerPortFoundationsAndAppmts != "") ? FhirServerUrlFoundationsAndAppmts + FhirServerFhirBaseFoundationsAndAppmts : FhirServerUrlFoundationsAndAppmts + FhirServerFhirBaseFoundationsAndAppmts);
-
                     }
                     else
                     {
                         return ProtocolFoundationsAndAppmts + ((FhirServerPortFoundationsAndAppmts != "") ? FhirServerUrlFoundationsAndAppmts + ":" + FhirServerPortFoundationsAndAppmts + FhirServerFhirBaseFoundationsAndAppmts : FhirServerUrlFoundationsAndAppmts + FhirServerFhirBaseFoundationsAndAppmts);
-
                     }
                 }
-
             }
         }
 
@@ -169,7 +165,7 @@
                 }
             }
             //Documents
-            else if (currentInteraction == SpineConst.InteractionIds.DocumentsMetaDataRead || currentInteraction == SpineConst.InteractionIds.DocumentsPatientSearch || currentInteraction == SpineConst.InteractionIds.DocumentsRetrieve || currentInteraction == SpineConst.InteractionIds.DocumentsSearch)
+            else if (currentInteraction == SpineConst.InteractionIds.DocumentsMetaDataRead || currentInteraction == SpineConst.InteractionIds.DocumentsPatientSearch || currentInteraction == SpineConst.InteractionIds.DocumentsSearch)
             {
                 if (UseTlsDocuments)
                 {
@@ -179,6 +175,11 @@
                 {
                     baseUrl = sspAddress + ProtocolDocuments + ((FhirServerPortDocuments != "") ? FhirServerUrlDocuments + ":" + FhirServerPortDocuments + FhirServerFhirBaseDocuments : FhirServerUrlDocuments + FhirServerFhirBaseDocuments);
                 }
+            }
+            //Documents Retrieve
+            else if (currentInteraction == SpineConst.InteractionIds.DocumentsRetrieve)
+            {
+                baseUrl = sspAddress + GlobalContext.DocumentURL;
             }
             //Foundations and Appointments
             else
