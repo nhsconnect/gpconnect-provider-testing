@@ -4,6 +4,7 @@
     using Constants;
     using Enum;
     using GPConnect.Provider.AcceptanceTests.Context;
+    using GPConnect.Provider.AcceptanceTests.Helpers;
     using Http;
     using NUnit.Framework;
 
@@ -312,7 +313,14 @@
 
             if (GlobalContext.DocumentURL != null)
             {
-                _httpRequestConfiguration.RequestUrl = _httpRequestConfiguration.SpineProxyAddress + "/" + GlobalContext.DocumentURL;
+                if (AppSettingsHelper.UseSpineProxy)
+                {
+                    _httpRequestConfiguration.RequestUrl = _httpRequestConfiguration.SpineProxyAddress + "/" + GlobalContext.DocumentURL;
+                }
+                else
+                {
+                    _httpRequestConfiguration.RequestUrl = GlobalContext.DocumentURL;
+                }
             }
             else
             {
