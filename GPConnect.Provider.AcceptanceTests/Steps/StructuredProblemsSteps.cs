@@ -124,7 +124,7 @@
             //Check Code
             problemsList.Code.Coding.ForEach(coding =>
             {
-                coding.System.ShouldBeOneOf("http://snomed.info/sct", "http://read.info/readv2", "http://read.info/ctv3", "https://fhir.hl7.org.uk/Id/emis-drug-codes", "https://fhir.hl7.org.uk/Id/egton-codes", "https://fhir.hl7.org.uk/Id/multilex-drug-codes", "https://fhir.hl7.org.uk/Id/resipuk-gemscript-drug-codes", "https://fhir.nhs.uk/STU3/CodeSystem/GPConnect-SecondaryListValues-1");
+                coding.System.ShouldBeOneOf("http://snomed.info/sct", "http://read.info/readv2", "http://read.info/ctv3", "https://fhir.hl7.org.uk/Id/emis-drug-codes", "https://fhir.hl7.org.uk/Id/egton-codes", "https://fhir.hl7.org.uk/Id/multilex-drug-codes", "https://fhir.hl7.org.uk/Id/resipuk-gemscript-drug-codes", "https://fhir.hl7.org.uk/STU3/CodeSystem/GPConnect-SecondaryListValues-1");
                 coding.Display.ShouldNotBeNullOrEmpty("Display Should not be Null or Empty");
             });
 
