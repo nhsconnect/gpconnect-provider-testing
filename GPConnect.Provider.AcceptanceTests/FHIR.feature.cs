@@ -1004,8 +1004,8 @@ this.ScenarioInitialize(scenarioInfo);
             "y/1.2", null)]
         [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Immunization-1/_hist" +
             "ory/1.5", null)]
-        [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Condition-ProblemHea" +
-            "der-1/_history/1.6", null)]
+        [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-ProblemHeader-Condit" +
+            "ion-1/_history/1.6", null)]
         [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Encounter-1/_history" +
             "/1.5", null)]
         [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Observation-1/_histo" +
