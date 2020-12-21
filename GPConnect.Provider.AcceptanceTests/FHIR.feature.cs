@@ -677,7 +677,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 215
  testRunner.And("the CapabilityStatement Operation \"gpc.getstructuredrecord\" has url \"https://fhir" +
                     ".nhs.uk/STU3/OperationDefinition/GPConnect-GetStructuredRecord-Operation-1/_hist" +
-                    "ory/1.15\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "ory/1.16\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

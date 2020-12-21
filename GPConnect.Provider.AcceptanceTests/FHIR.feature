@@ -212,7 +212,7 @@ Scenario: Structured CapabilityStatement profile supports the GetStructuredRecor
 	When I make the "StructuredMetaDataRead" request
 	Then the response status code should indicate success
 	And the CapabilityStatement REST Operations should contain "gpc.getstructuredrecord"
-	And the CapabilityStatement Operation "gpc.getstructuredrecord" has url "https://fhir.nhs.uk/STU3/OperationDefinition/GPConnect-GetStructuredRecord-Operation-1/_history/1.15" 
+	And the CapabilityStatement Operation "gpc.getstructuredrecord" has url "https://fhir.nhs.uk/STU3/OperationDefinition/GPConnect-GetStructuredRecord-Operation-1/_history/1.16" 
 
 @Structured	
 Scenario: Structured Fhir content type test where Accept header is JSON and request payload is XML
