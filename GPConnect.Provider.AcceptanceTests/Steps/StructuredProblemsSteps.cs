@@ -345,9 +345,6 @@
             };
 
             found.ShouldBeTrue("Fail : No Problems found with a linked MedicationRequest");
-
-            //check that MedicationRequest linked has been included in response.
-            VerifyResourceReferenceExists("MedicationRequest", refToFind);
         }
 
         [Then(@"Check the MedicationRequests have a link to a medication that has been included in response")]

@@ -261,8 +261,6 @@ Scenario: Structured request sent for consultations and problems expect success
 		And Check there is a MedicationStatement resource that is linked to the MedicationRequest and Medication
 		And I Check the Consultation Medications Secondary List is Valid
 		And I Check the Consultation Uncategorised Secondary List is Valid
-		And I Check The Problems Secondary Problems List
-		And I Check The Problems Secondary Problems List Does Not Include Not In Use Fields
 		#Problems Checks Below
 		And I Check The Primary Problems List
 		And I Check The Primary Problems List Does Not Include Not In Use Fields
