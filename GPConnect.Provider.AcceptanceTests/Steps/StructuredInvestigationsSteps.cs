@@ -12,7 +12,7 @@
     using static Hl7.Fhir.Model.Parameters;
     using GPConnect.Provider.AcceptanceTests.Helpers;
     using System.Text.RegularExpressions;
-   
+
     [Binding]
     public sealed class StructuredInvestigationsSteps : BaseSteps
     {
@@ -31,7 +31,7 @@
         {
             _httpContext = httpContext;
         }
-   
+
         [Given(@"I add the Investigations parameter")]
         public void GivenIAddTheInvestigationsParameter()
         {
@@ -40,7 +40,7 @@
             _httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
         }
 
-        [Then(@"I Check the Investigations List is Valid")] 
+        [Then(@"I Check the Investigations List is Valid")]
         public void ThenIChecktheInvestigationsListsareValid()
         {
             //Check atleast one Investigations List exists using Snomed Code
@@ -80,33 +80,29 @@
                 //Check each Entry/Item/Reference points to a resource that exists
                 bool found = false;
                 string pattern = @"(.*/)(.*)";
-                    investList.Entry.ForEach(entry =>
-                    {
-                        string refToFind = Regex.Replace(entry.Item.Reference, pattern, "$2");
-                        Bundle.GetResources()
-                                    .Where(resource => resource.ResourceType.Equals(ResourceType.DiagnosticReport))
-                                    .Where(resource => resource.Id == refToFind)
-                                    .ToList().Count().ShouldBe(1, "DiagnosticReport resource Not Found with id : " + refToFind);
-                        Logger.Log.WriteLine("Investigations List - Verified the Linked DiagnosticReport has been included In the Bundle: " + refToFind);
-                        found = true;
-                    });
+                investList.Entry.ForEach(entry =>
+                {
+                    string refToFind = Regex.Replace(entry.Item.Reference, pattern, "$2");
+                    Bundle.GetResources()
+                                .Where(resource => resource.ResourceType.Equals(ResourceType.DiagnosticReport))
+                                .Where(resource => resource.Id == refToFind)
+                                .ToList().Count().ShouldBe(1, "DiagnosticReport resource Not Found with id : " + refToFind);
+                    Logger.Log.WriteLine("Investigations List - Verified the Linked DiagnosticReport has been included In the Bundle: " + refToFind);
+                    found = true;
+                });
 
                 //Check we found atleast One DiagnosticReport Linked in list
                 found.ShouldBeTrue("Fail : Investigations List should be linked to atleast one diagnostic report");
 
                 Logger.Log.WriteLine("Completed Mandatory checks on Investigations List");
             });
-
-
         }
 
         [Then(@"I Check the DiagnosticReports are Valid")]
         public void ThenIChecktheDiagnosticReportsareValid()
         {
             CheckDiagnosticReportCommonElements();
-
         }
-
 
         [Then(@"I Check the DiagnosticReports are Valid and Linked to a ProcedureRequest")]
         public void ThenIChecktheDiagnosticReportsareValidandLinkedtoaProcedureRequest()
@@ -115,8 +111,6 @@
             CheckProcedureRequestLinkedToDiagnosticReport();
         }
 
-
-
         [Then(@"I Check the DiagnosticReports Do Not Include Not in Use Fields")]
         public void ThenIChecktheDiagnosticReportsDoNotIncludeNotinUseFields()
         {
@@ -124,12 +118,11 @@
             {
                 diag.Effective.ShouldBeNull("Fail :  DiagnosticReport - effective element Should not be used - Not In Use Field");
                 diag.Context.ShouldBeNull("Fail :  DiagnosticReport - context element Should not be used - Not In Use Field");
-                diag.ImagingStudy.Count().ShouldBe(0,"Fail :  DiagnosticReport - imagingStudy element Should not be used - Not In Use Field");
+                diag.ImagingStudy.Count().ShouldBe(0, "Fail :  DiagnosticReport - imagingStudy element Should not be used - Not In Use Field");
                 diag.Image.Count().ShouldBe(0, "Fail :  DiagnosticReport - image element Should not be used - Not In Use Field");
                 diag.PresentedForm.Count().ShouldBe(0, "Fail :  DiagnosticReport - PresentedForm element Should not be used - Not In Use Field");
             });
         }
-
 
         public void CheckDiagnosticReportCommonElements()
         {
@@ -140,7 +133,7 @@
             bool foundSpecimen = false;
             bool foundlinkedTestGroup = false;
             bool foundSpecimenLinkedToTestGroup = false;
-            bool foundTestReportFiling = false;
+            //bool foundTestReportFiling = false;
 
             DiagnosticReports.ForEach(diagnostic =>
             {
@@ -221,40 +214,35 @@
                                     }
                                 }
 
-
+                                //16/2/2021 - PG - removed from automation and check moved into manual as EMIS do not Support this linkage
                                 //check if observation is a test report filing as per data requirements - should be one
-                                if (currentObservation.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kObservationCommentNoteCode)
-                                {
-                                    //found a Test filing Comment
-                                    foundTestReportFiling = true;
-                                }
-
+                                //if (currentObservation.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kObservationCommentNoteCode)
+                                //{
+                                //    //found a Test filing Comment
+                                //    foundTestReportFiling = true;
+                                //}
                             }
                         });
                     }
                 }
-
             });
 
             //Check Data Requirements were met
             foundSpecimen.ShouldBeTrue("Fail : No link to a Specimen found on any DiagnosticReport");
             foundlinkedTestGroup.ShouldBeTrue("fail : No link to a Test Group found on any DiagnosticReport");
             foundSpecimenLinkedToTestGroup.ShouldBeTrue("fail : No link to a Specimen from a Test group Found");
-            foundTestReportFiling.ShouldBeTrue("fail : No link found to a Test report Filing from any DiagnosticReport");
-
+            //foundTestReportFiling.ShouldBeTrue("fail : No link found to a Test report Filing from any DiagnosticReport");
         }
 
         public void CheckProcedureRequestLinkedToDiagnosticReport()
         {
-
-             //check atleast one
+            //check atleast one
             DiagnosticReports.ToList().Count().ShouldBeGreaterThan(0, "Error Should be Atleast One DiagnosticReport in response as per Data requirements");
 
             bool foundProcedureRequest = false;
 
             DiagnosticReports.ForEach(diagnostic =>
             {
-
                 ////check atleast one diagnosticReport is linked to a Procedurerequest(and included in bundle) as per data requirements
                 string refToCheck = "";
                 string pattern = @"(.*)(/)(.*)";
@@ -277,11 +265,8 @@
 
                 //Check Data Requirements were met
                 foundProcedureRequest.ShouldBeTrue("Fail : No link to a ProcedureRequest found on any DiagnosticReport as per data requirements");
-
             });
-
         }
-
 
         [Then(@"I Check the ProcedureRequests are Valid")]
         public void ThenIChecktheProcedureRequestareValid()
@@ -418,7 +403,6 @@
                            .ToList().Count().ShouldBe(1, "Fail : Linked Resource Not Contained in Response - type : " + resourceType + " - ID : " + resourceID);
 
             Logger.Log.WriteLine("Found Linked resource : " + resourceID + " Of Type : " + resourceType);
-
         }
 
         [Given(@"I add the investigations data parameter with current date")]
@@ -440,7 +424,6 @@
         {
             IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
                 Tuple.Create(FhirConst.GetStructuredRecordParams.kInvestigationsSearch, (Base)FhirHelper.GetTimePeriod(start, end)),
-
             };
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kInvestigations, tuples);
         }
@@ -504,18 +487,15 @@
                             foundTestReportFiling = true;
                         }
                     }
-                }) ;
-                
+                });
             });
 
             foundTestReportFiling.ShouldBeTrue("Fail : No Test Group found with a link to a test report filing as per data requirements");
-
         }
 
         [Then(@"Check a Problem is linked to DiagnosticReport and that it is also included")]
-        public void ThenCheckaProblemislinkedtoanthatisalsoincludedintheresponsewithalist( )
+        public void ThenCheckaProblemislinkedtoanthatisalsoincludedintheresponsewithalist()
         {
-            
             var found = false;
             string refToFind = "";
 
@@ -527,7 +507,7 @@
                 foreach (var rcc in problemRelatedContentExtensions)
                 {
                     ResourceReference rr = (ResourceReference)rcc.Value;
-                    if (rr.Reference.StartsWith("DiagnosticReport/" ))
+                    if (rr.Reference.StartsWith("DiagnosticReport/"))
                     {
                         string pattern = @"(.*)(/)(.*)";
                         refToFind = Regex.Replace(rr.Reference, pattern, "$3");
@@ -544,7 +524,6 @@
 
             ////check that Linked Clinical resource has been included in response.
             VerifyResourceReferenceExists("DiagnosticReport", refToFind);
-
         }
 
         [Then(@"I Check the Test report Filing is Valid")]
@@ -586,7 +565,6 @@
             });
 
             found.ShouldBeTrue("Fail : No Test Report Filing found as per data requirements");
-
         }
 
         [Then(@"I Check the Test report Filing Do Not Include Not in Use Fields")]
@@ -595,7 +573,6 @@
             bool found = false;
             Observations.ForEach(obs =>
             {
-
                 if (obs.Code.Coding.First().Code == FhirConst.GetSnoMedParams.kObservationCommentNoteCode)
                 {
                     obs.BasedOn.Count().ShouldBe(0, "Fail :  Observation Test report Filing - basedon element Should not be used - Not In Use Field");
@@ -616,6 +593,5 @@
 
             found.ShouldBeTrue("Fail : No Test Report Filing found as per data requirements");
         }
-
     }
 }
