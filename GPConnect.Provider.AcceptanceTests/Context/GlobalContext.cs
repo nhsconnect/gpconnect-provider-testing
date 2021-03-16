@@ -20,7 +20,7 @@
             get { return GlobalContextHelper.GetValue<string>(Context.kTraceDirectory); }
             set { GlobalContextHelper.SaveValue(Context.kTraceDirectory, value); }
         }
-        
+
         // Data
         public static List<RegisterPatient> RegisterPatients { get; set; }
         public static Dictionary<string, string> PractionerCodeMap { get; set; }
@@ -53,5 +53,6 @@
         public static byte[] DocumentContent { get; set; }
         public static string DocumentID { get; set; }
         public static string DocumentContentType { get; set; }
+        public static string SSPTraceID { get; set; }
     }
 }

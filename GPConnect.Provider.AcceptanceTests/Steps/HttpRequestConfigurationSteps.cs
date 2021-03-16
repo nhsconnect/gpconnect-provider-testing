@@ -47,11 +47,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspTo, toASID);
         }
 
+        //PG 4/3/2021 - Not Used so commenting out as part of change to check Bundle.ID  matches SSP-traceID
         [Given(@"I am generating a random message trace identifier")]
-        public void GivenIAmGeneratingARandomMessageTraceIdentifier()
-        {
-            _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspTraceId, Guid.NewGuid().ToString(""));
-        }
+        //public void GivenIAmGeneratingARandomMessageTraceIdentifier()
+        //{
+        //    _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspTraceId, Guid.NewGuid().ToString(""));
+        //}
 
         [Given(@"I do not send header ""(.*)""")]
         public void GivenIDoNotSendHeader(string headerKey)
@@ -105,7 +106,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void GivenIAddTheTimePeriodParametersforDaysStartingTodayWithStartEndFormats(int days, string startFormat, string endFormat)
         {
             var val = TimePeriodHelper.GetTimePeriodStartDateFormatEndDateFormat(startFormat, endFormat, days);
-
 
             Given($"I add the parameter \"start\" with the value \"{FhirConst.Prefixs.kGreaterThanOrEqualTo}{val.Start}\"");
             Given($"I add the parameter \"end\" with the value \"{FhirConst.Prefixs.kLessThanOrEqualTo}{val.End}\"");
@@ -167,7 +167,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             var val = new Period(new FhirDateTime(dateStart), new FhirDateTime(dateEnd));
             Given($"I add the parameter \"start\" with the value \"{FhirConst.Prefixs.kGreaterThanOrEqualTo}{val.Start}\"");
             Given($"I add the parameter \"end\" with the value \"{FhirConst.Prefixs.kLessThanOrEqualTo}{val.End}\"");
-
         }
 
         [Given(@"I add the parameter ""(.*)"" with the value ""(.*)""")]
@@ -202,7 +201,6 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter(parameterName, parameterValue);
         }
-
 
         [Given(@"I set the GET request Id to ""([^""]*)""")]
         public void SetTheGetRequestIdTo(string id)

@@ -78,6 +78,10 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             GlobalContext.DocumentURL = Documents.FirstOrDefault().Content.FirstOrDefault().Attachment.Url;
             Logger.Log.WriteLine("Info : Found Document URL in DocumentReference : " + GlobalContext.DocumentURL);
+            if (Documents.FirstOrDefault().Content.FirstOrDefault().Attachment.Size != null)
+            {
+                Logger.Log.WriteLine("Info : Found Document Size in DocumentReference : " + Documents.FirstOrDefault().Content.FirstOrDefault().Attachment.Size);
+            }
         }
 
         [Then(@"I save the binary document from the retrieve")]
@@ -121,6 +125,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void Iclearthesaveddocumenturl()
         {
             GlobalContext.DocumentURL = "";
+            Logger.Log.WriteLine("Info : Cleared Document URL");
         }
 
         [Then(@"I set the documents search parameters le to today and ge to 365 days ago")]

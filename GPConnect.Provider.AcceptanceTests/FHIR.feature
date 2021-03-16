@@ -341,6 +341,7 @@ Examples:
 | https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-ProcedureRequest-1/_history/1.3        |
 | https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-ReferralRequest-1/_history/1.2         |
 | https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-DocumentReference-1/_history/1.3       |
+| https://fhir.hl7.org.uk/STU3/StructureDefinition/CareConnect-HealthcareService-1/_history/1.0		  |
 
 
 ##########################################

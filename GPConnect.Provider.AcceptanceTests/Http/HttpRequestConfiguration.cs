@@ -257,7 +257,11 @@
 
         public void SetDefaultHeaders()
         {
-            RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspTraceId, Guid.NewGuid().ToString());
+            //PG 4/3/2021 - Generate new SSP-TraceID and Store in GlobalContext To Check that Bundles returned This in id element
+            var sspTraceID = Guid.NewGuid().ToString();
+            GlobalContext.SSPTraceID = sspTraceID;
+
+            RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspTraceId, GlobalContext.SSPTraceID);
             RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspFrom, ConsumerASID);
             RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspTo, ProviderASID);
 
