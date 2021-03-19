@@ -182,7 +182,7 @@
             bookingOrganization.Identifier.Add(new Identifier(FhirConst.IdentifierSystems.kOdsOrgzCode, GlobalContext.OdsCodeMap["ORG1"]));
             if (addOrgType)
             {
-                CodeableConcept ot = new CodeableConcept("https://fhir.nhs.uk/STU3/ValueSet/GPConnect-OrganisationType-1", "urgent-care", "Urgent Care");
+                CodeableConcept ot = new CodeableConcept("https://fhir.nhs.uk/STU3/CodeSystem/GPConnect-OrganisationType-1", "urgent-care", "Urgent Care");
                 bookingOrganization.Type.Add(ot);
             }
             bookingOrganization.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Temp, "01823938938"));
