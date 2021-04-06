@@ -246,6 +246,8 @@
                     file.WriteLine("consumerASID : " + AppSettingsHelper.ConsumerASID);
                     file.WriteLine("providerASID : " + AppSettingsHelper.ProviderASID);
 
+                    file.WriteLine("gpConnectSpecVersion : " + AppSettingsHelper.GPConnectSpecVersion);
+
                     file.WriteLine("UseTLSFoundationsAndAppmts Flag : " + AppSettingsHelper.UseTLSFoundationsAndAppmts.ToString());
                     file.WriteLine("jwtAudValueFoundationsAndAppmts : " + AppSettingsHelper.JwtAudValueFoundationsAndAppmts);
                     file.WriteLine("serverURL - FoundationsAndAppmts : " + AppSettingsHelper.ServerUrlFoundationsAndAppmts);
