@@ -241,6 +241,8 @@
                     file.WriteLine("Overall Stats from test Run: Total=" + (GlobalContext.CountTestRunPassed + GlobalContext.CountTestRunFailed).ToString() + "  Passed=" + GlobalContext.CountTestRunPassed.ToString() + "  Failed: " + GlobalContext.CountTestRunFailed.ToString());
                     file.WriteLine("****************************************************************");
 
+                    file.WriteLine("gpConnectSpecVersion : " + AppSettingsHelper.GPConnectSpecVersion);
+
                     //Add inormation about the test run
                     file.WriteLine("TestRunDateTime : " + DateTime.UtcNow.ToLocalTime().ToString());
                     file.WriteLine("consumerASID : " + AppSettingsHelper.ConsumerASID);
