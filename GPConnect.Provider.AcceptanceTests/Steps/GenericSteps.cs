@@ -263,6 +263,10 @@
                     file.WriteLine("consumerASID : " + AppSettingsHelper.ConsumerASID);
                     file.WriteLine("providerASID : " + AppSettingsHelper.ProviderASID);
 
+                    file.WriteLine("GPConnectSpecVersionFoundationsAndAppmts : " + AppSettingsHelper.GPConnectSpecVersionFoundationsAndAppmts);
+                    file.WriteLine("GPConnectSpecVersionStructured : " + AppSettingsHelper.GPConnectSpecVersionStructured);
+                    file.WriteLine("GPConnectSpecVersionDocuments : " + AppSettingsHelper.GPConnectSpecVersionDocuments);
+
                     file.WriteLine("UseTLSFoundationsAndAppmts Flag : " + AppSettingsHelper.UseTLSFoundationsAndAppmts.ToString());
                     file.WriteLine("jwtAudValueFoundationsAndAppmts : " + AppSettingsHelper.JwtAudValueFoundationsAndAppmts);
                     file.WriteLine("serverURL - FoundationsAndAppmts : " + AppSettingsHelper.ServerUrlFoundationsAndAppmts);
