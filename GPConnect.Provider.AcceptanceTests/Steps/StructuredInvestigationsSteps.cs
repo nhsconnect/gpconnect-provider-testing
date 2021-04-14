@@ -117,7 +117,6 @@
             DiagnosticReports.ForEach(diag =>
             {
                 diag.Effective.ShouldBeNull("Fail :  DiagnosticReport - effective element Should not be used - Not In Use Field");
-                diag.Context.ShouldBeNull("Fail :  DiagnosticReport - context element Should not be used - Not In Use Field");
                 diag.ImagingStudy.Count().ShouldBe(0, "Fail :  DiagnosticReport - imagingStudy element Should not be used - Not In Use Field");
                 diag.Image.Count().ShouldBe(0, "Fail :  DiagnosticReport - image element Should not be used - Not In Use Field");
                 diag.PresentedForm.Count().ShouldBe(0, "Fail :  DiagnosticReport - PresentedForm element Should not be used - Not In Use Field");
