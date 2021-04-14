@@ -184,23 +184,24 @@ Scenario: Retrieve a Document for Patient2
 		And I Check the returned Binary Document is Valid
 		And I Check the returned Binary Document Do Not Include Not In Use Fields
 
-Scenario: Retrieve a Document Over 5mb for Patient4 expect Fail
-	Given I configure the default "DocumentsPatientSearch" request
-		And I add a Patient Identifier parameter with default System and Value "patient4"
-		When I make the "DocumentsPatientSearch" request
-		Then the response status code should indicate success
-		Given I store the Patient
-	Given I configure the default "DocumentsSearch" request
-		And I set the required parameters for a Documents Search call
-	When I make the "DocumentsSearch" request
-		Then the response status code should indicate success
-		And the response should be a Bundle resource of type "searchset"
-		And I save a document url for retrieving later
-	Given I configure the default "DocumentsRetrieve" request
-		When I make the "DocumentsRetrieve" request
-		Then the response status code should be "404"
-		And the response should be a OperationOutcome resource with error code "NO_RECORD_FOUND"
-		And I clear the saved document url
+#Removed as URL should not be sent back for a doc over 5mb Test
+#Scenario: Retrieve a Document Over 5mb for Patient4 expect Fail
+#	Given I configure the default "DocumentsPatientSearch" request
+#		And I add a Patient Identifier parameter with default System and Value "patient4"
+#		When I make the "DocumentsPatientSearch" request
+#		Then the response status code should indicate success
+#		Given I store the Patient
+#	Given I configure the default "DocumentsSearch" request
+#		And I set the required parameters for a Documents Search call
+#	When I make the "DocumentsSearch" request
+#		Then the response status code should indicate success
+#		And the response should be a Bundle resource of type "searchset"
+#		And I save a document url for retrieving later
+#	Given I configure the default "DocumentsRetrieve" request
+#		When I make the "DocumentsRetrieve" request
+#		Then the response status code should be "404"
+#		And the response should be a OperationOutcome resource with error code "NO_RECORD_FOUND"
+#		And I clear the saved document url
 
 		
 ##########################################
