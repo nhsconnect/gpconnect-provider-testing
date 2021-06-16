@@ -318,6 +318,7 @@ Given I configure the default "StructuredMetaDataRead" request
 	When I make the "StructuredMetaDataRead" request
 	Then the response status code should indicate success
 	And the CapabilityStatement REST Operations should contain "gpc.getstructuredrecord"
+	And the CapabilityStatement REST Operations should contain "gpc.migratestructuredrecord"
     And the CapabilityStatement Profile should contain the correct reference and version history "<urlToCheck>" 
 Examples: 
 | urlToCheck                                                                                          |
