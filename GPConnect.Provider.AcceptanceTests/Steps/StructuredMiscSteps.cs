@@ -26,5 +26,12 @@
             _httpContext = httpContext;
         }
 
+        [Given(@"I add the includeFullrecord parameter with includeSensitiveInformation set to ""(.*)""")]
+        public void GivenIAddTheMedicationsParameterWithIncludePrescriptionIssuesSetTo(string partValue)
+        {
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] { Tuple.Create(FhirConst.GetStructuredRecordParams.kSensitiveInformation, (Base)new FhirBoolean(Boolean.Parse(partValue))) };
+            _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kFullRecord, tuples);
+        }
+
     }
 }

@@ -34,10 +34,7 @@
             public const string kPatientNHSNumber = "patientNHSNumber";
             public const string kAllergies = "includeAllergies";
             public const string kMedication = "includeMedication";
-
-            //sara testing notes 29/08/19
             public const string kImmunizations = "includeImmunisations";
-
             public const string kUncategorised = "includeUncategorisedData";
             public const string kUncategorisedData = "uncategorisedDataSearchPeriod";
             public const string kConsultations = "includeConsultations";
@@ -59,6 +56,9 @@
             public const string kEndDate = "end";
             public const string kResolvedAllergies = "includeResolvedAllergies";
             public const string kPrescriptionIssues = "includePrescriptionIssues";
+
+            public const string kFullRecord = "includeFullRecord";
+            public const string kSensitiveInformation = "includeSensitiveInformation";
 
             // github ref 127 RMB 5/11/2018            public const string kMedicationDatePeriod = "medicationDatePeriod";
             public const string kMedicationDatePeriod = "medicationSearchFromDate";
