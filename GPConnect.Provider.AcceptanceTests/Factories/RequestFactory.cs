@@ -47,6 +47,10 @@
                 case GpConnectInteraction.AppointmentCancel:
                     ConfigureAppointmentCancelBody(httpRequestConfiguration);
                     break;
+                case GpConnectInteraction.MigrateStructuredRecordWithoutSensitive:
+                case GpConnectInteraction.MigrateStructuredRecordWithSensitive:
+                    ConfigureGpcMigratePatientBody(httpRequestConfiguration);
+                    break;
             }
         }
 
@@ -71,6 +75,11 @@
         }
 
         private static void ConfigureGpcGetStructuredRecordBody(HttpRequestConfiguration httpRequestConfiguration)
+        {
+            httpRequestConfiguration.RequestBody = _serializer(httpRequestConfiguration.BodyParameters);
+        }
+
+        private static void ConfigureGpcMigratePatientBody(HttpRequestConfiguration httpRequestConfiguration)
         {
             httpRequestConfiguration.RequestBody = _serializer(httpRequestConfiguration.BodyParameters);
         }

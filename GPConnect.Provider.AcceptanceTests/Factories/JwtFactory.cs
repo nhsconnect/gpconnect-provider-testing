@@ -48,6 +48,12 @@
                 case GpConnectInteraction.AppointmentCancel:
                     jwtHelper.RequestedScope = JwtConst.Scope.kPatientWrite;
                     break;
+                case GpConnectInteraction.MigrateStructuredRecordWithoutSensitive:
+                    jwtHelper.RequestedScope = JwtConst.Scope.kMigrateWithoutSensitive;
+                    break;
+                case GpConnectInteraction.MigrateStructuredRecordWithSensitive:
+                    jwtHelper.RequestedScope = JwtConst.Scope.kMigrateWithSensitive;
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -82,6 +88,11 @@
                 case GpConnectInteraction.AppointmentAmend:
                 case GpConnectInteraction.AppointmentCancel:
                     jwtHelper.AuthTokenURL = AppSettingsHelper.JwtAudValueFoundationsAndAppmts;
+                    break;
+                case GpConnectInteraction.MigrateStructuredRecordWithoutSensitive:
+                case GpConnectInteraction.MigrateStructuredRecordWithSensitive:
+                    jwtHelper.AuthTokenURL = AppSettingsHelper.JwtAudValueFoundationsAndAppmts;
+                    jwtHelper.ReasonForRequest = JwtConst.Values.kMigrate;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

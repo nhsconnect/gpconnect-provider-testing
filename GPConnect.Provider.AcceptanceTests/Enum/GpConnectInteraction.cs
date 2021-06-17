@@ -34,7 +34,10 @@
         DocumentsMetaDataRead = 20,
         DocumentsPatientSearch = 21,
         DocumentsSearch = 22,
-        DocumentsRetrieve = 23
+        DocumentsRetrieve = 23,
+        MigrateStructuredRecordWithoutSensitive = 24,
+        MigrateStructuredRecordWithSensitive = 25
+
 
     }
 }

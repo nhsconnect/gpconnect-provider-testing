@@ -43,6 +43,8 @@
             public static string DocumentsSearch => DocumentsBaseInteraction + "search:documentreference-1";
             public static string DocumentsRetrieve => DocumentsBaseInteraction + "read:binary-1";
 
+            public static string MigratePatient = BaseInteraction + "operation:gpc.migratestructuredrecord-1";
+
         }
     }
 }

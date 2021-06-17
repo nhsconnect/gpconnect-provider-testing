@@ -91,6 +91,10 @@
                 case GpConnectInteraction.DocumentsRetrieve:
                     return DocumentsRetrieveConfiguration();
 
+                case GpConnectInteraction.MigrateStructuredRecordWithoutSensitive:
+                case GpConnectInteraction.MigrateStructuredRecordWithSensitive:
+                    return MigratePatientConfiguration();
+
                 default:
                     return _httpRequestConfiguration;
             }
@@ -326,6 +330,15 @@
             {
                 Assert.Fail("Fail : No Document URL exists to be able to retrieve");
             }
+
+            return _httpRequestConfiguration;
+        }
+
+        private static HttpRequestConfiguration MigratePatientConfiguration()
+        {
+            _httpRequestConfiguration.HttpMethod = HttpMethod.Post;
+            _httpRequestConfiguration.RequestUrl = "Patient/$gpc.migratestructuredrecord";
+            _httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.MigratePatient);
 
             return _httpRequestConfiguration;
         }

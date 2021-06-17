@@ -21,6 +21,7 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
         internal static class Values
         {
             public const string kDirectCare = "directcare";
+            public const string kMigrate = "migration";
         }
 
         internal static class Scope
@@ -28,6 +29,8 @@ namespace GPConnect.Provider.AcceptanceTests.Constants
             public const string kPatientWrite = "patient/*.write";
             public const string kPatientRead = "patient/*.read";
             public const string kOrganizationRead = "organization/*.read";
+            public const string kMigrateWithoutSensitive = "patient/*.read conf/N";
+            public const string kMigrateWithSensitive = "patient/*.read conf/R";
         }
     }
 }

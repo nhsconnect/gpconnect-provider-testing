@@ -33,5 +33,13 @@
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kFullRecord, tuples);
         }
 
+        [Given(@"I add the includeFullrecord parameter")]
+        public void GivenIAddTheMedicationsParameterWithoutMandatoryParameter()
+        {
+            ParameterComponent param = new ParameterComponent();
+            param.Name = FhirConst.GetStructuredRecordParams.kFullRecord;
+            _httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
+        }
+
     }
 }
