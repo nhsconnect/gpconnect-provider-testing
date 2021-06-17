@@ -198,6 +198,7 @@
     <Compile Include="Data\PDS.cs" />
     <Compile Include="Steps\StructuredCommonSteps.cs" />
     <Compile Include="Steps\StructuredDiarySteps.cs" />
+    <Compile Include="Steps\StructuredMiscSteps.cs" />
     <Compile Include="StructuredDiary.feature.cs" />
     <Compile Include="StructuredDocuments.feature.cs" />
     <Compile Include="Enum\GpConnectInteraction.cs" />
@@ -353,6 +354,7 @@
     <None Include="Security.feature" />
     <None Include="AppointmentRetrieve.feature" />
     <None Include="AppointmentAmend.feature" />
+    <None Include="StructuredMisc.feature" />
     <None Include="StructuredMultipleRequests.feature" />
     <None Include="SSP.feature" />
     <None Include="StructuredProblems.feature" />
