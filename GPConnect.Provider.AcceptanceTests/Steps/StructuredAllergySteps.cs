@@ -185,9 +185,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 		[Then(@"the Bundle should contain the correct number of allergies")]
 		public void TheBundleShouldContainTheCorrectNumberOfAllergies()
 		{
-			List active = Lists.Where(list => list.Title.Equals(FhirConst.ListTitles.kActiveAllergies)).ToList().First();
-
-			ActiveAllergyIntolerances.Count.ShouldBe(active.Entry.Count);
+            List<List> listsWithTitles = Lists.Where(list => list.Title != null).ToList();
+            List active = listsWithTitles.Where(list => list.Title.Equals(FhirConst.ListTitles.kActiveAllergies)).ToList().First();
+            ActiveAllergyIntolerances.Count.ShouldBe(active.Entry.Count);
 		}
 
 		[Then(@"the Bundle should not contain a list with the title ""(.*)""")]
@@ -198,10 +198,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
 		private List<List> getListsWithTitle(string title)
 		{
-			return Lists
-					.Where(list => list.Title.Equals(title))
-					.ToList();
-		}
+            List<List> listsWithTitles = Lists.Where(list => list.Title != null).ToList();
+
+            return listsWithTitles
+                .Where(list => list.Title.Equals(title))
+                .ToList();
+        }
 
 		[Then(@"the Lists are valid for a patient with no allergies")]
 		public void TheListsAreValidForAPatientWithNoAllergies()
@@ -369,9 +371,11 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 		{
 			AllAllergyIntolerances.AddRange(ActiveAllergyIntolerances);
 
-			//Get the 'contained' resolved allergies from the resolved list
-			List<List> resolved = Lists.Where(list => list.Title.Equals(FhirConst.ListTitles.kResolvedAllergies)).ToList();
-			if (resolved.Count > 0)
+            //Get the 'contained' resolved allergies from the resolved list
+             List<List> listsWithTitles = Lists.Where(list => list.Title != null).ToList();
+            List<List> resolved = listsWithTitles.Where(list => list.Title.Equals(FhirConst.ListTitles.kResolvedAllergies)).ToList();
+
+            if (resolved.Count > 0)
 			{
 				List<Resource> resolvedAllergies = resolved.First().Contained.Where(resource => resource.ResourceType.Equals(ResourceType.AllergyIntolerance)).ToList();
 				resolvedAllergies.ForEach(resource =>
