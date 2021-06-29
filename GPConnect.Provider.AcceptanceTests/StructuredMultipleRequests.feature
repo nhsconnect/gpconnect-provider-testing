@@ -159,15 +159,6 @@ Scenario: Structured request sent with invalid parameter combination 6 expected 
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
-Scenario: Structured request sent with invalid parameter combination 7 expected failure 
-	Given I configure the default "GpcGetStructuredRecord" request
-		And I add an NHS Number parameter for "patient1"
-		And I add the includeConsultations parameter only
-		And I add a NotGiven immunizations part parameter
-	When I make the "GpcGetStructuredRecord" request
-	Then the response status code should be "422"
-		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
-
 Scenario: Structured request sent with invalid parameter combination 8 expected failure 
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"
@@ -175,8 +166,7 @@ Scenario: Structured request sent with invalid parameter combination 8 expected 
 		And I add a Dissent immunizations part parameter
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should be "422"
-		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
-				
+		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"	
 
 Scenario: Structured request sent with invalid parameter combination 9 expected failure 
 	Given I configure the default "GpcGetStructuredRecord" request
@@ -210,15 +200,6 @@ Scenario: Structured request sent with invalid parameter combination 12 expected
 		And I add an NHS Number parameter for "patient1"
 		And I add the Problems parameter
 		Then I add the Diary Search date parameter with a past date "20" days ago
-	When I make the "GpcGetStructuredRecord" request
-	Then the response status code should be "422"
-		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
-
-Scenario: Structured request sent with invalid parameter combination 13 expected failure 
-	Given I configure the default "GpcGetStructuredRecord" request
-		And I add an NHS Number parameter for "patient1"
-		And I add the Problems parameter
-		And I add a NotGiven immunizations part parameter
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
