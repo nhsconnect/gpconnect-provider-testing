@@ -311,7 +311,6 @@ Scenario: endpoint should support chunking of data
 		And the JSON response should be a Bundle resource
 		And response should be chunked
 
-	#PG 25-6-2019 - #238
 	@0.7.2
 	Scenario: Check Capability Version
 	Given I am using the default server
