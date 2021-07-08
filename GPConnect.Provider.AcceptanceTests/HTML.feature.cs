@@ -133,7 +133,7 @@ namespace GPConnect.Provider.AcceptanceTests
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("HTML should not contain disallowed elements")]
-        [NUnit.Framework.CategoryAttribute("0.7.2")]
+        [NUnit.Framework.CategoryAttribute("0.7.2-Incremental-and-regression")]
         [NUnit.Framework.TestCaseAttribute("ADM", null)]
         [NUnit.Framework.TestCaseAttribute("ALL", null)]
         [NUnit.Framework.TestCaseAttribute("CLI", null)]
@@ -147,7 +147,7 @@ namespace GPConnect.Provider.AcceptanceTests
         public virtual void HTMLShouldNotContainDisallowedElements(string code, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "0.7.2"};
+                    "0.7.2-Incremental-and-regression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -198,7 +198,7 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("html sub section headers present")]
-        [NUnit.Framework.CategoryAttribute("0.7.2")]
+        [NUnit.Framework.CategoryAttribute("0.7.2-Incremental-and-regression")]
         [NUnit.Framework.TestCaseAttribute("patient2", "MED", "Acute Medication (Last 12 Months),Current Repeat Medication,Discontinued Repeat M" +
             "edication,All Medication,All Medication Issues", null)]
         [NUnit.Framework.TestCaseAttribute("patient2", "PRB", "Active Problems and Issues,Major Inactive Problems and Issues,Other Inactive Prob" +
@@ -211,7 +211,7 @@ this.FeatureBackground();
         public virtual void HtmlSubSectionHeadersPresent(string patient, string code, string headers, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "0.7.2"};
+                    "0.7.2-Incremental-and-regression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -245,7 +245,7 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("html table headers present and in order that is expected")]
-        [NUnit.Framework.CategoryAttribute("0.7.2")]
+        [NUnit.Framework.CategoryAttribute("0.7.2-Incremental-and-regression")]
         [NUnit.Framework.TestCaseAttribute("patient2", "ADM", "Date,Entry,Details", "1", null)]
         [NUnit.Framework.TestCaseAttribute("patient2", "ALL", "Start Date,Details", "1", null)]
         [NUnit.Framework.TestCaseAttribute("patient2", "ALL", "Start Date,End Date,Details", "2", null)]
@@ -278,7 +278,7 @@ this.FeatureBackground();
         public virtual void HtmlTableHeadersPresentAndInOrderThatIsExpected(string patient, string code, string headers, string pageSectionIndex, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "0.7.2"};
+                    "0.7.2-Incremental-and-regression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -313,7 +313,7 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("filtered sections should contain date range section banner")]
-        [NUnit.Framework.CategoryAttribute("0.7.2")]
+        [NUnit.Framework.CategoryAttribute("0.7.2-Incremental-and-regression")]
         [NUnit.Framework.TestCaseAttribute("ADM", "patient2", "2014-05-03", "2016-09-14", "03-May-2014", "14-Sep-2016", null)]
         [NUnit.Framework.TestCaseAttribute("CLI", "patient2", "2014-02-03", "2016-01-24", "03-Feb-2014", "24-Jan-2016", null)]
         [NUnit.Framework.TestCaseAttribute("ENC", "patient2", "1982-10-05", "2016-09-01", "05-Oct-1982", "01-Sep-2016", null)]
@@ -332,7 +332,7 @@ this.FeatureBackground();
         public virtual void FilteredSectionsShouldContainDateRangeSectionBanner(string code, string patient, string startDateTime, string endDateTime, string textStartDate, string textEndDate, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "0.7.2"};
+                    "0.7.2-Incremental-and-regression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -368,7 +368,7 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("should contain the applied start banner")]
-        [NUnit.Framework.CategoryAttribute("0.7.2")]
+        [NUnit.Framework.CategoryAttribute("0.7.2-Incremental-and-regression")]
         [NUnit.Framework.TestCaseAttribute("ENC", "patient1", "1982-10-05", "05-Oct-1982", null)]
         [NUnit.Framework.TestCaseAttribute("CLI", "patient2", "2014-02", "01-Feb-2014", null)]
         [NUnit.Framework.TestCaseAttribute("PRB", "patient1", "2014", "01-Jan-2014", null)]
@@ -379,7 +379,7 @@ this.FeatureBackground();
         public virtual void ShouldContainTheAppliedStartBanner(string code, string patient, string startDateTime, string textStartDate, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "0.7.2"};
+                    "0.7.2-Incremental-and-regression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -415,7 +415,7 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("should contain the banner All data items until")]
-        [NUnit.Framework.CategoryAttribute("0.7.2")]
+        [NUnit.Framework.CategoryAttribute("0.7.2-Incremental-and-regression")]
         [NUnit.Framework.TestCaseAttribute("ENC", "patient2", "2016-12-12", "12-Dec-2016", null)]
         [NUnit.Framework.TestCaseAttribute("CLI", "patient2", "2016-02", "29-Feb-2016", null)]
         [NUnit.Framework.TestCaseAttribute("PRB", "patient2", "2016", "31-Dec-2016", null)]
@@ -426,7 +426,7 @@ this.FeatureBackground();
         public virtual void ShouldContainTheBannerAllDataItemsUntil(string code, string patient, string endDateTime, string textEndDate, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "0.7.2"};
+                    "0.7.2-Incremental-and-regression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -462,7 +462,7 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("sections should contain the all data items section banner")]
-        [NUnit.Framework.CategoryAttribute("0.7.2")]
+        [NUnit.Framework.CategoryAttribute("0.7.2-Incremental-and-regression")]
         [NUnit.Framework.TestCaseAttribute("ADM", "patient2", null)]
         [NUnit.Framework.TestCaseAttribute("CLI", "patient2", null)]
         [NUnit.Framework.TestCaseAttribute("ENC", "patient2", null)]
@@ -473,7 +473,7 @@ this.FeatureBackground();
         public virtual void SectionsShouldContainTheAllDataItemsSectionBanner(string code, string patient, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "0.7.2"};
+                    "0.7.2-Incremental-and-regression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -507,7 +507,7 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("filtered sections should return no data available html banner")]
-        [NUnit.Framework.CategoryAttribute("0.7.2")]
+        [NUnit.Framework.CategoryAttribute("0.7.2-Incremental-and-regression")]
         [NUnit.Framework.TestCaseAttribute("ADM", "patient2", "2014-05-03", "2015-04-30", "03-May-2014", "30-Apr-2015", "Administrative Items", null)]
         [NUnit.Framework.TestCaseAttribute("CLI", "patient2", "2014-02-03", "2015-01-24", "03-Feb-2014", "24-Jan-2015", "Clinical Items", null)]
         [NUnit.Framework.TestCaseAttribute("ENC", "patient2", "1982-10-05", "2015-04-30", "05-Oct-1982", "30-Apr-2015", "Encounters", null)]
@@ -515,7 +515,7 @@ this.FeatureBackground();
         public virtual void FilteredSectionsShouldReturnNoDataAvailableHtmlBanner(string code, string patient, string startDateTime, string endDateTime, string textStartDate, string textEndDate, string section, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "0.7.2"};
+                    "0.7.2-Incremental-and-regression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -554,7 +554,7 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("sections should return no data available html banner")]
-        [NUnit.Framework.CategoryAttribute("0.7.2")]
+        [NUnit.Framework.CategoryAttribute("0.7.2-Incremental-and-regression")]
         [NUnit.Framework.TestCaseAttribute("ADM", "patient1", "Administrative Items", null)]
         [NUnit.Framework.TestCaseAttribute("CLI", "patient1", "Clinical Items", null)]
         [NUnit.Framework.TestCaseAttribute("ENC", "patient1", "Encounters", null)]
@@ -580,7 +580,7 @@ this.FeatureBackground();
         public virtual void SectionsShouldReturnNoDataAvailableHtmlBanner(string code, string patient, string section, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "0.7.2"};
+                    "0.7.2-Incremental-and-regression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -615,7 +615,7 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Check html for non html formatting")]
-        [NUnit.Framework.CategoryAttribute("0.7.2")]
+        [NUnit.Framework.CategoryAttribute("0.7.2-Incremental-and-regression")]
         [NUnit.Framework.TestCaseAttribute("ADM", null)]
         [NUnit.Framework.TestCaseAttribute("ALL", null)]
         [NUnit.Framework.TestCaseAttribute("CLI", null)]
@@ -629,7 +629,7 @@ this.FeatureBackground();
         public virtual void CheckHtmlForNonHtmlFormatting(string code, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "0.7.2"};
+                    "0.7.2-Incremental-and-regression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -668,7 +668,7 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("check when empty date range supplied a 422 invalid Param error is returned")]
-        [NUnit.Framework.CategoryAttribute("0.7.2")]
+        [NUnit.Framework.CategoryAttribute("0.7.2-Incremental-and-regression")]
         [NUnit.Framework.TestCaseAttribute("ENC", "patient2", "", "", null)]
         [NUnit.Framework.TestCaseAttribute("CLI", "patient2", "", "", null)]
         [NUnit.Framework.TestCaseAttribute("PRB", "patient2", "", "", null)]
@@ -679,7 +679,7 @@ this.FeatureBackground();
         public virtual void CheckWhenEmptyDateRangeSuppliedA422InvalidParamErrorIsReturned(string code, string patient, string startDateTime, string endDateTime, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "0.7.2"};
+                    "0.7.2-Incremental-and-regression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -715,7 +715,7 @@ this.FeatureBackground();
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("section date filter applied but date filter not supported in subsection - not app" +
             "lied banner displayed")]
-        [NUnit.Framework.CategoryAttribute("0.7.2")]
+        [NUnit.Framework.CategoryAttribute("0.7.2-Incremental-and-regression")]
         [NUnit.Framework.TestCaseAttribute("MED", "patient2", "2018-04-20", "2018-04-30", "Acute Medication (Last 12 Months)", null)]
         [NUnit.Framework.TestCaseAttribute("MED", "patient2", "2018-04-20", "2018-04-30", "Current Repeat Medication", null)]
         [NUnit.Framework.TestCaseAttribute("MED", "patient2", "2018-04-20", "2018-04-30", "Discontinued Repeat Medication", null)]
@@ -723,7 +723,7 @@ this.FeatureBackground();
         public virtual void SectionDateFilterAppliedButDateFilterNotSupportedInSubsection_NotAppliedBannerDisplayed(string code, string patient, string startDateTime, string endDateTime, string subSection, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "0.7.2"};
+                    "0.7.2-Incremental-and-regression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -760,7 +760,7 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("html section headers inside correct tag")]
-        [NUnit.Framework.CategoryAttribute("0.7.2")]
+        [NUnit.Framework.CategoryAttribute("0.7.2-Incremental-and-regression")]
         [NUnit.Framework.TestCaseAttribute("patient1", "ADM", "Administrative Items", null)]
         [NUnit.Framework.TestCaseAttribute("patient2", "ALL", "Allergies and Adverse Reactions", null)]
         [NUnit.Framework.TestCaseAttribute("patient1", "CLI", "Clinical Items", null)]
@@ -774,7 +774,7 @@ this.FeatureBackground();
         public virtual void HtmlSectionHeadersInsideCorrectTag(string patient, string code, string headers, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "0.7.2"};
+                    "0.7.2-Incremental-and-regression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -808,7 +808,7 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Check html table ids are present and in correct order")]
-        [NUnit.Framework.CategoryAttribute("0.7.2")]
+        [NUnit.Framework.CategoryAttribute("0.7.2-Incremental-and-regression")]
         [NUnit.Framework.TestCaseAttribute("patient2", "ADM", "adm-tab", null)]
         [NUnit.Framework.TestCaseAttribute("patient2", "MED", "med-tab-acu-med,med-tab-curr-rep,med-tab-dis-rep,med-tab-all-sum,med-tab-all-iss", null)]
         [NUnit.Framework.TestCaseAttribute("patient2", "ALL", "all-tab-curr,all-tab-hist", null)]
@@ -823,7 +823,7 @@ this.FeatureBackground();
         public virtual void CheckHtmlTableIdsArePresentAndInCorrectOrder(string patient, string code, string tableIDs, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "0.7.2"};
+                    "0.7.2-Incremental-and-regression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -857,7 +857,7 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Check html tables have date column class attribute for date columns")]
-        [NUnit.Framework.CategoryAttribute("0.7.2")]
+        [NUnit.Framework.CategoryAttribute("0.7.2-Incremental-and-regression")]
         [NUnit.Framework.TestCaseAttribute("patient2", "ADM", "adm-tab", "1", null)]
         [NUnit.Framework.TestCaseAttribute("patient2", "MED", "med-tab-acu-med", "2", null)]
         [NUnit.Framework.TestCaseAttribute("patient2", "MED", "med-tab-curr-rep", "2,6,9", null)]
@@ -883,7 +883,7 @@ this.FeatureBackground();
         public virtual void CheckHtmlTablesHaveDateColumnClassAttributeForDateColumns(string patient, string code, string tableIDToCheck, string dateColumns, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "0.7.2"};
+                    "0.7.2-Incremental-and-regression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -917,7 +917,7 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Check html Date banners have the date banner class attribute")]
-        [NUnit.Framework.CategoryAttribute("0.7.2")]
+        [NUnit.Framework.CategoryAttribute("0.7.2-Incremental-and-regression")]
         [NUnit.Framework.TestCaseAttribute("patient2", "ADM", "Administrative Items", "h1", null)]
         [NUnit.Framework.TestCaseAttribute("patient2", "CLI", "Clinical Items", "h1", null)]
         [NUnit.Framework.TestCaseAttribute("patient2", "ENC", "Encounters", "h1", null)]
@@ -929,7 +929,7 @@ this.FeatureBackground();
         public virtual void CheckHtmlDateBannersHaveTheDateBannerClassAttribute(string patient, string code, string headingsToCheck, string headingType, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "0.7.2"};
+                    "0.7.2-Incremental-and-regression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -963,7 +963,7 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Check HTML response includes GP Transfer banners")]
-        [NUnit.Framework.CategoryAttribute("0.7.2")]
+        [NUnit.Framework.CategoryAttribute("0.7.2-Incremental-and-regression")]
         [NUnit.Framework.TestCaseAttribute("patient13", "SUM", "Summary", null)]
         [NUnit.Framework.TestCaseAttribute("patient13", "ADM", "Administrative Items", null)]
         [NUnit.Framework.TestCaseAttribute("patient13", "ALL", "Allergies and Adverse Reactions", null)]
@@ -977,7 +977,7 @@ this.FeatureBackground();
         public virtual void CheckHTMLResponseIncludesGPTransferBanners(string patient, string code, string headingToCheck, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "0.7.2"};
+                    "0.7.2-Incremental-and-regression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -1011,11 +1011,11 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Check HTML Medication Views and the Grouping of Entries")]
-        [NUnit.Framework.CategoryAttribute("0.7.2")]
+        [NUnit.Framework.CategoryAttribute("0.7.2-Incremental-and-regression")]
         public virtual void CheckHTMLMedicationViewsAndTheGroupingOfEntries()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check HTML Medication Views and the Grouping of Entries", null, new string[] {
-                        "0.7.2"});
+                        "0.7.2-Incremental-and-regression"});
 #line 483
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -1047,11 +1047,11 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Discontinued repeat medication subsection banner displayed with expected message")]
-        [NUnit.Framework.CategoryAttribute("0.7.2")]
+        [NUnit.Framework.CategoryAttribute("0.7.2-Incremental-and-regression")]
         public virtual void DiscontinuedRepeatMedicationSubsectionBannerDisplayedWithExpectedMessage()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Discontinued repeat medication subsection banner displayed with expected message", null, new string[] {
-                        "0.7.2"});
+                        "0.7.2-Incremental-and-regression"});
 #line 497
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -1082,7 +1082,7 @@ this.FeatureBackground();
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Check that the date banner class is not present when sections do not support date" +
             " filters")]
-        [NUnit.Framework.CategoryAttribute("0.7.2")]
+        [NUnit.Framework.CategoryAttribute("0.7.2-Incremental-and-regression")]
         [NUnit.Framework.TestCaseAttribute("patient2", "SUM", "Last 3 Encounters,Active Problems and Issues,Major Inactive Problems and Issues,C" +
             "urrent Allergies and Adverse Reactions,Acute Medication (Last 12 Months),Current" +
             " Repeat Medication", "h2", null)]
@@ -1092,7 +1092,7 @@ this.FeatureBackground();
         public virtual void CheckThatTheDateBannerClassIsNotPresentWhenSectionsDoNotSupportDateFilters(string patient, string code, string headingsToCheck, string headingType, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "0.7.2"};
+                    "0.7.2-Incremental-and-regression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));

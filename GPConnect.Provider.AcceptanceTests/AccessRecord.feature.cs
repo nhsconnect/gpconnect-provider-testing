@@ -19,7 +19,6 @@ namespace GPConnect.Provider.AcceptanceTests
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("AccessRecord")]
-    [NUnit.Framework.CategoryAttribute("fhir")]
     [NUnit.Framework.CategoryAttribute("accessrecord")]
     public partial class AccessRecordFeature
     {
@@ -34,7 +33,6 @@ namespace GPConnect.Provider.AcceptanceTests
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "AccessRecord", null, ProgrammingLanguage.CSharp, new string[] {
-                        "fhir",
                         "accessrecord"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -2513,7 +2511,7 @@ this.FeatureBackground();
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Ensure Retrieve the care record sections for senstive patients returns patient no" +
             "t found")]
-        [NUnit.Framework.CategoryAttribute("0.7.2")]
+        [NUnit.Framework.CategoryAttribute("0.7.2-Incremental-and-regression")]
         [NUnit.Framework.TestCaseAttribute("ADM", null)]
         [NUnit.Framework.TestCaseAttribute("ALL", null)]
         [NUnit.Framework.TestCaseAttribute("CLI", null)]
@@ -2527,7 +2525,7 @@ this.FeatureBackground();
         public virtual void EnsureRetrieveTheCareRecordSectionsForSenstivePatientsReturnsPatientNotFound(string code, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "0.7.2"};
+                    "0.7.2-Incremental-and-regression"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));

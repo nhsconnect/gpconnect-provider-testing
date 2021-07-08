@@ -1,4 +1,4 @@
-﻿@jwt @0.7.2
+﻿@jwt @0.7.2-Incremental-and-regression
 Feature: JWT
 
 Background:
