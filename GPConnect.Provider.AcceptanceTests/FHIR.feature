@@ -311,7 +311,7 @@ Scenario: Structured Fhir content type test where Accept header is JSON and _for
 	Then the response status code should indicate success
 		And the response body should be FHIR XML
 
-@Structured @1.5.1
+@Structured @1.6.0
 Scenario Outline: Structured CapabilityStatement returns correct profile versions
 Given I configure the default "StructuredMetaDataRead" request
 	When I make the "StructuredMetaDataRead" request
@@ -348,7 +348,7 @@ Examples:
 #Document Tests
 ##########################################
 
-@1.5.0-IncrementalAndRegression @StructuredDocuments @Structured @1.5.1
+@1.5.0-IncrementalAndRegression @StructuredDocuments @Structured @1.6.0
 Scenario: Fhir Get Metadata and Check Version of Documents CapabilityStatement
 	Given I configure the default "DocumentsMetaDataRead" request
 	When I make the "MetadataRead" request

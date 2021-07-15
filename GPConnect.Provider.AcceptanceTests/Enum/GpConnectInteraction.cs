@@ -36,7 +36,8 @@
         DocumentsSearch = 22,
         DocumentsRetrieve = 23,
         MigrateStructuredRecordWithoutSensitive = 24,
-        MigrateStructuredRecordWithSensitive = 25
+        MigrateStructuredRecordWithSensitive = 25,
+        MigrateDocument = 26
 
 
     }

@@ -91,6 +91,9 @@
                 case GpConnectInteraction.DocumentsRetrieve:
                     return DocumentsRetrieveConfiguration();
 
+                case GpConnectInteraction.MigrateDocument:
+                    return DocumentsMigrateConfiguration();
+
                 case GpConnectInteraction.MigrateStructuredRecordWithoutSensitive:
                 case GpConnectInteraction.MigrateStructuredRecordWithSensitive:
                     return MigratePatientConfiguration();
@@ -314,6 +317,30 @@
         {
             _httpRequestConfiguration.HttpMethod = HttpMethod.Get;
             _httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.DocumentsRetrieve);
+
+            if (GlobalContext.DocumentURL != null)
+            {
+                if (AppSettingsHelper.UseSpineProxy)
+                {
+                    _httpRequestConfiguration.RequestUrl = _httpRequestConfiguration.SpineProxyAddress + "/" + GlobalContext.DocumentURL;
+                }
+                else
+                {
+                    _httpRequestConfiguration.RequestUrl = GlobalContext.DocumentURL;
+                }
+            }
+            else
+            {
+                Assert.Fail("Fail : No Document URL exists to be able to retrieve");
+            }
+
+            return _httpRequestConfiguration;
+        }
+
+        private static HttpRequestConfiguration DocumentsMigrateConfiguration()
+        {
+            _httpRequestConfiguration.HttpMethod = HttpMethod.Get;
+            _httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.MigrateDoc);
 
             if (GlobalContext.DocumentURL != null)
             {

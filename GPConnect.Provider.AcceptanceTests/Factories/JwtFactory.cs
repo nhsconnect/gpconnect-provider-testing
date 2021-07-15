@@ -40,6 +40,7 @@
                 case GpConnectInteraction.DocumentsPatientSearch:
                 case GpConnectInteraction.DocumentsRetrieve:
                 case GpConnectInteraction.DocumentsSearch:
+                case GpConnectInteraction.MigrateDocument:
                     jwtHelper.RequestedScope = JwtConst.Scope.kPatientRead;
                     break;
                 case GpConnectInteraction.RegisterPatient:
@@ -65,6 +66,7 @@
                 case GpConnectInteraction.DocumentsPatientSearch:
                 case GpConnectInteraction.DocumentsRetrieve:
                 case GpConnectInteraction.DocumentsSearch:
+                case GpConnectInteraction.MigrateDocument:
                     jwtHelper.AuthTokenURL = AppSettingsHelper.JwtAudValueDocuments;
                     break;
                 case GpConnectInteraction.StructuredMetaDataRead:

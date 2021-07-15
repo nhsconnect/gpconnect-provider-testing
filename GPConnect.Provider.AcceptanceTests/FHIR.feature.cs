@@ -979,7 +979,7 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Structured CapabilityStatement returns correct profile versions")]
         [NUnit.Framework.CategoryAttribute("Structured")]
-        [NUnit.Framework.CategoryAttribute("1.5.1")]
+        [NUnit.Framework.CategoryAttribute("1.6.0")]
         [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Patient-1/_history/1" +
             ".8", null)]
         [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Organization-1/_hist" +
@@ -1025,7 +1025,7 @@ this.ScenarioInitialize(scenarioInfo);
         {
             string[] @__tags = new string[] {
                     "Structured",
-                    "1.5.1"};
+                    "1.6.0"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -1057,14 +1057,14 @@ testRunner.Given("I configure the default \"StructuredMetaDataRead\" request", (
         [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         [NUnit.Framework.CategoryAttribute("StructuredDocuments")]
         [NUnit.Framework.CategoryAttribute("Structured")]
-        [NUnit.Framework.CategoryAttribute("1.5.1")]
+        [NUnit.Framework.CategoryAttribute("1.6.0")]
         public virtual void FhirGetMetadataAndCheckVersionOfDocumentsCapabilityStatement()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fhir Get Metadata and Check Version of Documents CapabilityStatement", null, new string[] {
                         "1.5.0-IncrementalAndRegression",
                         "StructuredDocuments",
                         "Structured",
-                        "1.5.1"});
+                        "1.6.0"});
 #line 352
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();

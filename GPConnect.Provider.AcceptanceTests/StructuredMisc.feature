@@ -1,4 +1,4 @@
-﻿@Structured @StructuredMisc @1.5.0-Full-Pack @1.5.1
+﻿@Structured @StructuredMisc @1.5.0-Full-Pack @1.6.0
 Feature: StructuredMisc
 
 #Migrate Tests -- WIP --
@@ -168,6 +168,49 @@ Scenario: Structured Migrate request for Patient including Sensitive Data With E
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
 
-		#TODO - Create Test where JWT Payload reason for request is not migration to generate error
-		#TODO - Create Test where conf scope not present on migrate
-		#TODO - Create test where jwt doesnt match request for sensitive on migrate
+
+#Migrate Document Tests -- WIP --
+
+Scenario: Migrate Patient Without Sensitive and then migrate first document
+	Given I configure the default "MigrateStructuredRecordWithoutSensitive" request
+		And I add an NHS Number parameter for "patient2"
+		And I add the includeFullrecord parameter with includeSensitiveInformation set to "false"
+    When I make the "MigrateStructuredRecordWithoutSensitive" request
+	Then the response status code should indicate success
+		And check that the bundle does not contain any duplicate resources
+		And the patient resource in the bundle should contain meta data profile and version id
+		And check the response does not contain an operation outcome
+		And I Check Documents have been Returned and save the first documents url for retrieving later
+		And I Check the returned DocumentReference is Valid
+		And I Check the returned DocumentReference Do Not Include Not In Use Fields
+	Given I configure the default "MigrateDocument" request
+		When I make the "MigrateDocument" request
+		Then the response status code should indicate success
+		And I save the binary document from the retrieve
+		And I Check the returned Binary Document is Valid
+		And I Check the returned Binary Document Do Not Include Not In Use Fields
+
+Scenario: Migrate Patient With Sensitive and then migrate first document
+	Given I configure the default "MigrateStructuredRecordWithSensitive" request
+	And I add an NHS Number parameter for "patient2"
+		And I add the includeFullrecord parameter with includeSensitiveInformation set to "true"
+    When I make the "MigrateStructuredRecordWithoutSensitive" request
+	Then the response status code should indicate success
+		And check that the bundle does not contain any duplicate resources
+		And the patient resource in the bundle should contain meta data profile and version id
+		And check the response does not contain an operation outcome
+		And I Check Documents have been Returned and save the first documents url for retrieving later
+		And I Check the returned DocumentReference is Valid
+		And I Check the returned DocumentReference Do Not Include Not In Use Fields
+	Given I configure the default "MigrateDocument" request
+		When I make the "MigrateDocument" request
+		Then the response status code should indicate success
+		And I save the binary document from the retrieve
+		And I Check the returned Binary Document is Valid
+		And I Check the returned Binary Document Do Not Include Not In Use Fields
+	
+	
+#TODO - Create Test where JWT Payload reason for request is not migration to generate error
+#TODO - Create Test where conf scope not present on migrate
+#TODO - Create test where jwt doesnt match request for sensitive on migrate
+		

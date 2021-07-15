@@ -91,7 +91,7 @@
                 var currentInteraction = this.RequestHeaders.GetHeaderValue("Ssp-InteractionId");
 
                 //If Structured Request
-                if (currentInteraction == SpineConst.InteractionIds.GpcGetStructuredRecord || currentInteraction == SpineConst.InteractionIds.StructuredMetaDataRead)
+                if (currentInteraction == SpineConst.InteractionIds.GpcGetStructuredRecord || currentInteraction == SpineConst.InteractionIds.StructuredMetaDataRead || currentInteraction == SpineConst.InteractionIds.MigratePatient)
                 {
                     if (UseTlsStructured)
                     {
@@ -115,7 +115,7 @@
                     }
                 }
                 //Documents Retrieve
-                else if (currentInteraction == SpineConst.InteractionIds.DocumentsRetrieve)
+                else if (currentInteraction == SpineConst.InteractionIds.DocumentsRetrieve || currentInteraction == SpineConst.InteractionIds.MigrateDoc)
                 {
                     return GlobalContext.DocumentURL;
                 }

@@ -176,7 +176,7 @@ Scenario: Retrieve a Document for Patient2
 	When I make the "DocumentsSearch" request
 		Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
-		And I save a document url for retrieving later
+		And I save the first documents url for retrieving later
 	Given I configure the default "DocumentsRetrieve" request
 		When I make the "DocumentsRetrieve" request
 		Then the response status code should indicate success
@@ -196,7 +196,7 @@ Scenario: Retrieve a Document for Patient2
 #	When I make the "DocumentsSearch" request
 #		Then the response status code should indicate success
 #		And the response should be a Bundle resource of type "searchset"
-#		And I save a document url for retrieving later
+#		And I save the first documents url for retrieving later
 #	Given I configure the default "DocumentsRetrieve" request
 #		When I make the "DocumentsRetrieve" request
 #		Then the response status code should be "404"

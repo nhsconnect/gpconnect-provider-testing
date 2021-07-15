@@ -71,7 +71,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("BadParameter", "BadParamValue");
         }
 
-        [Then(@"I save a document url for retrieving later")]
+        [Then(@"I Check Documents have been Returned and save the first documents url for retrieving later")]
         public void Isaveadocumenturlforretrievinglater()
         {
             Documents.Count().ShouldBeGreaterThanOrEqualTo(1, "Fail :Expect atleast One DocumentReference Returned for Test");
