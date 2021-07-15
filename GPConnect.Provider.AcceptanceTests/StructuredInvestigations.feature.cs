@@ -22,6 +22,7 @@ namespace GPConnect.Provider.AcceptanceTests
     [NUnit.Framework.CategoryAttribute("Structured")]
     [NUnit.Framework.CategoryAttribute("StructuredInvestigations")]
     [NUnit.Framework.CategoryAttribute("1.5.0-Full-Pack")]
+    [NUnit.Framework.CategoryAttribute("1.6.0-Full-Pack")]
     public partial class StructuredInvestigationsFeature
     {
         
@@ -37,7 +38,8 @@ namespace GPConnect.Provider.AcceptanceTests
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "StructuredInvestigations", null, ProgrammingLanguage.CSharp, new string[] {
                         "Structured",
                         "StructuredInvestigations",
-                        "1.5.0-Full-Pack"});
+                        "1.5.0-Full-Pack",
+                        "1.6.0-Full-Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
         

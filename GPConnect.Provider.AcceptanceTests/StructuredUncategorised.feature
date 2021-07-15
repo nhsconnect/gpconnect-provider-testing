@@ -1,4 +1,4 @@
-﻿@Structured @StructuredUncategorised @1.5.0-Full-Pack
+﻿@Structured @StructuredUncategorised @1.5.0-Full-Pack @1.6.0-Full-Pack
 Feature: StructuredUncategorised
 
 # These Tests are only Testing this Structured Area in isolation and Not with other Areas or Combinations of Include Parameters

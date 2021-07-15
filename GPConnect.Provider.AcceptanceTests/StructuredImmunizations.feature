@@ -1,4 +1,4 @@
-﻿@Structured @StructuredImmunizations @1.5.0-Full-Pack
+﻿@Structured @StructuredImmunizations @1.5.0-Full-Pack @1.6.0-Full-Pack
 Feature: StructuredImmunizations
 
 # These Tests are only Testing this Structured Area in isolation and Not with other Areas or Combinations of Include Parameters

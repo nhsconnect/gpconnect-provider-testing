@@ -21,6 +21,7 @@ namespace GPConnect.Provider.AcceptanceTests
     [NUnit.Framework.DescriptionAttribute("AppointmentRead")]
     [NUnit.Framework.CategoryAttribute("appointment")]
     [NUnit.Framework.CategoryAttribute("1.5.0-Full-Pack")]
+    [NUnit.Framework.CategoryAttribute("1.6.0-Full-Pack")]
     public partial class AppointmentReadFeature
     {
         
@@ -35,7 +36,8 @@ namespace GPConnect.Provider.AcceptanceTests
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "AppointmentRead", null, ProgrammingLanguage.CSharp, new string[] {
                         "appointment",
-                        "1.5.0-Full-Pack"});
+                        "1.5.0-Full-Pack",
+                        "1.6.0-Full-Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
         

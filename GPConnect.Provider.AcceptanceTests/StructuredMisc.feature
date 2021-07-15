@@ -1,4 +1,4 @@
-﻿@Structured @StructuredMisc @1.5.0-Full-Pack @1.6.0
+﻿@Structured @StructuredMisc @1.6.0-Full-Pack @1.6.0-Only
 Feature: StructuredMisc
 
 #Migrate Tests -- WIP --

@@ -21,8 +21,8 @@ namespace GPConnect.Provider.AcceptanceTests
     [NUnit.Framework.DescriptionAttribute("StructuredMisc")]
     [NUnit.Framework.CategoryAttribute("Structured")]
     [NUnit.Framework.CategoryAttribute("StructuredMisc")]
-    [NUnit.Framework.CategoryAttribute("1.5.0-Full-Pack")]
-    [NUnit.Framework.CategoryAttribute("1.6.0")]
+    [NUnit.Framework.CategoryAttribute("1.6.0-Full-Pack")]
+    [NUnit.Framework.CategoryAttribute("1.6.0-Only")]
     public partial class StructuredMiscFeature
     {
         
@@ -38,8 +38,8 @@ namespace GPConnect.Provider.AcceptanceTests
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "StructuredMisc", null, ProgrammingLanguage.CSharp, new string[] {
                         "Structured",
                         "StructuredMisc",
-                        "1.5.0-Full-Pack",
-                        "1.6.0"});
+                        "1.6.0-Full-Pack",
+                        "1.6.0-Only"});
             testRunner.OnFeatureStart(featureInfo);
         }
         

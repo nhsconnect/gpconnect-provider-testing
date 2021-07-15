@@ -1,4 +1,4 @@
-﻿@organization @1.5.0-Full-Pack
+﻿@organization @1.5.0-Full-Pack @1.6.0-Full-Pack
 Feature: OrganizationSearch
 
 Scenario Outline: Organization search success

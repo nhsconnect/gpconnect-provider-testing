@@ -23,6 +23,7 @@ namespace GPConnect.Provider.AcceptanceTests
     [NUnit.Framework.CategoryAttribute("StructuredDiary")]
     [NUnit.Framework.CategoryAttribute("1.5.0-Full-Pack")]
     [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
+    [NUnit.Framework.CategoryAttribute("1.6.0-Full-Pack")]
     public partial class StructuredDiaryFeature
     {
         
@@ -39,7 +40,8 @@ namespace GPConnect.Provider.AcceptanceTests
                         "Structured",
                         "StructuredDiary",
                         "1.5.0-Full-Pack",
-                        "1.5.0-IncrementalAndRegression"});
+                        "1.5.0-IncrementalAndRegression",
+                        "1.6.0-Full-Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
