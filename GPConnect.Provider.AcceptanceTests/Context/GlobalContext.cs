@@ -44,6 +44,8 @@
             public string Testname;
             public string TestResult;
             public string FailureMessage;
+            public string FullTestNameAndParams;
+            public string TestParams;
         }
 
         public static int CountTestRunPassed { get; set; }

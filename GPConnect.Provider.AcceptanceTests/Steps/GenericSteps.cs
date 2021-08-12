@@ -314,7 +314,7 @@
                                 if (!lastEntryFailed)
                                     file.Write("----------------------------------------------------------------\n");
 
-                                file.Write(entry.TestRunDateTime.ToLocalTime() + "," + entry.Testname + "," + entry.TestResult + "\n");
+                                file.Write(entry.TestRunDateTime.ToLocalTime() + "," + entry.Testname + "(" + entry.TestParams + ")" + "," + entry.TestResult + "\n");
 
                                 file.Write(entry.FailureMessage + "\n");
                                 file.Write("----------------------------------------------------------------\n");
@@ -324,14 +324,14 @@
                             //No failure so dont output a lines around pass entry
                             else
                             {
-                                file.Write(entry.TestRunDateTime.ToLocalTime() + "," + entry.Testname + "," + entry.TestResult + "\n");
+                                file.Write(entry.TestRunDateTime.ToLocalTime() + "," + entry.Testname + "(" + entry.TestParams + ")" + "," + entry.TestResult + "\n");
                                 lastEntryFailed = false;
                             }
                         }
                         //output without error message
                         else
                         {
-                            file.Write(entry.TestRunDateTime.ToLocalTime() + "," + entry.Testname + "," + entry.TestResult + "\n");
+                           file.Write(entry.TestRunDateTime.ToLocalTime() + "," + entry.Testname + "(" + entry.TestParams + ")" + "," + entry.TestResult + "\n");
                         }
                     }
                 }
