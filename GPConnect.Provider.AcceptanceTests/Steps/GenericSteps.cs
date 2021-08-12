@@ -151,6 +151,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 string ScenarioName = ScenarioContext.Current.ScenarioInfo.Title + GlobalContext.ScenarioIndex.ToString();
                 string ErrorMessage = ScenarioContext.Current.TestError?.Message;
                 string ScenarioOutcome = string.IsNullOrEmpty(ErrorMessage) ? "Pass" : "Fail";
+                string TestParams = TestContext.CurrentContext.Test.Name.Replace(TestContext.CurrentContext.Test.MethodName, "");
 
                 //init vars if needed
                 if (GlobalContext.FileBasedReportList == null)
@@ -172,7 +173,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                     TestRunDateTime = DateTime.UtcNow.ToLocalTime(),
                     Testname = ScenarioName,
                     TestResult = ScenarioOutcome,
-                    FailureMessage = ErrorMessage
+                    FailureMessage = ErrorMessage,
+                    FullTestNameAndParams = TestContext.CurrentContext.Test.Name,
+                    TestParams = TestParams
                 };
 
                 GlobalContext.FileBasedReportList.Add(FileLogEntry);
@@ -232,7 +235,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                                 if (!lastEntryFailed)
                                     file.Write("----------------------------------------------------------------\n");
 
-                                file.Write(entry.TestRunDateTime.ToLocalTime() + "," + entry.Testname + "," + entry.TestResult + "\n");
+                                    file.Write(entry.TestRunDateTime.ToLocalTime() + "," + entry.Testname + "(" + entry.TestParams + ")" + "," + entry.TestResult + "\n");
 
                                 file.Write(entry.FailureMessage + "\n");
                                 file.Write("----------------------------------------------------------------\n");
@@ -242,7 +245,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                             //No failure so dont output a lines around pass entry
                             else
                             {
-                                file.Write(entry.TestRunDateTime.ToLocalTime() + "," + entry.Testname + "," + entry.TestResult + "\n");
+                               file.Write(entry.TestRunDateTime.ToLocalTime() + "," + entry.Testname + "(" + entry.TestParams + ")" + "," + entry.TestResult + "\n");
                                 lastEntryFailed = false;
 
                             }
@@ -250,7 +253,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                         //output without error message
                         else
                         {
-                            file.Write(entry.TestRunDateTime.ToLocalTime() + "," + entry.Testname + "," + entry.TestResult + "\n");
+                           file.Write(entry.TestRunDateTime.ToLocalTime() + "," + entry.Testname + "(" + entry.TestParams + ")" + "," + entry.TestResult + "\n");
                         }
                     }
 
