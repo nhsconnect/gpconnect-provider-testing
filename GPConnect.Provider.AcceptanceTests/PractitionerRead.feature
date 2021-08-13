@@ -1,4 +1,4 @@
-﻿@practitioner @1.5.0-Full-Pack
+﻿@1.5.0-Full-Pack @practitioner
 Feature: PractitionerRead
 
 Scenario Outline: Practitioner read successful request validate all of response
