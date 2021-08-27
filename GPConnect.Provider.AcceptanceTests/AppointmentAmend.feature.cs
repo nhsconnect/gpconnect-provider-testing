@@ -682,13 +682,11 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Successfully amend comment and description on an appointment when sending in Serv" +
-            "iceCategory and serviceType in request provider ignores ServiceCategory and serv" +
-            "iceType in request")]
-        public virtual void SuccessfullyAmendCommentAndDescriptionOnAnAppointmentWhenSendingInServiceCategoryAndServiceTypeInRequestProviderIgnoresServiceCategoryAndServiceTypeInRequest()
+            "iceCategory and serviceType")]
+        public virtual void SuccessfullyAmendCommentAndDescriptionOnAnAppointmentWhenSendingInServiceCategoryAndServiceType()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Successfully amend comment and description on an appointment when sending in Serv" +
-                    "iceCategory and serviceType in request provider ignores ServiceCategory and serv" +
-                    "iceType in request", null, ((string[])(null)));
+                    "iceCategory and serviceType", null, ((string[])(null)));
 #line 278
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
