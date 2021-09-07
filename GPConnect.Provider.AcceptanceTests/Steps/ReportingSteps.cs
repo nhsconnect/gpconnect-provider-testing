@@ -10,6 +10,7 @@
     using Reporting;
     using static Logger.Log;
     using System.Collections.Generic;
+    using NUnit.Framework;
 
     [Binding]
     internal class ReportingSteps : Steps
@@ -64,7 +65,8 @@
                 string ScenarioName = ScenarioContext.Current.ScenarioInfo.Title +  GlobalContext.ScenarioIndex.ToString();  
                 string ErrorMessage = ScenarioContext.Current.TestError?.Message;
                 string ScenarioOutcome = string.IsNullOrEmpty(ErrorMessage) ? "Pass" : "Fail";
-                
+                string TestParams = TestContext.CurrentContext.Test.Name.Replace(TestContext.CurrentContext.Test.MethodName, "");
+
                 //init vars if needed
                 if (GlobalContext.FileBasedReportList == null)
                 {
@@ -85,7 +87,9 @@
                     TestRunDateTime = DateTime.UtcNow.ToLocalTime(),
                     Testname = ScenarioName,
                     TestResult = ScenarioOutcome,
-                    FailureMessage = ErrorMessage
+                    FailureMessage = ErrorMessage,
+                    FullTestNameAndParams = TestContext.CurrentContext.Test.Name,
+                    TestParams = TestParams
                 };
 
                 GlobalContext.FileBasedReportList.Add(FileLogEntry);
