@@ -228,10 +228,8 @@
         {
             _jwtHelper.SetRequestingPractitioner(_jwtHelper.RequestingIdentityId, FhirHelper.ChangeResourceTypeString(_jwtHelper.RequestingIdentity, FhirConst.Resources.kInvalidResourceType));
         }
-
-
        
-        [Given(@"I set the JWT with missing Requesting System URL")]
+       [Given(@"I set the JWT with missing Requesting System URL")]
         public void SetTheJwtWIthMissingRequestingSystemUrl()
         {
             _jwtHelper.RequestingSystemUrl = null;
@@ -269,6 +267,30 @@
 
             _jwtHelper.RequestingOrganization = organization.ToFhirJson();
         }
-              
+
+        [Given(@"I set the JWT Requested Scope with No Conf")]
+        public void SetTheJwtRequestedScopewithNoConf()
+        {
+            _jwtHelper.RequestedScope = "patient/*" ;
+        }
+
+        [Given(@"I set the JWT Request Scope to Normal confidentiality")]
+        public void IsettheJWTRequestScopetoNormalconfidentiality()
+        {
+            _jwtHelper.RequestedScope = "patient/*.read conf/N";
+        }
+
+        [Given(@"I set the JWT Request Scope to Sensitive confidentiality")]
+        public void IsettheJWTRequestScopetoSensitiveconfidentiality()
+        {
+            _jwtHelper.RequestedScope = "patient/*.read conf/R";
+        }
+
+        [Given(@"I set the JWT Practitioner to nothing")]
+        public void IsettheJWTPractitionertonothin()
+        {
+            _jwtHelper.RequestingIdentity = null;
+        }
+
     }
 }

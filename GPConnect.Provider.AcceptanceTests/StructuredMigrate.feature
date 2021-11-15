@@ -1,5 +1,5 @@
-﻿@Structured @StructuredMisc @1.6.0-Full-Pack @1.6.0-Only
-Feature: StructuredMisc
+﻿@Structured @StructuredMigrate @1.6.0-Full-Pack @1.6.0-Only
+Feature: StructuredMigrate
 
 #Migrate Tests -- WIP --
 Scenario: Structured Migrate request for Patient2 including Sensitive Data expect success
@@ -63,7 +63,6 @@ Scenario: Structured Migrate request for Patient2 including Sensitive Data expec
 		#And The Observation Resources Do Not Include Not In Use Fields
 		#And The Observation List is Valid
 
-
 Scenario: Structured Migrate request for Patient2 Excluding Sensitive Data expect success
 	Given I configure the default "MigrateStructuredRecordWithoutSensitive" request
 		And I add an NHS Number parameter for "patient2"
@@ -125,8 +124,6 @@ Scenario: Structured Migrate request for Patient2 Excluding Sensitive Data expec
 		#And The Observation Resources Do Not Include Not In Use Fields
 		#And The Observation List is Valid
 
-
-#Patient 3 - Should have fullrecord but No Docs
 Scenario: Structured Migrate request for Patient3 including Sensitive Data expect No Docs and success
 	Given I configure the default "MigrateStructuredRecordWithSensitive" request
 		And I add an NHS Number parameter for "patient3"
@@ -188,8 +185,6 @@ Scenario: Structured Migrate request for Patient3 including Sensitive Data expec
 		#And The Observation Resources Do Not Include Not In Use Fields
 		#And The Observation List is Valid
 
-		
-#Patient 4 - Should have fullrecord and Large Docs
 Scenario: Structured Migrate request for Patient4 including Sensitive Data expect Large Docs and success
 	Given I configure the default "MigrateStructuredRecordWithSensitive" request
 		And I add an NHS Number parameter for "patient4"
@@ -260,7 +255,6 @@ Scenario: Structured Migrate request for a Deceased Patient Excluding Sensitive 
 		And the response status code should be "404"
 		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
 
-
 Scenario: Structured Migrate request for a Deceased Patient including Sensitive Data expect fail
 	Given I configure the default "MigrateStructuredRecordWithSensitive" request
 		And I add an NHS Number parameter for "patient18"
@@ -270,8 +264,7 @@ Scenario: Structured Migrate request for a Deceased Patient including Sensitive 
 		And the response status code should be "404"
 		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
 
-
-Scenario: Structured Migrate request for Patient Excluding Sensitive Data With Extra Param expect Fail
+Scenario: Structured Migrate request for Patient2 Excluding Sensitive Data With Extra Param expect Fail
 	Given I configure the default "MigrateStructuredRecordWithoutSensitive" request
 		And I add an NHS Number parameter for "patient2"
 		And I add the includeFullrecord parameter with includeSensitiveInformation set to "false"
@@ -281,8 +274,7 @@ Scenario: Structured Migrate request for Patient Excluding Sensitive Data With E
 		And the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
-
-Scenario: Structured Migrate request for Patient including Sensitive Data With Extra Param expect Fail
+Scenario: Structured Migrate request for Patient2 including Sensitive Data With Extra Param expect Fail
 	Given I configure the default "MigrateStructuredRecordWithSensitive" request
 		And I add an NHS Number parameter for "patient2"
 		And I add the includeFullrecord parameter with includeSensitiveInformation set to "true"
@@ -293,8 +285,91 @@ Scenario: Structured Migrate request for Patient including Sensitive Data With E
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
 
+Scenario: Structured Migrate request for Patient2 inc Sensitive Data where JWT reason is not set expect Fail
+	Given I configure the default "MigrateStructuredRecordWithSensitive" request
+		And I add an NHS Number parameter for "patient2"
+		And I add the includeFullrecord parameter with includeSensitiveInformation set to "true"
+		And I set the JWT with missing Reason For Request
+    When I make the "MigrateStructuredRecordWithSensitive" request
+		Then the response status code should be "400"
+		And the response should be a OperationOutcome resource
 
-#Migrate Document Tests -- WIP --
+Scenario: Structured Migrate request for Patient2 exc Sensitive Data where JWT reason is not set expect Fail
+	Given I configure the default "MigrateStructuredRecordWithSensitive" request
+		And I add an NHS Number parameter for "patient2"
+		And I add the includeFullrecord parameter with includeSensitiveInformation set to "false"
+		And I set the JWT with missing Reason For Request
+    When I make the "MigrateStructuredRecordWithSensitive" request
+		Then the response status code should be "400"
+		And the response should be a OperationOutcome resource
+
+Scenario: Structured Migrate request for Patient2 inc Sensitive Data where JWT reason is not migrate expect Fail
+	Given I configure the default "MigrateStructuredRecordWithSensitive" request
+		And I add an NHS Number parameter for "patient2"
+		And I add the includeFullrecord parameter with includeSensitiveInformation set to "true"
+		And I set the JWT Reason For Request to "badReason"
+    When I make the "MigrateStructuredRecordWithSensitive" request
+			Then the response status code should be "400"
+		And the response should be a OperationOutcome resource
+
+Scenario: Structured Migrate request for Patient2 exc Sensitive Data where JWT reason is not migrate expect Fail
+	Given I configure the default "MigrateStructuredRecordWithSensitive" request
+		And I add an NHS Number parameter for "patient2"
+		And I add the includeFullrecord parameter with includeSensitiveInformation set to "false"
+		And I set the JWT Reason For Request to "badReason"
+    When I make the "MigrateStructuredRecordWithSensitive" request
+			Then the response status code should be "400"
+		And the response should be a OperationOutcome resource
+
+#WIP - TODO - Create Test where conf scope not present on migrate
+Scenario: Structured Migrate request for Patient2 inc Sensitive Data where JWT reason is missing Conf expect Fail
+	Given I configure the default "MigrateStructuredRecordWithSensitive" request
+		And I add an NHS Number parameter for "patient2"
+		And I add the includeFullrecord parameter with includeSensitiveInformation set to "true"
+		And I set the JWT Requested Scope with No Conf
+    When I make the "MigrateStructuredRecordWithSensitive" request
+			Then the response status code should be "400"
+		And the response should be a OperationOutcome resource
+
+Scenario: Structured Migrate request for Patient2 exc Sensitive Data where JWT reason is missing Conf expect Fail
+	Given I configure the default "MigrateStructuredRecordWithSensitive" request
+		And I add an NHS Number parameter for "patient2"
+		And I add the includeFullrecord parameter with includeSensitiveInformation set to "false"
+		And I set the JWT Requested Scope with No Conf
+    When I make the "MigrateStructuredRecordWithSensitive" request
+			Then the response status code should be "400"
+		And the response should be a OperationOutcome resource
+
+#WIP  - TODO - Create test where jwt doesnt match request for sensitive on migrate
+Scenario: Structured Migrate request for Patient2 inc Sensitive Data where JWT scope is incorrect expect Fail
+	Given I configure the default "MigrateStructuredRecordWithSensitive" request
+		And I add an NHS Number parameter for "patient2"
+		And I add the includeFullrecord parameter with includeSensitiveInformation set to "true"
+		And I set the JWT Request Scope to Normal confidentiality
+    When I make the "MigrateStructuredRecordWithSensitive" request
+			Then the response status code should be "400"
+		And the response should be a OperationOutcome resource
+
+Scenario: Structured Migrate request for Patient2 exc Sensitive Data where JWT scope is incorrect expect Fail
+	Given I configure the default "MigrateStructuredRecordWithSensitive" request
+		And I add an NHS Number parameter for "patient2"
+		And I add the includeFullrecord parameter with includeSensitiveInformation set to "true"
+		And I set the JWT Request Scope to Sensitive confidentiality
+    When I make the "MigrateStructuredRecordWithSensitive" request
+			Then the response status code should be "400"
+		And the response should be a OperationOutcome resource
+
+#WIP - test to check that when request_practitioner is not sent the request fails
+Scenario: Structured Migrate request for Patient2 inc Sensitive Data where JWT Requesting Practitioner is Not sent expect Fail
+	Given I configure the default "MigrateStructuredRecordWithSensitive" request
+		And I add an NHS Number parameter for "patient2"
+		And I add the includeFullrecord parameter with includeSensitiveInformation set to "true"
+		And I set the JWT Practitioner to nothing
+    When I make the "MigrateStructuredRecordWithSensitive" request
+		Then the response status code should indicate success		
+
+#Migrate Document Tests
+
 Scenario: Migrate Patient2 With Sensitive and then migrate first document
 	Given I configure the default "MigrateStructuredRecordWithSensitive" request
 	And I add an NHS Number parameter for "patient2"
@@ -313,7 +388,6 @@ Scenario: Migrate Patient2 With Sensitive and then migrate first document
 		And I save the binary document from the retrieve
 		And I Check the returned Binary Document is Valid
 		And I Check the returned Binary Document Do Not Include Not In Use Fields
-
 
 Scenario: Migrate Patient2 Without Sensitive and then migrate first document
 	Given I configure the default "MigrateStructuredRecordWithoutSensitive" request
@@ -334,28 +408,27 @@ Scenario: Migrate Patient2 Without Sensitive and then migrate first document
 		And I Check the returned Binary Document is Valid
 		And I Check the returned Binary Document Do Not Include Not In Use Fields
 
-Scenario: Migrate Patient4 With Sensitive and then migrate first BIG document
-	Given I configure the default "MigrateStructuredRecordWithSensitive" request
-	And I add an NHS Number parameter for "patient4"
-		And I add the includeFullrecord parameter with includeSensitiveInformation set to "true"
-    When I make the "MigrateStructuredRecordWithoutSensitive" request
-	Then the response status code should indicate success
-		And check that the bundle does not contain any duplicate resources
-		And the patient resource in the bundle should contain meta data profile and version id
-		And check the response does not contain an operation outcome
-		And I Check Documents have been Returned and save the first documents url for retrieving later
-		And I Check the returned DocumentReference is Valid
-		And I Check the returned DocumentReference Do Not Include Not In Use Fields
-	Given I configure the default "MigrateDocument" request
-		When I make the "MigrateDocument" request
-		Then the response status code should indicate success
-		And I save the binary document from the retrieve
-		And I Check the returned Binary Document is Valid
-		And I Check the returned Binary Document Do Not Include Not In Use Fields
 	
-	
-#TODO - Create Test where JWT Payload reason for request is not migration to generate error
-#TODO - Create Test where conf scope not present on migrate
-#TODO - Create test where jwt doesnt match request for sensitive on migrate
-#TODO - Look at checks for document refs coming back, add in checks for p2, p3 and p4 ? for migrate interactions?
+#**************************************
+#Only To Test INT Version of Demonstrator that has large documents - Leave Commented Out
+#**************************************
+
+#Scenario: Migrate Patient5 With Sensitive and then migrate first BIG document
+#	Given I configure the default "MigrateStructuredRecordWithSensitive" request
+#	And I add an NHS Number parameter for "patient11"
+#		And I add the includeFullrecord parameter with includeSensitiveInformation set to "true"
+#    When I make the "MigrateStructuredRecordWithoutSensitive" request
+#	Then the response status code should indicate success
+#		And check that the bundle does not contain any duplicate resources
+#		And the patient resource in the bundle should contain meta data profile and version id
+#		And check the response does not contain an operation outcome
+#		And I Check Documents have been Returned and save the first documents url for retrieving later
+#		And I Check the returned DocumentReference is Valid
+#		And I Check the returned DocumentReference Do Not Include Not In Use Fields
+#	Given I configure the default "MigrateDocument" request
+#		When I make the "MigrateDocument" request
+#		Then the response status code should indicate success
+#		And I save the binary document from the retrieve
+#		And I Check the returned Binary Document is Valid
+#		And I Check the returned Binary Document Do Not Include Not In Use Fields
 		

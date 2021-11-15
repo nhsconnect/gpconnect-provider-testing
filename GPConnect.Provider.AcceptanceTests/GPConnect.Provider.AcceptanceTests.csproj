@@ -308,7 +308,7 @@
     <Compile Include="StructuredImmunizations.feature.cs" />
     <Compile Include="StructuredInvestigations.feature.cs" />
     <Compile Include="StructuredMedications.feature.cs" />
-    <Compile Include="StructuredMisc.feature.cs" />
+    <Compile Include="StructuredMigrate.feature.cs" />
     <Compile Include="StructuredMultipleRequests.feature.cs" />
     <Compile Include="StructuredProblems.feature.cs" />
     <Compile Include="StructuredReferrals.feature.cs" />
@@ -355,7 +355,7 @@
     <None Include="Security.feature" />
     <None Include="AppointmentRetrieve.feature" />
     <None Include="AppointmentAmend.feature" />
-    <None Include="StructuredMisc.feature" />
+    <None Include="StructuredMigrate.feature" />
     <None Include="StructuredMultipleRequests.feature" />
     <None Include="SSP.feature" />
     <None Include="StructuredProblems.feature" />

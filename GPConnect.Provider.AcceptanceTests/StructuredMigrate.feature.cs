@@ -18,26 +18,26 @@ namespace GPConnect.Provider.AcceptanceTests
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.0.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("StructuredMisc")]
+    [NUnit.Framework.DescriptionAttribute("StructuredMigrate")]
     [NUnit.Framework.CategoryAttribute("Structured")]
-    [NUnit.Framework.CategoryAttribute("StructuredMisc")]
+    [NUnit.Framework.CategoryAttribute("StructuredMigrate")]
     [NUnit.Framework.CategoryAttribute("1.6.0-Full-Pack")]
     [NUnit.Framework.CategoryAttribute("1.6.0-Only")]
-    public partial class StructuredMiscFeature
+    public partial class StructuredMigrateFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "StructuredMisc.feature"
+#line 1 "StructuredMigrate.feature"
 #line hidden
         
         [NUnit.Framework.OneTimeSetUpAttribute()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "StructuredMisc", null, ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "StructuredMigrate", null, ProgrammingLanguage.CSharp, new string[] {
                         "Structured",
-                        "StructuredMisc",
+                        "StructuredMigrate",
                         "1.6.0-Full-Pack",
                         "1.6.0-Only"});
             testRunner.OnFeatureStart(featureInfo);
@@ -218,132 +218,132 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void StructuredMigrateRequestForPatient2ExcludingSensitiveDataExpectSuccess()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured Migrate request for Patient2 Excluding Sensitive Data expect success", null, ((string[])(null)));
-#line 67
+#line 66
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 68
+#line 67
  testRunner.Given("I configure the default \"MigrateStructuredRecordWithoutSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 69
+#line 68
   testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 70
+#line 69
   testRunner.And("I add the includeFullrecord parameter with includeSensitiveInformation set to \"fa" +
                     "lse\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 71
+#line 70
     testRunner.When("I make the \"MigrateStructuredRecordWithoutSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 72
+#line 71
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 73
+#line 72
   testRunner.And("check that the bundle does not contain any duplicate resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 74
+#line 73
   testRunner.And("the patient resource in the bundle should contain meta data profile and version i" +
                     "d", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 75
+#line 74
   testRunner.And("check the response does not contain an operation outcome", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 76
+#line 75
   testRunner.And("the Patient Id should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 77
+#line 76
   testRunner.And("the Practitioner Id should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 78
+#line 77
   testRunner.And("the Organization Id should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 79
+#line 78
   testRunner.And("the Medications should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 80
+#line 79
   testRunner.And("the Medication Statements should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 81
+#line 80
   testRunner.And("the Medication Requests should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 82
+#line 81
   testRunner.And("the List of MedicationStatements should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 83
+#line 82
   testRunner.And("there should only be one order request for acute prescriptions", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 84
+#line 83
   testRunner.And("I Check The Problems Resources are Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 85
+#line 84
   testRunner.And("I check The Problem Resources Do Not Include Not In Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 86
+#line 85
   testRunner.And("Check a Problem is Linked to a MedicationRequest resource that has been included " +
                     "in the response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 87
+#line 86
   testRunner.And("Check the MedicationRequests have a link to a medication that has been included i" +
                     "n response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 88
+#line 87
   testRunner.And("Check there is a MedicationStatement resource that is linked to the MedicationReq" +
                     "uest and Medication", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 89
+#line 88
   testRunner.And("Check the Medications List resource has been included in response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 90
+#line 89
   testRunner.And("the AllergyIntolerance should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 91
+#line 90
   testRunner.And("the Bundle should contain a list with the title \"Allergies and adverse reactions\"" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 92
+#line 91
   testRunner.And("the Bundle should contain a list with the title \"Ended allergies\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 93
+#line 92
   testRunner.And("the Bundle should contain the correct number of allergies", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 94
+#line 93
   testRunner.And("the Lists are valid for a patient with allergies", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 95
+#line 94
   testRunner.And("Check a Problem is linked to an \"AllergyIntolerance\" that is also included in the" +
                     " response with its list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 96
+#line 95
   testRunner.And("I Check the Consultations List is Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 97
+#line 96
   testRunner.And("The Consultations List Does Not Include Not In Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 98
+#line 97
   testRunner.And("I Check the Encounters are Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 99
+#line 98
   testRunner.And("I Check the Encounters Do Not Include Not in Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 100
+#line 99
   testRunner.And("I Check the Consultation Lists are Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 101
+#line 100
   testRunner.And("I Check All The Consultation Lists Do Not Include Not In Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 102
+#line 101
   testRunner.And("I Check the Topic Lists are Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 103
+#line 102
   testRunner.And("I Check one Topic is linked to a problem", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 104
+#line 103
   testRunner.And("I Check the Heading Lists are Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 105
+#line 104
   testRunner.And("check the response does not contain an operation outcome", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 106
+#line 105
   testRunner.And("I Check The Problems Resources are Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 107
+#line 106
   testRunner.And("I check The Problem Resources Do Not Include Not In Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 108
+#line 107
   testRunner.And("I Check that a Topic or Heading is linked to an \"Observation\" and that is include" +
                     "d in response with a list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 109
+#line 108
   testRunner.And("I Check that a Topic or Heading is linked to an \"MedicationRequest\" and that is i" +
                     "ncluded in response with a list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 110
+#line 109
   testRunner.And("Check the MedicationRequests have a link to a medication that has been included i" +
                     "n response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 111
+#line 110
   testRunner.And("Check there is a MedicationStatement resource that is linked to the MedicationReq" +
                     "uest and Medication", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 112
+#line 111
   testRunner.And("I Check the Consultation Medications Secondary List is Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 113
+#line 112
   testRunner.And("I Check the Consultation Uncategorised Secondary List is Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 114
+#line 113
   testRunner.And("The Immunization Resources are Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 115
+#line 114
   testRunner.And("The Immunization Resources Do Not Include Not In Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 116
+#line 115
   testRunner.And("The Immunization List is Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 117
+#line 116
   testRunner.And("Check a Problem is linked to an \"Immunization\" that is also included in the respo" +
                     "nse with its list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 118
+#line 117
   testRunner.And("I Check the Investigations List is Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 119
+#line 118
   testRunner.And("I Check the DiagnosticReports are Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 120
+#line 119
   testRunner.And("I Check the DiagnosticReports Do Not Include Not in Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 121
+#line 120
   testRunner.And("I Check the Specimens are Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 122
+#line 121
   testRunner.And("I Check the Specimens Do Not Include Not in Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 123
+#line 122
   testRunner.And("Check a Problem is linked to DiagnosticReport and that it is also included", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -356,132 +356,132 @@ this.ScenarioInitialize(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured Migrate request for Patient3 including Sensitive Data expect No Docs a" +
                     "nd success", null, ((string[])(null)));
-#line 130
+#line 127
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 131
+#line 128
  testRunner.Given("I configure the default \"MigrateStructuredRecordWithSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 132
+#line 129
   testRunner.And("I add an NHS Number parameter for \"patient3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 133
+#line 130
   testRunner.And("I add the includeFullrecord parameter with includeSensitiveInformation set to \"tr" +
                     "ue\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 134
+#line 131
     testRunner.When("I make the \"MigrateStructuredRecordWithSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 135
+#line 132
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 136
+#line 133
   testRunner.And("check that the bundle does not contain any duplicate resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 137
+#line 134
   testRunner.And("the patient resource in the bundle should contain meta data profile and version i" +
                     "d", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 138
+#line 135
   testRunner.And("check the response does not contain an operation outcome", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 139
+#line 136
   testRunner.And("the Patient Id should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 140
+#line 137
   testRunner.And("the Practitioner Id should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 141
+#line 138
   testRunner.And("the Organization Id should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 142
+#line 139
   testRunner.And("the Medications should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 143
+#line 140
   testRunner.And("the Medication Statements should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 144
+#line 141
   testRunner.And("the Medication Requests should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 145
+#line 142
   testRunner.And("the List of MedicationStatements should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 146
+#line 143
   testRunner.And("there should only be one order request for acute prescriptions", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 147
+#line 144
   testRunner.And("I Check The Problems Resources are Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 148
+#line 145
   testRunner.And("I check The Problem Resources Do Not Include Not In Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 149
+#line 146
   testRunner.And("Check a Problem is Linked to a MedicationRequest resource that has been included " +
                     "in the response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 150
+#line 147
   testRunner.And("Check the MedicationRequests have a link to a medication that has been included i" +
                     "n response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 151
+#line 148
   testRunner.And("Check there is a MedicationStatement resource that is linked to the MedicationReq" +
                     "uest and Medication", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 152
+#line 149
   testRunner.And("Check the Medications List resource has been included in response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 153
+#line 150
   testRunner.And("the AllergyIntolerance should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 154
+#line 151
   testRunner.And("the Bundle should contain a list with the title \"Allergies and adverse reactions\"" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 155
+#line 152
   testRunner.And("the Bundle should contain a list with the title \"Ended allergies\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 156
+#line 153
   testRunner.And("the Bundle should contain the correct number of allergies", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 157
+#line 154
   testRunner.And("the Lists are valid for a patient with allergies", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 158
+#line 155
   testRunner.And("Check a Problem is linked to an \"AllergyIntolerance\" that is also included in the" +
                     " response with its list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 159
+#line 156
   testRunner.And("I Check the Consultations List is Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 160
+#line 157
   testRunner.And("The Consultations List Does Not Include Not In Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 161
+#line 158
   testRunner.And("I Check the Encounters are Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 162
+#line 159
   testRunner.And("I Check the Encounters Do Not Include Not in Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 163
+#line 160
   testRunner.And("I Check the Consultation Lists are Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 164
+#line 161
   testRunner.And("I Check All The Consultation Lists Do Not Include Not In Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 165
+#line 162
   testRunner.And("I Check the Topic Lists are Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 166
+#line 163
   testRunner.And("I Check one Topic is linked to a problem", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 167
+#line 164
   testRunner.And("I Check the Heading Lists are Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 168
+#line 165
   testRunner.And("check the response does not contain an operation outcome", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 169
+#line 166
   testRunner.And("I Check The Problems Resources are Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 170
+#line 167
   testRunner.And("I check The Problem Resources Do Not Include Not In Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 171
+#line 168
   testRunner.And("I Check that a Topic or Heading is linked to an \"Observation\" and that is include" +
                     "d in response with a list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 172
+#line 169
   testRunner.And("I Check that a Topic or Heading is linked to an \"MedicationRequest\" and that is i" +
                     "ncluded in response with a list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 173
+#line 170
   testRunner.And("Check the MedicationRequests have a link to a medication that has been included i" +
                     "n response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 174
+#line 171
   testRunner.And("Check there is a MedicationStatement resource that is linked to the MedicationReq" +
                     "uest and Medication", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 175
+#line 172
   testRunner.And("I Check the Consultation Medications Secondary List is Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 176
+#line 173
   testRunner.And("I Check the Consultation Uncategorised Secondary List is Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 177
+#line 174
   testRunner.And("The Immunization Resources are Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 178
+#line 175
   testRunner.And("The Immunization Resources Do Not Include Not In Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 179
+#line 176
   testRunner.And("The Immunization List is Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 180
+#line 177
   testRunner.And("Check a Problem is linked to an \"Immunization\" that is also included in the respo" +
                     "nse with its list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 181
+#line 178
   testRunner.And("I Check the Investigations List is Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 182
+#line 179
   testRunner.And("I Check the DiagnosticReports are Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 183
+#line 180
   testRunner.And("I Check the DiagnosticReports Do Not Include Not in Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 184
+#line 181
   testRunner.And("I Check the Specimens are Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 185
+#line 182
   testRunner.And("I Check the Specimens Do Not Include Not in Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 186
+#line 183
   testRunner.And("Check a Problem is linked to DiagnosticReport and that it is also included", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -494,132 +494,132 @@ this.ScenarioInitialize(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured Migrate request for Patient4 including Sensitive Data expect Large Doc" +
                     "s and success", null, ((string[])(null)));
-#line 193
+#line 188
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 194
+#line 189
  testRunner.Given("I configure the default \"MigrateStructuredRecordWithSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 195
+#line 190
   testRunner.And("I add an NHS Number parameter for \"patient4\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 196
+#line 191
   testRunner.And("I add the includeFullrecord parameter with includeSensitiveInformation set to \"tr" +
                     "ue\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 197
+#line 192
     testRunner.When("I make the \"MigrateStructuredRecordWithSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 198
+#line 193
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 199
+#line 194
   testRunner.And("check that the bundle does not contain any duplicate resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 200
+#line 195
   testRunner.And("the patient resource in the bundle should contain meta data profile and version i" +
                     "d", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 201
+#line 196
   testRunner.And("check the response does not contain an operation outcome", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 202
+#line 197
   testRunner.And("the Patient Id should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 203
+#line 198
   testRunner.And("the Practitioner Id should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 204
+#line 199
   testRunner.And("the Organization Id should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 205
+#line 200
   testRunner.And("the Medications should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 206
+#line 201
   testRunner.And("the Medication Statements should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 207
+#line 202
   testRunner.And("the Medication Requests should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 208
+#line 203
   testRunner.And("the List of MedicationStatements should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 209
+#line 204
   testRunner.And("there should only be one order request for acute prescriptions", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 210
+#line 205
   testRunner.And("I Check The Problems Resources are Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 211
+#line 206
   testRunner.And("I check The Problem Resources Do Not Include Not In Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 212
+#line 207
   testRunner.And("Check a Problem is Linked to a MedicationRequest resource that has been included " +
                     "in the response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 213
+#line 208
   testRunner.And("Check the MedicationRequests have a link to a medication that has been included i" +
                     "n response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 214
+#line 209
   testRunner.And("Check there is a MedicationStatement resource that is linked to the MedicationReq" +
                     "uest and Medication", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 215
+#line 210
   testRunner.And("Check the Medications List resource has been included in response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 216
+#line 211
   testRunner.And("the AllergyIntolerance should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 217
+#line 212
   testRunner.And("the Bundle should contain a list with the title \"Allergies and adverse reactions\"" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 218
+#line 213
   testRunner.And("the Bundle should contain a list with the title \"Ended allergies\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 219
+#line 214
   testRunner.And("the Bundle should contain the correct number of allergies", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 220
+#line 215
   testRunner.And("the Lists are valid for a patient with allergies", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 221
+#line 216
   testRunner.And("Check a Problem is linked to an \"AllergyIntolerance\" that is also included in the" +
                     " response with its list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 222
+#line 217
   testRunner.And("I Check the Consultations List is Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 223
+#line 218
   testRunner.And("The Consultations List Does Not Include Not In Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 224
+#line 219
   testRunner.And("I Check the Encounters are Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 225
+#line 220
   testRunner.And("I Check the Encounters Do Not Include Not in Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 226
+#line 221
   testRunner.And("I Check the Consultation Lists are Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 227
+#line 222
   testRunner.And("I Check All The Consultation Lists Do Not Include Not In Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 228
+#line 223
   testRunner.And("I Check the Topic Lists are Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 229
+#line 224
   testRunner.And("I Check one Topic is linked to a problem", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 230
+#line 225
   testRunner.And("I Check the Heading Lists are Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 231
+#line 226
   testRunner.And("check the response does not contain an operation outcome", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 232
+#line 227
   testRunner.And("I Check The Problems Resources are Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 233
+#line 228
   testRunner.And("I check The Problem Resources Do Not Include Not In Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 234
+#line 229
   testRunner.And("I Check that a Topic or Heading is linked to an \"Observation\" and that is include" +
                     "d in response with a list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 235
+#line 230
   testRunner.And("I Check that a Topic or Heading is linked to an \"MedicationRequest\" and that is i" +
                     "ncluded in response with a list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 236
+#line 231
   testRunner.And("Check the MedicationRequests have a link to a medication that has been included i" +
                     "n response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 237
+#line 232
   testRunner.And("Check there is a MedicationStatement resource that is linked to the MedicationReq" +
                     "uest and Medication", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 238
+#line 233
   testRunner.And("I Check the Consultation Medications Secondary List is Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 239
+#line 234
   testRunner.And("I Check the Consultation Uncategorised Secondary List is Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 240
+#line 235
   testRunner.And("The Immunization Resources are Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 241
+#line 236
   testRunner.And("The Immunization Resources Do Not Include Not In Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 242
+#line 237
   testRunner.And("The Immunization List is Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 243
+#line 238
   testRunner.And("Check a Problem is linked to an \"Immunization\" that is also included in the respo" +
                     "nse with its list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 244
+#line 239
   testRunner.And("I Check the Investigations List is Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 245
+#line 240
   testRunner.And("I Check the DiagnosticReports are Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 246
+#line 241
   testRunner.And("I Check the DiagnosticReports Do Not Include Not in Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 247
+#line 242
   testRunner.And("I Check the Specimens are Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 248
+#line 243
   testRunner.And("I Check the Specimens Do Not Include Not in Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 249
+#line 244
   testRunner.And("Check a Problem is linked to DiagnosticReport and that it is also included", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -632,23 +632,23 @@ this.ScenarioInitialize(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured Migrate request for a Deceased Patient Excluding Sensitive Data expect" +
                     " fail", null, ((string[])(null)));
-#line 254
+#line 249
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 255
+#line 250
  testRunner.Given("I configure the default \"MigrateStructuredRecordWithoutSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 256
+#line 251
   testRunner.And("I add an NHS Number parameter for \"patient18\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 257
+#line 252
   testRunner.And("I add the includeFullrecord parameter with includeSensitiveInformation set to \"fa" +
                     "lse\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 258
+#line 253
     testRunner.When("I make the \"MigrateStructuredRecordWithoutSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 259
+#line 254
  testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 260
+#line 255
   testRunner.And("the response status code should be \"404\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 261
+#line 256
   testRunner.And("the response should be a OperationOutcome resource with error code \"PATIENT_NOT_F" +
                     "OUND\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -662,23 +662,23 @@ this.ScenarioInitialize(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured Migrate request for a Deceased Patient including Sensitive Data expect" +
                     " fail", null, ((string[])(null)));
-#line 264
+#line 258
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 265
+#line 259
  testRunner.Given("I configure the default \"MigrateStructuredRecordWithSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 266
+#line 260
   testRunner.And("I add an NHS Number parameter for \"patient18\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 267
+#line 261
   testRunner.And("I add the includeFullrecord parameter with includeSensitiveInformation set to \"tr" +
                     "ue\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 268
+#line 262
     testRunner.When("I make the \"MigrateStructuredRecordWithSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 269
+#line 263
  testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 270
+#line 264
   testRunner.And("the response status code should be \"404\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 271
+#line 265
   testRunner.And("the response should be a OperationOutcome resource with error code \"PATIENT_NOT_F" +
                     "OUND\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -686,31 +686,31 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Structured Migrate request for Patient Excluding Sensitive Data With Extra Param " +
-            "expect Fail")]
-        public virtual void StructuredMigrateRequestForPatientExcludingSensitiveDataWithExtraParamExpectFail()
+        [NUnit.Framework.DescriptionAttribute("Structured Migrate request for Patient2 Excluding Sensitive Data With Extra Param" +
+            " expect Fail")]
+        public virtual void StructuredMigrateRequestForPatient2ExcludingSensitiveDataWithExtraParamExpectFail()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured Migrate request for Patient Excluding Sensitive Data With Extra Param " +
-                    "expect Fail", null, ((string[])(null)));
-#line 274
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured Migrate request for Patient2 Excluding Sensitive Data With Extra Param" +
+                    " expect Fail", null, ((string[])(null)));
+#line 267
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 275
+#line 268
  testRunner.Given("I configure the default \"MigrateStructuredRecordWithoutSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 276
+#line 269
   testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 277
+#line 270
   testRunner.And("I add the includeFullrecord parameter with includeSensitiveInformation set to \"fa" +
                     "lse\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 278
+#line 271
   testRunner.And("I add the immunizations parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 279
+#line 272
     testRunner.When("I make the \"MigrateStructuredRecordWithoutSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 280
+#line 273
  testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 281
+#line 274
   testRunner.And("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 282
+#line 275
   testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
                     "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -718,33 +718,292 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Structured Migrate request for Patient including Sensitive Data With Extra Param " +
-            "expect Fail")]
-        public virtual void StructuredMigrateRequestForPatientIncludingSensitiveDataWithExtraParamExpectFail()
+        [NUnit.Framework.DescriptionAttribute("Structured Migrate request for Patient2 including Sensitive Data With Extra Param" +
+            " expect Fail")]
+        public virtual void StructuredMigrateRequestForPatient2IncludingSensitiveDataWithExtraParamExpectFail()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured Migrate request for Patient including Sensitive Data With Extra Param " +
-                    "expect Fail", null, ((string[])(null)));
-#line 285
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured Migrate request for Patient2 including Sensitive Data With Extra Param" +
+                    " expect Fail", null, ((string[])(null)));
+#line 277
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 286
+#line 278
  testRunner.Given("I configure the default \"MigrateStructuredRecordWithSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 287
+#line 279
   testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 288
+#line 280
   testRunner.And("I add the includeFullrecord parameter with includeSensitiveInformation set to \"tr" +
                     "ue\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 289
+#line 281
   testRunner.And("I add the medication parameter with includePrescriptionIssues set to \"false\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 290
+#line 282
     testRunner.When("I make the \"MigrateStructuredRecordWithSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 291
+#line 283
  testRunner.Then("the response status code should indicate failure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 292
+#line 284
   testRunner.And("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 293
+#line 285
   testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
                     "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Structured Migrate request for Patient2 inc Sensitive Data where JWT reason is no" +
+            "t set expect Fail")]
+        public virtual void StructuredMigrateRequestForPatient2IncSensitiveDataWhereJWTReasonIsNotSetExpectFail()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured Migrate request for Patient2 inc Sensitive Data where JWT reason is no" +
+                    "t set expect Fail", null, ((string[])(null)));
+#line 288
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 289
+ testRunner.Given("I configure the default \"MigrateStructuredRecordWithSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 290
+  testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 291
+  testRunner.And("I add the includeFullrecord parameter with includeSensitiveInformation set to \"tr" +
+                    "ue\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 292
+  testRunner.And("I set the JWT with missing Reason For Request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 293
+    testRunner.When("I make the \"MigrateStructuredRecordWithSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 294
+  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 295
+  testRunner.And("the response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Structured Migrate request for Patient2 exc Sensitive Data where JWT reason is no" +
+            "t set expect Fail")]
+        public virtual void StructuredMigrateRequestForPatient2ExcSensitiveDataWhereJWTReasonIsNotSetExpectFail()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured Migrate request for Patient2 exc Sensitive Data where JWT reason is no" +
+                    "t set expect Fail", null, ((string[])(null)));
+#line 297
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 298
+ testRunner.Given("I configure the default \"MigrateStructuredRecordWithSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 299
+  testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 300
+  testRunner.And("I add the includeFullrecord parameter with includeSensitiveInformation set to \"fa" +
+                    "lse\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 301
+  testRunner.And("I set the JWT with missing Reason For Request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 302
+    testRunner.When("I make the \"MigrateStructuredRecordWithSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 303
+  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 304
+  testRunner.And("the response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Structured Migrate request for Patient2 inc Sensitive Data where JWT reason is no" +
+            "t migrate expect Fail")]
+        public virtual void StructuredMigrateRequestForPatient2IncSensitiveDataWhereJWTReasonIsNotMigrateExpectFail()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured Migrate request for Patient2 inc Sensitive Data where JWT reason is no" +
+                    "t migrate expect Fail", null, ((string[])(null)));
+#line 306
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 307
+ testRunner.Given("I configure the default \"MigrateStructuredRecordWithSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 308
+  testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 309
+  testRunner.And("I add the includeFullrecord parameter with includeSensitiveInformation set to \"tr" +
+                    "ue\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 310
+  testRunner.And("I set the JWT Reason For Request to \"badReason\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 311
+    testRunner.When("I make the \"MigrateStructuredRecordWithSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 312
+   testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 313
+  testRunner.And("the response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Structured Migrate request for Patient2 exc Sensitive Data where JWT reason is no" +
+            "t migrate expect Fail")]
+        public virtual void StructuredMigrateRequestForPatient2ExcSensitiveDataWhereJWTReasonIsNotMigrateExpectFail()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured Migrate request for Patient2 exc Sensitive Data where JWT reason is no" +
+                    "t migrate expect Fail", null, ((string[])(null)));
+#line 315
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 316
+ testRunner.Given("I configure the default \"MigrateStructuredRecordWithSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 317
+  testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 318
+  testRunner.And("I add the includeFullrecord parameter with includeSensitiveInformation set to \"fa" +
+                    "lse\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 319
+  testRunner.And("I set the JWT Reason For Request to \"badReason\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 320
+    testRunner.When("I make the \"MigrateStructuredRecordWithSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 321
+   testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 322
+  testRunner.And("the response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Structured Migrate request for Patient2 inc Sensitive Data where JWT reason is mi" +
+            "ssing Conf expect Fail")]
+        public virtual void StructuredMigrateRequestForPatient2IncSensitiveDataWhereJWTReasonIsMissingConfExpectFail()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured Migrate request for Patient2 inc Sensitive Data where JWT reason is mi" +
+                    "ssing Conf expect Fail", null, ((string[])(null)));
+#line 325
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 326
+ testRunner.Given("I configure the default \"MigrateStructuredRecordWithSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 327
+  testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 328
+  testRunner.And("I add the includeFullrecord parameter with includeSensitiveInformation set to \"tr" +
+                    "ue\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 329
+  testRunner.And("I set the JWT Requested Scope with No Conf", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 330
+    testRunner.When("I make the \"MigrateStructuredRecordWithSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 331
+   testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 332
+  testRunner.And("the response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Structured Migrate request for Patient2 exc Sensitive Data where JWT reason is mi" +
+            "ssing Conf expect Fail")]
+        public virtual void StructuredMigrateRequestForPatient2ExcSensitiveDataWhereJWTReasonIsMissingConfExpectFail()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured Migrate request for Patient2 exc Sensitive Data where JWT reason is mi" +
+                    "ssing Conf expect Fail", null, ((string[])(null)));
+#line 334
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 335
+ testRunner.Given("I configure the default \"MigrateStructuredRecordWithSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 336
+  testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 337
+  testRunner.And("I add the includeFullrecord parameter with includeSensitiveInformation set to \"fa" +
+                    "lse\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 338
+  testRunner.And("I set the JWT Requested Scope with No Conf", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 339
+    testRunner.When("I make the \"MigrateStructuredRecordWithSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 340
+   testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 341
+  testRunner.And("the response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Structured Migrate request for Patient2 inc Sensitive Data where JWT scope is inc" +
+            "orrect expect Fail")]
+        public virtual void StructuredMigrateRequestForPatient2IncSensitiveDataWhereJWTScopeIsIncorrectExpectFail()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured Migrate request for Patient2 inc Sensitive Data where JWT scope is inc" +
+                    "orrect expect Fail", null, ((string[])(null)));
+#line 344
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 345
+ testRunner.Given("I configure the default \"MigrateStructuredRecordWithSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 346
+  testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 347
+  testRunner.And("I add the includeFullrecord parameter with includeSensitiveInformation set to \"tr" +
+                    "ue\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 348
+  testRunner.And("I set the JWT Request Scope to Normal confidentiality", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 349
+    testRunner.When("I make the \"MigrateStructuredRecordWithSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 350
+   testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 351
+  testRunner.And("the response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Structured Migrate request for Patient2 exc Sensitive Data where JWT scope is inc" +
+            "orrect expect Fail")]
+        public virtual void StructuredMigrateRequestForPatient2ExcSensitiveDataWhereJWTScopeIsIncorrectExpectFail()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured Migrate request for Patient2 exc Sensitive Data where JWT scope is inc" +
+                    "orrect expect Fail", null, ((string[])(null)));
+#line 353
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 354
+ testRunner.Given("I configure the default \"MigrateStructuredRecordWithSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 355
+  testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 356
+  testRunner.And("I add the includeFullrecord parameter with includeSensitiveInformation set to \"tr" +
+                    "ue\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 357
+  testRunner.And("I set the JWT Request Scope to Sensitive confidentiality", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 358
+    testRunner.When("I make the \"MigrateStructuredRecordWithSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 359
+   testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 360
+  testRunner.And("the response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Structured Migrate request for Patient2 inc Sensitive Data where JWT Requesting P" +
+            "ractitioner is Not sent expect Fail")]
+        public virtual void StructuredMigrateRequestForPatient2IncSensitiveDataWhereJWTRequestingPractitionerIsNotSentExpectFail()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured Migrate request for Patient2 inc Sensitive Data where JWT Requesting P" +
+                    "ractitioner is Not sent expect Fail", null, ((string[])(null)));
+#line 363
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 364
+ testRunner.Given("I configure the default \"MigrateStructuredRecordWithSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 365
+  testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 366
+  testRunner.And("I add the includeFullrecord parameter with includeSensitiveInformation set to \"tr" +
+                    "ue\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 367
+  testRunner.And("I set the JWT Practitioner to nothing", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 368
+    testRunner.When("I make the \"MigrateStructuredRecordWithSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 369
+  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -754,45 +1013,45 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void MigratePatient2WithSensitiveAndThenMigrateFirstDocument()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Migrate Patient2 With Sensitive and then migrate first document", null, ((string[])(null)));
-#line 298
+#line 373
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 299
+#line 374
  testRunner.Given("I configure the default \"MigrateStructuredRecordWithSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 300
+#line 375
  testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 301
+#line 376
   testRunner.And("I add the includeFullrecord parameter with includeSensitiveInformation set to \"tr" +
                     "ue\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 302
+#line 377
     testRunner.When("I make the \"MigrateStructuredRecordWithoutSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 303
+#line 378
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 304
+#line 379
   testRunner.And("check that the bundle does not contain any duplicate resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 305
+#line 380
   testRunner.And("the patient resource in the bundle should contain meta data profile and version i" +
                     "d", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 306
+#line 381
   testRunner.And("check the response does not contain an operation outcome", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 307
+#line 382
   testRunner.And("I Check Documents have been Returned and save the first documents url for retriev" +
                     "ing later", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 308
+#line 383
   testRunner.And("I Check the returned DocumentReference is Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 309
+#line 384
   testRunner.And("I Check the returned DocumentReference Do Not Include Not In Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 310
+#line 385
  testRunner.Given("I configure the default \"MigrateDocument\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 311
+#line 386
   testRunner.When("I make the \"MigrateDocument\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 312
+#line 387
   testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 313
+#line 388
   testRunner.And("I save the binary document from the retrieve", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 314
+#line 389
   testRunner.And("I Check the returned Binary Document is Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 315
+#line 390
   testRunner.And("I Check the returned Binary Document Do Not Include Not In Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -803,94 +1062,45 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void MigratePatient2WithoutSensitiveAndThenMigrateFirstDocument()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Migrate Patient2 Without Sensitive and then migrate first document", null, ((string[])(null)));
-#line 318
+#line 392
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 319
+#line 393
  testRunner.Given("I configure the default \"MigrateStructuredRecordWithoutSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 320
+#line 394
   testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 321
+#line 395
   testRunner.And("I add the includeFullrecord parameter with includeSensitiveInformation set to \"fa" +
                     "lse\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 322
+#line 396
     testRunner.When("I make the \"MigrateStructuredRecordWithoutSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 323
+#line 397
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 324
+#line 398
   testRunner.And("check that the bundle does not contain any duplicate resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 325
+#line 399
   testRunner.And("the patient resource in the bundle should contain meta data profile and version i" +
                     "d", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 326
+#line 400
   testRunner.And("check the response does not contain an operation outcome", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 327
+#line 401
   testRunner.And("I Check Documents have been Returned and save the first documents url for retriev" +
                     "ing later", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 328
+#line 402
   testRunner.And("I Check the returned DocumentReference is Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 329
+#line 403
   testRunner.And("I Check the returned DocumentReference Do Not Include Not In Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 330
+#line 404
  testRunner.Given("I configure the default \"MigrateDocument\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 331
+#line 405
   testRunner.When("I make the \"MigrateDocument\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 332
+#line 406
   testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 333
+#line 407
   testRunner.And("I save the binary document from the retrieve", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 334
+#line 408
   testRunner.And("I Check the returned Binary Document is Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 335
-  testRunner.And("I Check the returned Binary Document Do Not Include Not In Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Migrate Patient4 With Sensitive and then migrate first BIG document")]
-        public virtual void MigratePatient4WithSensitiveAndThenMigrateFirstBIGDocument()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Migrate Patient4 With Sensitive and then migrate first BIG document", null, ((string[])(null)));
-#line 337
-this.ScenarioInitialize(scenarioInfo);
-            this.ScenarioStart();
-#line 338
- testRunner.Given("I configure the default \"MigrateStructuredRecordWithSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 339
- testRunner.And("I add an NHS Number parameter for \"patient4\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 340
-  testRunner.And("I add the includeFullrecord parameter with includeSensitiveInformation set to \"tr" +
-                    "ue\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 341
-    testRunner.When("I make the \"MigrateStructuredRecordWithoutSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 342
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 343
-  testRunner.And("check that the bundle does not contain any duplicate resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 344
-  testRunner.And("the patient resource in the bundle should contain meta data profile and version i" +
-                    "d", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 345
-  testRunner.And("check the response does not contain an operation outcome", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 346
-  testRunner.And("I Check Documents have been Returned and save the first documents url for retriev" +
-                    "ing later", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 347
-  testRunner.And("I Check the returned DocumentReference is Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 348
-  testRunner.And("I Check the returned DocumentReference Do Not Include Not In Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 349
- testRunner.Given("I configure the default \"MigrateDocument\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 350
-  testRunner.When("I make the \"MigrateDocument\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 351
-  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 352
-  testRunner.And("I save the binary document from the retrieve", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 353
-  testRunner.And("I Check the returned Binary Document is Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 354
+#line 409
   testRunner.And("I Check the returned Binary Document Do Not Include Not In Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
