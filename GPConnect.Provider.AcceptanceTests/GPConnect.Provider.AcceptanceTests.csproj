@@ -207,6 +207,8 @@
     <Compile Include="Factories\JwtFactory.cs" />
     <Compile Include="Factories\RequestFactory.cs" />
     <Compile Include="FHIR.feature.cs" />
+    <Compile Include="HealthcareFind.feature.cs" />
+    <Compile Include="HealthcareRead.feature.cs" />
     <Compile Include="Helpers\AppSettingsHelper.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Helpers\FhirHelper.cs" />
@@ -313,6 +315,8 @@
     <None Include="AppointmentBook.feature" />
     <None Include="AppointmentCancel.feature" />
     <None Include="FHIR.feature" />
+    <None Include="HealthcareFind.feature" />
+    <None Include="HealthcareRead.feature" />
     <None Include="Http.feature" />
     <None Include="JWT.feature" />
     <None Include="LocationRead.feature" />
