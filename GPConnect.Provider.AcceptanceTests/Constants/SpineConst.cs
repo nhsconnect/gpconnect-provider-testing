@@ -38,6 +38,10 @@
 			
             public static string StructuredMetaDataRead => StructuredBaseInteraction + "rest:read:metadata-1";
 
+            //1.2.8 interactions
+            public const string HealthcareRead = BaseInteraction + "rest:read:healthcareservice-1";
+            public const string HealthcareFind = BaseInteraction + "rest:search:healthcareservice-1";
+
         }
     }
 }

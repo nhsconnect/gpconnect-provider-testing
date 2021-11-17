@@ -32,6 +32,7 @@
         public static string PreviousScenarioTitle { get; set; }
 
         public static Dictionary<string, string> LocationLogicalIdentifierMap { get; set; }
+        public static Dictionary<string, string> HealthcareLogicalIdentifierMap { get; set; }
 
         public static Dictionary<string, List<Appointment>> CreatedAppointments { get; set; }
 

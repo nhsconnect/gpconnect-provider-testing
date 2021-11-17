@@ -71,6 +71,22 @@
         }
 
         [BeforeTestRun(Order = 1)]
+        public static void LoadLogicalHealthcareIdentifierMap()
+        {
+            if (!Directory.Exists(AppSettingsHelper.DataDirectory))
+            {
+                Assert.Fail("Data Directory Not Found.");
+            }
+
+            var csv = Path.Combine(AppSettingsHelper.DataDirectory, @"HealthcareLogicalIdentifierMap.csv");
+
+            Log.WriteLine("HealthcareLogicalIdentifierMap= '{0}'", csv);
+
+            GlobalContext.HealthcareLogicalIdentifierMap = HealthcareLogicalIdentifierImporter.LoadCsv(csv);
+        }
+
+        
+        [BeforeTestRun(Order = 1)]
         public static void LoadNHSNoMapData()
         {
             if (!Directory.Exists(AppSettingsHelper.DataDirectory))

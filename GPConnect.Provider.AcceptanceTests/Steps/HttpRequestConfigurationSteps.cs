@@ -273,5 +273,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             _httpContext.HttpRequestConfiguration.GetRequestId = logicalId;
         }
+
+        [Given(@"I set the Get Request Id to the Logical Identifer for Healthcare Service ""([^""]*)""")]
+        public void SetTheGetRequestIdToTheLogicalIdentiferForHealthcareService(string healthcareService)
+        {
+            string logicalId;
+
+            GlobalContext.HealthcareLogicalIdentifierMap.TryGetValue(healthcareService, out logicalId).ShouldBe(true, $"There is no record in the map for {healthcareService}.");
+
+            logicalId.ShouldNotBeNullOrEmpty($"The LogicalId in the map for {healthcareService} should not be null or empty but was {logicalId}.");
+
+            _httpContext.HttpRequestConfiguration.GetRequestId = logicalId;
+        }
     }
 }

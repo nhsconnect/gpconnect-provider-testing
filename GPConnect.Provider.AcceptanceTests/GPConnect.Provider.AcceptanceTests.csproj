@@ -191,6 +191,7 @@
     <Compile Include="Context\SecurityContext.cs" />
     <Compile Include="Cache\ValueSet\ValueSetExpander\ConceptFilterFactory.cs" />
     <Compile Include="Cache\ValueSet\ValueSetExpander\CustomValueSetExpander.cs" />
+    <Compile Include="Data\HealthcareLogicalIdentifierMap.cs" />
     <Compile Include="Data\LocationLogicalIdentifierMap.cs" />
     <Compile Include="Data\OrganizationSiteCodeMap.cs" />
     <Compile Include="Data\RegisterPatient.cs" />
@@ -227,6 +228,8 @@
     <Compile Include="Http\HttpRequestConfiguration.cs" />
     <Compile Include="Http\HttpResourceRequest.cs" />
     <Compile Include="Http\HttpResponse.cs" />
+    <Compile Include="Importers\HealthcareLogicalIdentifierConverter.cs" />
+    <Compile Include="Importers\HealthcareLogicalIdentifierImporter.cs" />
     <Compile Include="Importers\LocationLogicalIdentifierConverter.cs" />
     <Compile Include="Importers\LocationLogicalIdentifierImporter.cs" />
     <Compile Include="Importers\RegisterPatientsImporter.cs" />
@@ -271,6 +274,7 @@
     <Compile Include="Steps\CompositionSteps.cs" />
     <Compile Include="Steps\ConformanceSteps.cs" />
     <Compile Include="Steps\DeviceSteps.cs" />
+    <Compile Include="Steps\HealthcareSteps.cs" />
     <Compile Include="Steps\HttpRequestConfigurationSteps.cs" />
     <Compile Include="Steps\HttpResponseSteps.cs" />
     <Compile Include="Steps\LocationSteps.cs" />

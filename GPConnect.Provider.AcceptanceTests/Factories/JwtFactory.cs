@@ -28,6 +28,8 @@
                 case GpConnectInteraction.LocationRead:
                 case GpConnectInteraction.SearchForFreeSlots:
                 case GpConnectInteraction.StructuredMetaDataRead:
+                case GpConnectInteraction.HealthcareRead:
+                case GpConnectInteraction.HealthcareFind:
                     jwtHelper.RequestedScope = JwtConst.Scope.kOrganizationRead;
                     break;
                 case GpConnectInteraction.GpcGetCareRecord:
@@ -71,6 +73,8 @@
                 case GpConnectInteraction.AppointmentCreate:
                 case GpConnectInteraction.AppointmentAmend:
                 case GpConnectInteraction.AppointmentCancel:
+                case GpConnectInteraction.HealthcareRead:
+                case GpConnectInteraction.HealthcareFind:
                     jwtHelper.AuthTokenURL = AppSettingsHelper.JwtAudValueFoundationsAndAppmts;
                     break;
                 default:

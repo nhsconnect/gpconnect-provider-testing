@@ -19,6 +19,9 @@ namespace GPConnect.Provider.AcceptanceTests
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("HealthcareFind")]
+    [NUnit.Framework.CategoryAttribute("HealthcareFind")]
+    [NUnit.Framework.CategoryAttribute("1.2.8-Only")]
+    [NUnit.Framework.CategoryAttribute("1.2.8-Full-Pack")]
     public partial class HealthcareFindFeature
     {
         
@@ -31,7 +34,10 @@ namespace GPConnect.Provider.AcceptanceTests
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "HealthcareFind", null, ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "HealthcareFind", null, ProgrammingLanguage.CSharp, new string[] {
+                        "HealthcareFind",
+                        "1.2.8-Only",
+                        "1.2.8-Full-Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
         

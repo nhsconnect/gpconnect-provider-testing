@@ -29,6 +29,11 @@
 
         GpcGetStructuredRecord = 18,
 
-		StructuredMetaDataRead = 19
-	}
+		StructuredMetaDataRead = 19,
+
+        //new 1.2.8 interactions (higher number to avoid potential merge conflicts with 1.5.0/1.6.0 in future)
+        HealthcareFind = 100,
+        HealthcareRead = 101
+
+    }
 }

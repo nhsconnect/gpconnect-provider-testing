@@ -58,7 +58,11 @@
                     return MetadataReadConfiguration();
 				case GpConnectInteraction.StructuredMetaDataRead:
 					return StructuredMetaDataReadConfiguration();
-				default:
+                case GpConnectInteraction.HealthcareRead:
+                    return HealthcareReadConfiguration();
+                case GpConnectInteraction.HealthcareFind:
+                    return HealthcareFindConfiguration();
+                default:
                     return _httpRequestConfiguration;
             }
         }
@@ -245,5 +249,24 @@
 
 			return _httpRequestConfiguration;
 		}
-	}
+
+        //added for 1.2.8
+        private static HttpRequestConfiguration HealthcareReadConfiguration()
+        {
+            _httpRequestConfiguration.HttpMethod = HttpMethod.Get;
+            _httpRequestConfiguration.RequestUrl = "HealthcareService/" + _httpRequestConfiguration.GetRequestId;
+            _httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.HealthcareRead);
+
+            return _httpRequestConfiguration;
+        }
+
+        private static HttpRequestConfiguration HealthcareFindConfiguration()
+        {
+            _httpRequestConfiguration.HttpMethod = HttpMethod.Get;
+            _httpRequestConfiguration.RequestUrl = "HealthcareService/" + _httpRequestConfiguration.GetRequestId;
+            _httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.HealthcareFind);
+
+            return _httpRequestConfiguration;
+        }
+    }
 }

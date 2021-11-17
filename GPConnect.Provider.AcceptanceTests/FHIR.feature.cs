@@ -75,11 +75,13 @@ namespace GPConnect.Provider.AcceptanceTests
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Fhir Get MetaData")]
-        [NUnit.Framework.CategoryAttribute("1.2.7-IncrementalAndRegression")]
+        [NUnit.Framework.CategoryAttribute("1.2.8-Only")]
+        [NUnit.Framework.CategoryAttribute("1.2.8-Full-Pack")]
         public virtual void FhirGetMetaData()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fhir Get MetaData", null, new string[] {
-                        "1.2.7-IncrementalAndRegression"});
+                        "1.2.8-Only",
+                        "1.2.8-Full-Pack"});
 #line 5
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();

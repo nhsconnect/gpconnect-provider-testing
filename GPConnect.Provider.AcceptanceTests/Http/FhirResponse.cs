@@ -27,6 +27,7 @@
         public List<MedicationStatement> MedicationStatements => GetResources<MedicationStatement>();
         public List<MedicationRequest> MedicationRequests => GetResources<MedicationRequest>();
         public List<List> Lists => GetResources<List>();
+        public List<HealthcareService> HealthcareService => GetResources<HealthcareService>();
 
         private List<T> GetResources<T>() where T : Resource
         {
