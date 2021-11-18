@@ -20,5 +20,18 @@ Scenario Outline: Healthcare service read successful request validate the respon
 		| HEALTH2     |
 
 
+Scenario Outline: Healthcare service Read with valid identifier which does not exist on providers system
+	Given I configure the default "HealthcareRead" request
+	And I set the Read Operation logical identifier used in the request to "<LogicalId>"
+	When I make the "HealthcareRead" request
+	Then the response status code should be "404"
+	Examples:
+		| LogicalId   |
+		| mfpBm       |
+		| 231Zcr64    |
+		| th.as.e     |
+		| 11dd4.45-23 |
+		| 40-95-3     |
+		| a-tm.mss..s |
 
 

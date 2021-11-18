@@ -102,6 +102,36 @@ this.ScenarioInitialize(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Healthcare service Read with valid identifier which does not exist on providers s" +
+            "ystem")]
+        [NUnit.Framework.TestCaseAttribute("2", null)]
+        [NUnit.Framework.TestCaseAttribute("3", null)]
+        [NUnit.Framework.TestCaseAttribute("mfpBm", null)]
+        [NUnit.Framework.TestCaseAttribute("231Zcr64", null)]
+        [NUnit.Framework.TestCaseAttribute("th.as.e", null)]
+        [NUnit.Framework.TestCaseAttribute("11dd4.45-23", null)]
+        [NUnit.Framework.TestCaseAttribute("40-95-3", null)]
+        [NUnit.Framework.TestCaseAttribute("a-tm.mss..s", null)]
+        public virtual void HealthcareServiceReadWithValidIdentifierWhichDoesNotExistOnProvidersSystem(string logicalId, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Healthcare service Read with valid identifier which does not exist on providers s" +
+                    "ystem", null, exampleTags);
+#line 23
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 24
+ testRunner.Given("I configure the default \"HealthcareRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 25
+ testRunner.And(string.Format("I set the Read Operation logical identifier used in the request to \"{0}\"", logicalId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 26
+ testRunner.When("I make the \"HealthcareRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 27
+ testRunner.Then("the response status code should be \"404\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore
