@@ -74,6 +74,30 @@ namespace GPConnect.Provider.AcceptanceTests
         {
             testRunner.CollectScenarioErrors();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Healthcare service find with no service id expect all services returned")]
+        public virtual void HealthcareServiceFindWithNoServiceIdExpectAllServicesReturned()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Healthcare service find with no service id expect all services returned", null, ((string[])(null)));
+#line 8
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 9
+ testRunner.Given("I configure the default \"HealthcareFind\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 10
+ testRunner.When("I make the \"HealthcareRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 11
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 12
+ testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 13
+ testRunner.Then("the response searchset contains atleast one HealthService", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 14
+ testRunner.And("the response searchset contains valid Healthcare Service resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

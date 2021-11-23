@@ -15,7 +15,7 @@
     public class HealthcareSteps : BaseSteps
     {
         private readonly HttpContext _httpContext;
-        private List<HealthcareService> HealthcareService => _httpContext.FhirResponse.HealthcareService;
+        private List<HealthcareService> HealthcareServices => _httpContext.FhirResponse.HealthcareService;
 
         public HealthcareSteps(HttpContext httpContext, HttpSteps httpSteps)
             : base(httpSteps)
@@ -29,42 +29,58 @@
         {
             _httpContext.FhirResponse.Resource.ResourceType.ShouldBe(ResourceType.HealthcareService);
 
-            var healthcare = (HealthcareService)_httpContext.FhirResponse.Resource;
-
-            healthcare.Id.ShouldNotBeNullOrEmpty();
-
-            //healthcare.Name.ShouldNotBeNullOrEmpty();
-            //healthcare.Address.ShouldNotBeNull();
         }
 
         [Then(@"the Healthcare Id should match the GET request Id")]
         public void TheHealthcarenIdShouldMarchTheGetRequestId()
         {
-            var healthcare = HealthcareService.FirstOrDefault();
-
+            var healthcare = HealthcareServices.FirstOrDefault();
             healthcare.ShouldNotBeNull();
             healthcare.Id.ShouldBe(_httpContext.HttpRequestConfiguration.GetRequestId);
+            Logger.Log.WriteLine("INFO : Validated Healthcare service ID matches request ID : " + healthcare.Id);
         }
 
-        //[Then(@"the Response Resource should be a Location")]
-        //public void TheResponseResourceShouldBeALocation()
-        //{
-        //    _httpContext.FhirResponse.Resource.ResourceType.ShouldBe(ResourceType.Location);
+        [Then(@"the Healthcare service should be valid")]
+        public void TheHealthcareserviceshouldbevalid()
+        {
+            var healthcare = HealthcareServices.FirstOrDefault();
+            checkHealthcareServiceIsValid(healthcare);
+        }
 
-        //    var location = (Location)_httpContext.FhirResponse.Resource;
+        public void checkHealthcareServiceIsValid(Resource healthservice)
+        {
+            var hs = (HealthcareService)healthservice;
+            hs.ShouldNotBeNull();
+            hs.Id.ShouldNotBeNull();
+            CheckForValidMetaDataInResource(hs, FhirConst.StructureDefinitionSystems.kHealthcareService);
 
-        //    location.Name.ShouldNotBeNullOrEmpty();
-        //    location.Address.ShouldNotBeNull();
-        //}
+            Logger.Log.WriteLine("INFO : Validated Healthcare service with ID : " + hs.Id);
+        }
 
-        //[Then(@"the Location Id should be valid")]
-        //public void TheLocationIdShouldBeValid()
-        //{
-        //    Locations.ForEach(location =>
-        //    {
-        //        location.Id.ShouldNotBeNullOrEmpty($"The Location Id should not be null or empty but was {location.Id}.");
-        //    });
-        //}        
+
+        [Then(@"the response searchset contains atleast one HealthService")]
+        public void TheresponsecontainsatleastoneHealthService()
+        {
+            _httpContext.FhirResponse.Entries.Count.ShouldBeGreaterThanOrEqualTo(1, "The response bundle does not contain  atleast one healthcare service");
+
+            _httpContext.FhirResponse.Entries.ForEach(entry =>
+            {
+                entry.Resource.ResourceType.ShouldBe(ResourceType.HealthcareService);
+            });
+
+
+        }
+
+        [Then(@"the response searchset contains valid Healthcare Service resources")]
+        public void TheresponsesearchsetcontainsvalidHealthServiceresources()
+        {
+            _httpContext.FhirResponse.Entries.ForEach(entry =>
+            {
+                checkHealthcareServiceIsValid(entry.Resource);
+            });
+        }
+
+
 
     }
 }

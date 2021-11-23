@@ -14,6 +14,7 @@ Scenario Outline: Healthcare service read successful request validate the respon
 	Then the response status code should indicate success
 		And the Response Resource should be a Healthcare Service
 		And the Healthcare Id should match the GET request Id
+		And the Healthcare service should be valid
 	Examples:
 		| HealthCareService |
 		| HEALTH1     |
@@ -34,4 +35,11 @@ Scenario Outline: Healthcare service Read with valid identifier which does not e
 		| 40-95-3     |
 		| a-tm.mss..s |
 
+
+Scenario: Healthcare service Read with NO identifier expect fail
+	Given I configure the default "HealthcareRead" request
+	And I set the Read Operation logical identifier used in the request to ""
+	When I make the "HealthcareRead" request
+	Then the response status code should be "400"
+	
 
