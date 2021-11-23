@@ -55,6 +55,7 @@
             public const string kAppointment = "https://fhir.nhs.uk/Id/gpconnect-appointment-identifier";
             public const string kGuid = "https://consumersupplier.com/Id/user-guid";
             public const string kPracGMP = "https://fhir.hl7.org.uk/Id/gmp-number";
+            public const string kDosServiceID = "https://fhir.nhs.uk/Id/uec-dos-service-id";
         }
 
         internal static class CodeSystems

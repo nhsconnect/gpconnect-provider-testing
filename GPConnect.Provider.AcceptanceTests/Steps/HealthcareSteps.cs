@@ -53,6 +53,21 @@
             hs.ShouldNotBeNull();
             hs.Id.ShouldNotBeNull();
             CheckForValidMetaDataInResource(hs, FhirConst.StructureDefinitionSystems.kHealthcareService);
+            //check dos idenfier
+            var healthcareServiceIdentifiers = hs.Identifier
+                   .Where(identifier => identifier.System.Equals(FhirConst.IdentifierSystems.kDosServiceID))
+                   .ToList();
+
+            healthcareServiceIdentifiers.Count.ShouldBeGreaterThanOrEqualTo(1, "There should be atleast One DOS service ID associated with healthcare service with ID :  " + hs.Id);
+
+            healthcareServiceIdentifiers.ForEach(hsi =>
+            {
+                hsi.Value.ShouldNotBeNullOrEmpty("Healthcare Service Identifier Value must have a value. ID : " + hs.Id);
+            });
+            
+            hs.ProvidedBy.ShouldNotBeNull("Error: Healthcare Service ProvidedBy should be populated with a reference");
+            hs.Name.ShouldNotBeNullOrEmpty();
+
 
             Logger.Log.WriteLine("INFO : Validated Healthcare service with ID : " + hs.Id);
         }
