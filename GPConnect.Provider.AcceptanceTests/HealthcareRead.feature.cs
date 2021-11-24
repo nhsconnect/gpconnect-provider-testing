@@ -88,7 +88,8 @@ namespace GPConnect.Provider.AcceptanceTests
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
 #line 11
- testRunner.Given(string.Format("I set the Get Request Id to the Logical Identifer for Healthcare Service \"{0}\"", healthCareService), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I set the Get Request Id to the Logical Identifer for Read Healthcare Service \"{0" +
+                        "}\"", healthCareService), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 12
  testRunner.Given("I configure the default \"HealthcareRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 13

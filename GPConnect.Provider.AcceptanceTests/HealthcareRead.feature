@@ -8,7 +8,7 @@ Feature: HealthcareRead
 #3 - read - no id passed - error?
 
 Scenario Outline: Healthcare service read successful request validate the response contains logical identifier
-	Given I set the Get Request Id to the Logical Identifer for Healthcare Service "<HealthCareService>"
+	Given I set the Get Request Id to the Logical Identifer for Read Healthcare Service "<HealthCareService>"
 	Given I configure the default "HealthcareRead" request
 	When I make the "HealthcareRead" request
 	Then the response status code should indicate success

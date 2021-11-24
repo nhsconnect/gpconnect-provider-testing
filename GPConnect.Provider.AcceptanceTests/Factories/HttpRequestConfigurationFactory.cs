@@ -263,7 +263,7 @@
         private static HttpRequestConfiguration HealthcareFindConfiguration()
         {
             _httpRequestConfiguration.HttpMethod = HttpMethod.Get;
-            _httpRequestConfiguration.RequestUrl = "HealthcareService/" + _httpRequestConfiguration.GetRequestId;
+            _httpRequestConfiguration.RequestUrl = "HealthcareService" + _httpRequestConfiguration.GetRequestId;
             _httpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, SpineConst.InteractionIds.HealthcareFind);
 
             return _httpRequestConfiguration;
