@@ -233,6 +233,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         {
             _httpContext.HttpRequestConfiguration.RequestHeaders.ReplaceHeader(HttpConst.Headers.kSspInteractionId, interactionId);
         }
+
         [Given(@"I set the Read Operation logical identifier used in the request to ""([^""]*)""")]
         public void SetTheReadOperationLogicalIdentifierUsedInTheRequestTo(string logicalId)
         {
@@ -255,11 +256,34 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
+        [Given(@"I set the Find Operation DOS ID for the request to ""([^""]*)""")]
+        public void IsettheFindOperationDOSIDfortherequestto(string DOSId)
+        {
+            _httpContext.HttpRequestConfiguration.GetRequestId = "HealthcareService?identifier=https://fhir.nhs.uk/Id/uec-dos-service-id|" + DOSId;
+            Logger.Log.WriteLine("Info : Set the request DOS ID to : " + _httpContext.HttpRequestConfiguration.GetRequestId);
+
+            var lastIndex = _httpContext.HttpRequestConfiguration.RequestUrl.LastIndexOf('/');
+
+            if (_httpContext.HttpRequestConfiguration.RequestUrl.Contains("$"))
+            {
+                var action = _httpContext.HttpRequestConfiguration.RequestUrl.Substring(lastIndex);
+
+                var firstIndex = _httpContext.HttpRequestConfiguration.RequestUrl.IndexOf('/');
+                var url = _httpContext.HttpRequestConfiguration.RequestUrl.Substring(0, firstIndex + 1);
+
+                _httpContext.HttpRequestConfiguration.RequestUrl = url + _httpContext.HttpRequestConfiguration.GetRequestId + action;
+            }
+            else
+            {
+                _httpContext.HttpRequestConfiguration.RequestUrl = _httpContext.HttpRequestConfiguration.RequestUrl.Substring(0, lastIndex + 1) + _httpContext.HttpRequestConfiguration.GetRequestId;
+            }
+        }
+
         [Then(@"I set the Healthcare Find Operation to use the stored DOS ID from previous find all")]
         public void IsettheHealthcareFindOperationtousethestoredDOSIDfrompreviousfindall( )
         {
             _httpContext.HttpRequestConfiguration.GetRequestId = "HealthcareService?identifier=https://fhir.nhs.uk/Id/uec-dos-service-id|" + GlobalContext.HealthcareServiceDosID;
-            Logger.Log.WriteLine("Info : Set the request ID to : " + _httpContext.HttpRequestConfiguration.GetRequestId);
+            Logger.Log.WriteLine("Info : Set the request DOS ID to : " + _httpContext.HttpRequestConfiguration.GetRequestId);
 
             var lastIndex = _httpContext.HttpRequestConfiguration.RequestUrl.LastIndexOf('/');
 

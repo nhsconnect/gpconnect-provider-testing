@@ -111,7 +111,17 @@
 
         }
 
+        [Then(@"the response searchset has NO Healthcare Service resources")]
+        public void theresponsesearchsethasNOHealthcareServiceresources()
+        {
+            _httpContext.FhirResponse.Entries.Count().ShouldBe(0, " Error : Should be no healthcare services resouces returned");
+        }
 
+        [Then(@"the response searchset has only One Healthcare Service resource")]
+        public void theresponsesearchsethasOneHealthcareServiceresource()
+        {
+            _httpContext.FhirResponse.Entries.Count().ShouldBe(1, " Error : Should be one healthcare services resouce returned");
+        }
 
     }
 }
