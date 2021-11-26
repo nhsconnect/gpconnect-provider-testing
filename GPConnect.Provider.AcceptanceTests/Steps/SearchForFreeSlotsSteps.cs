@@ -24,6 +24,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         private List<Slot> Slots => _httpContext.FhirResponse.Slots;
         private List<Schedule> Schedules => _httpContext.FhirResponse.Schedules;
+        private List<HealthcareService> HealthcareServices => _httpContext.FhirResponse.HealthcareService;
 
         public SearchForFreeSlotsSteps(HttpContext httpContext, HttpSteps httpSteps, BundleSteps bundleSteps, JwtSteps jwtSteps, HttpRequestConfigurationSteps httpRequestConfigurationSteps, IFhirResourceRepository fhirResourceRepository)
             : base(httpSteps)
@@ -112,7 +113,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("searchFilter", "https://fhir.nhs.uk/STU3/CodeSystem/GPConnect-OrganisationType-1" + '|' + "urgent-care");
             _httpRequestConfigurationSteps.GivenIAddTheParameterWithTheValue("_include", "Slot:schedule");
         }
-// Added 1.2.1 RMB 5/10/2018
+
         [Given(@"I set the required parameters with org type and a time period of ""(.*)"" days")]
         public void SetRequiredParametersWithOrgTypeAndATimePeriod(int days, Boolean orgType)
         {
@@ -528,6 +529,56 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
+        [Then(@"I Check a Healthcare Service Resource has been Returned")]
+        public void CheckaHealthcareResourcehasbeenReturned()
+        {
+            HealthcareServices.Count().ShouldBeGreaterThanOrEqualTo(1, "Fail : Should be atleast one HealthcareService resource returned");
+
+            HealthcareServices.ForEach(hsi =>
+            {
+
+                CheckHealthcareServiceIsValid(hsi);
+            });
+
+
+        }
+
+        [Then(@"I Check that atleast One Slot is returned")]
+        public void IthatatleastOneSlotisreturned()
+        {
+            Slots.Count().ShouldBeGreaterThanOrEqualTo(1, "Fail : Expect atleast one Slot is returned for This test");
+            
+        }
+
+        [Then(@"I Check that atleast One Schedule is returned")]
+        public void IthatatleastOneSheduleisReturned()
+        {
+            Schedules.Count().ShouldBeGreaterThanOrEqualTo(1, "Fail : Expect atleast one Shedule is returned for This test");
+
+        }
+
+        [Then(@"I Check that the references to healthcareServices are set correctly on Schedules")]
+        public void ICheckthatthereferencestohealthcareServicesaresetcorrectlyOnSchedules()
+        {
+            var found = false;
+            Schedules.ForEach(schedule =>
+            {
+               
+                var hcsReferences = schedule.Actor.Where(actor => actor.Reference.Contains("HealthcareService/")).ToList();
+
+                hcsReferences.ForEach(Hcsref =>
+                {
+                    var firstIndex = Hcsref.Url.ToString().IndexOf('/');
+                    string id = Hcsref.Url.ToString().Substring(firstIndex+1);
+                    HealthcareServices.Where(hcs => hcs.Id == id).Count().ShouldBe(1, "Fail : Response Should Contain 1 HealthcareService with ID : " + id);
+                    found = true;
+                    Logger.Log.WriteLine("INFO : Found HealthcareService reference and resource with ID : " + id);
+                });
+
+            });
+            found.ShouldBeTrue("Fail : Not Found Any References to a HealthCareServices in the Schedules");
+            
+        }
 
     }
 }

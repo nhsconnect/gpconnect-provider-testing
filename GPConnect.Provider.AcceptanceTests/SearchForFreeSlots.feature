@@ -526,3 +526,25 @@ Scenario: Search for a slots expecting No Comment elements for the Schedules and
 		And the Location Name should be valid
 		And the Location Address should be valid
 		And No Schedules or Slots contain comment element
+
+
+
+#WIP
+#TODO - search - with no DOS id only  asking for healthservices - check its linked in refs
+@1.2.8-Only
+Scenario: Searching for free slots with valid and Healthcare parameters should return success
+	Given I configure the default "SearchForFreeSlots" request
+		And I set the JWT Requested Scope to Organization Read
+		And I set the required parameters with a time period of "2" days
+		And I add the parameter "_include:recurse" with the value "Schedule:actor:HealthcareService"
+		When I make the "SearchForFreeSlots" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "searchset"
+		And I Check that atleast One Slot is returned
+		And I Check that atleast One Schedule is returned
+		And I Check a Healthcare Service Resource has been Returned
+		And I Check that the references to healthcareServices are set correctly on Schedules
+
+#TODO - search with a dos ID - using time period including healthcare param
+#TODO - search with dos id - when valid partial dateTime strings including healthcare param
+#TODO - search with dos id - Searching for free slots with org type and code searchFilter system including healthcare param

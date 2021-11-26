@@ -1228,6 +1228,45 @@ this.ScenarioInitialize(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Searching for free slots with valid and Healthcare parameters should return succe" +
+            "ss")]
+        [NUnit.Framework.CategoryAttribute("1.2.8-Only")]
+        public virtual void SearchingForFreeSlotsWithValidAndHealthcareParametersShouldReturnSuccess()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Searching for free slots with valid and Healthcare parameters should return succe" +
+                    "ss", null, new string[] {
+                        "1.2.8-Only"});
+#line 535
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 536
+ testRunner.Given("I configure the default \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 537
+  testRunner.And("I set the JWT Requested Scope to Organization Read", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 538
+  testRunner.And("I set the required parameters with a time period of \"2\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 539
+  testRunner.And("I add the parameter \"_include:recurse\" with the value \"Schedule:actor:HealthcareS" +
+                    "ervice\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 540
+  testRunner.When("I make the \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 541
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 542
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 543
+  testRunner.And("I Check that atleast One Slot is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 544
+  testRunner.And("I Check that atleast One Schedule is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 545
+  testRunner.And("I Check a Healthcare Service Resource has been Returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 546
+  testRunner.And("I Check that the references to healthcareServices are set correctly on Schedules", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

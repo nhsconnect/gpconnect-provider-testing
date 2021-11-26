@@ -64,7 +64,8 @@
             {typeof(List), ResourceType.List},
             {typeof(Medication), ResourceType.Medication},
             {typeof(MedicationStatement), ResourceType.MedicationStatement},
-            {typeof(MedicationRequest), ResourceType.MedicationRequest}
+            {typeof(MedicationRequest), ResourceType.MedicationRequest},
+            {typeof(HealthcareService), ResourceType.HealthcareService}
         };
     }
 }
