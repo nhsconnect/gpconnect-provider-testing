@@ -193,3 +193,11 @@ Examples:
 | https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-StructuredRecord-Bundle-1/_history/1.3   |
 | https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-OperationOutcome-1/_history/1.2          |
           
+#WIP - I have questioned where this is located in the structure as its in resources which seems wrong
+@1.2.8-Only
+Scenario: CapabilityStatement profile has the rest operation extension for Service Filtering
+Given I configure the default "StructuredMetaDataRead" request
+	When I make the "StructuredMetaDataRead" request
+	Then the response status code should indicate success
+	And the CapabilityStatement REST Extension should contain "extension"
+		  

@@ -13,8 +13,8 @@ Scenario Outline: Healthcare service read successful request validate the respon
 		And the Healthcare service should be valid
 	Examples:
 		| HealthCareService |
-		| HEALTH1     |
-		| HEALTH2     |
+		| HEALTHCARE1     |
+		| HEALTHCARE2     |
 
 
 Scenario Outline: Healthcare service Read with valid identifier which does not exist on providers system
@@ -37,5 +37,13 @@ Scenario: Healthcare service Read with NO identifier expect fail
 	And I set the Read Operation logical identifier used in the request to ""
 	When I make the "HealthcareRead" request
 	Then the response status code should be "400"
+
+
+Scenario: CapabilityStatement profile supports the HealthcareService search operation
+	Given I configure the default "MetadataRead" request
+	When I make the "MetadataRead" request
+	Then the response status code should indicate success
+		And the CapabilityStatement REST Resources should contain the "HealthcareService" Resource with the "SearchType" Interaction
+
 	
 

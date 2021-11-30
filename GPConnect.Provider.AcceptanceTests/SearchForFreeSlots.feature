@@ -530,6 +530,15 @@ Scenario: Search for a slots expecting No Comment elements for the Schedules and
 
 
 #WIP
+
+@1.2.8-Only
+Scenario: Check CapabilityStatement includes specific searchInclude for HealthcareServices
+	Given I configure the default "MetadataRead" request
+	When I make the "MetadataRead" request
+	Then the response status code should indicate success	
+	And the CapabilityStatement has a searchInclude called "Schedule:actor:HealthcareService"
+
+
 #TODO - search - with no DOS id only  asking for healthservices - check its linked in refs
 @1.2.8-Only
 Scenario: Searching for free slots with valid and Healthcare parameters should return success
@@ -545,6 +554,35 @@ Scenario: Searching for free slots with valid and Healthcare parameters should r
 		And I Check a Healthcare Service Resource has been Returned
 		And I Check that the references to healthcareServices are set correctly on Schedules
 
-#TODO - search with a dos ID - using time period including healthcare param
+#Note service filtering needs to be turned on
+#TODO  Possibly add a check on metadata that service filtering is switched on
+@1.2.8-Only
+Scenario Outline: Searching for free slots with a specific DOS ID
+	Given I set the Get Request Id to the Logical Identifer for Read Healthcare Service "<HealthCareService>"
+	And I configure the default "HealthcareRead" request
+	When I make the "HealthcareRead" request
+	Then the response status code should indicate success
+		And the Response Resource should be a Healthcare Service
+		And the Healthcare Id should match the GET request Id
+		And the Healthcare service should be valid
+		And I Store the DOS id from the Healthcare service returned
+		Given I configure the default "SearchForFreeSlots" request
+		And I set the JWT Requested Scope to Organization Read
+		And I set the required parameters with a time period of "2" days
+		And I add the parameter "_include:recurse" with the value "Schedule:actor:HealthcareService"
+		Then I add the saved DOS ID to the request parameter
+		When I make the "SearchForFreeSlots" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "searchset"
+		And I Check that atleast One Slot is returned
+		And I Check that atleast One Schedule is returned
+		And I Check a Healthcare Service Resource has been Returned
+		And I Check that the references to healthcareServices are set correctly on Schedules
+		And I Check that the HealthcareService is the correct one and is linked to the Schedule
+	Examples:
+		| HealthCareService |
+		| HEALTHCARE2     |
+
+#TODO search for heathcare service 2 - expect no slots - as not linked to a schedule
 #TODO - search with dos id - when valid partial dateTime strings including healthcare param
 #TODO - search with dos id - Searching for free slots with org type and code searchFilter system including healthcare param

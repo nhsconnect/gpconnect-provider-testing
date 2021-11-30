@@ -167,6 +167,26 @@
 				profiles.Where(p => p.Reference == urlToCheck).Count().ShouldBe(1, "Fail : Mismatch of expected profile.reference  " + urlToCheck);
                 Logger.Log.WriteLine("Info : Found Profile in CapabilityStatement : " + urlToCheck);
 			});
-		}	
-	}
+		}
+
+        [Then(@"the CapabilityStatement REST Extension should contain ""([^""]*)""")]
+        public void TheCapabilityStatementRestExtensionShouldContain(string operation)
+        {
+            CapabilityStatements.ForEach(capabilityStatement =>
+            {
+                capabilityStatement.Rest.ForEach(rest =>
+                {
+                    //Get Handle to Extension Resouce
+                    //var slotResource = rest.Resource.FirstOrDefault(r => r.Type == ResourceType.Slot);
+                    var extensionResource = rest.Extension.FirstOrDefault();
+
+
+                    Console.WriteLine("stop");
+                    //rest.Operation
+                    //    .Select(op => op.Name)
+                    //    .ShouldContain(operation, $"The CapabilityStatement REST Operations should contain {operation} but did not.");
+                });
+            });
+        }
+    }
 }			   

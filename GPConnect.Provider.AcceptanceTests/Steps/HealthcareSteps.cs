@@ -82,7 +82,20 @@
             healthcareServiceIdentifiers.Count.ShouldBeGreaterThanOrEqualTo(1, "There should be atleast One DOS service ID associated with a healthcare service");
             GlobalContext.HealthcareServiceDosID = healthcareServiceIdentifiers.FirstOrDefault().Value;
             Logger.Log.WriteLine("Info : Found Healthcare Service With DOS ID : " + GlobalContext.HealthcareServiceDosID);
+        }
 
+        [Then(@"I Store the DOS id from the Healthcare service returned")]
+        public void IStoretheDOSidfromthehealthcareservicereturned()
+        {
+            HealthcareService healthcare = (HealthcareService)_httpContext.FhirResponse.Resource;
+
+            var healthcareServiceIdentifiers = healthcare.Identifier
+                    .Where(identifier => identifier.System.Equals(FhirConst.IdentifierSystems.kDosServiceID))
+                    .ToList();
+
+            healthcareServiceIdentifiers.Count.ShouldBeGreaterThanOrEqualTo(1, "There should be atleast One DOS service ID associated with a healthcare service");
+            GlobalContext.HealthcareServiceDosID = healthcareServiceIdentifiers.FirstOrDefault().Value;
+            Logger.Log.WriteLine("Info : Found Healthcare Service With DOS ID : " + GlobalContext.HealthcareServiceDosID);
         }
 
         [Then(@"the response searchset has NO Healthcare Service resources")]

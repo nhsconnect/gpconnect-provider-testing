@@ -563,9 +563,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             var found = false;
             Schedules.ForEach(schedule =>
             {
-               
                 var hcsReferences = schedule.Actor.Where(actor => actor.Reference.Contains("HealthcareService/")).ToList();
-
                 hcsReferences.ForEach(Hcsref =>
                 {
                     var firstIndex = Hcsref.Url.ToString().IndexOf('/');
@@ -577,7 +575,37 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
             });
             found.ShouldBeTrue("Fail : Not Found Any References to a HealthCareServices in the Schedules");
-            
+        }
+
+        [Then(@"I Check that the HealthcareService is the correct one and is linked to the Schedule")]
+        public void ICheckthattheHealthcareServiceisthecorrectoneandislinkedtotheSchedule()
+        {
+            var healthcare = HealthcareServices.FirstOrDefault();
+            var healthcareServiceIdentifiers = healthcare.Identifier
+                  .Where(identifier => identifier.System.Equals(FhirConst.IdentifierSystems.kDosServiceID))
+                  .ToList();
+            GlobalContext.HealthcareServiceDosID.ShouldBe(healthcareServiceIdentifiers.FirstOrDefault().Value, "Fail : healthcareService returned doesnt match the request DOS ID");
+
+            var found = false;
+            Schedules.ForEach(schedule =>
+            {
+                var hcsReferences = schedule.Actor.Where(actor => actor.Reference.Contains("HealthcareService/")).ToList();
+                hcsReferences.ForEach(Hcsref =>
+                {
+                    var firstIndex = Hcsref.Url.ToString().IndexOf('/');
+                    string id = Hcsref.Url.ToString().Substring(firstIndex + 1);
+                    id.ShouldBe(healthcare.Id, "Fail : The Schedule is not linked to the requested healthservice / DOS ID : " + GlobalContext.HealthcareServiceDosID);
+                    found = true;
+                });
+            });
+            found.ShouldBeTrue("Fail : NOT Found any Schedule correctly linked to the requested healthservice / DOS ID : " + GlobalContext.HealthcareServiceDosID);
+            Logger.Log.WriteLine("INFO : Found Schedule correctly linked to the requested healthservice / DOS ID : " + GlobalContext.HealthcareServiceDosID);
+        }
+
+        [Then(@"I add the saved DOS ID to the request parameter")]
+        public void IaddthesavedDOSIDtotherequestparameter()
+        {
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("service.identifier", "https://fhir.nhs.uk/Id/uec-dos-service-id|" + GlobalContext.HealthcareServiceDosID);
         }
 
     }

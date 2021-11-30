@@ -78,8 +78,8 @@ namespace GPConnect.Provider.AcceptanceTests
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Healthcare service read successful request validate the response contains logical" +
             " identifier")]
-        [NUnit.Framework.TestCaseAttribute("HEALTH1", null)]
-        [NUnit.Framework.TestCaseAttribute("HEALTH2", null)]
+        [NUnit.Framework.TestCaseAttribute("HEALTHCARE1", null)]
+        [NUnit.Framework.TestCaseAttribute("HEALTHCARE2", null)]
         public virtual void HealthcareServiceReadSuccessfulRequestValidateTheResponseContainsLogicalIdentifier(string healthCareService, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Healthcare service read successful request validate the response contains logical" +
@@ -150,6 +150,27 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.When("I make the \"HealthcareRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 39
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("CapabilityStatement profile supports the HealthcareService search operation")]
+        public virtual void CapabilityStatementProfileSupportsTheHealthcareServiceSearchOperation()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CapabilityStatement profile supports the HealthcareService search operation", null, ((string[])(null)));
+#line 42
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 43
+ testRunner.Given("I configure the default \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 44
+ testRunner.When("I make the \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 45
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 46
+  testRunner.And("the CapabilityStatement REST Resources should contain the \"HealthcareService\" Res" +
+                    "ource with the \"SearchType\" Interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
