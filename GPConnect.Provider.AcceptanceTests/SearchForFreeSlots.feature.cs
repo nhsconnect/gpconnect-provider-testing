@@ -1292,10 +1292,10 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Searching for free slots with a specific DOS ID")]
+        [NUnit.Framework.DescriptionAttribute("Searching for free slots with a specific DOS ID that is linked to a schedule")]
         [NUnit.Framework.CategoryAttribute("1.2.8-Only")]
         [NUnit.Framework.TestCaseAttribute("HEALTHCARE2", null)]
-        public virtual void SearchingForFreeSlotsWithASpecificDOSID(string healthCareService, string[] exampleTags)
+        public virtual void SearchingForFreeSlotsWithASpecificDOSIDThatIsLinkedToASchedule(string healthCareService, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "1.2.8-Only"};
@@ -1303,7 +1303,7 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Searching for free slots with a specific DOS ID", null, @__tags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Searching for free slots with a specific DOS ID that is linked to a schedule", null, @__tags);
 #line 560
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -1352,6 +1352,62 @@ this.ScenarioInitialize(scenarioInfo);
 #line 581
   testRunner.And("I Check that the HealthcareService is the correct one and is linked to the Schedu" +
                     "le", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Searching for free slots with a specific DOS ID that is NOT linked to a schedule")]
+        [NUnit.Framework.CategoryAttribute("1.2.8-Only")]
+        [NUnit.Framework.TestCaseAttribute("HEALTHCARE1", null)]
+        public virtual void SearchingForFreeSlotsWithASpecificDOSIDThatIsNOTLinkedToASchedule(string healthCareService, string[] exampleTags)
+        {
+            string[] @__tags = new string[] {
+                    "1.2.8-Only"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Searching for free slots with a specific DOS ID that is NOT linked to a schedule", null, @__tags);
+#line 589
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 590
+ testRunner.Given(string.Format("I set the Get Request Id to the Logical Identifer for Read Healthcare Service \"{0" +
+                        "}\"", healthCareService), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 591
+ testRunner.And("I configure the default \"HealthcareRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 592
+ testRunner.When("I make the \"HealthcareRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 593
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 594
+  testRunner.And("the Response Resource should be a Healthcare Service", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 595
+  testRunner.And("the Healthcare Id should match the GET request Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 596
+  testRunner.And("the Healthcare service should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 597
+  testRunner.And("I Store the DOS id from the Healthcare service returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 598
+  testRunner.Given("I configure the default \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 599
+  testRunner.And("I set the JWT Requested Scope to Organization Read", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 600
+  testRunner.And("I set the required parameters with a time period of \"2\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 601
+  testRunner.And("I add the parameter \"_include:recurse\" with the value \"Schedule:actor:HealthcareS" +
+                    "ervice\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 602
+  testRunner.Then("I add the saved DOS ID to the request parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 603
+  testRunner.When("I make the \"SearchForFreeSlots\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 604
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 605
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 606
+  testRunner.And("I Check that No Schedule is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

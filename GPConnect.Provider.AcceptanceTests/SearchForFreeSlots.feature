@@ -555,9 +555,9 @@ Scenario: Searching for free slots with valid and Healthcare parameters should r
 		And I Check that the references to healthcareServices are set correctly on Schedules
 
 #Note service filtering needs to be turned on
-#TODO  Possibly add a check on metadata that service filtering is switched on
+#TODO  add in check for service filtering status at top of bundle returned
 @1.2.8-Only
-Scenario Outline: Searching for free slots with a specific DOS ID
+Scenario Outline: Searching for free slots with a specific DOS ID that is linked to a schedule
 	Given I set the Get Request Id to the Logical Identifer for Read Healthcare Service "<HealthCareService>"
 	And I configure the default "HealthcareRead" request
 	When I make the "HealthcareRead" request
@@ -583,6 +583,31 @@ Scenario Outline: Searching for free slots with a specific DOS ID
 		| HealthCareService |
 		| HEALTHCARE2     |
 
-#TODO search for heathcare service 2 - expect no slots - as not linked to a schedule
+#TODO search for heathcare service 1 - expect no slots - as not linked to a schedule
+#TODO  add in check for service filtering status at top of bundle returned
+@1.2.8-Only
+Scenario Outline: Searching for free slots with a specific DOS ID that is NOT linked to a schedule
+	Given I set the Get Request Id to the Logical Identifer for Read Healthcare Service "<HealthCareService>"
+	And I configure the default "HealthcareRead" request
+	When I make the "HealthcareRead" request
+	Then the response status code should indicate success
+		And the Response Resource should be a Healthcare Service
+		And the Healthcare Id should match the GET request Id
+		And the Healthcare service should be valid
+		And I Store the DOS id from the Healthcare service returned
+		Given I configure the default "SearchForFreeSlots" request
+		And I set the JWT Requested Scope to Organization Read
+		And I set the required parameters with a time period of "2" days
+		And I add the parameter "_include:recurse" with the value "Schedule:actor:HealthcareService"
+		Then I add the saved DOS ID to the request parameter
+		When I make the "SearchForFreeSlots" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "searchset"
+		And I Check that No Schedule is returned
+	Examples:
+		| HealthCareService |
+		| HEALTHCARE1     |
+
+
 #TODO - search with dos id - when valid partial dateTime strings including healthcare param
 #TODO - search with dos id - Searching for free slots with org type and code searchFilter system including healthcare param

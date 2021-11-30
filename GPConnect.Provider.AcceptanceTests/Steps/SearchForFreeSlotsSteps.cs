@@ -547,14 +547,20 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         public void IthatatleastOneSlotisreturned()
         {
             Slots.Count().ShouldBeGreaterThanOrEqualTo(1, "Fail : Expect atleast one Slot is returned for This test");
-            
         }
 
         [Then(@"I Check that atleast One Schedule is returned")]
         public void IthatatleastOneSheduleisReturned()
         {
             Schedules.Count().ShouldBeGreaterThanOrEqualTo(1, "Fail : Expect atleast one Shedule is returned for This test");
+            Logger.Log.WriteLine("INFO : One or more Schedules Found as expected");
+        }
 
+        [Then(@"I Check that No Schedule is returned")]
+        public void ICheckthatNoScheduleisreturned()
+        {
+            Schedules.Count().ShouldBe(0, "Fail : Expect No schedule is returned as Healthcare1 should not be linked to a schedule as per data requirements");
+            Logger.Log.WriteLine("INFO : No Schedules Found that are linked to Healthcare1");
         }
 
         [Then(@"I Check that the references to healthcareServices are set correctly on Schedules")]
