@@ -608,6 +608,54 @@ Scenario Outline: Searching for free slots with a specific DOS ID that is NOT li
 		| HealthCareService |
 		| HEALTHCARE1     |
 
-
 #TODO - search with dos id - when valid partial dateTime strings including healthcare param
-#TODO - search with dos id - Searching for free slots with org type and code searchFilter system including healthcare param
+#TODO  add in check for service filtering status at top of bundle returned
+@1.2.8-Only
+Scenario Outline: Searching for free slots with a valid DOS ID with valid partial dateTime strings
+	Given I set the Get Request Id to the Logical Identifer for Read Healthcare Service "HEALTHCARE2"
+	And I configure the default "HealthcareRead" request
+	When I make the "HealthcareRead" request
+	Then the response status code should indicate success
+		And the Response Resource should be a Healthcare Service
+		And the Healthcare Id should match the GET request Id
+		And the Healthcare service should be valid
+		And I Store the DOS id from the Healthcare service returned
+	Given I configure the default "SearchForFreeSlots" request
+		And I set the JWT Requested Scope to Organization Read
+		And I add the time period parameters for "3" days starting today using the start format "<StartDate>" and the end format "<EndDate>"
+		And I add the parameter "status" with the value "free"
+		And I add the parameter "_include" with the value "Slot:schedule"
+		And I add two valid searchFilter paramaters
+		And I add one additional non GP Connect specific searchFilter paramaters
+		And I add the parameter "_include:recurse" with the value "Schedule:actor:HealthcareService"
+		Then I add the saved DOS ID to the request parameter
+	When I make the "SearchForFreeSlots" request
+	Then the response status code should indicate success
+		And the response should be a Bundle resource of type "searchset"
+		And I Check that atleast One Slot is returned
+		And I Check that atleast One Schedule is returned
+		And I Check a Healthcare Service Resource has been Returned
+		And I Check that the references to healthcareServices are set correctly on Schedules
+		And I Check that the HealthcareService is the correct one and is linked to the Schedule
+	Examples:
+		| StartDate            | EndDate              |
+		| yyyy-MM-dd           | yyyy-MM-dd           |
+		| yyyy-MM-ddTHH:mm:sszzz  | yyyy-MM-ddTHH:mm:sszzz  |
+		| yyyy-MM-ddTHH:mm:sszzz  | yyyy-MM-dd           |
+		| yyyy-MM-dd  | yyyy-MM-ddTHH:mm:sszzz           |
+
+
+#TODO Search for a Dos ID that doesnt exist
+#TODO check service filtering is enabled
+@1.2.8-Only
+Scenario: Searching for free slots with a DOS ID that does not exist expect error
+		Given I set the request DOS service ID to the following "xxxxyyyyzzz"
+		And I configure the default "SearchForFreeSlots" request
+		And I set the JWT Requested Scope to Organization Read
+		And I set the required parameters with a time period of "2" days
+		And I add the parameter "_include:recurse" with the value "Schedule:actor:HealthcareService"
+		Then I add the saved DOS ID to the request parameter
+		When I make the "SearchForFreeSlots" request
+	Then the response status code should be "404"
+	And the response should be a OperationOutcome resource with error code "NO_RECORD_FOUND"
+		

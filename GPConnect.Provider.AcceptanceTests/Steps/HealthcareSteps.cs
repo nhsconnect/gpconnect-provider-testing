@@ -98,6 +98,12 @@
             Logger.Log.WriteLine("Info : Found Healthcare Service With DOS ID : " + GlobalContext.HealthcareServiceDosID);
         }
 
+        [Given(@"I set the request DOS service ID to the following ""([^""]*)""")]
+        public void SetTheGetRequestIdToTheLogicalIdentiferForHealthcareService(string DOSID)
+        {
+            GlobalContext.HealthcareServiceDosID = DOSID;
+        }
+
         [Then(@"the response searchset has NO Healthcare Service resources")]
         public void theresponsesearchsethasNOHealthcareServiceresources()
         {

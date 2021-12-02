@@ -200,4 +200,6 @@ Given I configure the default "StructuredMetaDataRead" request
 	When I make the "StructuredMetaDataRead" request
 	Then the response status code should indicate success
 	And the CapabilityStatement REST Extension should contain "extension"
+	#WIP - need to create function below
+	#And The extension should have a status of enabled
 		  

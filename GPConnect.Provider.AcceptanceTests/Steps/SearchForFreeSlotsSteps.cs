@@ -614,5 +614,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("service.identifier", "https://fhir.nhs.uk/Id/uec-dos-service-id|" + GlobalContext.HealthcareServiceDosID);
         }
 
+        //WIP
+        [Then(@"the Bundle Metadata should be contain service filtering status set to on")]
+        public void theBundleMetadatashouldbecontainservicefilteringstatussettoon()
+        {
+            CheckForValidMetaDataInResource(_httpContext.FhirResponse.Bundle, FhirConst.StructureDefinitionSystems.kServiceFiltering);
+
+        }
+
+        
+
     }
 }
