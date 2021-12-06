@@ -137,7 +137,6 @@
 			});
 		}
 
-		//PG 12-4-2019 #225 - Check that CapabilityStatement includes specified searchInclude
 		[Then(@"the CapabilityStatement has a searchInclude called ""(.*)""")]
 		public void theCapabilityStatementhasasearchIncludecalled(string searchIncludeToCheck)
 		{
@@ -145,13 +144,8 @@
 			{
 				capabilityStatement.Rest.ForEach(rest =>
 				{
-					//Get Handle to Slot Resouce
 					var slotResource = rest.Resource.FirstOrDefault(r => r.Type == ResourceType.Slot);
-
-					//find searchinclude passed in.
 					var searchInclude = slotResource.SearchIncludeElement.FirstOrDefault(i => i.ToString() == searchIncludeToCheck);
-
-					//Assert That Text Is Found
 					searchInclude.ShouldNotBeNull("Not Found searchInclude: " + searchIncludeToCheck);
 				});
 			});
@@ -169,24 +163,50 @@
 			});
 		}
 
-        [Then(@"the CapabilityStatement REST Extension should contain ""([^""]*)""")]
-        public void TheCapabilityStatementRestExtensionShouldContain(string operation)
+        [Then(@"the CapabilityStatement should contain the Extension with a status of ""([^""]*)""")]
+        public void theCapabilityStatementshouldcontaintheExtensionwithavalueof(string statusValue)
         {
+            var found = false;
+            CapabilityStatements.ForEach(capabilityStatement =>
+            {
+                capabilityStatement.Extension.ShouldNotBeNull("Fail : Extension for Service Filtering is missing from the capability Statement");
+                capabilityStatement.Extension.ForEach(ext =>
+                {
+                    if (ext.Url == FhirConst.StructureDefinitionSystems.kServiceFiltering)
+                    {
+                        ext.Value.ToString().ShouldBe(statusValue, "FAIL : Capability Statement Extension for Service Filtering Status is not set to the value : " + statusValue + "  Found Value : " + ext.Value);
+                        Logger.Log.WriteLine("INFO : Found extension for Service Filtering in CapabilityStatement with value : " + ext.Value.ToString());
+                        found = true;
+                    }
+                });
+            });
+            found.ShouldBeTrue("FAIL : Not found Extension in Capability Statement for Service Filtering Status");
+        }
+
+        [Then(@"the CapabilityStatement slot resource has a valid searchParam called service identifier")]
+        public void theCapabilityStatementslotresourcehasavalidsearchParamcalledidentifier( )
+        {
+            var found = false;
             CapabilityStatements.ForEach(capabilityStatement =>
             {
                 capabilityStatement.Rest.ForEach(rest =>
                 {
-                    //Get Handle to Extension Resouce
-                    //var slotResource = rest.Resource.FirstOrDefault(r => r.Type == ResourceType.Slot);
-                    var extensionResource = rest.Extension.FirstOrDefault();
-
-
-                    Console.WriteLine("stop");
-                    //rest.Operation
-                    //    .Select(op => op.Name)
-                    //    .ShouldContain(operation, $"The CapabilityStatement REST Operations should contain {operation} but did not.");
+                    var slotResource = rest.Resource.FirstOrDefault(r => r.Type == ResourceType.Slot);
+                  
+                    slotResource.SearchParam.ForEach(searchParam =>
+                    {
+                        if(searchParam.Name == "service.identifier")
+                        {
+                            searchParam.Type.ShouldBe(SearchParamType.Token, "FAIL : searchParam.Type for service.identifier is not of type token");
+                            searchParam.Definition.ShouldBe(FhirConst.SearchParameters.kServiceIdentfier, "FAIL : searchParam.Definition for service.identifier is not set to the correct value");
+                            searchParam.Documentation.ShouldContain("UEC DOS service ID", "FAIL : searchParam.Documentation for service.identifier is incorrect set, should contain : UEC DOS service ID ");
+                            found = true;
+                            Logger.Log.WriteLine("INFO : Verified slot resource has a valid searchParam called service identifier");
+                        }
+                    });
                 });
             });
+            found.ShouldBeTrue("FAIL : Not found a slot resource in capability statement resource section that has a valid searchParam called service identifier");
         }
     }
 }			   

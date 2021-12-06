@@ -614,15 +614,21 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("service.identifier", "https://fhir.nhs.uk/Id/uec-dos-service-id|" + GlobalContext.HealthcareServiceDosID);
         }
 
-        //WIP
-        [Then(@"the Bundle Metadata should be contain service filtering status set to on")]
-        public void theBundleMetadatashouldbecontainservicefilteringstatussettoon()
+        [Then(@"the Bundle Meta should be contain service filtering status set to ""([^""]*)""")]
+        public void theBundleMetashouldbecontainservicefilteringstatussetto(string statusValue)
         {
-            CheckForValidMetaDataInResource(_httpContext.FhirResponse.Bundle, FhirConst.StructureDefinitionSystems.kServiceFiltering);
-
+            var found = false;
+            _httpContext.FhirResponse.Bundle.Meta.Extension.ForEach(ext =>
+            {
+                if (ext.Url == FhirConst.StructureDefinitionSystems.kServiceFiltering)
+                {
+                    ext.Value.ToString().ShouldBe(statusValue, "FAIL : Bundle MetaExtension for Service Filtering Status is not set to the value : " + statusValue + "  Found Value : " + ext.Value);
+                    Logger.Log.WriteLine("INFO : Found extension for Service Filtering in Bundle Meta with value : " + ext.Value.ToString());
+                    found = true;
+                }
+            });
+            found.ShouldBeTrue("FAIL : Not found Extension in bundle Meta for Service Filtering Status");
         }
-
-        
 
     }
 }

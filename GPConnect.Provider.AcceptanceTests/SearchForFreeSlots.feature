@@ -538,8 +538,15 @@ Scenario: Check CapabilityStatement includes specific searchInclude for Healthca
 	Then the response status code should indicate success	
 	And the CapabilityStatement has a searchInclude called "Schedule:actor:HealthcareService"
 
+#TODO add in a test to check for service.identfier new aspect in capability statment
+@1.2.8-Only
+Scenario: Check CapabilityStatement slot resource has a valid searchParam called service identifier
+	Given I configure the default "MetadataRead" request
+	When I make the "MetadataRead" request
+	Then the response status code should indicate success	
+	And the CapabilityStatement slot resource has a valid searchParam called service identifier
 
-#TODO - search - with no DOS id only  asking for healthservices - check its linked in refs
+
 @1.2.8-Only
 Scenario: Searching for free slots with valid and Healthcare parameters should return success
 	Given I configure the default "SearchForFreeSlots" request
@@ -554,8 +561,6 @@ Scenario: Searching for free slots with valid and Healthcare parameters should r
 		And I Check a Healthcare Service Resource has been Returned
 		And I Check that the references to healthcareServices are set correctly on Schedules
 
-#Note service filtering needs to be turned on
-#TODO  add in check for service filtering status at top of bundle returned
 @1.2.8-Only
 Scenario Outline: Searching for free slots with a specific DOS ID that is linked to a schedule
 	Given I set the Get Request Id to the Logical Identifer for Read Healthcare Service "<HealthCareService>"
@@ -576,6 +581,7 @@ Scenario Outline: Searching for free slots with a specific DOS ID that is linked
 		And the response should be a Bundle resource of type "searchset"
 		And I Check that atleast One Slot is returned
 		And I Check that atleast One Schedule is returned
+		And the Bundle Meta should be contain service filtering status set to "enabled"
 		And I Check a Healthcare Service Resource has been Returned
 		And I Check that the references to healthcareServices are set correctly on Schedules
 		And I Check that the HealthcareService is the correct one and is linked to the Schedule
@@ -583,8 +589,7 @@ Scenario Outline: Searching for free slots with a specific DOS ID that is linked
 		| HealthCareService |
 		| HEALTHCARE2     |
 
-#TODO search for heathcare service 1 - expect no slots - as not linked to a schedule
-#TODO  add in check for service filtering status at top of bundle returned
+
 @1.2.8-Only
 Scenario Outline: Searching for free slots with a specific DOS ID that is NOT linked to a schedule
 	Given I set the Get Request Id to the Logical Identifer for Read Healthcare Service "<HealthCareService>"
@@ -608,8 +613,7 @@ Scenario Outline: Searching for free slots with a specific DOS ID that is NOT li
 		| HealthCareService |
 		| HEALTHCARE1     |
 
-#TODO - search with dos id - when valid partial dateTime strings including healthcare param
-#TODO  add in check for service filtering status at top of bundle returned
+
 @1.2.8-Only
 Scenario Outline: Searching for free slots with a valid DOS ID with valid partial dateTime strings
 	Given I set the Get Request Id to the Logical Identifer for Read Healthcare Service "HEALTHCARE2"
@@ -634,6 +638,7 @@ Scenario Outline: Searching for free slots with a valid DOS ID with valid partia
 		And the response should be a Bundle resource of type "searchset"
 		And I Check that atleast One Slot is returned
 		And I Check that atleast One Schedule is returned
+		And the Bundle Meta should be contain service filtering status set to "enabled"
 		And I Check a Healthcare Service Resource has been Returned
 		And I Check that the references to healthcareServices are set correctly on Schedules
 		And I Check that the HealthcareService is the correct one and is linked to the Schedule
@@ -645,17 +650,19 @@ Scenario Outline: Searching for free slots with a valid DOS ID with valid partia
 		| yyyy-MM-dd  | yyyy-MM-ddTHH:mm:sszzz           |
 
 
-#TODO Search for a Dos ID that doesnt exist
-#TODO check service filtering is enabled
 @1.2.8-Only
 Scenario: Searching for free slots with a DOS ID that does not exist expect error
-		Given I set the request DOS service ID to the following "xxxxyyyyzzz"
+	Given I configure the default "MetadataRead" request
+		When I make the "MetaDataRead" request
+		Then the response status code should indicate success
+		And the CapabilityStatement should contain the Extension with a status of "enabled"
+	Given I set the request DOS service ID to the following "xxxxyyyyzzz"
 		And I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
 		And I set the required parameters with a time period of "2" days
 		And I add the parameter "_include:recurse" with the value "Schedule:actor:HealthcareService"
 		Then I add the saved DOS ID to the request parameter
 		When I make the "SearchForFreeSlots" request
-	Then the response status code should be "404"
-	And the response should be a OperationOutcome resource with error code "NO_RECORD_FOUND"
+		Then the response status code should be "404"
+		And the response should be a OperationOutcome resource with error code "NO_RECORD_FOUND"
 		

@@ -226,5 +226,10 @@
             public const string kEndedAllergies = "Ended allergies (record artifact)";
             public const string kMedications = "Medications and medical devices";
         }
+
+        internal static class SearchParameters
+        {
+            public const string kServiceIdentfier = "https://fhir.nhs.uk/STU3/SearchParameter/GPConnect-Slot-ServiceIdentifier-1";
+        }
     }
 }

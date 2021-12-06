@@ -609,25 +609,23 @@ testRunner.Given("I configure the default \"StructuredMetaDataRead\" request", (
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("CapabilityStatement profile has the rest operation extension for Service Filterin" +
-            "g")]
+        [NUnit.Framework.DescriptionAttribute("CapabilityStatemen has extension for Service Filtering and has status enabled")]
         [NUnit.Framework.CategoryAttribute("1.2.8-Only")]
-        public virtual void CapabilityStatementProfileHasTheRestOperationExtensionForServiceFiltering()
+        public virtual void CapabilityStatemenHasExtensionForServiceFilteringAndHasStatusEnabled()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CapabilityStatement profile has the rest operation extension for Service Filterin" +
-                    "g", null, new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CapabilityStatemen has extension for Service Filtering and has status enabled", null, new string[] {
                         "1.2.8-Only"});
-#line 198
+#line 197
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
+#line 198
+testRunner.Given("I configure the default \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 199
-testRunner.Given("I configure the default \"StructuredMetaDataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.When("I make the \"MetaDataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 200
- testRunner.When("I make the \"StructuredMetaDataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 201
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 202
- testRunner.And("the CapabilityStatement REST Extension should contain \"extension\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 201
+ testRunner.And("the CapabilityStatement should contain the Extension with a status of \"enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
