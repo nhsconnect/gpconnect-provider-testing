@@ -694,3 +694,61 @@ Scenario: Book single appointment ensuring backwards compatibility with consumer
 		And the appointment reason must not be included
 		And the Appointment DeliveryChannel must be valid
 		And the Appointment PractitionerRole must be valid
+
+
+#TODO Book appointment where schedule is linked to a to Service (dos ID)
+#TODO Check that service Filtering is on.
+#TODO SHALL populate a reference to a HealthcareService in the Appointment.participant.actor element
+@1.2.8-Only
+Scenario : Book single appointment for patient against a schedule with a DOS service ID associated
+	Given I set the Get Request Id to the Logical Identifer for Read Healthcare Service "HEALTHCARE2"
+		And I configure the default "HealthcareRead" request
+		When I make the "HealthcareRead" request
+		Then the response status code should indicate success
+		And the Response Resource should be a Healthcare Service
+		And the Healthcare Id should match the GET request Id
+		And the Healthcare service should be valid
+		And I Store the DOS id from the Healthcare service returned
+	Given I get an existing patients  
+		And I store the Patient
+		Then I add the saved DOS ID to the request parameter
+	Given I get Available Free Slots
+		And I store the Free Slots Bundle
+	Given I configure the default "AppointmentCreate" request
+		And I create an Appointment from the stored Patient and stored Schedule
+	When I make the "AppointmentCreate" request
+	Then the response status code should indicate created
+		And the Response Resource should be an Appointment
+	#Examples:
+	#	| HealthCareService |
+	#	| HEALTHCARE2       |	 
+
+
+#@1.2.8-Only
+#Scenario Outline: Searching for free slots with a specific DOS ID that is linked to a schedule
+#	Given I set the Get Request Id to the Logical Identifer for Read Healthcare Service "<HealthCareService>"
+#	And I configure the default "HealthcareRead" request
+#	When I make the "HealthcareRead" request
+#	Then the response status code should indicate success
+#		And the Response Resource should be a Healthcare Service
+#		And the Healthcare Id should match the GET request Id
+#		And the Healthcare service should be valid
+#		And I Store the DOS id from the Healthcare service returned
+#		Given I configure the default "SearchForFreeSlots" request
+#		And I set the JWT Requested Scope to Organization Read
+#		And I set the required parameters with a time period of "2" days
+#		And I add the parameter "_include:recurse" with the value "Schedule:actor:HealthcareService"
+#		Then I add the saved DOS ID to the request parameter
+#		When I make the "SearchForFreeSlots" request
+#	Then the response status code should indicate success
+#		And the response should be a Bundle resource of type "searchset"
+#		And I Check that atleast One Slot is returned
+#		And I Check that atleast One Schedule is returned
+#		And the Bundle Meta should be contain service filtering status set to "enabled"
+#		And I Check a Healthcare Service Resource has been Returned
+#		And I Check that the references to healthcareServices are set correctly on Schedules
+#		And I Check that the HealthcareService is the correct one and is linked to the Schedule
+#	Examples:
+#		| HealthCareService |
+#		| HEALTHCARE2     |
+
