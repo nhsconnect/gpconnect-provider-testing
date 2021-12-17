@@ -528,9 +528,6 @@ Scenario: Search for a slots expecting No Comment elements for the Schedules and
 		And No Schedules or Slots contain comment element
 
 
-
-#WIP
-
 @1.2.8-Only
 Scenario: Check CapabilityStatement includes specific searchInclude for HealthcareServices
 	Given I configure the default "MetadataRead" request
@@ -538,7 +535,7 @@ Scenario: Check CapabilityStatement includes specific searchInclude for Healthca
 	Then the response status code should indicate success	
 	And the CapabilityStatement has a searchInclude called "Schedule:actor:HealthcareService"
 
-#TODO add in a test to check for service.identfier new aspect in capability statment
+
 @1.2.8-Only
 Scenario: Check CapabilityStatement slot resource has a valid searchParam called service identifier
 	Given I configure the default "MetadataRead" request
@@ -563,7 +560,7 @@ Scenario: Searching for free slots with valid and Healthcare parameters should r
 
 @1.2.8-Only
 Scenario Outline: Searching for free slots with a specific DOS ID that is linked to a schedule
-	Given I set the Get Request Id to the Logical Identifer for Read Healthcare Service "<HealthCareService>"
+	Given I set the Get Request Id to the Logical Identifier for Read Healthcare Service "<HealthCareService>"
 	And I configure the default "HealthcareRead" request
 	When I make the "HealthcareRead" request
 	Then the response status code should indicate success
@@ -592,7 +589,7 @@ Scenario Outline: Searching for free slots with a specific DOS ID that is linked
 
 @1.2.8-Only
 Scenario Outline: Searching for free slots with a specific DOS ID that is NOT linked to a schedule
-	Given I set the Get Request Id to the Logical Identifer for Read Healthcare Service "<HealthCareService>"
+	Given I set the Get Request Id to the Logical Identifier for Read Healthcare Service "<HealthCareService>"
 	And I configure the default "HealthcareRead" request
 	When I make the "HealthcareRead" request
 	Then the response status code should indicate success
@@ -616,7 +613,7 @@ Scenario Outline: Searching for free slots with a specific DOS ID that is NOT li
 
 @1.2.8-Only
 Scenario Outline: Searching for free slots with a valid DOS ID with valid partial dateTime strings
-	Given I set the Get Request Id to the Logical Identifer for Read Healthcare Service "HEALTHCARE2"
+	Given I set the Get Request Id to the Logical Identifier for Read Healthcare Service "HEALTHCARE2"
 	And I configure the default "HealthcareRead" request
 	When I make the "HealthcareRead" request
 	Then the response status code should indicate success

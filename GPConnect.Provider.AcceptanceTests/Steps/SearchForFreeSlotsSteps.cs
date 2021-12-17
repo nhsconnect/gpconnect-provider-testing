@@ -47,6 +47,19 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _httpSteps.MakeRequest(GpConnectInteraction.SearchForFreeSlots);
         }
 
+        [Given(@"I get Available Free Slots With a DOS Id in request")]
+        public void GetAvailableFreeSlotsWithaDOSIdinrequest()
+        {
+            _httpSteps.ConfigureRequest(GpConnectInteraction.SearchForFreeSlots);
+
+            _jwtSteps.SetTheJwtRequestedScopeToOrganizationRead();
+            SetRequiredParametersWithOrgTypeAndATimePeriod(14, true);
+
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("service.identifier", "https://fhir.nhs.uk/Id/uec-dos-service-id|" + GlobalContext.HealthcareServiceDosID);
+
+            _httpSteps.MakeRequest(GpConnectInteraction.SearchForFreeSlots);
+        }
+
         [Given(@"I get Available Free Slots with org type ""(.*)""")]
         public void GetAvailableFreeSlots(Boolean orgType)
         {

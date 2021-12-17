@@ -1,10 +1,8 @@
 ﻿@HealthcareRead @1.2.8-Only @1.2.8-Full-Pack
 Feature: HealthcareRead
 
-#WIP
-
 Scenario Outline: Healthcare service read successful request validate the response contains logical identifier
-	Given I set the Get Request Id to the Logical Identifer for Read Healthcare Service "<HealthCareService>"
+	Given I set the Get Request Id to the Logical Identifier for Read Healthcare Service "<HealthCareService>"
 	And I configure the default "HealthcareRead" request
 	When I make the "HealthcareRead" request
 	Then the response status code should indicate success

@@ -3,7 +3,7 @@ Feature: LocationRead
 
 @1.2.3
 Scenario Outline: Location read successful request validate the response contains logical identifier
-	Given I set the Get Request Id to the Logical Identifer for Location "<Location>"
+	Given I set the Get Request Id to the Logical Identifier for Location "<Location>"
 	Given I configure the default "LocationRead" request
 	When I make the "LocationRead" request
 	Then the response status code should indicate success
@@ -30,7 +30,7 @@ Scenario Outline: Location Read with valid identifier which does not exist on pr
 		| a-tm.mss..s |
 
 Scenario Outline: Location Read using the _format parameter to request response format
-	Given I set the Get Request Id to the Logical Identifer for Location "SIT1"
+	Given I set the Get Request Id to the Logical Identifier for Location "SIT1"
 	Given I configure the default "LocationRead" request
 		And I add a Format parameter with the Value "<Format>"
 	When I make the "LocationRead" request
@@ -45,7 +45,7 @@ Scenario Outline: Location Read using the _format parameter to request response 
 		| application/fhir+xml  | XML            |
 
 Scenario Outline: Location Read sending the Accept header and _format parameter to request response format
-	Given I set the Get Request Id to the Logical Identifer for Location "SIT3"
+	Given I set the Get Request Id to the Logical Identifier for Location "SIT3"
 	Given I configure the default "LocationRead" request
 		And I set the Accept header to "<Header>"
 		And I add a Format parameter with the Value "<Format>"
@@ -70,7 +70,7 @@ Scenario: CapabilityStatement profile supports the Location read operation
 
 @1.2.3
 Scenario Outline: Location read resource conforms to GP-Connect specification
-	Given I set the Get Request Id to the Logical Identifer for Location "SIT2"
+	Given I set the Get Request Id to the Logical Identifier for Location "SIT2"
 	Given I configure the default "LocationRead" request
 		And I set the Accept header to "<Header>"
 	When I make the "LocationRead" request
@@ -96,14 +96,14 @@ Scenario Outline: Location read resource conforms to GP-Connect specification
 		| application/fhir+xml  | XML        |
 
 Scenario: Location read should contain ETag
-	Given I set the Get Request Id to the Logical Identifer for Location "SIT1"
+	Given I set the Get Request Id to the Logical Identifier for Location "SIT1"
 	Given I configure the default "LocationRead" request
 	When I make the "LocationRead" request
 	Then the response status code should indicate success
 		And the Response should contain the ETag header matching the Resource Version Id
 
 Scenario: Location read valid response check caching headers exist
-	Given I set the Get Request Id to the Logical Identifer for Location "SIT1"
+	Given I set the Get Request Id to the Logical Identifier for Location "SIT1"
 	Given I configure the default "LocationRead" request
 	When I make the "LocationRead" request
 	Then the response status code should indicate success
@@ -112,7 +112,7 @@ Scenario: Location read valid response check caching headers exist
 		And the required cacheing headers should be present in the response
 
 Scenario: Location read invalid response check caching headers exist
-	Given I set the Get Request Id to the Logical Identifer for Location "SIT1"
+	Given I set the Get Request Id to the Logical Identifier for Location "SIT1"
 	Given I configure the default "LocationRead" request		
 		And I set the Interaction Id header to "urn:nhs:names:services:gpconnect:fhir:rest:read:practitioner-1"
 	When I make the "LocationRead" request

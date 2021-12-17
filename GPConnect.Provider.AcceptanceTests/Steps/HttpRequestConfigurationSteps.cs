@@ -308,7 +308,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _httpContext.HttpRequestConfiguration.RequestUrl = relativePath + "/" + _httpContext.HttpRequestConfiguration.GetRequestId;
         }
 
-        [Given(@"I set the Get Request Id to the Logical Identifer for Location ""([^""]*)""")]
+        [Given(@"I set the Get Request Id to the Logical Identifier for Location ""([^""]*)""")]
         public void SetTheGetRequestIdToTheLogicalIdentiferForLocation(string location)
         {
             string logicalId;
@@ -320,8 +320,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _httpContext.HttpRequestConfiguration.GetRequestId = logicalId;
         }
 
-        [Given(@"I set the Get Request Id to the Logical Identifer for Read Healthcare Service ""([^""]*)""")]
-        public void SetTheGetRequestIdToTheLogicalIdentiferForHealthcareService(string healthcareService)
+        [Given(@"I set the Get Request Id to the Logical Identifier for Read Healthcare Service ""([^""]*)""")]
+        public void SetTheGetRequestIdToTheLogicalIdentifierForHealthcareService(string healthcareService)
         {
             string logicalId;
 

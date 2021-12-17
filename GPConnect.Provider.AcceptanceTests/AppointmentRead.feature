@@ -186,3 +186,36 @@ Scenario Outline: Read a patient’s appointments expecting serviceType is popul
 	Examples:
 		| PatientName | OrgType | DeliveryChannel | PracRole |
 		| patient1    | true    | true            | true     |
+
+
+@1.2.8-Only
+Scenario Outline: Read appointment for patient where a HealthcareService was associated
+	Given I set the Get Request Id to the Logical Identifier for Read Healthcare Service "<HealthCareService>"
+		And I configure the default "HealthcareRead" request
+		When I make the "HealthcareRead" request
+		Then the response status code should indicate success
+		And the Response Resource should be a Healthcare Service
+		And the Healthcare Id should match the GET request Id
+		And the Healthcare service should be valid
+		And I Store the DOS id from the Healthcare service returned
+	Given I get an existing patients nshNumber
+		And I store the Patient
+	Given I get Available Free Slots With a DOS Id in request
+		Then I Check that atleast One Slot is returned
+	Given I store the Free Slots Bundle
+		Then the Bundle Meta should be contain service filtering status set to "enabled"
+	Given I configure the default "AppointmentCreate" request
+		And I create an Appointment from the stored Patient and stored Schedule
+		When I make the "AppointmentCreate" request
+	Then the response status code should indicate created
+		And the Response Resource should be an Appointment
+		Given I store the Created Appointment
+	Given I configure the default "AppointmentRead" request
+		When I make the "AppointmentRead" request
+		Then the response status code should indicate success
+		And the Appointment Participant Type and Actor should be valid
+		And the Appointment Participant Actor should contains a HealthcareService Reference
+	Examples:
+		| HealthCareService |
+		| HEALTHCARE2       |
+

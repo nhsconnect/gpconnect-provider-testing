@@ -475,10 +475,12 @@
                         const string patient = "Patient/";
                         const string practitioner = "Practitioner/";
                         const string location = "Location/";
+                        const string healthcareservice = "HealthcareService/";
 
                         var shouldStartWith = participant.Actor.Reference.StartsWith(patient) ||
                                               participant.Actor.Reference.StartsWith(practitioner) ||
-                                              participant.Actor.Reference.StartsWith(location);
+                                              participant.Actor.Reference.StartsWith(location) ||
+                                              participant.Actor.Reference.StartsWith(healthcareservice);
                        
                         shouldStartWith.ShouldBeTrue($"The Appointment Participant Actor Reference should start with one of {patient}, {practitioner} or {location}, but was {participant.Actor.Reference}.");
                     }
@@ -696,6 +698,26 @@
         public void SetTheCreatedAppointmentserviceTypetoanewvalue(string value)
         {
             _fhirResourceRepository.Appointment.ServiceType.First().Text = value;
+        }
+
+        [Then(@"the Appointment Participant Actor should contains a HealthcareService Reference")]
+        public void theParticipantActorshouldcontainsaHealthcareServiceReference()
+        {
+            var found = false;
+            Appointments.ForEach(appointment =>
+            {
+                appointment.Participant.ForEach(participant =>
+                {
+                    participant.Actor.ShouldNotBeNull("Participant Actor Should Not Be null");
+                    if (participant.Actor?.Reference != null)
+                    {
+                        const string healthcareservice = "HealthcareService/";
+                        found = participant.Actor.Reference.StartsWith(healthcareservice);                    
+                    }
+                });
+            });
+            found.ShouldBeTrue("FAIL : Appointment has No Participant Actor with a reference to a HealthcareService");
+            Logger.Log.WriteLine("INFO : Found Appointment that has a Participant Actor with a reference to a HealthcareService");
         }
 
     }
