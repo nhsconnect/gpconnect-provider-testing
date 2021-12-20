@@ -1,8 +1,5 @@
-﻿@HealthcareFind @1.2.8-Only @1.2.8-Full-Pack
+﻿@HealthcareFind @1.2.8-IncrementalAndRegression @1.2.8-Full-Pack
 Feature: HealthcareFind
-
-#WIP
-#TDODO update data requirements to have atleast one healthcare service setup with DOS ID.
 
 Scenario: Healthcare service find with no service id expect all services returned
 	Given I configure the default "HealthcareFind" request

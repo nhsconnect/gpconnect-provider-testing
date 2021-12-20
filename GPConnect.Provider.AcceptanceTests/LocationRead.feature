@@ -1,7 +1,6 @@
-﻿@location @1.2.7-Full-Pack
+﻿@location @1.2.8-Full-Pack
 Feature: LocationRead
 
-@1.2.3
 Scenario Outline: Location read successful request validate the response contains logical identifier
 	Given I set the Get Request Id to the Logical Identifier for Location "<Location>"
 	Given I configure the default "LocationRead" request
@@ -68,7 +67,6 @@ Scenario: CapabilityStatement profile supports the Location read operation
 	Then the response status code should indicate success
 		And the CapabilityStatement REST Resources should contain the "Location" Resource with the "Read" Interaction
 
-@1.2.3
 Scenario Outline: Location read resource conforms to GP-Connect specification
 	Given I set the Get Request Id to the Logical Identifier for Location "SIT2"
 	Given I configure the default "LocationRead" request

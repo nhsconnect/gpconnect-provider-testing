@@ -1,7 +1,6 @@
-﻿@structuredrecord @1.2.7-Full-Pack
+﻿@structuredrecord @1.2.8-Full-Pack
 Feature: AccessStructuredRecordAllergies
 
-@1.2.4 
 Scenario Outline: Retrieve the allergy structured record section for a patient including resolved allergies
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "<Patient>"
@@ -31,12 +30,9 @@ Scenario Outline: Retrieve the allergy structured record section for a patient i
 		| patient6  |
 		| patient7  |
 		| patient8  |
-# git hub ref 144		| patient11 |
 		| patient12 |
 		| patient13 |
-## removed github ref 91 		| patient15 |
 
-@1.2.4 @1.2.7-IncrementalAndRegression
 Scenario Outline: Retrieve the allergy structured record section for a patient excluding resolved allergies
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "<Patient>"
@@ -153,7 +149,6 @@ Scenario: Retrieve the allergy structured record section excluding resolved alle
 		And the Lists are valid for a patient with explicit no allergies coding
 		And the List of AllergyIntolerances should be valid
 
-@1.2.4
 Scenario: Retrieve the allergy structured record section for a patient without the resolved allergies partParameter expected failure
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"
@@ -164,7 +159,6 @@ Scenario: Retrieve the allergy structured record section for a patient without t
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
 #SJD 06/09/2019 #295 this is now accepted under forward compatability for 1.3.0
-@1.2.4
 Scenario: Retrieve the allergy structured record to include an extra prescription issues parameter expected success
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"
@@ -174,7 +168,6 @@ Scenario: Retrieve the allergy structured record to include an extra prescriptio
 		And Check the operation outcome returns the correct text and diagnotics "includePrescriptionIssues"
 
 #SJD 06/09/2019 #295 this is now accepted under forward compatability for 1.3.0
-@1.2.4
 Scenario: Retrieve the allergy structured record section for a patient with an uknown parameter expected success
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"
@@ -183,7 +176,6 @@ Scenario: Retrieve the allergy structured record section for a patient with an u
 	Then the response status code should indicate success
 		And Check the operation outcome returns the correct text and diagnotics "inlcudeUnknownAllergies"
 
-@1.2.4
 Scenario: Retrieve the allergy structured record section for an invalid NHS number
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for an invalid NHS Number
@@ -208,7 +200,6 @@ Scenario: Retrieve the allergy structured record section for an invalid Identifi
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
 
-@1.2.4
 Scenario: Retrieve the allergy structured record section for an empty Identifier System
 Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1" with an empty Identifier System
@@ -227,7 +218,6 @@ Scenario: Retrieve the allergy structured record section for an invalid paramete
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
 #SJD 06/09/2019 #295 this is now accepted under forward compatability for 1.3.0
-@1.2.4
 Scenario: Retrieve the allergy structured record section for a patient with a timePeriod expected success
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"
@@ -237,7 +227,6 @@ Scenario: Retrieve the allergy structured record section for a patient with a ti
 		And Check the operation outcome returns the correct text and diagnotics "TimePeriod"
 
 #SJD 06/09/2019 #295 this is now accepted under forward compatability for 1.3.0
-@1.2.4
 Scenario: Retrieve the allergy structured record section for a patient with a start date only expected success
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"
@@ -247,7 +236,6 @@ Scenario: Retrieve the allergy structured record section for a patient with a st
 		And Check the operation outcome returns the correct text and diagnotics "TimePeriod"
 
 #SJD 06/09/2019 #295 this is now accepted under forward compatability for 1.3.0
-@1.2.4
 Scenario: Retrieve the allergy structured record section for a patient with an end date only expected success
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1"
@@ -300,7 +288,6 @@ Scenario:  structured record for a patient that is not in the database
 		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
 
 #PG 30/8/2019 - #289
-@1.2.4
 Scenario Outline: Structured Allergies Patient Has multiple Warnings and Associated Notes
 	Given I configure the default "GpcGetStructuredRecord" request 
 		And I add an NHS Number parameter for "patient16"

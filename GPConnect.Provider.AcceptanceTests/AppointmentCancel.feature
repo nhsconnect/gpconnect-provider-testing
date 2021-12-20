@@ -1,7 +1,6 @@
-﻿@appointment @1.2.7-Full-Pack
+﻿@appointment @1.2.8-Full-Pack
 Feature: AppointmentCancel
 
-@1.2.3
 Scenario Outline: I perform a successful cancel appointment
 	Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"
 		And I store the Created Appointment
@@ -34,7 +33,6 @@ Scenario Outline: I perform a successful cancel appointment
 		| patient2    |
 		| patient3    |
 
-@1.2.3
 Scenario Outline: I perform a successful cancel appointment with Extensions
 	Given I create an Appointment for Patient "<PatientName>" 
 		And I create an Appointment with org type "<OrgType>" with channel "<DeliveryChannel>" with prac role "<PracRole>"	
@@ -52,7 +50,6 @@ Scenario Outline: I perform a successful cancel appointment with Extensions
 		| PatientName | OrgType | DeliveryChannel | PracRole |
 		| patient1    | true    | true            | true     |
 
-@1.2.3
 Scenario: I perform a successful cancel appointment and amend the comment
 	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment
@@ -63,7 +60,6 @@ Scenario: I perform a successful cancel appointment and amend the comment
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
-@1.2.3
 Scenario: I perform cancel appointment and update the description
 	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment
@@ -352,7 +348,6 @@ Scenario: I perform cancel appointment with participants with absoulte reference
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
-@1.2.7-IncrementalAndRegression
 Scenario: Successfully Cancel an appointment that has serviceCategory populated
 	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1"
 		And I store the Created Appointment
@@ -379,7 +374,6 @@ Scenario: Successfully Cancel an appointment that has serviceCategory populated
 		And the Appointment Not In Use should be valid
 		And One Appointment contains serviceCategory element
 
-@1.2.7-IncrementalAndRegression
 Scenario: Successfully Cancel an appointment that has serviceType populated
 	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1"
 		And I store the Created Appointment
@@ -406,7 +400,6 @@ Scenario: Successfully Cancel an appointment that has serviceType populated
 		And the Appointment Not In Use should be valid
 		And One Appointment contains serviceType element
 
-@1.2.7-IncrementalAndRegression
 Scenario: Successfully Cancel an appointment ensuring backwards compatibility with consumers that do not send ServiceCategory And serviceType expect success
 	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1"
 		And I store the Created Appointment
@@ -435,7 +428,7 @@ Scenario: Successfully Cancel an appointment ensuring backwards compatibility wi
 		And One Appointment contains serviceType element
 
 
-@1.2.8-Only
+@1.2.8-IncrementalAndRegression
 Scenario Outline: Cancel appointment for patient where a HealthcareService was associated
 	Given I set the Get Request Id to the Logical Identifier for Read Healthcare Service "<HealthCareService>"
 		And I configure the default "HealthcareRead" request

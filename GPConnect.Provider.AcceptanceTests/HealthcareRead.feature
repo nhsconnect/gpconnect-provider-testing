@@ -1,4 +1,4 @@
-﻿@HealthcareRead @1.2.8-Only @1.2.8-Full-Pack
+﻿@HealthcareRead @1.2.8-IncrementalAndRegression @1.2.8-Full-Pack
 Feature: HealthcareRead
 
 Scenario Outline: Healthcare service read successful request validate the response contains logical identifier

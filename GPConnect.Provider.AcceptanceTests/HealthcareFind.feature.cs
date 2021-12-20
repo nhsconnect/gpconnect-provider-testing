@@ -20,7 +20,7 @@ namespace GPConnect.Provider.AcceptanceTests
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("HealthcareFind")]
     [NUnit.Framework.CategoryAttribute("HealthcareFind")]
-    [NUnit.Framework.CategoryAttribute("1.2.8-Only")]
+    [NUnit.Framework.CategoryAttribute("1.2.8-IncrementalAndRegression")]
     [NUnit.Framework.CategoryAttribute("1.2.8-Full-Pack")]
     public partial class HealthcareFindFeature
     {
@@ -36,7 +36,7 @@ namespace GPConnect.Provider.AcceptanceTests
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "HealthcareFind", null, ProgrammingLanguage.CSharp, new string[] {
                         "HealthcareFind",
-                        "1.2.8-Only",
+                        "1.2.8-IncrementalAndRegression",
                         "1.2.8-Full-Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -80,20 +80,20 @@ namespace GPConnect.Provider.AcceptanceTests
         public virtual void HealthcareServiceFindWithNoServiceIdExpectAllServicesReturned()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Healthcare service find with no service id expect all services returned", null, ((string[])(null)));
-#line 7
+#line 4
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 8
+#line 5
  testRunner.Given("I configure the default \"HealthcareFind\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 9
+#line 6
  testRunner.When("I make the \"HealthcareFind\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 10
+#line 7
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 11
+#line 8
  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 12
+#line 9
  testRunner.Then("the response searchset contains atleast one HealthService", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 13
+#line 10
  testRunner.And("the response searchset contains valid Healthcare Service resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -104,33 +104,33 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void FindAHealthcareServiceWithADOSIDExpectSuccess()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find a healthcare Service with a DOS ID Expect success", null, ((string[])(null)));
-#line 17
+#line 14
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 18
+#line 15
  testRunner.Given("I configure the default \"HealthcareFind\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 19
+#line 16
  testRunner.When("I make the \"HealthcareFind\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 20
+#line 17
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 21
+#line 18
  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 22
+#line 19
  testRunner.Then("the response searchset contains atleast one HealthService", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 23
+#line 20
  testRunner.And("the response searchset contains valid Healthcare Service resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 24
+#line 21
  testRunner.And("I Store the DOS id from the first Healthcare service returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 25
+#line 22
  testRunner.And("I set the Healthcare Find Operation to use the stored DOS ID from previous find a" +
                     "ll", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 26
+#line 23
  testRunner.When("I make the \"HealthcareFind\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 27
+#line 24
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 28
+#line 25
  testRunner.And("the response searchset has only One Healthcare Service resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 29
+#line 26
  testRunner.And("the response searchset contains valid Healthcare Service resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -141,20 +141,20 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void HealthcareServiceFindWithADOSIDThatDoesNotExist()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Healthcare service find with a DOS ID that does not exist", null, ((string[])(null)));
-#line 32
+#line 29
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 33
+#line 30
  testRunner.And("I configure the default \"HealthcareFind\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 34
+#line 31
  testRunner.Given("I set the Find Operation DOS ID for the request to \"zzzzzz\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 35
+#line 32
  testRunner.When("I make the \"HealthcareFind\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 36
+#line 33
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 37
+#line 34
  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 38
+#line 35
  testRunner.And("the response searchset has NO Healthcare Service resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -165,16 +165,16 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void CapabilityStatementProfileSupportsTheHealthcareServiceSearchOperation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CapabilityStatement profile supports the HealthcareService search operation", null, ((string[])(null)));
-#line 41
+#line 38
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 42
+#line 39
  testRunner.Given("I configure the default \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 43
+#line 40
  testRunner.When("I make the \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 44
+#line 41
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 45
+#line 42
  testRunner.And("the CapabilityStatement REST Resources should contain the \"HealthcareService\" Res" +
                     "ource with the \"SearchType\" Interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden

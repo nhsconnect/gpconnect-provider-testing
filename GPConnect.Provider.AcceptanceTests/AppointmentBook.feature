@@ -1,7 +1,6 @@
-﻿@appointment @1.2.7-Full-Pack
+﻿@appointment @1.2.8-Full-Pack
 Feature: AppointmentBook
 
-@1.2.3
 Scenario: Book single appointment for patient
 	Given I get an existing patients nshNumber
 		And I store the Patient
@@ -39,7 +38,6 @@ Scenario Outline: Book single appointment for patient with optional elements
 		| true    | true            | false    |
 		| true    | true            | true     |
 
-@1.2.3
 Scenario Outline: Book single appointment for patient with Extensions
 	Given I get an existing patients nshNumber
 		And I store the Patient
@@ -56,7 +54,6 @@ Scenario Outline: Book single appointment for patient with Extensions
 		| OrgType | DeliveryChannel | PracRole |
 		| true    | true            | true     |
 
-@1.2.3
 Scenario: Book single appointment for patient without organisation type
 	Given I get an existing patients nshNumber
 		And I store the Patient
@@ -201,7 +198,6 @@ Scenario: Book appointment prefer header set to minimal
 	Then the response status code should indicate created
 		And the response body should be empty
 
-	@1.2.7-IncrementalAndRegression
 Scenario: Book Appointment and appointment participant is valid
 	Given I get an existing patients nshNumber
 		And I store the Patient
@@ -441,7 +437,6 @@ Scenario: Book appointment invalid response check caching headers exist
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 		And the required cacheing headers should be present in the response
 
-@1.2.3
 Scenario: Book appointment with name removed from booking organization
 	Given I get an existing patients nshNumber
 		And I store the Patient
@@ -468,7 +463,6 @@ Scenario: Book appointment with telecom removed from booking organization
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
-@1.2.3
 Scenario: Book appointment with a description
 	Given I get an existing patients nshNumber
 		And I store the Patient
@@ -591,7 +585,6 @@ Scenario: Book appointment without a comment
 		And the response body should be FHIR JSON
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
-@1.2.7-IncrementalAndRegression
 Scenario: Book single appointment for Patient expecting servicecategory is populated
 	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1"
 		And I store the Created Appointment
@@ -612,7 +605,6 @@ Scenario: Book single appointment for Patient expecting servicecategory is popul
 		And the Appointment PractitionerRole must be valid
 		And One Appointment contains serviceCategory element
 
-@1.2.7-IncrementalAndRegression
 Scenario: Book single appointment for Patient expecting serviceType is populated
 	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1"
 		And I store the Created Appointment
@@ -633,7 +625,6 @@ Scenario: Book single appointment for Patient expecting serviceType is populated
 		And the Appointment PractitionerRole must be valid
 		And One Appointment contains serviceType element
 
-@1.2.7-IncrementalAndRegression
 Scenario: Book single appointment expecting servicecategory in response when ServiceCategory and serviceType are in request but ignored
 	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1" With serviceCategory and serviceType in Request
 		And I store the Created Appointment
@@ -654,7 +645,6 @@ Scenario: Book single appointment expecting servicecategory in response when Ser
 		And the Appointment PractitionerRole must be valid
 		And One Appointment contains serviceCategory element
 
-@1.2.7-IncrementalAndRegression
 Scenario: Book single appointment expecting serviceType in response when ServiceCategory and serviceType are in request but ignored
 	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1" With serviceCategory and serviceType in Request
 		And I store the Created Appointment
@@ -675,7 +665,6 @@ Scenario: Book single appointment expecting serviceType in response when Service
 		And the Appointment PractitionerRole must be valid
 		And One Appointment contains serviceType element
 
-@1.2.7-IncrementalAndRegression
 Scenario: Book single appointment ensuring backwards compatibility with consumers that do not send ServiceCategory And serviceType expect success
 	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1" Removing ServiceCategory and ServiceType from Created Appointment
 		And I store the Created Appointment
@@ -696,7 +685,7 @@ Scenario: Book single appointment ensuring backwards compatibility with consumer
 		And the Appointment PractitionerRole must be valid
 
 
-@1.2.8-Only
+@1.2.8-IncrementalAndRegression
 Scenario Outline: Book single appointment for patient against a schedule with a DOS service ID associated
 	Given I set the Get Request Id to the Logical Identifier for Read Healthcare Service "<HealthCareService>"
 		And I configure the default "HealthcareRead" request

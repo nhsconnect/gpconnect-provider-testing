@@ -1,7 +1,6 @@
-﻿@appointment @1.2.7-Full-Pack
+﻿@appointment @1.2.8-Full-Pack
 Feature: AppointmentRead
 
-@1.2.3
 Scenario Outline: I perform a successful Read appointment
 	Given I create an Appointment for Patient "<PatientName>" 
 		And I store the Created Appointment
@@ -151,7 +150,6 @@ Scenario: CapabilityStatement profile supports the read appointment operation
 		And the CapabilityStatement REST Resources should contain the "Appointment" Resource with the "Read" Interaction
 
 
-@1.2.7-IncrementalAndRegression
 Scenario Outline: Read a patient’s appointments expecting servicecategory is populated
 	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1"
 		And I store the Created Appointment
@@ -169,7 +167,6 @@ Scenario Outline: Read a patient’s appointments expecting servicecategory is p
 		| PatientName | OrgType | DeliveryChannel | PracRole |
 		| patient1    | true    | true            | true     |
 
-@1.2.7-IncrementalAndRegression
 Scenario Outline: Read a patient’s appointments expecting serviceType is populated
 	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1"
 		And I store the Created Appointment
@@ -188,7 +185,7 @@ Scenario Outline: Read a patient’s appointments expecting serviceType is popul
 		| patient1    | true    | true            | true     |
 
 
-@1.2.8-Only
+@1.2.8-IncrementalAndRegression
 Scenario Outline: Read appointment for patient where a HealthcareService was associated
 	Given I set the Get Request Id to the Logical Identifier for Read Healthcare Service "<HealthCareService>"
 		And I configure the default "HealthcareRead" request
