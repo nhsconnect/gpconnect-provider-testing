@@ -76,29 +76,31 @@ namespace GPConnect.Provider.AcceptanceTests
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Appointment retrieve success valid id where appointment resource returned is not " +
             "required")]
+        [NUnit.Framework.CategoryAttribute("1.2.8-IncrementalAndRegression")]
         public virtual void AppointmentRetrieveSuccessValidIdWhereAppointmentResourceReturnedIsNotRequired()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve success valid id where appointment resource returned is not " +
-                    "required", null, ((string[])(null)));
-#line 4
+                    "required", null, new string[] {
+                        "1.2.8-IncrementalAndRegression"});
+#line 5
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 5
- testRunner.Given("I get the Patient for Patient Value \"patientNoAppointments\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 6
-  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I get the Patient for Patient Value \"patientNoAppointments\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 7
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 8
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 9
   testRunner.And("I add start query parameters to the Request URL for Period starting today for \"1\"" +
                     " days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 9
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 10
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 11
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 12
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 13
   testRunner.And("the Bundle should contain no Appointments", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -106,39 +108,46 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("I perform a successful retrieve appointment with Extensions")]
+        [NUnit.Framework.CategoryAttribute("1.2.8-IncrementalAndRegression")]
         [NUnit.Framework.TestCaseAttribute("patient1", "true", "true", "true", null)]
         public virtual void IPerformASuccessfulRetrieveAppointmentWithExtensions(string patientName, string orgType, string deliveryChannel, string pracRole, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I perform a successful retrieve appointment with Extensions", null, exampleTags);
-#line 14
+            string[] @__tags = new string[] {
+                    "1.2.8-IncrementalAndRegression"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I perform a successful retrieve appointment with Extensions", null, @__tags);
+#line 16
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 15
+#line 17
  testRunner.Given(string.Format("I create an Appointment for Patient \"{0}\"", patientName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 16
+#line 18
   testRunner.And(string.Format("I create an Appointment with org type \"{0}\" with channel \"{1}\" with prac role \"{2" +
                         "}\"", orgType, deliveryChannel, pracRole), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 17
-  testRunner.And("I store the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 18
- testRunner.Given("I configure the default \"AppointmentRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 19
- testRunner.When("I make the \"AppointmentRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I store the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 20
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("I configure the default \"AppointmentRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 21
-  testRunner.And("the Response Resource should be an Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"AppointmentRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 22
-  testRunner.And("the Appointments returned must be in the future", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 23
-  testRunner.And("the Appointment Id should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Response Resource should be an Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 24
-  testRunner.And("the Appointment Metadata should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Appointments returned must be in the future", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 25
-  testRunner.And("the Appointment DeliveryChannel must be present", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Appointment Id should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 26
+  testRunner.And("the Appointment Metadata should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 27
+  testRunner.And("the Appointment DeliveryChannel must be present", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 28
   testRunner.And("the Appointment PractitionerRole must be present", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 29
+#line 31
   testRunner.And("the Appointment Not In Use should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -152,61 +161,61 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void AppointmentRetrieveMultipleAppointmentRetrived(string patient, string numberOfAppointments, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve multiple appointment retrived", null, exampleTags);
-#line 35
+#line 37
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 36
- testRunner.Given(string.Format("I create \"{0}\" Appointments for Patient \"{1}\" and Organization Code \"ORG1\"", numberOfAppointments, patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 37
- testRunner.Given(string.Format("I get the Patient for Patient Value \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 38
-  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given(string.Format("I create \"{0}\" Appointments for Patient \"{1}\" and Organization Code \"ORG1\"", numberOfAppointments, patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 39
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I get the Patient for Patient Value \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 40
+  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 41
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 42
   testRunner.And("I add start query parameters to the Request URL for Period starting today for \"14" +
                     "\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 41
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 42
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 43
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 44
-  testRunner.And(string.Format("the Bundle should contain a minimum of \"{0}\" Appointments", numberOfAppointments), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 45
-  testRunner.And("the Appointment Id should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 46
-  testRunner.And("the Appointments returned must be in the future", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("the Bundle should contain a minimum of \"{0}\" Appointments", numberOfAppointments), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 47
-  testRunner.And("the Appointment Status should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Appointment Id should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 48
-  testRunner.And("the Appointment Start should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Appointments returned must be in the future", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 49
-  testRunner.And("the Appointment End should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Appointment Status should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 50
-  testRunner.And("the Appointment Slots should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 51
-  testRunner.And("the Appointment Participants should be valid and resolvable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 52
-  testRunner.And("the Appointment Description must be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 53
-  testRunner.And("the Appointment Created must be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 54
-  testRunner.And("the Appointment Participant Type and Actor should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 55
-  testRunner.And("the Appointment Metadata should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 56
   testRunner.And("the Appointment Start should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 57
+#line 51
   testRunner.And("the Appointment End should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 52
+  testRunner.And("the Appointment Slots should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 53
+  testRunner.And("the Appointment Participants should be valid and resolvable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 54
+  testRunner.And("the Appointment Description must be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 55
+  testRunner.And("the Appointment Created must be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 56
+  testRunner.And("the Appointment Participant Type and Actor should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 57
+  testRunner.And("the Appointment Metadata should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 58
-  testRunner.And("the appointment reason must not be included", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Appointment Start should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 59
-  testRunner.And("the Appointment DeliveryChannel must be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Appointment End should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 60
+  testRunner.And("the appointment reason must not be included", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 61
+  testRunner.And("the Appointment DeliveryChannel must be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 62
   testRunner.And("the Appointment PractitionerRole must be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 63
+#line 65
   testRunner.And("the Appointment Not In Use should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -219,25 +228,25 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void AppointmentRetrieveFailDueToInvalidPatientLogicalId(string id, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve fail due to invalid patient logical id", null, exampleTags);
-#line 70
+#line 72
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 71
- testRunner.Given("I get the Patient for Patient Value \"patient4\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 72
-  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 73
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I get the Patient for Patient Value \"patient4\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 74
+  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 75
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 76
   testRunner.And(string.Format("I set the request URL to \"Patient/{0}/Appointment?start=ge2030-03-30&start=le2030" +
                         "-04-30\"", id), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 75
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 76
- testRunner.Then("the response status code should be \"404\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 77
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 78
+ testRunner.Then("the response status code should be \"404\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 79
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 80
   testRunner.And("the response should be a OperationOutcome resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -254,29 +263,29 @@ this.ScenarioInitialize(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve accept header and _format parameter to request response form" +
                     "at", null, exampleTags);
-#line 84
+#line 86
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 85
- testRunner.Given("I create an Appointment for an existing Patient and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 86
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 87
-  testRunner.And(string.Format("I set the Accept header to \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I create an Appointment for an existing Patient and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 88
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 89
+  testRunner.And(string.Format("I set the Accept header to \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 90
   testRunner.And("I add the start time period parameters for \"14\" days starting today using the pre" +
                     "fixes \"ge\" and \"le\" and formats \"yyyy-MM-dd\" and \"yyyy-MM-dd\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 89
-  testRunner.And(string.Format("I add the parameter \"_format\" with the value \"{0}\"", parameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 90
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 91
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And(string.Format("I add the parameter \"_format\" with the value \"{0}\"", parameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 92
-  testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 93
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 94
+  testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 95
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 96
   testRunner.And("the Bundle should contain a minimum of \"1\" Appointments", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -289,27 +298,27 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void AppointmentRetrieveAcceptHeaderToRequestResponseFormat(string header, string bodyFormat, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve accept header to request response format", null, exampleTags);
-#line 102
+#line 104
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 103
- testRunner.Given("I create an Appointment for an existing Patient and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 104
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 105
+ testRunner.Given("I create an Appointment for an existing Patient and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 106
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 107
   testRunner.And("I add start query parameters to the Request URL for Period starting today for \"14" +
                     "\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 106
-  testRunner.And(string.Format("I set the Accept header to \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 107
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 108
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And(string.Format("I set the Accept header to \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 109
-  testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 110
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 111
+  testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 112
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 113
   testRunner.And("the Bundle should contain a minimum of \"1\" Appointments", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -322,27 +331,27 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void AppointmentRetrieve_FormatParameterOnlyToRequestResponseFormat(string parameter, string bodyFormat, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve _format parameter only to request response format", null, exampleTags);
-#line 117
+#line 119
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 118
- testRunner.Given("I create an Appointment for an existing Patient and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 119
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 120
+ testRunner.Given("I create an Appointment for an existing Patient and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 121
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 122
   testRunner.And("I add the start time period parameters for \"14\" days starting today using the pre" +
                     "fixes \"ge\" and \"le\" and formats \"yyyy-MM-dd\" and \"yyyy-MM-dd\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 121
-  testRunner.And(string.Format("I add the parameter \"_format\" with the value \"{0}\"", parameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 122
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 123
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And(string.Format("I add the parameter \"_format\" with the value \"{0}\"", parameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 124
-  testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 125
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 126
+  testRunner.And(string.Format("the response body should be FHIR {0}", bodyFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 127
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 128
   testRunner.And("the Bundle should contain a minimum of \"1\" Appointments", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -361,25 +370,25 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void AppointmentRetrieveInvalidDateFormat(string startFormat, string endFormat, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve invalid date format", null, exampleTags);
-#line 132
+#line 134
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 133
- testRunner.Given("I get the Patient for Patient Value \"patient4\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 134
-  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 135
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I get the Patient for Patient Value \"patient4\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 136
+  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 137
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 138
   testRunner.And(string.Format("I add the start time period parameters for \"14\" days starting today using the pre" +
                         "fixes \"ge\" and \"le\" and formats \"{0}\" and \"{1}\"", startFormat, endFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 137
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 138
- testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 139
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 140
+ testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 141
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 142
   testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
                     "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -400,25 +409,25 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void AppointmentRetrieveInvalidDatePrefix(string startPrefix, string endPrefix, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve invalid date prefix", null, exampleTags);
-#line 152
+#line 154
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 153
- testRunner.Given("I get the Patient for Patient Value \"patient5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 154
-  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 155
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I get the Patient for Patient Value \"patient5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 156
+  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 157
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 158
   testRunner.And(string.Format("I add the start time period parameters for \"14\" days starting today using the pre" +
                         "fixes \"{0}\" and \"{1}\" and formats \"yyyy-MM-dd\" and \"yyyy-MM-dd\"", startPrefix, endPrefix), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 157
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 158
- testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 159
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 160
+ testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 161
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 162
   testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
                     "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -432,24 +441,24 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void AppointmentRetrieveWithOnlyOneStartParameter(string parameter, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve with only one start parameter", null, exampleTags);
-#line 173
+#line 175
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 174
- testRunner.Given("I get the Patient for Patient Value \"patient5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 175
-  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 176
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I get the Patient for Patient Value \"patient5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 177
-  testRunner.And(string.Format("I add the parameter \"start\" with the value \"{0}\"", parameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 178
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 179
- testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And(string.Format("I add the parameter \"start\" with the value \"{0}\"", parameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 180
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 181
+ testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 182
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 183
   testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
                     "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -463,26 +472,26 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void AppointmentRetreiveWithDateParametersInThePast(string startDate, string endDate, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retreive with date parameters in the past", null, exampleTags);
-#line 187
+#line 189
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 188
- testRunner.Given("I get the Patient for Patient Value \"patient3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 189
-  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 190
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I get the Patient for Patient Value \"patient3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 191
-  testRunner.And(string.Format("I add the parameter \"start\" with the value \"{0}\"", startDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 192
-  testRunner.And(string.Format("I add the parameter \"start\" with the value \"{0}\"", endDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 193
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And(string.Format("I add the parameter \"start\" with the value \"{0}\"", startDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 194
- testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And(string.Format("I add the parameter \"start\" with the value \"{0}\"", endDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 195
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 196
+ testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 197
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 198
   testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
                     "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -494,24 +503,24 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void AppointmentRetreiveWithEndDateBeforeStartDate()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retreive with end date before start date", null, ((string[])(null)));
-#line 202
+#line 204
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 203
- testRunner.Given("I create an Appointment for an existing Patient and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 204
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 205
-  testRunner.And("I add the parameter \"start\" with the value \"ge2030-03-03\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I create an Appointment for an existing Patient and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 206
-  testRunner.And("I add the parameter \"start\" with the value \"le2030-01-01\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 207
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I add the parameter \"start\" with the value \"ge2030-03-03\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 208
- testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I add the parameter \"start\" with the value \"le2030-01-01\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 209
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 210
+ testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 211
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 212
   testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
                     "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -523,23 +532,23 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void AppointmentRetrieveBundleValidResourcesReturnedInTheResponse()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve bundle valid resources returned in the response", null, ((string[])(null)));
-#line 212
+#line 214
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 213
- testRunner.Given("I create an Appointment for an existing Patient and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 214
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 215
+ testRunner.Given("I create an Appointment for an existing Patient and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 216
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 217
   testRunner.And("I add start query parameters to the Request URL for Period starting today for \"14" +
                     "\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 216
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 217
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 218
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 219
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 220
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 221
   testRunner.And("the Appointment Participants should be valid and resolvable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -552,25 +561,25 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void AppointmentRetrieveJWTPatientTypeRequestInvalid(string jWTType, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve JWT patient type request invalid", null, exampleTags);
-#line 221
+#line 223
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 222
- testRunner.Given("I create an Appointment for an existing Patient and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 223
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 224
+ testRunner.Given("I create an Appointment for an existing Patient and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 225
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 226
   testRunner.And("I add start query parameters to the Request URL for Period starting today for \"14" +
                     "\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 225
-  testRunner.And(string.Format("I set the JWT requested scope to \"{0}\"", jWTType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 226
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 227
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And(string.Format("I set the JWT requested scope to \"{0}\"", jWTType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 228
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 229
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 230
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 231
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -581,28 +590,28 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void AppointmentRetrieveSendingAdditionalValidParametersInTheRequest()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve sending additional valid parameters in the request", null, ((string[])(null)));
-#line 235
+#line 237
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 236
- testRunner.Given("I get the Patient for Patient Value \"patient5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 237
-  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 238
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I get the Patient for Patient Value \"patient5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 239
-  testRunner.And("I add the parameter \"start\" with the value \"ge2030-03-03\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 240
-  testRunner.And("I add the parameter \"start\" with the value \"le2030-03-30\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 241
-  testRunner.And("I add the parameter \"_sort\" with the value \"date\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I add the parameter \"start\" with the value \"ge2030-03-03\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 242
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I add the parameter \"start\" with the value \"le2030-03-30\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 243
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I add the parameter \"_sort\" with the value \"date\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 244
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 245
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 246
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 247
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -613,16 +622,16 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void CapabilityStatementProfileSupportsTheSearchAppointmentOperation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CapabilityStatement profile supports the search appointment operation", null, ((string[])(null)));
-#line 247
+#line 249
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 248
- testRunner.Given("I configure the default \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 249
- testRunner.When("I make the \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 250
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("I configure the default \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 251
+ testRunner.When("I make the \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 252
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 253
   testRunner.And("the CapabilityStatement REST Resources should contain the \"Appointment\" Resource " +
                     "with the \"SearchType\" Interaction", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -634,25 +643,25 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void AppointmentRetrieveValidResponseCheckCachingHeadersExist()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve valid response check caching headers exist", null, ((string[])(null)));
-#line 253
+#line 255
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 254
- testRunner.Given("I get the Patient for Patient Value \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 255
-  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 256
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I get the Patient for Patient Value \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 257
+  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 258
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 259
   testRunner.And("I add start query parameters to the Request URL for Period starting today for \"1\"" +
                     " days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 258
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 259
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 260
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 261
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 262
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 263
   testRunner.And("the required cacheing headers should be present in the response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -663,30 +672,30 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void AppointmentRetrieveInvalidResponseCheckCachingHeadersExist()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve invalid response check caching headers exist", null, ((string[])(null)));
-#line 263
+#line 265
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 264
- testRunner.Given("I get the Patient for Patient Value \"patient4\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 265
-  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 266
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I get the Patient for Patient Value \"patient4\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 267
+  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 268
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 269
   testRunner.And("I add start query parameters to the Request URL for Period starting today for \"14" +
                     "\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 268
+#line 270
   testRunner.And("I set the Interaction Id header to \"urn:nhs:names:services:gpconnect:fhir:rest:se" +
                     "arch:organization-1 \"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 269
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 270
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 271
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 272
-  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 273
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 274
+  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 275
   testRunner.And("the required cacheing headers should be present in the response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -697,23 +706,23 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void AppointmentRetrieveAndResponseShouldContainValidBookingOrgainzation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Appointment retrieve and response should contain valid booking orgainzation", null, ((string[])(null)));
-#line 275
+#line 277
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 276
- testRunner.Given("I create an Appointment for an existing Patient and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 277
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 278
+ testRunner.Given("I create an Appointment for an existing Patient and Organization Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 279
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 280
   testRunner.And("I add start query parameters to the Request URL for Period starting today for \"14" +
                     "\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 279
- testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 280
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 281
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 282
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 283
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 284
   testRunner.And("the Appointment booking organization extension and contained resource must be val" +
                     "id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -726,35 +735,35 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void RetrieveAPatientSAppointmentsExpectingServicecategoryIsPopulated(string patientName, string orgType, string deliveryChannel, string pracRole, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve a patient’s appointments expecting servicecategory is populated", null, exampleTags);
-#line 284
+#line 286
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 285
+#line 287
  testRunner.Given("I create an Appointment in \"2\" days time for Patient \"patient1\" and Organization " +
                     "Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 286
-  testRunner.And("I store the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 287
- testRunner.Given("I configure the default \"AppointmentRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 288
- testRunner.When("I make the \"AppointmentRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I store the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 289
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("I configure the default \"AppointmentRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 290
-  testRunner.And("the Response Resource should be an Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"AppointmentRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 291
-  testRunner.And("the Appointments returned must be in the future", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 292
-  testRunner.And("the Appointment Id should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Response Resource should be an Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 293
-  testRunner.And("the Appointment Metadata should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Appointments returned must be in the future", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 294
-  testRunner.And("the Appointment DeliveryChannel must be present", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Appointment Id should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 295
-  testRunner.And("the Appointment PractitionerRole must be present", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Appointment Metadata should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 296
-  testRunner.And("the Appointment Not In Use should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Appointment DeliveryChannel must be present", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 297
+  testRunner.And("the Appointment PractitionerRole must be present", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 298
+  testRunner.And("the Appointment Not In Use should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 299
   testRunner.And("One Appointment contains serviceCategory element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -766,35 +775,35 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void RetrieveAPatientSAppointmentsExpectingServiceTypeIsPopulated(string patientName, string orgType, string deliveryChannel, string pracRole, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve a patient’s appointments expecting serviceType is populated", null, exampleTags);
-#line 302
+#line 304
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 303
+#line 305
  testRunner.Given("I create an Appointment in \"2\" days time for Patient \"patient1\" and Organization " +
                     "Code \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 304
-  testRunner.And("I store the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 305
- testRunner.Given("I configure the default \"AppointmentRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 306
- testRunner.When("I make the \"AppointmentRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I store the Created Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 307
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("I configure the default \"AppointmentRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 308
-  testRunner.And("the Response Resource should be an Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"AppointmentRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 309
-  testRunner.And("the Appointments returned must be in the future", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 310
-  testRunner.And("the Appointment Id should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Response Resource should be an Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 311
-  testRunner.And("the Appointment Metadata should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Appointments returned must be in the future", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 312
-  testRunner.And("the Appointment DeliveryChannel must be present", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Appointment Id should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 313
-  testRunner.And("the Appointment PractitionerRole must be present", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Appointment Metadata should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 314
-  testRunner.And("the Appointment Not In Use should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Appointment DeliveryChannel must be present", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 315
+  testRunner.And("the Appointment PractitionerRole must be present", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 316
+  testRunner.And("the Appointment Not In Use should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 317
   testRunner.And("One Appointment contains serviceType element", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -813,60 +822,60 @@ this.ScenarioInitialize(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve appointment for patient where a HealthcareService was associated", null, @__tags);
-#line 322
+#line 324
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 323
+#line 325
  testRunner.Given(string.Format("I set the Get Request Id to the Logical Identifier for Read Healthcare Service \"{" +
                         "0}\"", healthCareService), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 324
-  testRunner.And("I configure the default \"HealthcareRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 325
-  testRunner.When("I make the \"HealthcareRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 326
-  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I configure the default \"HealthcareRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 327
-  testRunner.And("the Response Resource should be a Healthcare Service", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.When("I make the \"HealthcareRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 328
-  testRunner.And("the Healthcare Id should match the GET request Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 329
-  testRunner.And("the Healthcare service should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Response Resource should be a Healthcare Service", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 330
-  testRunner.And("I Store the DOS id from the Healthcare service returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the Healthcare Id should match the GET request Id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 331
- testRunner.Given("I get an existing patients nshNumber", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+  testRunner.And("the Healthcare service should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 332
-  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I Store the DOS id from the Healthcare service returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 333
- testRunner.Given("I get Available Free Slots With a DOS Id in request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I get an existing patients nshNumber", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 334
-  testRunner.Then("I Check that atleast One Slot is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 335
- testRunner.Given("I store the Free Slots Bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I get Available Free Slots With a DOS Id in request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 336
-  testRunner.Then("the Bundle Meta should be contain service filtering status set to \"enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.Then("I Check that atleast One Slot is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 337
- testRunner.Given("I configure the default \"AppointmentCreate\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I store the Free Slots Bundle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 338
-  testRunner.And("I create an Appointment from the stored Patient and stored Schedule", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.Then("the Bundle Meta should be contain service filtering status set to \"enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 339
-  testRunner.When("I make the \"AppointmentCreate\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("I configure the default \"AppointmentCreate\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 340
- testRunner.Then("the response status code should indicate created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I create an Appointment from the stored Patient and stored Schedule", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 341
-  testRunner.And("the Response Resource should be an Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.When("I make the \"AppointmentCreate\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 342
- testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Then("the response status code should indicate created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 343
+  testRunner.And("the Response Resource should be an Appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 344
+ testRunner.Given("I configure the default \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 345
   testRunner.And("I add start query parameters to the Request URL for Period starting today for \"14" +
                     "\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 344
-  testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 345
-  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 346
-  testRunner.And("the Appointment Participant Type and Actor should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.When("I make the \"AppointmentSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 347
+  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 348
+  testRunner.And("the Appointment Participant Type and Actor should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 349
   testRunner.And("the Appointment Participant Actor should contains a HealthcareService Reference", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

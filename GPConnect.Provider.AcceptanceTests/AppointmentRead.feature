@@ -1,6 +1,7 @@
 ﻿@appointment @1.2.8-Full-Pack
 Feature: AppointmentRead
 
+@1.2.8-IncrementalAndRegression
 Scenario Outline: I perform a successful Read appointment
 	Given I create an Appointment for Patient "<PatientName>" 
 		And I store the Created Appointment
@@ -22,6 +23,7 @@ Scenario Outline: I perform a successful Read appointment
 		| patient2    |
 		| patient3    |
 
+@1.2.8-IncrementalAndRegression
 Scenario Outline: I perform a successful Read appointment with Extensions
 	Given I create an Appointment for Patient "<PatientName>" 
 		And I create an Appointment with org type "<OrgType>" with channel "<DeliveryChannel>" with prac role "<PracRole>"	

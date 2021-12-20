@@ -1,6 +1,7 @@
 ﻿@appointment @1.2.8-Full-Pack
 Feature: AppointmentCancel
 
+@1.2.8-IncrementalAndRegression
 Scenario Outline: I perform a successful cancel appointment
 	Given I create an Appointment for Patient "<PatientName>" and Organization Code "ORG1"
 		And I store the Created Appointment
@@ -33,6 +34,7 @@ Scenario Outline: I perform a successful cancel appointment
 		| patient2    |
 		| patient3    |
 
+@1.2.8-IncrementalAndRegression
 Scenario Outline: I perform a successful cancel appointment with Extensions
 	Given I create an Appointment for Patient "<PatientName>" 
 		And I create an Appointment with org type "<OrgType>" with channel "<DeliveryChannel>" with prac role "<PracRole>"	

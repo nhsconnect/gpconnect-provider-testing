@@ -1,6 +1,7 @@
 ﻿@appointment @1.2.8-Full-Pack
 Feature: AppointmentBook
 
+@1.2.8-IncrementalAndRegression
 Scenario: Book single appointment for patient
 	Given I get an existing patients nshNumber
 		And I store the Patient
@@ -12,6 +13,7 @@ Scenario: Book single appointment for patient
 	Then the response status code should indicate created
 		And the Response Resource should be an Appointment
 
+@1.2.8-IncrementalAndRegression
 Scenario Outline: Book single appointment for patient with optional elements
 	Given I get an existing patients nshNumber
 		And I store the Patient
