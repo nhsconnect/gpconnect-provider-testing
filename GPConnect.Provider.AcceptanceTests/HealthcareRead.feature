@@ -36,12 +36,11 @@ Scenario: Healthcare service Read with NO identifier expect fail
 	When I make the "HealthcareRead" request
 	Then the response status code should be "400"
 
-
-Scenario: CapabilityStatement profile supports the HealthcareService search operation
+Scenario: CapabilityStatement profile supports the HealthcareService Read operation
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
-		And the CapabilityStatement REST Resources should contain the "HealthcareService" Resource with the "SearchType" Interaction
-
+		And the CapabilityStatement REST Resources should contain the "HealthcareService" Resource with the "Read" Interaction
+		 
 	
 
