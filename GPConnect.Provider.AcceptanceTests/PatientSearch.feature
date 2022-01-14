@@ -1,4 +1,4 @@
-﻿@patient @1.2.7-Full-Pack
+﻿@patient @1.2.8-Full-Pack
 Feature: PatientSearch
 
 Scenario: Returned patients should contain a logical identifier
@@ -139,7 +139,6 @@ Scenario Outline: Patient resource should contain NHS number identifier returned
 		| patient2 |
 		| patient3 |
 
-@1.2.3
 Scenario Outline: Patient search response conforms with the GPConnect specification
 	Given I configure the default "PatientSearch" request
 		And I add a Patient Identifier parameter with default System and Value "<Patient>"
@@ -233,7 +232,6 @@ Given I configure the default "PatientSearch" request
 		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 		And the required cacheing headers should be present in the response
 
-@1.2.3
 Scenario: Returned patients should contain a preferred branch
 	Given I configure the default "PatientSearch" request
 		And I add a Patient Identifier parameter with default System and Value "patient2"

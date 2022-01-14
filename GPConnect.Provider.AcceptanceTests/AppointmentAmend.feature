@@ -1,7 +1,6 @@
-﻿@appointment @1.2.7-Full-Pack
+﻿@appointment @1.2.8-Full-Pack
 Feature: AppointmentAmend
 
-@1.2.3
 Scenario Outline: I perform a successful amend appointment and check the returned appointment resources are in the future
 	Given I create an Appointment for Patient "<Patient>" and Organization Code "ORG1"
 		And I store the Created Appointment
@@ -33,7 +32,6 @@ Scenario Outline: I perform a successful amend appointment and check the returne
 		| patient2 |
 		| patient3 |
 
-@1.2.7-IncrementalAndRegression
 Scenario Outline: I perform a successful amend appointment with Extensions
 	Given I create an Appointment for Patient "<PatientName>" 
 		And I create an Appointment with org type "<OrgType>" with channel "<DeliveryChannel>" with prac role "<PracRole>"	
@@ -243,7 +241,6 @@ Scenario: Amend appointment and update cancellation reason
 
 # git hub ref 157
 # RMB 8/1/19
-@1.2.3
 Scenario: Amend appointment with Comment and Description
 	Given I create an Appointment for an existing Patient and Organization Code "ORG1"
 		And I store the Created Appointment
@@ -278,7 +275,6 @@ Scenario: I perform amend appointment with participants with absoulte references
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
-@1.2.7-IncrementalAndRegression
 Scenario: Successfully amend comment and description on an appointment when sending in ServiceCategory and serviceType in request provider ignores ServiceCategory and serviceType in request
 	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1" With serviceCategory and serviceType in Request
 		And I store the Created Appointment
@@ -305,7 +301,6 @@ Scenario: Successfully amend comment and description on an appointment when send
 		And the Appointment PractitionerRole must be valid
 		And the Appointment Not In Use should be valid
 	
-@1.2.7-IncrementalAndRegression
 Scenario: Successfully amend appointment ensuring backwards compatibility with consumers that do not send ServiceCategory And serviceType expect success
 	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1"
 		And I store the Created Appointment
@@ -334,7 +329,7 @@ Scenario: Successfully amend appointment ensuring backwards compatibility with c
 		And the Appointment Not In Use should be valid
 
 
-@1.2.8-Only
+@1.2.8-IncrementalAndRegression
 Scenario Outline: I perform a successful amend appointment where a HealthcareService associated
 	Given I set the Get Request Id to the Logical Identifier for Read Healthcare Service "<HealthCareService>"
 		And I configure the default "HealthcareRead" request

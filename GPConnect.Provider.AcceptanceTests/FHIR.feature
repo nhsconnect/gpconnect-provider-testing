@@ -1,7 +1,7 @@
-﻿@fhir @1.2.7-Full-Pack
+﻿@fhir @1.2.8-Full-Pack @1.2.8-Full-Pack
 Feature: FHIR
 
-@1.2.8-Only @1.2.8-Full-Pack
+@1.2.8-IncrementalAndRegression @1.2.8-Full-Pack
 Scenario: Fhir Get MetaData
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
@@ -27,19 +27,12 @@ Scenario: CapabilityStatement profile supported fhir version
 	Then the response status code should indicate success
 		And the CapabilityStatement FHIR Version should be "3.0.1"
 
-# github ref 132
-# RMB 29/10/2018
-@1.2.4
 Scenario: CapabilityStatement profile supports the RegisterPatient operation
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
 		And the CapabilityStatement REST Operations should contain "gpc.registerpatient"
 
-#132 - RMB 29/10/2018
-#292 - PG 30/8/2019 - added check for correct url on operation
-@1.2.4
-@1.2.6-IncrementalAndRegression
 Scenario: CapabilityStatement profile supports the GetStructuredRecord operation
 	Given I configure the default "MetadataRead" request
 	When I make the "MetaDataRead" request
@@ -144,7 +137,6 @@ Scenario: endpoint should support gzip compression for metadata endpoint and con
 		And the response body should be FHIR JSON
 		And the Response Resource should be a CapabilityStatement
 
-@1.2.6-IncrementalAndRegression   
 Scenario Outline: CapabilityStatement profile supports the GetMetaDataRead operation
 Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
@@ -172,7 +164,7 @@ Examples:
 | https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-HealthcareService-1   |
           
 
-@1.2.6-IncrementalAndRegression @structuredrecord 
+@structuredrecord 
 Scenario Outline: CapabilityStatement profile supports the GetStructuredMetaDataRead operation
 Given I configure the default "StructuredMetaDataRead" request
 	When I make the "StructuredMetaDataRead" request
@@ -194,7 +186,7 @@ Examples:
 | https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-StructuredRecord-Bundle-1/_history/1.3   |
 | https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-OperationOutcome-1/_history/1.2          |
           
-@1.2.8-Only
+@1.2.8-IncrementalAndRegression
 Scenario: CapabilityStatemen has extension for Service Filtering and has status enabled
 Given I configure the default "MetadataRead" request
 	When I make the "MetaDataRead" request

@@ -1,7 +1,6 @@
-﻿@structuredrecord @1.2.7-Full-Pack
+﻿@structuredrecord @1.2.8-Full-Pack
 Feature: StructuredMultipleRequests
 
-@1.2.4
 Scenario: Structured request with one parameter no Clinical information expected success
 	Given I configure the default "GpcGetStructuredRecord" request
 	And I add an NHS Number parameter for "patient1"
@@ -9,7 +8,6 @@ Scenario: Structured request with one parameter no Clinical information expected
 	Then the response status code should indicate success
 	And the patient resource in the bundle should contain meta data profile and version id
 
-@1.2.4
 Scenario: Structured request sent includes one forward compatible parameter expected success with operation outcome
 	Given I configure the default "GpcGetStructuredRecord" request
 	And I add an NHS Number parameter for "patient1"
@@ -19,7 +17,6 @@ Scenario: Structured request sent includes one forward compatible parameter expe
 	And Check the operation outcome returns the correct text and diagnotics "includeImmunisations"
 	And the patient resource in the bundle should contain meta data profile and version id
 
-@1.2.4
 Scenario: Structured request sent includes unknown partParameter expected success with operation outcomes
 	Given I configure the default "GpcGetStructuredRecord" request
 	And I add an NHS Number parameter for "patient1"
@@ -29,7 +26,6 @@ Scenario: Structured request sent includes unknown partParameter expected succes
 	And Check the operation outcome returns the correct text and diagnotics "includeMedication.madeUpProblems"
 	And the patient resource in the bundle should contain meta data profile and version id
 
-@1.2.4
 Scenario: Structured request sent two forward compatible parameters expected success with multiple operation outcomes
 	Given I configure the default "GpcGetStructuredRecord" request
 	And I add an NHS Number parameter for "patient1"
@@ -37,9 +33,8 @@ Scenario: Structured request sent two forward compatible parameters expected suc
 	And I add the immunisations parameter
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate success
-		And Check the number of issues in the operation outcome "2"
+	And Check the number of issues in the operation outcome "2"
 
-@1.2.4	
 Scenario: Structured request sent with two parameters one invalid mandatory part parameter expected failure 
 	Given I configure the default "GpcGetStructuredRecord" request
 	And I add an NHS Number parameter for "patient1"
@@ -49,7 +44,6 @@ Scenario: Structured request sent with two parameters one invalid mandatory part
 		And the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
-@1.2.4
 Scenario: Structured request sent with two parameters one invalid boolean part parameter expected success with operation outcome
 	Given I configure the default "GpcGetStructuredRecord" request
 	And I add an NHS Number parameter for "patient1"
@@ -59,7 +53,6 @@ Scenario: Structured request sent with two parameters one invalid boolean part p
 		And the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
-@1.2.4
 Scenario: Structured request sent with two invalid parameters expected failure
 	Given I configure the default "GpcGetStructuredRecord" request
 	And I add an NHS Number parameter for "patient1" using an invalid parameter type
@@ -68,7 +61,6 @@ Scenario: Structured request sent with two invalid parameters expected failure
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
-@1.2.4
 Scenario: Structured request sent with Sensitive patient containing an unsupported parameter
 	Given I configure the default "GpcGetStructuredRecord" request
 	And I add an NHS Number parameter for "patient9"

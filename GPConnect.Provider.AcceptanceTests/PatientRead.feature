@@ -1,4 +1,4 @@
-﻿@patient @1.2.7-Full-Pack
+﻿@patient @1.2.8-Full-Pack
 Feature: PatientRead
 
 Scenario Outline: Read patient 404 if patient not found
@@ -102,7 +102,6 @@ Scenario: Read patient response should contain an ETag header
 		And the Response should contain the ETag header matching the Resource Version Id
 		And the Patient Identifiers should be valid for Patient "patient1"
 
-@1.2.3
 Scenario: Read patient returned should conform to the GPconnect specification
 	Given I get the Patient for Patient Value "patient1"
 		And I store the Patient

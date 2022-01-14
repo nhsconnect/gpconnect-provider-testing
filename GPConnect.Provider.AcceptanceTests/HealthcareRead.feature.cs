@@ -20,7 +20,7 @@ namespace GPConnect.Provider.AcceptanceTests
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("HealthcareRead")]
     [NUnit.Framework.CategoryAttribute("HealthcareRead")]
-    [NUnit.Framework.CategoryAttribute("1.2.8-Only")]
+    [NUnit.Framework.CategoryAttribute("1.2.8-IncrementalAndRegression")]
     [NUnit.Framework.CategoryAttribute("1.2.8-Full-Pack")]
     public partial class HealthcareReadFeature
     {
@@ -36,7 +36,7 @@ namespace GPConnect.Provider.AcceptanceTests
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "HealthcareRead", null, ProgrammingLanguage.CSharp, new string[] {
                         "HealthcareRead",
-                        "1.2.8-Only",
+                        "1.2.8-IncrementalAndRegression",
                         "1.2.8-Full-Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }

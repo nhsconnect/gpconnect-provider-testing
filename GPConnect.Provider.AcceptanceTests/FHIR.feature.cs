@@ -20,7 +20,8 @@ namespace GPConnect.Provider.AcceptanceTests
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("FHIR")]
     [NUnit.Framework.CategoryAttribute("fhir")]
-    [NUnit.Framework.CategoryAttribute("1.2.7-Full-Pack")]
+    [NUnit.Framework.CategoryAttribute("1.2.8-Full-Pack")]
+    [NUnit.Framework.CategoryAttribute("1.2.8-Full-Pack")]
     public partial class FHIRFeature
     {
         
@@ -35,7 +36,8 @@ namespace GPConnect.Provider.AcceptanceTests
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "FHIR", null, ProgrammingLanguage.CSharp, new string[] {
                         "fhir",
-                        "1.2.7-Full-Pack"});
+                        "1.2.8-Full-Pack",
+                        "1.2.8-Full-Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -75,12 +77,12 @@ namespace GPConnect.Provider.AcceptanceTests
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Fhir Get MetaData")]
-        [NUnit.Framework.CategoryAttribute("1.2.8-Only")]
+        [NUnit.Framework.CategoryAttribute("1.2.8-IncrementalAndRegression")]
         [NUnit.Framework.CategoryAttribute("1.2.8-Full-Pack")]
         public virtual void FhirGetMetaData()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fhir Get MetaData", null, new string[] {
-                        "1.2.8-Only",
+                        "1.2.8-IncrementalAndRegression",
                         "1.2.8-Full-Pack"});
 #line 5
 this.ScenarioInitialize(scenarioInfo);
@@ -162,21 +164,19 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("CapabilityStatement profile supports the RegisterPatient operation")]
-        [NUnit.Framework.CategoryAttribute("1.2.4")]
         public virtual void CapabilityStatementProfileSupportsTheRegisterPatientOperation()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CapabilityStatement profile supports the RegisterPatient operation", null, new string[] {
-                        "1.2.4"});
-#line 33
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CapabilityStatement profile supports the RegisterPatient operation", null, ((string[])(null)));
+#line 30
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 34
+#line 31
  testRunner.Given("I configure the default \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 35
+#line 32
  testRunner.When("I make the \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 36
+#line 33
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 37
+#line 34
   testRunner.And("the CapabilityStatement REST Operations should contain \"gpc.registerpatient\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -184,25 +184,21 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("CapabilityStatement profile supports the GetStructuredRecord operation")]
-        [NUnit.Framework.CategoryAttribute("1.2.4")]
-        [NUnit.Framework.CategoryAttribute("1.2.6-IncrementalAndRegression")]
         public virtual void CapabilityStatementProfileSupportsTheGetStructuredRecordOperation()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CapabilityStatement profile supports the GetStructuredRecord operation", null, new string[] {
-                        "1.2.4",
-                        "1.2.6-IncrementalAndRegression"});
-#line 43
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CapabilityStatement profile supports the GetStructuredRecord operation", null, ((string[])(null)));
+#line 36
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 44
+#line 37
  testRunner.Given("I configure the default \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 45
+#line 38
  testRunner.When("I make the \"MetaDataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 46
+#line 39
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 47
+#line 40
  testRunner.And("the CapabilityStatement REST Operations should contain \"gpc.getstructuredrecord\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 48
+#line 41
  testRunner.And("the CapabilityStatement Operation \"gpc.getstructuredrecord\" has url \"https://fhir" +
                     ".nhs.uk/STU3/OperationDefinition/GPConnect-GetStructuredRecord-Operation-1/_hist" +
                     "ory/1.12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -215,20 +211,20 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void FhirContentTypeTestWhereAcceptHeaderIsJSONAndRequestPayloadIsXML()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fhir content type test where Accept header is JSON and request payload is XML", null, ((string[])(null)));
-#line 50
+#line 43
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 51
+#line 44
  testRunner.Given("I configure the default \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 52
+#line 45
   testRunner.And("I set the request content type to \"application/fhir+xml\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 53
+#line 46
   testRunner.And("I set the Accept header to \"application/fhir+json\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 54
+#line 47
  testRunner.When("I make the \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 55
+#line 48
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 56
+#line 49
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -239,20 +235,20 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void FhirContentTypeTestWhereAcceptHeaderIsXMLAndRequestPayloadIsJSON()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fhir content type test where Accept header is XML and request payload is JSON", null, ((string[])(null)));
-#line 58
+#line 51
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 59
+#line 52
  testRunner.Given("I configure the default \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 60
+#line 53
   testRunner.And("I set the request content type to \"application/fhir+json\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 61
+#line 54
   testRunner.And("I set the Accept header to \"application/fhir+xml\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 62
+#line 55
  testRunner.When("I make the \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 63
+#line 56
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 64
+#line 57
   testRunner.And("the response body should be FHIR XML", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -265,22 +261,22 @@ this.ScenarioInitialize(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fhir content type test where _format parameter is JSON and request payload is JSO" +
                     "N", null, ((string[])(null)));
-#line 66
+#line 59
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 67
+#line 60
  testRunner.Given("I configure the default \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 68
+#line 61
   testRunner.And("I set the request content type to \"application/fhir+json\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 69
+#line 62
   testRunner.And("I do not send header \"Accept\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 70
+#line 63
   testRunner.And("I add a Format parameter with the Value \"application/fhir+json\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 71
+#line 64
  testRunner.When("I make the \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 72
+#line 65
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 73
+#line 66
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -293,22 +289,22 @@ this.ScenarioInitialize(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fhir content type test where _format parameter is JSON and request payload is XML" +
                     "", null, ((string[])(null)));
-#line 75
+#line 68
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 76
+#line 69
  testRunner.Given("I configure the default \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 77
+#line 70
   testRunner.And("I set the request content type to \"application/fhir+xml\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 78
+#line 71
   testRunner.And("I do not send header \"Accept\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 79
+#line 72
   testRunner.And("I add a Format parameter with the Value \"application/fhir+json\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 80
+#line 73
  testRunner.When("I make the \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 81
+#line 74
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 82
+#line 75
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -319,22 +315,22 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void FhirContentTypeTestWhere_FormatParameterIsXMLAndRequestPayloadIsXML()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fhir content type test where _format parameter is XML and request payload is XML", null, ((string[])(null)));
-#line 84
+#line 77
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 85
+#line 78
  testRunner.Given("I configure the default \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 86
+#line 79
   testRunner.And("I set the request content type to \"application/fhir+xml\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 87
+#line 80
   testRunner.And("I do not send header \"Accept\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 88
+#line 81
   testRunner.And("I add a Format parameter with the Value \"application/fhir+xml\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 89
+#line 82
  testRunner.When("I make the \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 90
+#line 83
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 91
+#line 84
   testRunner.And("the response body should be FHIR XML", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -347,22 +343,22 @@ this.ScenarioInitialize(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fhir content type test where _format parameter is XML and request payload is JSON" +
                     "", null, ((string[])(null)));
-#line 93
+#line 86
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 94
+#line 87
  testRunner.Given("I configure the default \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 95
+#line 88
   testRunner.And("I set the request content type to \"application/fhir+json\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 96
+#line 89
   testRunner.And("I do not send header \"Accept\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 97
+#line 90
   testRunner.And("I add a Format parameter with the Value \"application/fhir+xml\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 98
+#line 91
  testRunner.When("I make the \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 99
+#line 92
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 100
+#line 93
   testRunner.And("the response body should be FHIR XML", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -373,22 +369,22 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void FhirContentTypeTestWhereAcceptHeaderIsXMLAnd_FormatParameterIsXML()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fhir content type test where Accept header is XML and _format parameter is XML", null, ((string[])(null)));
-#line 102
+#line 95
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 103
+#line 96
  testRunner.Given("I configure the default \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 104
+#line 97
   testRunner.And("I set the request content type to \"application/fhir+xml\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 105
+#line 98
   testRunner.And("I set the Accept header to \"application/fhir+xml\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 106
+#line 99
   testRunner.And("I add a Format parameter with the Value \"application/fhir+xml\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 107
+#line 100
  testRunner.When("I make the \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 108
+#line 101
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 109
+#line 102
   testRunner.And("the response body should be FHIR XML", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -399,22 +395,22 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void FhirContentTypeTestWhereAcceptHeaderIsXMLAnd_FormatParameterIsJSON()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fhir content type test where Accept header is XML and _format parameter is JSON", null, ((string[])(null)));
-#line 111
+#line 104
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 112
+#line 105
  testRunner.Given("I configure the default \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 113
+#line 106
   testRunner.And("I set the request content type to \"application/fhir+xml\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 114
+#line 107
   testRunner.And("I set the Accept header to \"application/fhir+xml\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 115
+#line 108
   testRunner.And("I add a Format parameter with the Value \"application/fhir+json\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 116
+#line 109
  testRunner.When("I make the \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 117
+#line 110
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 118
+#line 111
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -425,22 +421,22 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void FhirContentTypeTestWhereAcceptHeaderIsJSONAnd_FormatParameterIsJSON()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fhir content type test where Accept header is JSON and _format parameter is JSON", null, ((string[])(null)));
-#line 120
+#line 113
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 121
+#line 114
  testRunner.Given("I configure the default \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 122
+#line 115
   testRunner.And("I set the request content type to \"application/fhir+json\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 123
+#line 116
   testRunner.And("I set the Accept header to \"application/fhir+json\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 124
+#line 117
   testRunner.And("I add a Format parameter with the Value \"application/fhir+json\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 125
+#line 118
  testRunner.When("I make the \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 126
+#line 119
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 127
+#line 120
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -451,22 +447,22 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void FhirContentTypeTestWhereAcceptHeaderIsJSONAnd_FormatParameterIsXML()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fhir content type test where Accept header is JSON and _format parameter is XML", null, ((string[])(null)));
-#line 129
+#line 122
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 130
+#line 123
  testRunner.Given("I configure the default \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 131
+#line 124
   testRunner.And("I set the request content type to \"application/fhir+json\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 132
+#line 125
   testRunner.And("I set the Accept header to \"application/fhir+json\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 133
+#line 126
   testRunner.And("I add a Format parameter with the Value \"application/fhir+xml\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 134
+#line 127
  testRunner.When("I make the \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 135
+#line 128
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 136
+#line 129
   testRunner.And("the response body should be FHIR XML", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -479,22 +475,22 @@ this.ScenarioInitialize(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("endpoint should support gzip compression for metadata endpoint and contain the co" +
                     "rrect payload", null, ((string[])(null)));
-#line 138
+#line 131
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 139
+#line 132
  testRunner.Given("I configure the default \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 140
+#line 133
   testRunner.And("I set the Accept-Encoding header to gzip", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 141
+#line 134
  testRunner.When("I make the \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 142
+#line 135
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 143
+#line 136
   testRunner.And("the response should be gzip encoded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 144
+#line 137
   testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 145
+#line 138
   testRunner.And("the Response Resource should be a CapabilityStatement", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -502,7 +498,6 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("CapabilityStatement profile supports the GetMetaDataRead operation")]
-        [NUnit.Framework.CategoryAttribute("1.2.6-IncrementalAndRegression")]
         [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Patient-1", null)]
         [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Organization-1", null)]
         [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Practitioner-1", null)]
@@ -523,29 +518,23 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-HealthcareService-1", null)]
         public virtual void CapabilityStatementProfileSupportsTheGetMetaDataReadOperation(string urlToCheck, string[] exampleTags)
         {
-            string[] @__tags = new string[] {
-                    "1.2.6-IncrementalAndRegression"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CapabilityStatement profile supports the GetMetaDataRead operation", null, @__tags);
-#line 148
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CapabilityStatement profile supports the GetMetaDataRead operation", null, exampleTags);
+#line 140
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 149
+#line 141
 testRunner.Given("I configure the default \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 150
+#line 142
  testRunner.When("I make the \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 151
+#line 143
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 152
+#line 144
  testRunner.And("the CapabilityStatement REST Operations should contain \"gpc.getstructuredrecord\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 153
+#line 145
  testRunner.And("the CapabilityStatement Operation \"gpc.getstructuredrecord\" has url \"https://fhir" +
                     ".nhs.uk/STU3/OperationDefinition/GPConnect-GetStructuredRecord-Operation-1/_hist" +
                     "ory/1.12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 154
+#line 146
     testRunner.And(string.Format("the CapabilityStatement Profile should contain the correct reference and version " +
                         "history \"{0}\"", urlToCheck), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -554,7 +543,6 @@ testRunner.Given("I configure the default \"MetadataRead\" request", ((string)(n
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("CapabilityStatement profile supports the GetStructuredMetaDataRead operation")]
-        [NUnit.Framework.CategoryAttribute("1.2.6-IncrementalAndRegression")]
         [NUnit.Framework.CategoryAttribute("structuredrecord")]
         [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Patient-1/_history/1" +
             ".8", null)]
@@ -580,7 +568,6 @@ testRunner.Given("I configure the default \"MetadataRead\" request", ((string)(n
         public virtual void CapabilityStatementProfileSupportsTheGetStructuredMetaDataReadOperation(string urlToCheck, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "1.2.6-IncrementalAndRegression",
                     "structuredrecord"};
             if ((exampleTags != null))
             {
@@ -611,7 +598,7 @@ testRunner.Given("I configure the default \"StructuredMetaDataRead\" request", (
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("CapabilityStatemen has extension for Service Filtering and has status enabled")]
-        [NUnit.Framework.CategoryAttribute("1.2.8-Only")]
+        [NUnit.Framework.CategoryAttribute("1.2.8-IncrementalAndRegression")]
         public virtual void CapabilityStatemenHasExtensionForServiceFilteringAndHasStatusEnabled()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CapabilityStatemen has extension for Service Filtering and has status enabled", null, new string[] {

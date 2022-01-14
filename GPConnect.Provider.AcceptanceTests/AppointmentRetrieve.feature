@@ -1,6 +1,7 @@
-﻿@appointment @1.2.7-Full-Pack
+﻿@appointment @1.2.8-Full-Pack
 Feature: AppointmentRetrieve
 
+@1.2.8-IncrementalAndRegression
 Scenario: Appointment retrieve success valid id where appointment resource returned is not required
 	Given I get the Patient for Patient Value "patientNoAppointments"
 		And I store the Patient
@@ -11,7 +12,7 @@ Scenario: Appointment retrieve success valid id where appointment resource retur
 		And the response should be a Bundle resource of type "searchset"
 		And the Bundle should contain no Appointments
 
-@1.2.3
+@1.2.8-IncrementalAndRegression
 Scenario Outline: I perform a successful retrieve appointment with Extensions
 	Given I create an Appointment for Patient "<PatientName>" 
 		And I create an Appointment with org type "<OrgType>" with channel "<DeliveryChannel>" with prac role "<PracRole>"	
@@ -32,7 +33,7 @@ Scenario Outline: I perform a successful retrieve appointment with Extensions
 		| PatientName | OrgType | DeliveryChannel | PracRole |
 		| patient1    | true    | true            | true     |
 
-@1.2.3
+
 Scenario Outline: Appointment retrieve multiple appointment retrived
 	Given I create "<numberOfAppointments>" Appointments for Patient "<patient>" and Organization Code "ORG1"
 	Given I get the Patient for Patient Value "<patient>"
@@ -282,7 +283,6 @@ Scenario: Appointment retrieve and response should contain valid booking orgainz
 		And the response body should be FHIR JSON
 		And the Appointment booking organization extension and contained resource must be valid
 
-@1.2.7-IncrementalAndRegression
 Scenario Outline: Retrieve a patient’s appointments expecting servicecategory is populated
 	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1"
 		And I store the Created Appointment
@@ -301,7 +301,6 @@ Scenario Outline: Retrieve a patient’s appointments expecting servicecategory 
 		| PatientName | OrgType | DeliveryChannel | PracRole |
 		| patient1    | true    | true            | true     |
 
-@1.2.7-IncrementalAndRegression
 Scenario Outline: Retrieve a patient’s appointments expecting serviceType is populated
 	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1"
 		And I store the Created Appointment
@@ -321,7 +320,7 @@ Scenario Outline: Retrieve a patient’s appointments expecting serviceType is p
 		| patient1    | true    | true            | true     |
 
 
-@1.2.8-Only
+@1.2.8-IncrementalAndRegression
 Scenario Outline: Retrieve appointment for patient where a HealthcareService was associated
 	Given I set the Get Request Id to the Logical Identifier for Read Healthcare Service "<HealthCareService>"
 		And I configure the default "HealthcareRead" request

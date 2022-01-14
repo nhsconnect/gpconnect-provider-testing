@@ -1,4 +1,4 @@
-﻿@getschedule @1.2.7-Full-Pack
+﻿@getschedule @1.2.8-Full-Pack
 Feature: SearchForFreeSlots
 	
 Scenario Outline: Searching for free slots with valid parameters should return success
@@ -43,7 +43,6 @@ Scenario Outline: Searching for free slots should fail due to missing parameters
 	| status                    |
 # removed 1.2.1 RMB 1/10/2018	| searchFilter,searchFilter |
 
-@1.2.3
 Scenario: Searching for free slots with valid prefixes
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
@@ -120,7 +119,6 @@ Scenario: Searching for free slots with other searchFilter system
 		And the response should be a Bundle resource of type "searchset"
 
 #PG 9-4-2018 #223 - Updated Test to use agreed date formats
-@1.2.3
 Scenario Outline: Searching for free slots with valid partial dateTime strings
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
@@ -139,7 +137,6 @@ Scenario Outline: Searching for free slots with valid partial dateTime strings
 		| yyyy-MM-ddTHH:mm:sszzz  | yyyy-MM-dd           |
 		| yyyy-MM-dd  | yyyy-MM-ddTHH:mm:sszzz           |
 
-@1.2.3
 Scenario Outline: Searching for free slots with invalid partial dateTime strings
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
@@ -295,7 +292,6 @@ Scenario: Successfully search for free slots and check the included practitioner
 		And the Practitioner should exclude disallowed elements
 		And the Practitioner nhsCommunication should be valid
 
-@1.2.3
 Scenario: Successfully search for free slots and check the included location resources returned are valid
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
@@ -345,7 +341,6 @@ Scenario: SearchForFreeSlots invalid response check caching headers exist
 # RMB 25/10/2018
 # git hub ref 175
 # RMB 24/1/19
-@1.2.3
 Scenario Outline: Searching for free slots with org type searchFilter system
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
@@ -374,7 +369,6 @@ Scenario Outline: Searching for free slots with org type searchFilter system
 # RMB 25/10/2018
 # git hub ref 175
 # RMB 24/1/19
-@1.2.3
 Scenario Outline: Searching for free slots with org code searchFilter system
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
@@ -424,7 +418,6 @@ Scenario: Searching for free slots with NO org code and NO org type searchFilter
 
 # git hub ref 175
 # RMB 24/1/19
-@1.2.3
 Scenario Outline: Searching for free slots with org type and code searchFilter system
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
@@ -466,8 +459,6 @@ Scenario Outline: Searching for free slots with org type and code searchFilter s
 	Then the response status code should indicate success	
 	And the CapabilityStatement has a searchInclude called "Location:managingOrganization"
 
-
-@1.2.7-IncrementalAndRegression
 Scenario: Search for a slots expecting a Schedule with serviceCategory populated
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
@@ -487,7 +478,6 @@ Scenario: Search for a slots expecting a Schedule with serviceCategory populated
 		And the Location Address should be valid
 		And One of the Schedules returned Contains the ServiceCategory element set
 	
-@1.2.7-IncrementalAndRegression
 Scenario: Search for a slots expecting a slot with serviceType populated
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
@@ -507,7 +497,6 @@ Scenario: Search for a slots expecting a slot with serviceType populated
 		And the Location Address should be valid
 		And One of the Slots returned Contains the ServiceType element set
 
-@1.2.7-IncrementalAndRegression
 Scenario: Search for a slots expecting No Comment elements for the Schedules and Slots
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
@@ -528,7 +517,7 @@ Scenario: Search for a slots expecting No Comment elements for the Schedules and
 		And No Schedules or Slots contain comment element
 
 
-@1.2.8-Only
+@1.2.8-IncrementalAndRegression
 Scenario: Check CapabilityStatement includes specific searchInclude for HealthcareServices
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
@@ -536,7 +525,7 @@ Scenario: Check CapabilityStatement includes specific searchInclude for Healthca
 	And the CapabilityStatement has a searchInclude called "Schedule:actor:HealthcareService"
 
 
-@1.2.8-Only
+@1.2.8-IncrementalAndRegression
 Scenario: Check CapabilityStatement slot resource has a valid searchParam called service identifier
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
@@ -544,7 +533,7 @@ Scenario: Check CapabilityStatement slot resource has a valid searchParam called
 	And the CapabilityStatement slot resource has a valid searchParam called service identifier
 
 
-@1.2.8-Only
+@1.2.8-IncrementalAndRegression
 Scenario: Searching for free slots with valid and Healthcare parameters should return success
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
@@ -558,7 +547,7 @@ Scenario: Searching for free slots with valid and Healthcare parameters should r
 		And I Check a Healthcare Service Resource has been Returned
 		And I Check that the references to healthcareServices are set correctly on Schedules
 
-@1.2.8-Only
+@1.2.8-IncrementalAndRegression
 Scenario Outline: Searching for free slots with a specific DOS ID that is linked to a schedule
 	Given I set the Get Request Id to the Logical Identifier for Read Healthcare Service "<HealthCareService>"
 	And I configure the default "HealthcareRead" request
@@ -587,7 +576,7 @@ Scenario Outline: Searching for free slots with a specific DOS ID that is linked
 		| HEALTHCARE2     |
 
 
-@1.2.8-Only
+@1.2.8-IncrementalAndRegression
 Scenario Outline: Searching for free slots with a specific DOS ID that is NOT linked to a schedule
 	Given I set the Get Request Id to the Logical Identifier for Read Healthcare Service "<HealthCareService>"
 	And I configure the default "HealthcareRead" request
@@ -611,7 +600,7 @@ Scenario Outline: Searching for free slots with a specific DOS ID that is NOT li
 		| HEALTHCARE1     |
 
 
-@1.2.8-Only
+@1.2.8-IncrementalAndRegression
 Scenario Outline: Searching for free slots with a valid DOS ID with valid partial dateTime strings
 	Given I set the Get Request Id to the Logical Identifier for Read Healthcare Service "HEALTHCARE2"
 	And I configure the default "HealthcareRead" request
@@ -647,7 +636,7 @@ Scenario Outline: Searching for free slots with a valid DOS ID with valid partia
 		| yyyy-MM-dd  | yyyy-MM-ddTHH:mm:sszzz           |
 
 
-@1.2.8-Only
+@1.2.8-IncrementalAndRegression
 Scenario: Searching for free slots with a DOS ID that does not exist expect error
 	Given I configure the default "MetadataRead" request
 		When I make the "MetaDataRead" request
