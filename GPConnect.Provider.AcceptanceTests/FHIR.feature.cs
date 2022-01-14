@@ -520,6 +520,7 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-MedicationRequest-1", null)]
         [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-List-1", null)]
         [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-StructuredRecord-Bundle-1", null)]
+        [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-HealthcareService-1", null)]
         public virtual void CapabilityStatementProfileSupportsTheGetMetaDataReadOperation(string urlToCheck, string[] exampleTags)
         {
             string[] @__tags = new string[] {
@@ -586,22 +587,22 @@ testRunner.Given("I configure the default \"MetadataRead\" request", ((string)(n
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CapabilityStatement profile supports the GetStructuredMetaDataRead operation", null, @__tags);
-#line 175
+#line 176
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 176
-testRunner.Given("I configure the default \"StructuredMetaDataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 177
- testRunner.When("I make the \"StructuredMetaDataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+testRunner.Given("I configure the default \"StructuredMetaDataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 178
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I make the \"StructuredMetaDataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 179
- testRunner.And("the CapabilityStatement REST Operations should contain \"gpc.getstructuredrecord\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 180
+ testRunner.And("the CapabilityStatement REST Operations should contain \"gpc.getstructuredrecord\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 181
  testRunner.And("the CapabilityStatement Operation \"gpc.getstructuredrecord\" has url \"https://fhir" +
                     ".nhs.uk/STU3/OperationDefinition/GPConnect-GetStructuredRecord-Operation-1/_hist" +
                     "ory/1.12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 181
+#line 182
     testRunner.And(string.Format("the CapabilityStatement Profile should contain the correct reference and version " +
                         "history \"{0}\"", urlToCheck), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -615,16 +616,16 @@ testRunner.Given("I configure the default \"StructuredMetaDataRead\" request", (
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CapabilityStatemen has extension for Service Filtering and has status enabled", null, new string[] {
                         "1.2.8-Only"});
-#line 197
+#line 198
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 198
-testRunner.Given("I configure the default \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 199
- testRunner.When("I make the \"MetaDataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+testRunner.Given("I configure the default \"MetadataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 200
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I make the \"MetaDataRead\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 201
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 202
  testRunner.And("the CapabilityStatement should contain the Extension with a status of \"enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

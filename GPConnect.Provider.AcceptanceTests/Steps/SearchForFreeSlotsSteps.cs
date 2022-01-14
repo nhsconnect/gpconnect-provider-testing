@@ -55,7 +55,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _jwtSteps.SetTheJwtRequestedScopeToOrganizationRead();
             SetRequiredParametersWithOrgTypeAndATimePeriod(14, true);
 
-            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("service.identifier", "https://fhir.nhs.uk/Id/uec-dos-service-id|" + GlobalContext.HealthcareServiceDosID);
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("service.identifier", FhirConst.IdentifierSystems.kDosServiceID + "|" + GlobalContext.HealthcareServiceDosID);
 
             _httpSteps.MakeRequest(GpConnectInteraction.SearchForFreeSlots);
         }
@@ -624,7 +624,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"I add the saved DOS ID to the request parameter")]
         public void IaddthesavedDOSIDtotherequestparameter()
         {
-            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("service.identifier", "https://fhir.nhs.uk/Id/uec-dos-service-id|" + GlobalContext.HealthcareServiceDosID);
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("service.identifier", FhirConst.IdentifierSystems.kDosServiceID + "|" + GlobalContext.HealthcareServiceDosID);
         }
 
         [Then(@"the Bundle Meta should be contain service filtering status set to ""([^""]*)""")]

@@ -259,7 +259,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Given(@"I set the Find Operation DOS ID for the request to ""([^""]*)""")]
         public void IsettheFindOperationDOSIDfortherequestto(string DOSId)
         {
-            _httpContext.HttpRequestConfiguration.GetRequestId = "HealthcareService?identifier=https://fhir.nhs.uk/Id/uec-dos-service-id|" + DOSId;
+            _httpContext.HttpRequestConfiguration.GetRequestId = "HealthcareService?identifier=" + FhirConst.IdentifierSystems.kDosServiceID + "|" + DOSId;
             Logger.Log.WriteLine("Info : Set the request DOS ID to : " + _httpContext.HttpRequestConfiguration.GetRequestId);
 
             var lastIndex = _httpContext.HttpRequestConfiguration.RequestUrl.LastIndexOf('/');
@@ -282,7 +282,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         [Then(@"I set the Healthcare Find Operation to use the stored DOS ID from previous find all")]
         public void IsettheHealthcareFindOperationtousethestoredDOSIDfrompreviousfindall( )
         {
-            _httpContext.HttpRequestConfiguration.GetRequestId = "HealthcareService?identifier=https://fhir.nhs.uk/Id/uec-dos-service-id|" + GlobalContext.HealthcareServiceDosID;
+            _httpContext.HttpRequestConfiguration.GetRequestId = "HealthcareService?identifier=" + FhirConst.IdentifierSystems.kDosServiceID + "|" + GlobalContext.HealthcareServiceDosID;
             Logger.Log.WriteLine("Info : Set the request DOS ID to : " + _httpContext.HttpRequestConfiguration.GetRequestId);
 
             var lastIndex = _httpContext.HttpRequestConfiguration.RequestUrl.LastIndexOf('/');

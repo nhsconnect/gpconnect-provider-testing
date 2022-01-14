@@ -169,6 +169,7 @@ Examples:
 | https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-MedicationRequest-1   |
 | https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-List-1                |
 | https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-StructuredRecord-Bundle-1   |
+| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-HealthcareService-1   |
           
 
 @1.2.6-IncrementalAndRegression @structuredrecord 
