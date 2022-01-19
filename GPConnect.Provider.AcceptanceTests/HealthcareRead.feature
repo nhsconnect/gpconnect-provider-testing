@@ -1,5 +1,7 @@
-﻿@HealthcareRead @1.2.8-IncrementalAndRegression @1.2.8-Full-Pack
+﻿@Healthcare @1.2.8-IncrementalAndRegression @1.2.8-Full-Pack
 Feature: HealthcareRead
+
+#NOTE Service Filtering Needs to be enabled for these Tests
 
 Scenario Outline: Healthcare service read successful request validate the response contains logical identifier
 	Given I set the Get Request Id to the Logical Identifier for Read Healthcare Service "<HealthCareService>"

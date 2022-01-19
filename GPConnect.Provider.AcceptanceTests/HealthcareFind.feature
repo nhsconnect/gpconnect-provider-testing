@@ -1,5 +1,7 @@
-﻿@HealthcareFind @1.2.8-IncrementalAndRegression @1.2.8-Full-Pack
+﻿@Healthcare @1.2.8-IncrementalAndRegression @1.2.8-Full-Pack
 Feature: HealthcareFind
+
+#NOTE Service Filtering Needs to be enabled for these Tests
 
 Scenario: Healthcare service find with no service id expect all services returned
 	Given I configure the default "HealthcareFind" request

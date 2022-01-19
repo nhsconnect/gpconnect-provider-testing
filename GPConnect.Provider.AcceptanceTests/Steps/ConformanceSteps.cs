@@ -127,13 +127,11 @@
 				capabilityStatement.Rest.ForEach(rest =>
 				{
 					var resource = rest.Resource.FirstOrDefault(r => r.Type == resourceType);
-
 					resource.ShouldNotBeNull($"The CapabilityStatement REST Resources should contain {resourceType.ToString()} but did not.");
-
 					var interactions = resource.Interaction.Where(i => i.Code == interaction);
-
-					interactions.ShouldNotBeNull($"The CapabilityStatement REST {resourceType.ToString()} Resource Interactions should contain the {interaction.ToString()} Interaction but did not.");
-				});
+                    interactions.Count().ShouldBe(1, $"The CapabilityStatement REST {resourceType.ToString()} Resource Interactions should contain the {interaction.ToString()} Interaction but did not.");                    
+                    Logger.Log.WriteLine($"INFO : Found The CapabilityStatement REST Resource : {resourceType.ToString()}  withe the Interactions : {interaction.ToString()}");
+                });
 			});
 		}
 
