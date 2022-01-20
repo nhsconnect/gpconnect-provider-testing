@@ -1233,13 +1233,11 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Searching for free slots with valid and Healthcare parameters should return succe" +
-            "ss")]
+        [NUnit.Framework.DescriptionAttribute("Searching for free slots with valid Healthcare parameters should return success")]
         [NUnit.Framework.CategoryAttribute("1.2.8-IncrementalAndRegression")]
-        public virtual void SearchingForFreeSlotsWithValidAndHealthcareParametersShouldReturnSuccess()
+        public virtual void SearchingForFreeSlotsWithValidHealthcareParametersShouldReturnSuccess()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Searching for free slots with valid and Healthcare parameters should return succe" +
-                    "ss", null, new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Searching for free slots with valid Healthcare parameters should return success", null, new string[] {
                         "1.2.8-IncrementalAndRegression"});
 #line 537
 this.ScenarioInitialize(scenarioInfo);

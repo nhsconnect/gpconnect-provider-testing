@@ -534,7 +534,7 @@ Scenario: Check CapabilityStatement slot resource has a valid searchParam called
 
 
 @1.2.8-IncrementalAndRegression
-Scenario: Searching for free slots with valid and Healthcare parameters should return success
+Scenario: Searching for free slots with valid Healthcare parameters should return success
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
 		And I set the required parameters with a time period of "2" days
