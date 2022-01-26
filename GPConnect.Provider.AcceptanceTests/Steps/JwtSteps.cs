@@ -286,6 +286,12 @@
             _jwtHelper.RequestedScope = "patient/*.read conf/R";
         }
 
+        [Given(@"I set the JWT Request Scope to nothing")]
+        public void IsettheJWTRequestScopetonothing()
+        {
+            _jwtHelper.RequestedScope = null;
+        }
+
         [Given(@"I set the JWT Practitioner to nothing")]
         public void IsettheJWTPractitionertonothin()
         {

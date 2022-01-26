@@ -488,7 +488,7 @@
         [Given(@"I add the consultation parameter with consultationSearchPeriod partParameter")]
         public void GivenIAddTheConsultationParameterWithConsultationSearchPeriodParameter()
         {
-            var backDate = DateTime.UtcNow.AddYears(-2);
+            var backDate = DateTime.UtcNow.AddYears(-3);
             var futureDate = DateTime.UtcNow.AddDays(-1);
             var startDate = backDate.ToString("yyyy-MM-dd");
             var endDate = futureDate.ToString("yyyy-MM-dd");
@@ -516,7 +516,7 @@
         [Given(@"I add the consultation parameter with startDate only")]
         public void GivenIAddTheConsultationParameterWithStartDateOnly()
         {
-            var backDate = DateTime.UtcNow.AddYears(-2);
+            var backDate = DateTime.UtcNow.AddYears(-3);
             var futureDate = DateTime.UtcNow.AddDays(-1);
             var startDate = backDate.ToString("yyyy-MM-dd");
             //var endDate = futureDate.ToString("yyyy-MM-dd");

@@ -683,12 +683,12 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Scenario: Successfully amend comment and description on an appointment when sendi" +
-            "ng in ServiceCategory and serviceType")]
-        public virtual void ScenarioSuccessfullyAmendCommentAndDescriptionOnAnAppointmentWhenSendingInServiceCategoryAndServiceType()
+        [NUnit.Framework.DescriptionAttribute("Successfully amend comment and description on an appointment when sending in Serv" +
+            "iceCategory and serviceType")]
+        public virtual void SuccessfullyAmendCommentAndDescriptionOnAnAppointmentWhenSendingInServiceCategoryAndServiceType()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Scenario: Successfully amend comment and description on an appointment when sendi" +
-                    "ng in ServiceCategory and serviceType", null, ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Successfully amend comment and description on an appointment when sending in Serv" +
+                    "iceCategory and serviceType", null, ((string[])(null)));
 #line 278
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();

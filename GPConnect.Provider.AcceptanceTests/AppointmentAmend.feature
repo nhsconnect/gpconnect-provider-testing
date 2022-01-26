@@ -275,7 +275,7 @@ Scenario: I perform amend appointment with participants with absoulte references
 	Then the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_RESOURCE"
 
-Scenario: Scenario: Successfully amend comment and description on an appointment when sending in ServiceCategory and serviceType
+Scenario: Successfully amend comment and description on an appointment when sending in ServiceCategory and serviceType
 	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1" With serviceCategory and serviceType in Request
 		And I store the Created Appointment
 	Given I configure the default "AppointmentAmend" request
