@@ -4,7 +4,7 @@ Feature: StructuredConsultations
 # These Tests are only Testing this Structured Area in isolation and Not with other Areas or Combinations of Include Parameters
 # Tests around Multiple Structured Areas in one Request are tested in the MultipleRequests Feature
 
-@1.3.2-IncrementalAndRegression
+
 Scenario: Verify Consultations Response for a Patient with Topic or Headings linked to clinical items and a problem
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"

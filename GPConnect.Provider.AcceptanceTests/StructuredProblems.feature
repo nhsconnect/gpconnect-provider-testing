@@ -4,7 +4,7 @@ Feature: StructuredProblems
 # These Tests are only Testing this Structured Area in isolation and Not with other Areas or Combinations of Include Parameters
 # Tests around Multiple Structured Areas in one Request are tested in the MultipleRequests Feature
 
-@1.3.2-IncrementalAndRegression
+
 Scenario: Verify response for a Patient with Problems linked to some clinical items
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
@@ -35,7 +35,7 @@ Scenario: Verify response for a Patient with Problems linked to some clinical it
 		And I Check the Problems Medications Secondary List is Valid
 
 #Expect this test to fail for TPP as they do not support Problems linked to Problems
-@1.3.2-IncrementalAndRegression
+
 Scenario: Verify response for a Patient with Problems linked to other Problems
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"

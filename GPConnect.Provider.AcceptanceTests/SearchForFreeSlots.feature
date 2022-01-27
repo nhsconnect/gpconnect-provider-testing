@@ -459,7 +459,7 @@ Scenario Outline: Searching for free slots with org type and code searchFilter s
 	Then the response status code should indicate success	
 	And the Foundations CapabilityStatement has a searchInclude called "Location:managingOrganization"
 
-@1.2.7-IncrementalAndRegression
+
 Scenario: Search for a slots expecting a Schedule with serviceCategory populated
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
@@ -478,7 +478,7 @@ Scenario: Search for a slots expecting a Schedule with serviceCategory populated
 		And the Location Name should be valid
 		And the Location Address should be valid
 		And One of the Schedules returned Contains the ServiceCategory element set
-@1.2.7-IncrementalAndRegression
+
 Scenario: Search for a slots expecting a slot with serviceType populated
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
@@ -498,7 +498,7 @@ Scenario: Search for a slots expecting a slot with serviceType populated
 		And the Location Address should be valid
 		And One of the Slots returned Contains the ServiceType element set
 
-@1.2.7-IncrementalAndRegression
+
 Scenario: Search for a slots expecting No Comment elements for the Schedules and Slots
 	Given I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read

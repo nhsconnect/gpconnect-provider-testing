@@ -5,7 +5,7 @@ Feature: FHIR
 #Foundations and Appointments Tests
 ##########################################
 
-@1.3.2-IncrementalAndRegression
+
 Scenario: Fhir Get Metadata and Check Version of Foundations And Appointments CapabilityStatement
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request

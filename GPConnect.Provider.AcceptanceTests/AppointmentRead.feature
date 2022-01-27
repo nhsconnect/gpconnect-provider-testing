@@ -148,7 +148,7 @@ Scenario: CapabilityStatement profile supports the read appointment operation
 	When I make the "MetadataRead" request
 	Then the response status code should indicate success
 		And the CapabilityStatement REST Resources should contain the "Appointment" Resource with the "Read" Interaction
-@1.2.7-IncrementalAndRegression
+
 Scenario Outline: Read a patient’s appointments expecting servicecategory is populated
 	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1"
 		And I store the Created Appointment
@@ -166,7 +166,7 @@ Scenario Outline: Read a patient’s appointments expecting servicecategory is p
 		| PatientName | OrgType | DeliveryChannel | PracRole |
 		| patient1    | true    | true            | true     |
 
-@1.2.7-IncrementalAndRegression
+
 Scenario Outline: Read a patient’s appointments expecting serviceType is populated
 	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1"
 		And I store the Created Appointment
