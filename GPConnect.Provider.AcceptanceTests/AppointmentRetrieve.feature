@@ -1,4 +1,4 @@
-﻿@appointment @1.5.0-Full-Pack @1.6.0-Full-Pack
+﻿@appointment  @1.6.0-Full-Pack
 Feature: AppointmentRetrieve
 
 Scenario: Appointment retrieve success valid id where appointment resource returned is not required
@@ -280,7 +280,7 @@ Scenario: Appointment retrieve and response should contain valid booking orgainz
 		And the response body should be FHIR JSON
 		And the Appointment booking organization extension and contained resource must be valid
 
-@1.2.7-IncrementalAndRegression
+
 Scenario Outline: Retrieve a patient’s appointments expecting servicecategory is populated
 	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1"
 		And I store the Created Appointment
@@ -299,7 +299,7 @@ Scenario Outline: Retrieve a patient’s appointments expecting servicecategory 
 		| PatientName | OrgType | DeliveryChannel | PracRole |
 		| patient1    | true    | true            | true     |
 
-@1.2.7-IncrementalAndRegression
+
 Scenario Outline: Retrieve a patient’s appointments expecting serviceType is populated
 	Given I create an Appointment in "2" days time for Patient "patient1" and Organization Code "ORG1"
 		And I store the Created Appointment

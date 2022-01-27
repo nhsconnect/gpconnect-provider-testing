@@ -21,7 +21,6 @@ namespace GPConnect.Provider.AcceptanceTests
     [NUnit.Framework.DescriptionAttribute("StructuredInvestigations")]
     [NUnit.Framework.CategoryAttribute("Structured")]
     [NUnit.Framework.CategoryAttribute("StructuredInvestigations")]
-    [NUnit.Framework.CategoryAttribute("1.5.0-Full-Pack")]
     [NUnit.Framework.CategoryAttribute("1.6.0-Full-Pack")]
     public partial class StructuredInvestigationsFeature
     {
@@ -38,7 +37,6 @@ namespace GPConnect.Provider.AcceptanceTests
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "StructuredInvestigations", null, ProgrammingLanguage.CSharp, new string[] {
                         "Structured",
                         "StructuredInvestigations",
-                        "1.5.0-Full-Pack",
                         "1.6.0-Full-Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -80,12 +78,10 @@ namespace GPConnect.Provider.AcceptanceTests
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Verify Investigations structured record for a Patient with Investigations not lin" +
             "ked to any problems")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         public virtual void VerifyInvestigationsStructuredRecordForAPatientWithInvestigationsNotLinkedToAnyProblems()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verify Investigations structured record for a Patient with Investigations not lin" +
-                    "ked to any problems", null, new string[] {
-                        "1.5.0-IncrementalAndRegression"});
+                    "ked to any problems", null, ((string[])(null)));
 #line 8
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -153,12 +149,10 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Verify Investigations structured record for a Patient with Investigations associa" +
             "ted to Problems")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         public virtual void VerifyInvestigationsStructuredRecordForAPatientWithInvestigationsAssociatedToProblems()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verify Investigations structured record for a Patient with Investigations associa" +
-                    "ted to Problems", null, new string[] {
-                        "1.5.0-IncrementalAndRegression"});
+                    "ted to Problems", null, ((string[])(null)));
 #line 38
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -232,12 +226,10 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Verify Investigations structured record for a Patient with DiagnosticReports Link" +
             "ed to ProcedureRequests")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         public virtual void VerifyInvestigationsStructuredRecordForAPatientWithDiagnosticReportsLinkedToProcedureRequests()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verify Investigations structured record for a Patient with DiagnosticReports Link" +
-                    "ed to ProcedureRequests", null, new string[] {
-                        "1.5.0-IncrementalAndRegression"});
+                    "ed to ProcedureRequests", null, ((string[])(null)));
 #line 72
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -309,12 +301,10 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve Investigations structured record for a patient that has no Investigation" +
             "s data")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         public virtual void RetrieveInvestigationsStructuredRecordForAPatientThatHasNoInvestigationsData()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve Investigations structured record for a patient that has no Investigation" +
-                    "s data", null, new string[] {
-                        "1.5.0-IncrementalAndRegression"});
+                    "s data", null, ((string[])(null)));
 #line 105
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -360,12 +350,10 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve the Investigations data structured record with period dates equal to cur" +
             "rent date expected success and no operation outcome")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         public virtual void RetrieveTheInvestigationsDataStructuredRecordWithPeriodDatesEqualToCurrentDateExpectedSuccessAndNoOperationOutcome()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the Investigations data structured record with period dates equal to cur" +
-                    "rent date expected success and no operation outcome", null, new string[] {
-                        "1.5.0-IncrementalAndRegression"});
+                    "rent date expected success and no operation outcome", null, ((string[])(null)));
 #line 124
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -388,12 +376,10 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve Investigations data structured record section for an invalid Identifier " +
             "System")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         public virtual void RetrieveInvestigationsDataStructuredRecordSectionForAnInvalidIdentifierSystem()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve Investigations data structured record section for an invalid Identifier " +
-                    "System", null, new string[] {
-                        "1.5.0-IncrementalAndRegression"});
+                    "System", null, ((string[])(null)));
 #line 133
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -416,12 +402,10 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve Investigations data structured record section for an empty Identifier Sy" +
             "stem")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         public virtual void RetrieveInvestigationsDataStructuredRecordSectionForAnEmptyIdentifierSystem()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve Investigations data structured record section for an empty Identifier Sy" +
-                    "stem", null, new string[] {
-                        "1.5.0-IncrementalAndRegression"});
+                    "stem", null, ((string[])(null)));
 #line 142
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -444,12 +428,10 @@ testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", (
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve Investigations data structured record for a patient that has sensitive f" +
             "lag")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         public virtual void RetrieveInvestigationsDataStructuredRecordForAPatientThatHasSensitiveFlag()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve Investigations data structured record for a patient that has sensitive f" +
-                    "lag", null, new string[] {
-                        "1.5.0-IncrementalAndRegression"});
+                    "lag", null, ((string[])(null)));
 #line 151
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -475,7 +457,6 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve the Investigations data structured record with invalid dates expected fa" +
             "ilure")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         [NUnit.Framework.TestCaseAttribute("2014", "2016-01-01", "includeInvestigations", "investigationSearchPeriod", null)]
         [NUnit.Framework.TestCaseAttribute("2014-02", "2014-08-20", "includeInvestigations", "investigationSearchPeriod", null)]
         [NUnit.Framework.TestCaseAttribute("2015-10-23T11:08:32", "2016-11-01", "includeInvestigations", "investigationSearchPeriod", null)]
@@ -486,14 +467,8 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestCaseAttribute("2014-01-01", "2015-10-23T11:08:32+00:00", "includeInvestigations", "investigationSearchPeriod", null)]
         public virtual void RetrieveTheInvestigationsDataStructuredRecordWithInvalidDatesExpectedFailure(string startDate, string endDate, string parameter, string partParameter, string[] exampleTags)
         {
-            string[] @__tags = new string[] {
-                    "1.5.0-IncrementalAndRegression"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the Investigations data structured record with invalid dates expected fa" +
-                    "ilure", null, @__tags);
+                    "ilure", null, exampleTags);
 #line 161
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -519,12 +494,10 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve the Investigations data structured record with investigationSearchPeriod" +
             " in future expected failure")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         public virtual void RetrieveTheInvestigationsDataStructuredRecordWithInvestigationSearchPeriodInFutureExpectedFailure()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the Investigations data structured record with investigationSearchPeriod" +
-                    " in future expected failure", null, new string[] {
-                        "1.5.0-IncrementalAndRegression"});
+                    " in future expected failure", null, ((string[])(null)));
 #line 181
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -550,12 +523,10 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve the Investigations data structured record startDate after endDate expect" +
             "ed failure")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         public virtual void RetrieveTheInvestigationsDataStructuredRecordStartDateAfterEndDateExpectedFailure()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the Investigations data structured record startDate after endDate expect" +
-                    "ed failure", null, new string[] {
-                        "1.5.0-IncrementalAndRegression"});
+                    "ed failure", null, ((string[])(null)));
 #line 191
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();

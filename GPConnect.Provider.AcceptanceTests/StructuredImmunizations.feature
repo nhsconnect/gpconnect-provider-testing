@@ -1,10 +1,10 @@
-﻿@Structured @StructuredImmunizations @1.5.0-Full-Pack @1.6.0-Full-Pack
+﻿@Structured @StructuredImmunizations  @1.6.0-Full-Pack
 Feature: StructuredImmunizations
 
 # These Tests are only Testing this Structured Area in isolation and Not with other Areas or Combinations of Include Parameters
 # Tests around Multiple Structured Areas in one Request are tested in the MultipleRequests Feature
 
-@1.3.2-IncrementalAndRegression	
+	
 Scenario: Verify Immunizations structured record for a Patient with Immunizations not linked to any problems
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient3"
@@ -29,7 +29,7 @@ Scenario: Verify Immunizations structured record for a Patient with Immunization
 		And I Check No Problem Resources are Included
 
 #PG 19-2-2020 - Added for 1.3.2 - To check that associated problems and the problems list are sent.
-@1.3.2-IncrementalAndRegression
+
 Scenario: Verify Immunizations structured record for a Patient with Immunizations associated to Problems
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"

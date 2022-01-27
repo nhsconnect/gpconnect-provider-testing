@@ -21,7 +21,6 @@ namespace GPConnect.Provider.AcceptanceTests
     [NUnit.Framework.DescriptionAttribute("StructuredConsultations")]
     [NUnit.Framework.CategoryAttribute("Structured")]
     [NUnit.Framework.CategoryAttribute("StructuredConsultations")]
-    [NUnit.Framework.CategoryAttribute("1.5.0-Full-Pack")]
     [NUnit.Framework.CategoryAttribute("1.6.0-Full-Pack")]
     public partial class StructuredConsultationsFeature
     {
@@ -38,7 +37,6 @@ namespace GPConnect.Provider.AcceptanceTests
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "StructuredConsultations", null, ProgrammingLanguage.CSharp, new string[] {
                         "Structured",
                         "StructuredConsultations",
-                        "1.5.0-Full-Pack",
                         "1.6.0-Full-Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -80,12 +78,10 @@ namespace GPConnect.Provider.AcceptanceTests
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Verify Consultations Response for a Patient with Topic or Headings linked to clin" +
             "ical items and a problem")]
-        [NUnit.Framework.CategoryAttribute("1.3.2-IncrementalAndRegression")]
         public virtual void VerifyConsultationsResponseForAPatientWithTopicOrHeadingsLinkedToClinicalItemsAndAProblem()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verify Consultations Response for a Patient with Topic or Headings linked to clin" +
-                    "ical items and a problem", null, new string[] {
-                        "1.3.2-IncrementalAndRegression"});
+                    "ical items and a problem", null, ((string[])(null)));
 #line 8
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();

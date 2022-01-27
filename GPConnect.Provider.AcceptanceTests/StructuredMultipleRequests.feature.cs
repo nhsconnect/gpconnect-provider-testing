@@ -21,7 +21,6 @@ namespace GPConnect.Provider.AcceptanceTests
     [NUnit.Framework.DescriptionAttribute("StructuredMultipleRequests")]
     [NUnit.Framework.CategoryAttribute("Structured")]
     [NUnit.Framework.CategoryAttribute("StructuredMultipleRequests")]
-    [NUnit.Framework.CategoryAttribute("1.5.0-Full-Pack")]
     [NUnit.Framework.CategoryAttribute("1.6.0-Full-Pack")]
     public partial class StructuredMultipleRequestsFeature
     {
@@ -38,7 +37,6 @@ namespace GPConnect.Provider.AcceptanceTests
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "StructuredMultipleRequests", null, ProgrammingLanguage.CSharp, new string[] {
                         "Structured",
                         "StructuredMultipleRequests",
-                        "1.5.0-Full-Pack",
                         "1.6.0-Full-Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -80,12 +78,10 @@ namespace GPConnect.Provider.AcceptanceTests
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Structured request with one parameter and no Clinical information expected succes" +
             "s")]
-        [NUnit.Framework.CategoryAttribute("1.3.1-IncrementalAndRegression")]
         public virtual void StructuredRequestWithOneParameterAndNoClinicalInformationExpectedSuccess()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured request with one parameter and no Clinical information expected succes" +
-                    "s", null, new string[] {
-                        "1.3.1-IncrementalAndRegression"});
+                    "s", null, ((string[])(null)));
 #line 5
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -107,12 +103,10 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Structured request sent with three parameters and no expected mandatory for inclu" +
             "deResolvedAllergies - expected failure")]
-        [NUnit.Framework.CategoryAttribute("1.3.1-IncrementalAndRegression")]
         public virtual void StructuredRequestSentWithThreeParametersAndNoExpectedMandatoryForIncludeResolvedAllergies_ExpectedFailure()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured request sent with three parameters and no expected mandatory for inclu" +
-                    "deResolvedAllergies - expected failure", null, new string[] {
-                        "1.3.1-IncrementalAndRegression"});
+                    "deResolvedAllergies - expected failure", null, ((string[])(null)));
 #line 13
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -140,12 +134,10 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Structured request sent with multiple valid parameters but not including the mand" +
             "atory part parameters - expected failure")]
-        [NUnit.Framework.CategoryAttribute("1.3.1-IncrementalAndRegression")]
         public virtual void StructuredRequestSentWithMultipleValidParametersButNotIncludingTheMandatoryPartParameters_ExpectedFailure()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured request sent with multiple valid parameters but not including the mand" +
-                    "atory part parameters - expected failure", null, new string[] {
-                        "1.3.1-IncrementalAndRegression"});
+                    "atory part parameters - expected failure", null, ((string[])(null)));
 #line 24
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -175,12 +167,10 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Structured request sent with valid partParameter for includeMedications and witho" +
             "ut the mandatory partParameter for includeAllergies - expected failure")]
-        [NUnit.Framework.CategoryAttribute("1.3.1-IncrementalAndRegression")]
         public virtual void StructuredRequestSentWithValidPartParameterForIncludeMedicationsAndWithoutTheMandatoryPartParameterForIncludeAllergies_ExpectedFailure()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured request sent with valid partParameter for includeMedications and witho" +
-                    "ut the mandatory partParameter for includeAllergies - expected failure", null, new string[] {
-                        "1.3.1-IncrementalAndRegression"});
+                    "ut the mandatory partParameter for includeAllergies - expected failure", null, ((string[])(null)));
 #line 36
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -210,12 +200,10 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Structured request sent with valid partParameter for includeAllergies and without" +
             " includeMedications - expected success")]
-        [NUnit.Framework.CategoryAttribute("1.3.1-IncrementalAndRegression")]
         public virtual void StructuredRequestSentWithValidPartParameterForIncludeAllergiesAndWithoutIncludeMedications_ExpectedSuccess()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured request sent with valid partParameter for includeAllergies and without" +
-                    " includeMedications - expected success", null, new string[] {
-                        "1.3.1-IncrementalAndRegression"});
+                    " includeMedications - expected success", null, ((string[])(null)));
 #line 49
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -240,12 +228,10 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Structured request sent with two parameters and an invalid boolean part parameter" +
             " expected failure")]
-        [NUnit.Framework.CategoryAttribute("1.3.1-IncrementalAndRegression")]
         public virtual void StructuredRequestSentWithTwoParametersAndAnInvalidBooleanPartParameterExpectedFailure()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured request sent with two parameters and an invalid boolean part parameter" +
-                    " expected failure", null, new string[] {
-                        "1.3.1-IncrementalAndRegression"});
+                    " expected failure", null, ((string[])(null)));
 #line 59
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -271,12 +257,10 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Structured request sent with multiple parameters and part parameters with expecte" +
             "d success including operation outcomes")]
-        [NUnit.Framework.CategoryAttribute("1.3.1-IncrementalAndRegression")]
         public virtual void StructuredRequestSentWithMultipleParametersAndPartParametersWithExpectedSuccessIncludingOperationOutcomes()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured request sent with multiple parameters and part parameters with expecte" +
-                    "d success including operation outcomes", null, new string[] {
-                        "1.3.1-IncrementalAndRegression"});
+                    "d success including operation outcomes", null, ((string[])(null)));
 #line 69
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -303,11 +287,9 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Structured request sent with two invalid parameters expected failure")]
-        [NUnit.Framework.CategoryAttribute("1.3.1-IncrementalAndRegression")]
         public virtual void StructuredRequestSentWithTwoInvalidParametersExpectedFailure()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured request sent with two invalid parameters expected failure", null, new string[] {
-                        "1.3.1-IncrementalAndRegression"});
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured request sent with two invalid parameters expected failure", null, ((string[])(null)));
 #line 81
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -331,12 +313,10 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Structured request sent with multiple parameters expected success and no operatio" +
             "n outcome")]
-        [NUnit.Framework.CategoryAttribute("1.3.2-IncrementalAndRegression")]
         public virtual void StructuredRequestSentWithMultipleParametersExpectedSuccessAndNoOperationOutcome()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Structured request sent with multiple parameters expected success and no operatio" +
-                    "n outcome", null, new string[] {
-                        "1.3.2-IncrementalAndRegression"});
+                    "n outcome", null, ((string[])(null)));
 #line 90
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();

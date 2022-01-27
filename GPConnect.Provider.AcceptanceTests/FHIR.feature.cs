@@ -20,7 +20,6 @@ namespace GPConnect.Provider.AcceptanceTests
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("FHIR")]
     [NUnit.Framework.CategoryAttribute("fhir")]
-    [NUnit.Framework.CategoryAttribute("1.5.0-Full-Pack")]
     [NUnit.Framework.CategoryAttribute("1.6.0-Full-Pack")]
     public partial class FHIRFeature
     {
@@ -36,7 +35,6 @@ namespace GPConnect.Provider.AcceptanceTests
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "FHIR", null, ProgrammingLanguage.CSharp, new string[] {
                         "fhir",
-                        "1.5.0-Full-Pack",
                         "1.6.0-Full-Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -1056,14 +1054,12 @@ testRunner.Given("I configure the default \"StructuredMetaDataRead\" request", (
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Fhir Get Metadata and Check Version of Documents CapabilityStatement")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         [NUnit.Framework.CategoryAttribute("StructuredDocuments")]
         [NUnit.Framework.CategoryAttribute("Structured")]
         [NUnit.Framework.CategoryAttribute("1.6.0-Only")]
         public virtual void FhirGetMetadataAndCheckVersionOfDocumentsCapabilityStatement()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fhir Get Metadata and Check Version of Documents CapabilityStatement", null, new string[] {
-                        "1.5.0-IncrementalAndRegression",
                         "StructuredDocuments",
                         "Structured",
                         "1.6.0-Only"});
@@ -1088,14 +1084,12 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Documents CapabilityStatement profile indicates acceptance of xml and json format" +
             "")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         [NUnit.Framework.CategoryAttribute("StructuredDocuments")]
         [NUnit.Framework.CategoryAttribute("Structured")]
         public virtual void DocumentsCapabilityStatementProfileIndicatesAcceptanceOfXmlAndJsonFormat()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Documents CapabilityStatement profile indicates acceptance of xml and json format" +
                     "", null, new string[] {
-                        "1.5.0-IncrementalAndRegression",
                         "StructuredDocuments",
                         "Structured"});
 #line 360
@@ -1115,13 +1109,11 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Documents CapabilityStatement profile suppliers software versions present")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         [NUnit.Framework.CategoryAttribute("StructuredDocuments")]
         [NUnit.Framework.CategoryAttribute("Structured")]
         public virtual void DocumentsCapabilityStatementProfileSuppliersSoftwareVersionsPresent()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Documents CapabilityStatement profile suppliers software versions present", null, new string[] {
-                        "1.5.0-IncrementalAndRegression",
                         "StructuredDocuments",
                         "Structured"});
 #line 367
@@ -1141,13 +1133,11 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Documents CapabilityStatement profile supported fhir version")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         [NUnit.Framework.CategoryAttribute("StructuredDocuments")]
         [NUnit.Framework.CategoryAttribute("Structured")]
         public virtual void DocumentsCapabilityStatementProfileSupportedFhirVersion()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Documents CapabilityStatement profile supported fhir version", null, new string[] {
-                        "1.5.0-IncrementalAndRegression",
                         "StructuredDocuments",
                         "Structured"});
 #line 374
@@ -1168,14 +1158,12 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Documents Fhir content type test where Accept header is JSON and request payload " +
             "is XML")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         [NUnit.Framework.CategoryAttribute("StructuredDocuments")]
         [NUnit.Framework.CategoryAttribute("Structured")]
         public virtual void DocumentsFhirContentTypeTestWhereAcceptHeaderIsJSONAndRequestPayloadIsXML()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Documents Fhir content type test where Accept header is JSON and request payload " +
                     "is XML", null, new string[] {
-                        "1.5.0-IncrementalAndRegression",
                         "StructuredDocuments",
                         "Structured"});
 #line 381
@@ -1200,14 +1188,12 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Documents Fhir content type test where Accept header is XML and request payload i" +
             "s JSON")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         [NUnit.Framework.CategoryAttribute("StructuredDocuments")]
         [NUnit.Framework.CategoryAttribute("Structured")]
         public virtual void DocumentsFhirContentTypeTestWhereAcceptHeaderIsXMLAndRequestPayloadIsJSON()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Documents Fhir content type test where Accept header is XML and request payload i" +
                     "s JSON", null, new string[] {
-                        "1.5.0-IncrementalAndRegression",
                         "StructuredDocuments",
                         "Structured"});
 #line 390
@@ -1232,14 +1218,12 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Documents Fhir content type test where _format parameter is JSON and request payl" +
             "oad is JSON")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         [NUnit.Framework.CategoryAttribute("StructuredDocuments")]
         [NUnit.Framework.CategoryAttribute("Structured")]
         public virtual void DocumentsFhirContentTypeTestWhere_FormatParameterIsJSONAndRequestPayloadIsJSON()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Documents Fhir content type test where _format parameter is JSON and request payl" +
                     "oad is JSON", null, new string[] {
-                        "1.5.0-IncrementalAndRegression",
                         "StructuredDocuments",
                         "Structured"});
 #line 399
@@ -1266,14 +1250,12 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Documents Fhir content type test where _format parameter is JSON and request payl" +
             "oad is XML")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         [NUnit.Framework.CategoryAttribute("StructuredDocuments")]
         [NUnit.Framework.CategoryAttribute("Structured")]
         public virtual void DocumentsFhirContentTypeTestWhere_FormatParameterIsJSONAndRequestPayloadIsXML()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Documents Fhir content type test where _format parameter is JSON and request payl" +
                     "oad is XML", null, new string[] {
-                        "1.5.0-IncrementalAndRegression",
                         "StructuredDocuments",
                         "Structured"});
 #line 409
@@ -1300,14 +1282,12 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Documents Fhir content type test where _format parameter is XML and request paylo" +
             "ad is XML")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         [NUnit.Framework.CategoryAttribute("StructuredDocuments")]
         [NUnit.Framework.CategoryAttribute("Structured")]
         public virtual void DocumentsFhirContentTypeTestWhere_FormatParameterIsXMLAndRequestPayloadIsXML()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Documents Fhir content type test where _format parameter is XML and request paylo" +
                     "ad is XML", null, new string[] {
-                        "1.5.0-IncrementalAndRegression",
                         "StructuredDocuments",
                         "Structured"});
 #line 419
@@ -1334,14 +1314,12 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Documents Fhir content type test where _format parameter is XML and request paylo" +
             "ad is JSON")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         [NUnit.Framework.CategoryAttribute("StructuredDocuments")]
         [NUnit.Framework.CategoryAttribute("Structured")]
         public virtual void DocumentsFhirContentTypeTestWhere_FormatParameterIsXMLAndRequestPayloadIsJSON()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Documents Fhir content type test where _format parameter is XML and request paylo" +
                     "ad is JSON", null, new string[] {
-                        "1.5.0-IncrementalAndRegression",
                         "StructuredDocuments",
                         "Structured"});
 #line 429
@@ -1368,14 +1346,12 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Documents Fhir content type test where Accept header is XML and _format parameter" +
             " is XML")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         [NUnit.Framework.CategoryAttribute("StructuredDocuments")]
         [NUnit.Framework.CategoryAttribute("Structured")]
         public virtual void DocumentsFhirContentTypeTestWhereAcceptHeaderIsXMLAnd_FormatParameterIsXML()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Documents Fhir content type test where Accept header is XML and _format parameter" +
                     " is XML", null, new string[] {
-                        "1.5.0-IncrementalAndRegression",
                         "StructuredDocuments",
                         "Structured"});
 #line 439
@@ -1402,14 +1378,12 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Documents Fhir content type test where Accept header is XML and _format parameter" +
             " is JSON")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         [NUnit.Framework.CategoryAttribute("StructuredDocuments")]
         [NUnit.Framework.CategoryAttribute("Structured")]
         public virtual void DocumentsFhirContentTypeTestWhereAcceptHeaderIsXMLAnd_FormatParameterIsJSON()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Documents Fhir content type test where Accept header is XML and _format parameter" +
                     " is JSON", null, new string[] {
-                        "1.5.0-IncrementalAndRegression",
                         "StructuredDocuments",
                         "Structured"});
 #line 449
@@ -1436,14 +1410,12 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Documents Fhir content type test where Accept header is JSON and _format paramete" +
             "r is JSON")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         [NUnit.Framework.CategoryAttribute("StructuredDocuments")]
         [NUnit.Framework.CategoryAttribute("Structured")]
         public virtual void DocumentsFhirContentTypeTestWhereAcceptHeaderIsJSONAnd_FormatParameterIsJSON()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Documents Fhir content type test where Accept header is JSON and _format paramete" +
                     "r is JSON", null, new string[] {
-                        "1.5.0-IncrementalAndRegression",
                         "StructuredDocuments",
                         "Structured"});
 #line 459
@@ -1470,14 +1442,12 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Documents Fhir content type test where Accept header is JSON and _format paramete" +
             "r is XML")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         [NUnit.Framework.CategoryAttribute("StructuredDocuments")]
         [NUnit.Framework.CategoryAttribute("Structured")]
         public virtual void DocumentsFhirContentTypeTestWhereAcceptHeaderIsJSONAnd_FormatParameterIsXML()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Documents Fhir content type test where Accept header is JSON and _format paramete" +
                     "r is XML", null, new string[] {
-                        "1.5.0-IncrementalAndRegression",
                         "StructuredDocuments",
                         "Structured"});
 #line 469
@@ -1503,7 +1473,6 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Documents CapabilityStatement returns correct profile versions")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         [NUnit.Framework.CategoryAttribute("StructuredDocuments")]
         [NUnit.Framework.CategoryAttribute("Structured")]
         [NUnit.Framework.TestCaseAttribute("https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Patient-1/_history/1" +
@@ -1523,7 +1492,6 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void DocumentsCapabilityStatementReturnsCorrectProfileVersions(string urlToCheck, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "1.5.0-IncrementalAndRegression",
                     "StructuredDocuments",
                     "Structured"};
             if ((exampleTags != null))
@@ -1549,13 +1517,11 @@ testRunner.Given("I configure the default \"DocumentsMetaDataRead\" request", ((
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Documents CapabilityStatement profile supports the Patient read operation")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         [NUnit.Framework.CategoryAttribute("StructuredDocuments")]
         [NUnit.Framework.CategoryAttribute("Structured")]
         public virtual void DocumentsCapabilityStatementProfileSupportsThePatientReadOperation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Documents CapabilityStatement profile supports the Patient read operation", null, new string[] {
-                        "1.5.0-IncrementalAndRegression",
                         "StructuredDocuments",
                         "Structured"});
 #line 495
@@ -1576,13 +1542,11 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Documents CapabilityStatement profile supports the Patient search operation")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         [NUnit.Framework.CategoryAttribute("StructuredDocuments")]
         [NUnit.Framework.CategoryAttribute("Structured")]
         public virtual void DocumentsCapabilityStatementProfileSupportsThePatientSearchOperation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Documents CapabilityStatement profile supports the Patient search operation", null, new string[] {
-                        "1.5.0-IncrementalAndRegression",
                         "StructuredDocuments",
                         "Structured"});
 #line 502
@@ -1603,13 +1567,11 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Documents CapabilityStatement profile supports the Binary Read operation")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         [NUnit.Framework.CategoryAttribute("StructuredDocuments")]
         [NUnit.Framework.CategoryAttribute("Structured")]
         public virtual void DocumentsCapabilityStatementProfileSupportsTheBinaryReadOperation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Documents CapabilityStatement profile supports the Binary Read operation", null, new string[] {
-                        "1.5.0-IncrementalAndRegression",
                         "StructuredDocuments",
                         "Structured"});
 #line 509
@@ -1631,14 +1593,12 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Documents CapabilityStatement profile supports the DocumentReference search opera" +
             "tion")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         [NUnit.Framework.CategoryAttribute("StructuredDocuments")]
         [NUnit.Framework.CategoryAttribute("Structured")]
         public virtual void DocumentsCapabilityStatementProfileSupportsTheDocumentReferenceSearchOperation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Documents CapabilityStatement profile supports the DocumentReference search opera" +
                     "tion", null, new string[] {
-                        "1.5.0-IncrementalAndRegression",
                         "StructuredDocuments",
                         "Structured"});
 #line 516
@@ -1659,7 +1619,6 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Check Documents CapabilityStatement includes specific searchInclude")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         [NUnit.Framework.CategoryAttribute("StructuredDocuments")]
         [NUnit.Framework.CategoryAttribute("Structured")]
         [NUnit.Framework.TestCaseAttribute("DocumentReference:subject:Patient", null)]
@@ -1669,7 +1628,6 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void CheckDocumentsCapabilityStatementIncludesSpecificSearchInclude(string searchInclude, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "1.5.0-IncrementalAndRegression",
                     "StructuredDocuments",
                     "Structured"};
             if ((exampleTags != null))
@@ -1694,7 +1652,6 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Check Documents CapabilityStatement includes specific searchParams")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         [NUnit.Framework.CategoryAttribute("StructuredDocuments")]
         [NUnit.Framework.CategoryAttribute("Structured")]
         [NUnit.Framework.TestCaseAttribute("created", "date", null)]
@@ -1703,7 +1660,6 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void CheckDocumentsCapabilityStatementIncludesSpecificSearchParams(string searchParam, string searchParamType, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "1.5.0-IncrementalAndRegression",
                     "StructuredDocuments",
                     "Structured"};
             if ((exampleTags != null))

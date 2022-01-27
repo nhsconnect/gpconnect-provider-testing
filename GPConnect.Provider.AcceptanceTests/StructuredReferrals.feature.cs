@@ -21,7 +21,6 @@ namespace GPConnect.Provider.AcceptanceTests
     [NUnit.Framework.DescriptionAttribute("StructuredReferrals")]
     [NUnit.Framework.CategoryAttribute("Structured")]
     [NUnit.Framework.CategoryAttribute("StructuredReferrals")]
-    [NUnit.Framework.CategoryAttribute("1.5.0-Full-Pack")]
     [NUnit.Framework.CategoryAttribute("1.6.0-Full-Pack")]
     public partial class StructuredReferralsFeature
     {
@@ -38,7 +37,6 @@ namespace GPConnect.Provider.AcceptanceTests
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "StructuredReferrals", null, ProgrammingLanguage.CSharp, new string[] {
                         "Structured",
                         "StructuredReferrals",
-                        "1.5.0-Full-Pack",
                         "1.6.0-Full-Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -80,12 +78,10 @@ namespace GPConnect.Provider.AcceptanceTests
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Verify Referrals structured record for a Patient with Referrals not linked to any" +
             " problems")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         public virtual void VerifyReferralsStructuredRecordForAPatientWithReferralsNotLinkedToAnyProblems()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verify Referrals structured record for a Patient with Referrals not linked to any" +
-                    " problems", null, new string[] {
-                        "1.5.0-IncrementalAndRegression"});
+                    " problems", null, ((string[])(null)));
 #line 8
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -145,12 +141,10 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Verify Referrals structured record for a Patient with Referrals associated to Pro" +
             "blems")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         public virtual void VerifyReferralsStructuredRecordForAPatientWithReferralsAssociatedToProblems()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verify Referrals structured record for a Patient with Referrals associated to Pro" +
-                    "blems", null, new string[] {
-                        "1.5.0-IncrementalAndRegression"});
+                    "blems", null, ((string[])(null)));
 #line 34
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -215,11 +209,9 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve Referrals structured record for a patient that has no Referrals data")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         public virtual void RetrieveReferralsStructuredRecordForAPatientThatHasNoReferralsData()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve Referrals structured record for a patient that has no Referrals data", null, new string[] {
-                        "1.5.0-IncrementalAndRegression"});
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve Referrals structured record for a patient that has no Referrals data", null, ((string[])(null)));
 #line 63
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -264,19 +256,12 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Patient with Referrals Has Warnings and Associated Notes")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         [NUnit.Framework.TestCaseAttribute("patient16", "confidential-items", "Items excluded due to confidentiality and/or patient preferences.", null)]
         [NUnit.Framework.TestCaseAttribute("patient13", "data-in-transit", "Patient record transfer from previous GP practice not yet complete; information r" +
             "ecorded before dd-Mmm-yyyy may be missing.", null)]
         public virtual void PatientWithReferralsHasWarningsAndAssociatedNotes(string patient, string warning, string note, string[] exampleTags)
         {
-            string[] @__tags = new string[] {
-                    "1.5.0-IncrementalAndRegression"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Patient with Referrals Has Warnings and Associated Notes", null, @__tags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Patient with Referrals Has Warnings and Associated Notes", null, exampleTags);
 #line 83
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -303,12 +288,10 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve the Referrals data structured record with period dates equal to current " +
             "date expected success and no operation outcome")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         public virtual void RetrieveTheReferralsDataStructuredRecordWithPeriodDatesEqualToCurrentDateExpectedSuccessAndNoOperationOutcome()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the Referrals data structured record with period dates equal to current " +
-                    "date expected success and no operation outcome", null, new string[] {
-                        "1.5.0-IncrementalAndRegression"});
+                    "date expected success and no operation outcome", null, ((string[])(null)));
 #line 98
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -331,12 +314,10 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve Referrals data structured record section for an invalid Identifier Syste" +
             "m")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         public virtual void RetrieveReferralsDataStructuredRecordSectionForAnInvalidIdentifierSystem()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve Referrals data structured record section for an invalid Identifier Syste" +
-                    "m", null, new string[] {
-                        "1.5.0-IncrementalAndRegression"});
+                    "m", null, ((string[])(null)));
 #line 107
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -358,11 +339,9 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve Referrals data structured record section for an empty Identifier System")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         public virtual void RetrieveReferralsDataStructuredRecordSectionForAnEmptyIdentifierSystem()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve Referrals data structured record section for an empty Identifier System", null, new string[] {
-                        "1.5.0-IncrementalAndRegression"});
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve Referrals data structured record section for an empty Identifier System", null, ((string[])(null)));
 #line 116
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -384,11 +363,9 @@ testRunner.Given("I configure the default \"GpcGetStructuredRecord\" request", (
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve Referrals data structured record for a patient that has sensitive flag")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         public virtual void RetrieveReferralsDataStructuredRecordForAPatientThatHasSensitiveFlag()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve Referrals data structured record for a patient that has sensitive flag", null, new string[] {
-                        "1.5.0-IncrementalAndRegression"});
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve Referrals data structured record for a patient that has sensitive flag", null, ((string[])(null)));
 #line 125
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -414,7 +391,6 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve the Referrals data structured record with invalid dates expected failure" +
             "")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         [NUnit.Framework.TestCaseAttribute("2014", "2016-01-01", "includeReferrals", "referralSearchPeriod", null)]
         [NUnit.Framework.TestCaseAttribute("2014-02", "2014-08-20", "includeReferrals", "referralSearchPeriod", null)]
         [NUnit.Framework.TestCaseAttribute("2015-10-23T11:08:32", "2016-11-01", "includeReferrals", "referralSearchPeriod", null)]
@@ -425,14 +401,8 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestCaseAttribute("2014-01-01", "2015-10-23T11:08:32+00:00", "includeReferrals", "referralSearchPeriod", null)]
         public virtual void RetrieveTheReferralsDataStructuredRecordWithInvalidDatesExpectedFailure(string startDate, string endDate, string parameter, string partParameter, string[] exampleTags)
         {
-            string[] @__tags = new string[] {
-                    "1.5.0-IncrementalAndRegression"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the Referrals data structured record with invalid dates expected failure" +
-                    "", null, @__tags);
+                    "", null, exampleTags);
 #line 135
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -458,12 +428,10 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve the Referrals data structured record with referralSearchPeriod in future" +
             " expected failure")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         public virtual void RetrieveTheReferralsDataStructuredRecordWithReferralSearchPeriodInFutureExpectedFailure()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the Referrals data structured record with referralSearchPeriod in future" +
-                    " expected failure", null, new string[] {
-                        "1.5.0-IncrementalAndRegression"});
+                    " expected failure", null, ((string[])(null)));
 #line 155
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -489,12 +457,10 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve the Referrals data structured record startDate after endDate expected fa" +
             "ilure")]
-        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
         public virtual void RetrieveTheReferralsDataStructuredRecordStartDateAfterEndDateExpectedFailure()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve the Referrals data structured record startDate after endDate expected fa" +
-                    "ilure", null, new string[] {
-                        "1.5.0-IncrementalAndRegression"});
+                    "ilure", null, ((string[])(null)));
 #line 165
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();

@@ -1,4 +1,4 @@
-﻿@fhir @1.5.0-Full-Pack @1.6.0-Full-Pack
+﻿@fhir  @1.6.0-Full-Pack
 Feature: FHIR
 
 ##########################################
@@ -348,7 +348,7 @@ Examples:
 #Document Tests
 ##########################################
 
-@1.5.0-IncrementalAndRegression @StructuredDocuments @Structured @1.6.0-Only
+ @StructuredDocuments @Structured @1.6.0-Only
 Scenario: Fhir Get Metadata and Check Version of Documents CapabilityStatement
 	Given I configure the default "DocumentsMetaDataRead" request
 	When I make the "MetadataRead" request
@@ -356,28 +356,28 @@ Scenario: Fhir Get Metadata and Check Version of Documents CapabilityStatement
 		And the Response Resource should be a CapabilityStatement
 		And the Documents CapabilityStatement version should match the GP Connect specification release
 
-@1.5.0-IncrementalAndRegression @StructuredDocuments @Structured
+ @StructuredDocuments @Structured
 Scenario: Documents CapabilityStatement profile indicates acceptance of xml and json format
 	Given I configure the default "DocumentsMetaDataRead" request
 	When I make the "DocumentsMetaDataRead" request
 	Then the response status code should indicate success
 		And the CapabilityStatement Format should contain XML and JSON
 
-@1.5.0-IncrementalAndRegression @StructuredDocuments @Structured
+ @StructuredDocuments @Structured
 Scenario: Documents CapabilityStatement profile suppliers software versions present
 	Given I configure the default "DocumentsMetaDataRead" request
 	When I make the "DocumentsMetaDataRead" request
 	Then the response status code should indicate success
 		And the CapabilityStatement Software should be valid
 
-@1.5.0-IncrementalAndRegression @StructuredDocuments @Structured
+ @StructuredDocuments @Structured
 Scenario: Documents CapabilityStatement profile supported fhir version
 	Given I configure the default "DocumentsMetaDataRead" request
 	When I make the "DocumentsMetaDataRead" request
 	Then the response status code should indicate success
 		And the CapabilityStatement FHIR Version should be "3.0.1"
 
-@1.5.0-IncrementalAndRegression @StructuredDocuments @Structured
+ @StructuredDocuments @Structured
 Scenario: Documents Fhir content type test where Accept header is JSON and request payload is XML
 	Given I configure the default "DocumentsMetaDataRead" request
 		And I set the request content type to "application/fhir+xml"
@@ -386,7 +386,7 @@ Scenario: Documents Fhir content type test where Accept header is JSON and reque
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 
-@1.5.0-IncrementalAndRegression @StructuredDocuments @Structured
+ @StructuredDocuments @Structured
 Scenario: Documents Fhir content type test where Accept header is XML and request payload is JSON
 	Given I configure the default "DocumentsMetaDataRead" request
 		And I set the request content type to "application/fhir+json"
@@ -395,7 +395,7 @@ Scenario: Documents Fhir content type test where Accept header is XML and reques
 	Then the response status code should indicate success
 		And the response body should be FHIR XML
 
-@1.5.0-IncrementalAndRegression @StructuredDocuments @Structured
+ @StructuredDocuments @Structured
 Scenario: Documents Fhir content type test where _format parameter is JSON and request payload is JSON
 	Given I configure the default "DocumentsMetaDataRead" request
 		And I set the request content type to "application/fhir+json"
@@ -405,7 +405,7 @@ Scenario: Documents Fhir content type test where _format parameter is JSON and r
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 
-@1.5.0-IncrementalAndRegression @StructuredDocuments @Structured
+ @StructuredDocuments @Structured
 Scenario: Documents Fhir content type test where _format parameter is JSON and request payload is XML
 	Given I configure the default "DocumentsMetaDataRead" request
 		And I set the request content type to "application/fhir+xml"
@@ -415,7 +415,7 @@ Scenario: Documents Fhir content type test where _format parameter is JSON and r
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 
-@1.5.0-IncrementalAndRegression @StructuredDocuments @Structured
+ @StructuredDocuments @Structured
 Scenario: Documents Fhir content type test where _format parameter is XML and request payload is XML
 	Given I configure the default "DocumentsMetaDataRead" request
 		And I set the request content type to "application/fhir+xml"
@@ -425,7 +425,7 @@ Scenario: Documents Fhir content type test where _format parameter is XML and re
 	Then the response status code should indicate success
 		And the response body should be FHIR XML
 
-@1.5.0-IncrementalAndRegression @StructuredDocuments @Structured
+ @StructuredDocuments @Structured
 Scenario: Documents Fhir content type test where _format parameter is XML and request payload is JSON
 	Given I configure the default "DocumentsMetaDataRead" request
 		And I set the request content type to "application/fhir+json"
@@ -435,7 +435,7 @@ Scenario: Documents Fhir content type test where _format parameter is XML and re
 	Then the response status code should indicate success
 		And the response body should be FHIR XML
 
-@1.5.0-IncrementalAndRegression @StructuredDocuments @Structured
+ @StructuredDocuments @Structured
 Scenario: Documents Fhir content type test where Accept header is XML and _format parameter is XML
 	Given I configure the default "DocumentsMetaDataRead" request
 		And I set the request content type to "application/fhir+xml"
@@ -445,7 +445,7 @@ Scenario: Documents Fhir content type test where Accept header is XML and _forma
 	Then the response status code should indicate success
 		And the response body should be FHIR XML
 
-@1.5.0-IncrementalAndRegression @StructuredDocuments @Structured
+ @StructuredDocuments @Structured
 Scenario: Documents Fhir content type test where Accept header is XML and _format parameter is JSON
 	Given I configure the default "DocumentsMetaDataRead" request
 		And I set the request content type to "application/fhir+xml"
@@ -455,7 +455,7 @@ Scenario: Documents Fhir content type test where Accept header is XML and _forma
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 
-@1.5.0-IncrementalAndRegression @StructuredDocuments @Structured
+ @StructuredDocuments @Structured
 Scenario: Documents Fhir content type test where Accept header is JSON and _format parameter is JSON
 	Given I configure the default "DocumentsMetaDataRead" request
 		And I set the request content type to "application/fhir+json"
@@ -465,7 +465,7 @@ Scenario: Documents Fhir content type test where Accept header is JSON and _form
 	Then the response status code should indicate success
 		And the response body should be FHIR JSON
 
-@1.5.0-IncrementalAndRegression @StructuredDocuments @Structured
+ @StructuredDocuments @Structured
 Scenario: Documents Fhir content type test where Accept header is JSON and _format parameter is XML
 	Given I configure the default "DocumentsMetaDataRead" request
 		And I set the request content type to "application/fhir+json"
@@ -475,7 +475,7 @@ Scenario: Documents Fhir content type test where Accept header is JSON and _form
 	Then the response status code should indicate success
 		And the response body should be FHIR XML
 
-@1.5.0-IncrementalAndRegression @StructuredDocuments @Structured
+ @StructuredDocuments @Structured
 Scenario Outline: Documents CapabilityStatement returns correct profile versions
 Given I configure the default "DocumentsMetaDataRead" request
 	When I make the "DocumentsMetaDataRead" request
@@ -491,35 +491,35 @@ Examples:
 | https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-DocumentReference-1/_history/1.3 |
 | https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-Searchset-Bundle-1/_history/1.3        |
 
-@1.5.0-IncrementalAndRegression @StructuredDocuments @Structured
+ @StructuredDocuments @Structured
 Scenario: Documents CapabilityStatement profile supports the Patient read operation
 	Given I configure the default "DocumentsMetaDataRead" request
 	When I make the "DocumentsMetaDataRead" request
 	Then the response status code should indicate success
 		And the CapabilityStatement REST Resources should contain the "Patient" Resource with the "Read" Interaction
 
-@1.5.0-IncrementalAndRegression @StructuredDocuments @Structured
+ @StructuredDocuments @Structured
 Scenario: Documents CapabilityStatement profile supports the Patient search operation
 	Given I configure the default "DocumentsMetaDataRead" request
 	When I make the "DocumentsMetaDataRead" request
 	Then the response status code should indicate success
 		And the CapabilityStatement REST Resources should contain the "Patient" Resource with the "SearchType" Interaction
 
-@1.5.0-IncrementalAndRegression @StructuredDocuments @Structured
+ @StructuredDocuments @Structured
 Scenario: Documents CapabilityStatement profile supports the Binary Read operation
 	Given I configure the default "DocumentsMetaDataRead" request
 	When I make the "DocumentsMetaDataRead" request
 	Then the response status code should indicate success
 		And the CapabilityStatement REST Resources should contain the "Binary" Resource with the "Read" Interaction		
 
-@1.5.0-IncrementalAndRegression @StructuredDocuments @Structured
+ @StructuredDocuments @Structured
 Scenario: Documents CapabilityStatement profile supports the DocumentReference search operation
 	Given I configure the default "DocumentsMetaDataRead" request
 	When I make the "DocumentsMetaDataRead" request
 	Then the response status code should indicate success
 		And the CapabilityStatement REST Resources should contain the "DocumentReference" Resource with the "SearchType" Interaction
 
-@1.5.0-IncrementalAndRegression @StructuredDocuments @Structured
+ @StructuredDocuments @Structured
 Scenario Outline: Check Documents CapabilityStatement includes specific searchInclude
 	Given I configure the default "DocumentsMetaDataRead" request
 	When I make the "DocumentsMetaDataRead" request
@@ -532,7 +532,7 @@ Scenario Outline: Check Documents CapabilityStatement includes specific searchIn
 	| DocumentReference:author:Organization    |
 	| DocumentReference:author:Practitioner    |
 
-@1.5.0-IncrementalAndRegression @StructuredDocuments @Structured
+ @StructuredDocuments @Structured
 Scenario Outline: Check Documents CapabilityStatement includes specific searchParams
 	Given I configure the default "DocumentsMetaDataRead" request
 	When I make the "DocumentsMetaDataRead" request

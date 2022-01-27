@@ -20,7 +20,6 @@ namespace GPConnect.Provider.AcceptanceTests
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("SearchForFreeSlots")]
     [NUnit.Framework.CategoryAttribute("getschedule")]
-    [NUnit.Framework.CategoryAttribute("1.5.0-Full-Pack")]
     [NUnit.Framework.CategoryAttribute("1.6.0-Full-Pack")]
     public partial class SearchForFreeSlotsFeature
     {
@@ -36,7 +35,6 @@ namespace GPConnect.Provider.AcceptanceTests
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "SearchForFreeSlots", null, ProgrammingLanguage.CSharp, new string[] {
                         "getschedule",
-                        "1.5.0-Full-Pack",
                         "1.6.0-Full-Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -1050,11 +1048,9 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Search for a slots expecting a Schedule with serviceCategory populated")]
-        [NUnit.Framework.CategoryAttribute("1.2.7-IncrementalAndRegression")]
         public virtual void SearchForASlotsExpectingAScheduleWithServiceCategoryPopulated()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Search for a slots expecting a Schedule with serviceCategory populated", null, new string[] {
-                        "1.2.7-IncrementalAndRegression"});
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Search for a slots expecting a Schedule with serviceCategory populated", null, ((string[])(null)));
 #line 463
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -1098,11 +1094,9 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Search for a slots expecting a slot with serviceType populated")]
-        [NUnit.Framework.CategoryAttribute("1.2.7-IncrementalAndRegression")]
         public virtual void SearchForASlotsExpectingASlotWithServiceTypePopulated()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Search for a slots expecting a slot with serviceType populated", null, new string[] {
-                        "1.2.7-IncrementalAndRegression"});
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Search for a slots expecting a slot with serviceType populated", null, ((string[])(null)));
 #line 482
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -1146,11 +1140,9 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Search for a slots expecting No Comment elements for the Schedules and Slots")]
-        [NUnit.Framework.CategoryAttribute("1.2.7-IncrementalAndRegression")]
         public virtual void SearchForASlotsExpectingNoCommentElementsForTheSchedulesAndSlots()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Search for a slots expecting No Comment elements for the Schedules and Slots", null, new string[] {
-                        "1.2.7-IncrementalAndRegression"});
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Search for a slots expecting No Comment elements for the Schedules and Slots", null, ((string[])(null)));
 #line 502
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();

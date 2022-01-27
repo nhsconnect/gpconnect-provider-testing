@@ -1,10 +1,10 @@
-﻿@Structured @StructuredReferrals @1.5.0-Full-Pack @1.6.0-Full-Pack
+﻿@Structured @StructuredReferrals  @1.6.0-Full-Pack
 Feature: StructuredReferrals
 
 # These Tests are only Testing this Structured Area in isolation and Not with other Areas or Combinations of Include Parameters
 # Tests around Multiple Structured Areas in one Request are tested in the MultipleRequests Feature
 	
-@1.5.0-IncrementalAndRegression
+
 Scenario: Verify Referrals structured record for a Patient with Referrals not linked to any problems
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient3"
@@ -30,7 +30,7 @@ Scenario: Verify Referrals structured record for a Patient with Referrals not li
 		And I Check There is No Problems Secondary Problems List
 		And I Check No Problem Resources are Included
 
-@1.5.0-IncrementalAndRegression
+
 Scenario: Verify Referrals structured record for a Patient with Referrals associated to Problems
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
@@ -59,7 +59,7 @@ Scenario: Verify Referrals structured record for a Patient with Referrals associ
 		And the Bundle should contain "2" lists
 		And Check a Problem is linked to ReferralRequest and that it is also included		
 
-@1.5.0-IncrementalAndRegression
+
 Scenario: Retrieve Referrals structured record for a patient that has no Referrals data
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient4"
@@ -79,7 +79,7 @@ Scenario: Retrieve Referrals structured record for a patient that has no Referra
 		And check the response does not contain an operation outcome
 
 #Demonstrator does not have this data, so test will fail against it
-@1.5.0-IncrementalAndRegression
+
 Scenario Outline: Patient with Referrals Has Warnings and Associated Notes
 	Given I configure the default "GpcGetStructuredRecord" request 
 		And I add an NHS Number parameter for "<Patient>"
@@ -94,7 +94,7 @@ Scenario Outline: Patient with Referrals Has Warnings and Associated Notes
 	|patient16| confidential-items   | Items excluded due to confidentiality and/or patient preferences.                                                           |
 	|patient13| data-in-transit      | Patient record transfer from previous GP practice not yet complete; information recorded before dd-Mmm-yyyy may be missing. |
 
-@1.5.0-IncrementalAndRegression		
+		
 Scenario: Retrieve the Referrals data structured record with period dates equal to current date expected success and no operation outcome
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
@@ -103,7 +103,7 @@ Scenario: Retrieve the Referrals data structured record with period dates equal 
 	Then the response status code should indicate success
 		And check the response does not contain an operation outcome
 
-@1.5.0-IncrementalAndRegression				
+				
 Scenario: Retrieve Referrals data structured record section for an invalid Identifier System
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1" with an invalid Identifier System
@@ -112,7 +112,7 @@ Scenario: Retrieve Referrals data structured record section for an invalid Ident
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
 
-@1.5.0-IncrementalAndRegression	
+	
 Scenario: Retrieve Referrals data structured record section for an empty Identifier System
 Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1" with an empty Identifier System
@@ -121,7 +121,7 @@ Given I configure the default "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
 
-@1.5.0-IncrementalAndRegression	
+	
 Scenario: Retrieve Referrals data structured record for a patient that has sensitive flag
 	Given I configure the default "GpcGetStructuredRecord" request 
 		And I add an NHS Number parameter for "patient9"
@@ -131,7 +131,7 @@ Scenario: Retrieve Referrals data structured record for a patient that has sensi
 		And the response status code should be "404"
 		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
 
-@1.5.0-IncrementalAndRegression	
+	
 Scenario Outline: Retrieve the Referrals data structured record with invalid dates expected failure
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
@@ -151,7 +151,7 @@ Scenario Outline: Retrieve the Referrals data structured record with invalid dat
 		| 2015-10-01                | 2016-11-23T11:08:32       | includeReferrals | referralSearchPeriod |
 		| 2014-01-01                | 2015-10-23T11:08:32+00:00 | includeReferrals | referralSearchPeriod |
 
-@1.5.0-IncrementalAndRegression	
+	
 Scenario: Retrieve the Referrals data structured record with referralSearchPeriod in future expected failure 
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
@@ -161,7 +161,7 @@ Scenario: Retrieve the Referrals data structured record with referralSearchPerio
 		And the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
-@1.5.0-IncrementalAndRegression	
+	
 Scenario: Retrieve the Referrals data structured record startDate after endDate expected failure
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"

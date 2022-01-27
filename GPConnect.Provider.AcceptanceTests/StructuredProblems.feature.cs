@@ -21,7 +21,6 @@ namespace GPConnect.Provider.AcceptanceTests
     [NUnit.Framework.DescriptionAttribute("StructuredProblems")]
     [NUnit.Framework.CategoryAttribute("Structured")]
     [NUnit.Framework.CategoryAttribute("StructuredProblems")]
-    [NUnit.Framework.CategoryAttribute("1.5.0-Full-Pack")]
     [NUnit.Framework.CategoryAttribute("1.6.0-Full-Pack")]
     public partial class StructuredProblemsFeature
     {
@@ -38,7 +37,6 @@ namespace GPConnect.Provider.AcceptanceTests
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "StructuredProblems", null, ProgrammingLanguage.CSharp, new string[] {
                         "Structured",
                         "StructuredProblems",
-                        "1.5.0-Full-Pack",
                         "1.6.0-Full-Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -79,11 +77,9 @@ namespace GPConnect.Provider.AcceptanceTests
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Verify response for a Patient with Problems linked to some clinical items")]
-        [NUnit.Framework.CategoryAttribute("1.3.2-IncrementalAndRegression")]
         public virtual void VerifyResponseForAPatientWithProblemsLinkedToSomeClinicalItems()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verify response for a Patient with Problems linked to some clinical items", null, new string[] {
-                        "1.3.2-IncrementalAndRegression"});
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verify response for a Patient with Problems linked to some clinical items", null, ((string[])(null)));
 #line 8
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -155,11 +151,9 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Verify response for a Patient with Problems linked to other Problems")]
-        [NUnit.Framework.CategoryAttribute("1.3.2-IncrementalAndRegression")]
         public virtual void VerifyResponseForAPatientWithProblemsLinkedToOtherProblems()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verify response for a Patient with Problems linked to other Problems", null, new string[] {
-                        "1.3.2-IncrementalAndRegression"});
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verify response for a Patient with Problems linked to other Problems", null, ((string[])(null)));
 #line 39
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();

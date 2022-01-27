@@ -1,10 +1,10 @@
-﻿@Structured @StructuredInvestigations @1.5.0-Full-Pack @1.6.0-Full-Pack
+﻿@Structured @StructuredInvestigations  @1.6.0-Full-Pack
 Feature: StructuredInvestigations
 
 # These Tests are only Testing this Structured Area in isolation and Not with other Areas or Combinations of Include Parameters
 # Tests around Multiple Structured Areas in one Request are tested in the MultipleRequests Feature
 	
-@1.5.0-IncrementalAndRegression
+
 Scenario: Verify Investigations structured record for a Patient with Investigations not linked to any problems
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient3"
@@ -34,7 +34,7 @@ Scenario: Verify Investigations structured record for a Patient with Investigati
 		And I Check There is No Problems Secondary Problems List
 		And I Check No Problem Resources are Included
 
-@1.5.0-IncrementalAndRegression
+
 Scenario: Verify Investigations structured record for a Patient with Investigations associated to Problems
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
@@ -68,7 +68,7 @@ Scenario: Verify Investigations structured record for a Patient with Investigati
 		And the Bundle should contain "2" lists
 
 #The Aspects covered in this test have been split out from the main tests above as some providers do not support ProcedureRequests at this time.
-@1.5.0-IncrementalAndRegression
+
 Scenario: Verify Investigations structured record for a Patient with DiagnosticReports Linked to ProcedureRequests
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient3"
@@ -101,7 +101,7 @@ Scenario: Verify Investigations structured record for a Patient with DiagnosticR
 		And I Check No Problem Resources are Included
 
 
-@1.5.0-IncrementalAndRegression
+
 Scenario: Retrieve Investigations structured record for a patient that has no Investigations data
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient4"
@@ -120,7 +120,7 @@ Scenario: Retrieve Investigations structured record for a patient that has no In
 		And check structured list contains a note and emptyReason when no data in section
 		And check the response does not contain an operation outcome
 	
-@1.5.0-IncrementalAndRegression		
+		
 Scenario: Retrieve the Investigations data structured record with period dates equal to current date expected success and no operation outcome
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
@@ -129,7 +129,7 @@ Scenario: Retrieve the Investigations data structured record with period dates e
 	Then the response status code should indicate success
 		And check the response does not contain an operation outcome
 
-@1.5.0-IncrementalAndRegression				
+				
 Scenario: Retrieve Investigations data structured record section for an invalid Identifier System
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1" with an invalid Identifier System
@@ -138,7 +138,7 @@ Scenario: Retrieve Investigations data structured record section for an invalid 
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
 
-@1.5.0-IncrementalAndRegression	
+	
 Scenario: Retrieve Investigations data structured record section for an empty Identifier System
 Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient1" with an empty Identifier System
@@ -147,7 +147,7 @@ Given I configure the default "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
 
-@1.5.0-IncrementalAndRegression	
+	
 Scenario: Retrieve Investigations data structured record for a patient that has sensitive flag
 	Given I configure the default "GpcGetStructuredRecord" request 
 		And I add an NHS Number parameter for "patient9"
@@ -157,7 +157,7 @@ Scenario: Retrieve Investigations data structured record for a patient that has 
 		And the response status code should be "404"
 		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
 
-@1.5.0-IncrementalAndRegression	
+	
 Scenario Outline: Retrieve the Investigations data structured record with invalid dates expected failure
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
@@ -177,7 +177,7 @@ Scenario Outline: Retrieve the Investigations data structured record with invali
 		| 2015-10-01                | 2016-11-23T11:08:32       | includeInvestigations | investigationSearchPeriod |
 		| 2014-01-01                | 2015-10-23T11:08:32+00:00 | includeInvestigations | investigationSearchPeriod |
 
-@1.5.0-IncrementalAndRegression	
+	
 Scenario: Retrieve the Investigations data structured record with investigationSearchPeriod in future expected failure 
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
@@ -187,7 +187,7 @@ Scenario: Retrieve the Investigations data structured record with investigationS
 		And the response status code should be "422"
 		And the response should be a OperationOutcome resource with error code "INVALID_PARAMETER"
 
-@1.5.0-IncrementalAndRegression	
+	
 Scenario: Retrieve the Investigations data structured record startDate after endDate expected failure
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"

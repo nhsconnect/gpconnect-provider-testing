@@ -21,8 +21,6 @@ namespace GPConnect.Provider.AcceptanceTests
     [NUnit.Framework.DescriptionAttribute("Documents")]
     [NUnit.Framework.CategoryAttribute("Structured")]
     [NUnit.Framework.CategoryAttribute("StructuredDocuments")]
-    [NUnit.Framework.CategoryAttribute("1.5.0-Full-Pack")]
-    [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
     [NUnit.Framework.CategoryAttribute("1.6.0-Full-Pack")]
     public partial class DocumentsFeature
     {
@@ -39,8 +37,6 @@ namespace GPConnect.Provider.AcceptanceTests
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Documents", null, ProgrammingLanguage.CSharp, new string[] {
                         "Structured",
                         "StructuredDocuments",
-                        "1.5.0-Full-Pack",
-                        "1.5.0-IncrementalAndRegression",
                         "1.6.0-Full-Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
