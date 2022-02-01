@@ -216,13 +216,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 foreach (var rcc in problemRelatedContentExtensions)
                 {
                     ResourceReference rr = (ResourceReference)rcc.Value;
-                    if (rr.Reference.StartsWith("ProcedureRequest/"))
+                    if (rr.Reference != null)
                     {
-                        string pattern = @"(.*)(/)(.*)";
-                        refToFind = Regex.Replace(rr.Reference, pattern, "$3");
-                        found = true;
-                        Logger.Log.WriteLine("Info : Problem - Found Linked to a ProcedureRequest - with ID : " + refToFind);
-                        break;
+                        if (rr.Reference.StartsWith("ProcedureRequest/"))
+                        {
+                            string pattern = @"(.*)(/)(.*)";
+                            refToFind = Regex.Replace(rr.Reference, pattern, "$3");
+                            found = true;
+                            Logger.Log.WriteLine("Info : Problem - Found Linked to a ProcedureRequest - with ID : " + refToFind);
+                            break;
+                        }
                     }
                 }
                 if (found)

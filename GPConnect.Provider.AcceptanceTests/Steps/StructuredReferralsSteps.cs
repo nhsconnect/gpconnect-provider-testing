@@ -216,13 +216,16 @@
                 foreach (var rcc in problemRelatedContentExtensions)
                 {
                     ResourceReference rr = (ResourceReference)rcc.Value;
-                    if (rr.Reference.StartsWith("ReferralRequest/"))
+                    if (rr.Reference != null)
                     {
-                        string pattern = @"(.*)(/)(.*)";
-                        refToFind = Regex.Replace(rr.Reference, pattern, "$3");
-                        found = true;
-                        Logger.Log.WriteLine("Info : Problem - Found Linked to a ReferralRequest - with ID : " + refToFind);
-                        break;
+                        if (rr.Reference.StartsWith("ReferralRequest/"))
+                        {
+                            string pattern = @"(.*)(/)(.*)";
+                            refToFind = Regex.Replace(rr.Reference, pattern, "$3");
+                            found = true;
+                            Logger.Log.WriteLine("Info : Problem - Found Linked to a ReferralRequest - with ID : " + refToFind);
+                            break;
+                        }
                     }
                 }
                 if (found)

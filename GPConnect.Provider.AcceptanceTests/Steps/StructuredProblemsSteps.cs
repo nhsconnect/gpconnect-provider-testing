@@ -333,11 +333,14 @@
                 foreach (var rcc in problemRelatedContentExtensions)
                 {
                     ResourceReference rr = (ResourceReference)rcc.Value;
-                    if (rr.Reference.StartsWith("MedicationRequest/"))
+                    if (rr.Reference != null)
                     {
-                        refToFind = rr.Reference;
-                        found = true;
-                        break;
+                        if (rr.Reference.StartsWith("MedicationRequest/"))
+                        {
+                            refToFind = rr.Reference;
+                            found = true;
+                            break;
+                        }
                     }
                 }
                 if (found)
@@ -455,12 +458,15 @@
                 foreach (var rcc in problemRelatedContentExtensions)
                 {
                     ResourceReference rr = (ResourceReference)rcc.Value;
-                    if (rr.Reference.StartsWith((resourceType + "/")))
+                    if (rr.Reference != null)
                     {
-                        refToFind = rr.Reference;
-                        found = true;
-                        Logger.Log.WriteLine("Info : Problem - Found Linked Clinical Item of type : " + resourceType + " - with ID : " + refToFind);
-                        break;
+                        if (rr.Reference.StartsWith((resourceType + "/")))
+                        {
+                            refToFind = rr.Reference;
+                            found = true;
+                            Logger.Log.WriteLine("Info : Problem - Found Linked Clinical Item of type : " + resourceType + " - with ID : " + refToFind);
+                            break;
+                        }
                     }
                 }
                 if (found)
