@@ -875,45 +875,45 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void MigratePatient2WithSensitiveAndThenMigrateFirstDocument()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Migrate Patient2 With Sensitive and then migrate first document", null, ((string[])(null)));
-#line 316
+#line 317
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 317
- testRunner.Given("I configure the default \"MigrateStructuredRecordWithSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 318
- testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"MigrateStructuredRecordWithSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 319
+ testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 320
   testRunner.And("I add the includeFullrecord parameter with includeSensitiveInformation set to \"tr" +
                     "ue\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 320
-    testRunner.When("I make the \"MigrateStructuredRecordWithoutSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 321
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+    testRunner.When("I make the \"MigrateStructuredRecordWithoutSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 322
-  testRunner.And("check that the bundle does not contain any duplicate resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 323
+  testRunner.And("check that the bundle does not contain any duplicate resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 324
   testRunner.And("the patient resource in the bundle should contain meta data profile and version i" +
                     "d", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 324
-  testRunner.And("check the response does not contain an operation outcome", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 325
+  testRunner.And("check the response does not contain an operation outcome", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 326
   testRunner.And("I Check Documents have been Returned and save the first documents url for retriev" +
                     "ing later", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 326
-  testRunner.And("I Check the returned DocumentReference is Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 327
-  testRunner.And("I Check the returned DocumentReference Do Not Include Not In Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I Check the returned DocumentReference is Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 328
- testRunner.Given("I configure the default \"MigrateDocument\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+  testRunner.And("I Check the returned DocumentReference Do Not Include Not In Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 329
-  testRunner.When("I make the \"MigrateDocument\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("I configure the default \"MigrateDocument\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 330
-  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.When("I make the \"MigrateDocument\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 331
-  testRunner.And("I save the binary document from the retrieve", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 332
-  testRunner.And("I Check the returned Binary Document is Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I save the binary document from the retrieve", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 333
+  testRunner.And("I Check the returned Binary Document is Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 334
   testRunner.And("I Check the returned Binary Document Do Not Include Not In Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -924,45 +924,45 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void MigratePatient2WithoutSensitiveAndThenMigrateFirstDocument()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Migrate Patient2 Without Sensitive and then migrate first document", null, ((string[])(null)));
-#line 335
+#line 336
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 336
- testRunner.Given("I configure the default \"MigrateStructuredRecordWithoutSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 337
-  testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"MigrateStructuredRecordWithoutSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 338
+  testRunner.And("I add an NHS Number parameter for \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 339
   testRunner.And("I add the includeFullrecord parameter with includeSensitiveInformation set to \"fa" +
                     "lse\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 339
-    testRunner.When("I make the \"MigrateStructuredRecordWithoutSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 340
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+    testRunner.When("I make the \"MigrateStructuredRecordWithoutSensitive\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 341
-  testRunner.And("check that the bundle does not contain any duplicate resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 342
+  testRunner.And("check that the bundle does not contain any duplicate resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 343
   testRunner.And("the patient resource in the bundle should contain meta data profile and version i" +
                     "d", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 343
-  testRunner.And("check the response does not contain an operation outcome", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 344
+  testRunner.And("check the response does not contain an operation outcome", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 345
   testRunner.And("I Check Documents have been Returned and save the first documents url for retriev" +
                     "ing later", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 345
-  testRunner.And("I Check the returned DocumentReference is Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 346
-  testRunner.And("I Check the returned DocumentReference Do Not Include Not In Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I Check the returned DocumentReference is Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 347
- testRunner.Given("I configure the default \"MigrateDocument\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+  testRunner.And("I Check the returned DocumentReference Do Not Include Not In Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 348
-  testRunner.When("I make the \"MigrateDocument\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("I configure the default \"MigrateDocument\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 349
-  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.When("I make the \"MigrateDocument\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 350
-  testRunner.And("I save the binary document from the retrieve", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 351
-  testRunner.And("I Check the returned Binary Document is Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I save the binary document from the retrieve", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 352
+  testRunner.And("I Check the returned Binary Document is Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 353
   testRunner.And("I Check the returned Binary Document Do Not Include Not In Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

@@ -313,6 +313,7 @@ Scenario: Structured Migrate request for Patient2 inc Sensitive Data where JWT R
 
 #Migrate Document Tests
 
+#WIP  - TODO -Demonstrator currently doesnt have this coded - waiting on sensitive record and code to fix
 Scenario: Migrate Patient2 With Sensitive and then migrate first document
 	Given I configure the default "MigrateStructuredRecordWithSensitive" request
 	And I add an NHS Number parameter for "patient2"
@@ -350,3 +351,4 @@ Scenario: Migrate Patient2 Without Sensitive and then migrate first document
 		And I save the binary document from the retrieve
 		And I Check the returned Binary Document is Valid
 		And I Check the returned Binary Document Do Not Include Not In Use Fields
+
