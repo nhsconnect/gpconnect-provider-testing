@@ -5,6 +5,7 @@ Feature: FHIR
 #Foundations and Appointments Tests
 ##########################################
 
+@1.6.0-Only
 Scenario: Fhir Get Metadata and Check Version of Foundations And Appointments CapabilityStatement
 	Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
@@ -176,7 +177,7 @@ Examples:
 #Structured Tests
 ##########################################
 
-@Structured
+@Structured  @1.6.0-Only
 Scenario: Fhir Get Metadata and Check Version of Structured CapabilityStatement
 	Given I configure the default "StructuredMetaDataRead" request
 	When I make the "MetadataRead" request

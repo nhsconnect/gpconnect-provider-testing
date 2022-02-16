@@ -61,6 +61,7 @@ Scenario: Structured Migrate request for Patient2 including Sensitive Data expec
 		And I Check the Specimens are Valid		
 		And I Check the Specimens Do Not Include Not in Use Fields
 		And Check a Problem is linked to DiagnosticReport and that it is also included
+		#TODO Checks for Sensitive INFO being included
 		#And The Observation Resources are Valid
 		#And The Observation Resources Do Not Include Not In Use Fields
 		#And The Observation List is Valid
@@ -122,6 +123,7 @@ Scenario: Structured Migrate request for Patient2 Excluding Sensitive Data expec
 		And I Check the Specimens are Valid		
 		And I Check the Specimens Do Not Include Not in Use Fields
 		And Check a Problem is linked to DiagnosticReport and that it is also included
+		#TODO Checks for Sensitive NOT being included
 
 #WIP - Waiting on Sensitive Code and record to be included in demonstrator
 Scenario: Structured Migrate request for Patient3 including Sensitive Data expect No Docs and success
@@ -318,7 +320,7 @@ Scenario: Migrate Patient2 With Sensitive and then migrate first document
 	Given I configure the default "MigrateStructuredRecordWithSensitive" request
 	And I add an NHS Number parameter for "patient2"
 		And I add the includeFullrecord parameter with includeSensitiveInformation set to "true"
-    When I make the "MigrateStructuredRecordWithoutSensitive" request
+    When I make the "MigrateStructuredRecordWithSensitive" request
 	Then the response status code should indicate success
 		And check that the bundle does not contain any duplicate resources
 		And the patient resource in the bundle should contain meta data profile and version id
@@ -329,9 +331,9 @@ Scenario: Migrate Patient2 With Sensitive and then migrate first document
 	Given I configure the default "MigrateDocument" request
 		When I make the "MigrateDocument" request
 		Then the response status code should indicate success
-		And I save the binary document from the retrieve
 		And I Check the returned Binary Document is Valid
 		And I Check the returned Binary Document Do Not Include Not In Use Fields
+		And I save the binary document from the retrieve
 
 Scenario: Migrate Patient2 Without Sensitive and then migrate first document
 	Given I configure the default "MigrateStructuredRecordWithoutSensitive" request
@@ -348,7 +350,7 @@ Scenario: Migrate Patient2 Without Sensitive and then migrate first document
 	Given I configure the default "MigrateDocument" request
 		When I make the "MigrateDocument" request
 		Then the response status code should indicate success
-		And I save the binary document from the retrieve
 		And I Check the returned Binary Document is Valid
 		And I Check the returned Binary Document Do Not Include Not In Use Fields
+		And I save the binary document from the retrieve
 
