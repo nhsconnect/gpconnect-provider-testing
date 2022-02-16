@@ -11,7 +11,7 @@ Scenario: Healthcare service find with no service id expect all services returne
 	Then the response searchset contains atleast one HealthService
 	And the response searchset contains valid Healthcare Service resources
 
-	
+
 	
 Scenario: Find a healthcare Service with a DOS ID Expect success
 	Given I configure the default "HealthcareFind" request
@@ -24,6 +24,7 @@ Scenario: Find a healthcare Service with a DOS ID Expect success
 	And I set the Healthcare Find Operation to use the stored DOS ID from previous find all
 	When I make the "HealthcareFind" request
 	Then the response status code should indicate success
+	And the returned Healthcareservice has the requested DOS ID
 	And the response searchset has only One Healthcare Service resource
 	And the response searchset contains valid Healthcare Service resources
 

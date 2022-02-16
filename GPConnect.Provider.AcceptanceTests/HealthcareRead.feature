@@ -22,8 +22,10 @@ Scenario Outline: Healthcare service Read with valid identifier which does not e
 	And I set the Read Operation logical identifier used in the request to "<LogicalId>"
 	When I make the "HealthcareRead" request
 	Then the response status code should be "404"
+	And the response should be a OperationOutcome resource with error code "NO_RECORD_FOUND"
 	Examples:
 		| LogicalId   |
+		| IDDoesntExist|
 		| mfpBm       |
 		| 231Zcr64    |
 		| th.as.e     |
@@ -37,6 +39,7 @@ Scenario: Healthcare service Read with NO identifier expect fail
 	And I set the Read Operation logical identifier used in the request to ""
 	When I make the "HealthcareRead" request
 	Then the response status code should be "400"
+	And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 
 Scenario: CapabilityStatement profile supports the HealthcareService Read operation
 	Given I configure the default "MetadataRead" request
