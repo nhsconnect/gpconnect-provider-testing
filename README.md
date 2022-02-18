@@ -1,6 +1,6 @@
 <img src="logo.png" height=72>
 
-# GP Connect Provider Automated Test Suite
+# **GP Connect Provider Automated Test Suite**
 
 This project provides a test suite to test server implementations of the [GP Connect](https://nhsconnect.github.io/gpconnect/) specification.
 
