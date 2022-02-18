@@ -594,6 +594,7 @@ Scenario Outline: Searching for free slots with a specific DOS ID that is NOT li
 		When I make the "SearchForFreeSlots" request
 	Then the response status code should indicate success
 		And the response should be a Bundle resource of type "searchset"
+		And the Bundle Meta should be contain service filtering status set to "enabled"
 		And I Check that No Schedule is returned
 	Examples:
 		| HealthCareService |
@@ -642,7 +643,7 @@ Scenario: Searching for free slots with a DOS ID that does not exist expect erro
 		When I make the "MetaDataRead" request
 		Then the response status code should indicate success
 		And the CapabilityStatement should contain the Extension with a status of "enabled"
-	Given I set the request DOS service ID to the following "xxxxyyyyzzz"
+	Given I set the request DOS service ID to the following "DosIdThatDoesntExist"
 		And I configure the default "SearchForFreeSlots" request
 		And I set the JWT Requested Scope to Organization Read
 		And I set the required parameters with a time period of "2" days
