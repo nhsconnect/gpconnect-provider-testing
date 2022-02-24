@@ -79,7 +79,6 @@ Scenario: Retrieve Referrals structured record for a patient that has no Referra
 		And check the response does not contain an operation outcome
 
 #Demonstrator does not have this data, so test will fail against it
-
 Scenario Outline: Patient with Referrals Has Warnings and Associated Notes
 	Given I configure the default "GpcGetStructuredRecord" request 
 		And I add an NHS Number parameter for "<Patient>"

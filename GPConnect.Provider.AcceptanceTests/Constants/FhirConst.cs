@@ -317,5 +317,12 @@
             public const string kSecProblemsUncatDisplay = "Problems - uncategorised data related to problems";
             public const string kSecProblemsNotRelatedToPrimaryQueryDisplay = "Problems - linked problems not relating to the primary query";
         }
-    }
+
+        internal static class ListWarnings
+        {
+            public static string ConfidentialItemsCode = "confidential-items";
+            public static string ConfidentialItemsAssociatedtext = "Items excluded due to confidentiality and/or patient preferences.";
+
+        }
+     }
 }

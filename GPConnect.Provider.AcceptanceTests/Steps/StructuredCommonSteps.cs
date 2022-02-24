@@ -25,5 +25,24 @@
         {
             _httpContext = httpContext;
         }
+
+
+        [Then(@"Check the list ""(.*)"" contains confidential marking")]
+        public void Checkthelistcontainsconfidentialmarking(string listTitleToCheck)
+        {
+            var listToBeChecked = Lists.Where(list => list.Title == listTitleToCheck).ToList().FirstOrDefault();
+            listToBeChecked.ShouldNotBeNull("Fail : No List with title : " + listTitleToCheck + " found to check for confidential markings");
+
+            listToBeChecked.Extension
+                    .Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kExtListWarningCode))
+                    .Where(extension => extension.Value.ToString().Equals(FhirConst.ListWarnings.ConfidentialItemsCode)).ToList()
+                    .Count().ShouldBe(1, " Fail : List : " + listTitleToCheck + " Has no Warnings Extension with correct values");
+
+            listToBeChecked.Note
+                .Where(note => note.Text == FhirConst.ListWarnings.ConfidentialItemsAssociatedtext).ToList()
+                .Count().ShouldBe(1,"Fail : Confidential Note Not Found On List : " + listTitleToCheck);
+
+            Logger.Log.WriteLine("Info : List : " + listTitleToCheck + " Checked and has passed checks for confidential markings");
+        }
     }
 }
