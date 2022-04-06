@@ -23,6 +23,22 @@ Scenario: Search for Documents on a Patient with Documents
 		And I Check the returned DocumentReference is Valid
 		And I Check the returned DocumentReference Do Not Include Not In Use Fields
 
+#This test will fail against the demonstrator. Till the demonstraor is updates
+Scenario: Search for Documents on a Patient with Documents Over 5MB
+	Given I configure the default "DocumentsPatientSearch" request
+		And I add a Patient Identifier parameter with default System and Value "patient4"
+		When I make the "DocumentsPatientSearch" request
+		Then the response status code should indicate success
+		Given I store the Patient
+	Given I configure the default "DocumentsSearch" request
+		And I set the required parameters for a Documents Search call
+	When I make the "DocumentsSearch" request
+		Then the response status code should indicate success
+		And the response should be a Bundle resource of type "searchset"
+		And The Bundle id should match the SSPTraceID
+		And I Check the returned DocumentReference is Valid
+		And I Check the returned DocumentReference Content Doesnot Contain URL for over 5MB Attachment
+
 Scenario: Search for Documents on a Patient with NO Documents
 	Given I configure the default "DocumentsPatientSearch" request
 		And I add a Patient Identifier parameter with default System and Value "patient3"

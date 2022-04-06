@@ -207,6 +207,65 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             });
         }
 
+        // when the file is over 5MB
+        [Then(@"I Check the returned DocumentReference Content Doesnot Contain URL for over 5MB Attachment")]
+        public void ICheckthereturnedDocumentReferenceContentDoesnotContainURLforover5MBAttachment()
+        {
+            Documents.Count().ShouldBeGreaterThanOrEqualTo(1, "Fail :Expect atleast One DocumentReference Returned for Test");
+
+            Documents.ForEach(doc =>
+            {
+                //Check ID
+                doc.Id.ShouldNotBeNullOrEmpty();
+
+                //Check Meta.Profile
+                CheckForValidMetaDataInResource(doc, FhirConst.StructureDefinitionSystems.kDocumentReference);
+
+                //Check identifier
+                doc.Identifier.Count.ShouldBeGreaterThan(0, "Fail : There should be at least 1 Identifier system/value pair");
+                doc.Identifier.ForEach(identifier =>
+                {
+                    identifier.System.ShouldNotBeNullOrEmpty("Identifier System Is Null or Empty - Should be populated");
+                    identifier.Value.ShouldNotBeNullOrEmpty("Fail : Identifier Value Is Null or Not Empty - Expect Value");
+                });
+
+                //check status
+                doc.Status.ShouldBe(DocumentReferenceStatus.Current, "Fail : Status should be set to value current");
+
+                //Check Type (should be codable concept with snomed code or a type.text
+                if (doc.Type.Coding.Count() >= 1)
+                {
+                    doc.Type.Coding.ForEach(code =>
+                    {
+                        code.System.Equals(FhirConst.CodeSystems.kCCSnomed);
+                        code.Code.ShouldNotBeNullOrEmpty();
+                        code.Display.ShouldNotBeNullOrEmpty();
+                    });
+                }
+                else
+                {
+                    doc.Type.Text.ShouldNotBeNullOrEmpty("Fail : DocumentReference Type should be either a codable concept with a snomed code or have type.text populated");
+                }
+
+                //Check Subject/patient
+                doc.Subject.Reference.ShouldNotBeNullOrEmpty("Fail : Patient Reference should be included in DocumentReference");
+                Patients.Where(p => p.Id == (doc.Subject.Reference.Replace("Patient/", ""))).Count().ShouldBe(1, "Fail : Patient Not Found in Bundle");
+
+                //check indexed
+                doc.Indexed.ShouldBeOfType<DateTimeOffset>();
+
+                //check content.attachment
+                doc.Content.ForEach(content =>
+                {
+                    // check the file size is greater than 5MB(5242880)
+                    int size = Convert.ToInt32(content.Attachment.Size);
+                    size.ShouldBeGreaterThan(5242880, "Fail : Content Attachment Size should be over 5MB");
+                    content.Attachment.ContentType.ShouldNotBeNullOrEmpty("Fail : ContentType should be populated");
+                    content.Attachment.Url.ShouldBeNull("Fail : URL should not be included when Attachment Size is over 5MB");
+                });
+            });
+        }
+
         [Then(@"I Check the returned DocumentReference Do Not Include Not In Use Fields")]
         public void ICheckthereturnedDocumentReferenceDoNotIncludeNotInUseFields()
         {
