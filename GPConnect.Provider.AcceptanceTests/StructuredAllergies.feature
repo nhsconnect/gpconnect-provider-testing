@@ -36,7 +36,7 @@ Scenario Outline: Retrieve the allergy structured record section for a patient i
 		| patient4  |
 		| patient6  |
 		| patient7  |
-		| patient8  |
+		#| patient8  |
 		| patient12 |
 		| patient13 |
 
@@ -104,7 +104,7 @@ Scenario Outline: Retrieve the allergy structured record for a patient with no p
 		| patient4  |
 		| patient6  |
 		| patient7  |
-		| patient8  |
+		#| patient8  |
 # git hub ref 144		| patient11 |
 		| patient12 |
 		| patient13 |

@@ -195,9 +195,9 @@ Scenario: Structured Migrate request for Patient2 Excluding Sensitive Data expec
 #       And The Bundle should contain NO Documents
 		#TODO Checks for Sensitive INFO being included
 
-Scenario: Structured Migrate request for Patient3 excluding Sensitive Data expect No Docs and success
+Scenario: Structured Migrate request for Patient8 excluding Sensitive Data expect No Docs and success
 	Given I configure the default "MigrateStructuredRecordWithoutSensitive" request
-		And I add an NHS Number parameter for "patient3"
+		And I add an NHS Number parameter for "patient8"
 		And I add the includeFullrecord parameter with includeSensitiveInformation set to "false"
     When I make the "MigrateStructuredRecordWithoutSensitive" request
 	Then the response status code should indicate success
