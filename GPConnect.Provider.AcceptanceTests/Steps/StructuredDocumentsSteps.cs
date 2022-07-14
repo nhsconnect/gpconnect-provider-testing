@@ -257,9 +257,9 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 //check content.attachment
                 doc.Content.ForEach(content =>
                 {
-                    // check the file size is greater than 5MB(5242880)
-                    int size = Convert.ToInt32(content.Attachment.Size);
-                    size.ShouldBeGreaterThan(5242880, "Fail : Content Attachment Size should be over 5MB");
+                    // check the file size is greater than 5MB(5242880 binary or 5000000 decimal)
+                    long size = Convert.ToInt64(content.Attachment.Size);
+                    size.ShouldBeGreaterThan(5000000, "Fail : Content Attachment Size should be over 5MB");
                     content.Attachment.ContentType.ShouldNotBeNullOrEmpty("Fail : ContentType should be populated");
                     content.Attachment.Url.ShouldBeNull("Fail : URL should not be included when Attachment Size is over 5MB");
                 });

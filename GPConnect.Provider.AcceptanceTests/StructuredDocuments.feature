@@ -23,7 +23,9 @@ Scenario: Search for Documents on a Patient with Documents
 		And I Check the returned DocumentReference is Valid
 		And I Check the returned DocumentReference Do Not Include Not In Use Fields
 
+
 #This test will fail against the demonstrator. Till the demonstraor is updates
+@1.5.0-IncrementalAndRegression
 Scenario: Search for Documents on a Patient with Documents Over 5MB
 	Given I configure the default "DocumentsPatientSearch" request
 		And I add a Patient Identifier parameter with default System and Value "patient4"

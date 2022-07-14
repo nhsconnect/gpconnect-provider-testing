@@ -116,36 +116,77 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Search for Documents on a Patient with Documents Over 5MB")]
+        [NUnit.Framework.CategoryAttribute("1.5.0-IncrementalAndRegression")]
+        public virtual void SearchForDocumentsOnAPatientWithDocumentsOver5MB()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Search for Documents on a Patient with Documents Over 5MB", null, new string[] {
+                        "1.5.0-IncrementalAndRegression"});
+#line 29
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 30
+ testRunner.Given("I configure the default \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 31
+  testRunner.And("I add a Patient Identifier parameter with default System and Value \"patient4\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 32
+  testRunner.When("I make the \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 33
+  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 34
+  testRunner.Given("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 35
+ testRunner.Given("I configure the default \"DocumentsSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 36
+  testRunner.And("I set the required parameters for a Documents Search call", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 37
+ testRunner.When("I make the \"DocumentsSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 38
+  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 39
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 40
+  testRunner.And("The Bundle id should match the SSPTraceID", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 41
+  testRunner.And("I Check the returned DocumentReference is Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 42
+  testRunner.And("I Check the returned DocumentReference Content Doesnot Contain URL for over 5MB A" +
+                    "ttachment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Search for Documents on a Patient with NO Documents")]
         public virtual void SearchForDocumentsOnAPatientWithNODocuments()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Search for Documents on a Patient with NO Documents", null, ((string[])(null)));
-#line 26
+#line 44
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 27
+#line 45
  testRunner.Given("I configure the default \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 28
+#line 46
   testRunner.And("I add a Patient Identifier parameter with default System and Value \"patient3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 29
+#line 47
   testRunner.When("I make the \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 30
+#line 48
   testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 31
+#line 49
   testRunner.Given("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 32
+#line 50
  testRunner.Given("I configure the default \"DocumentsSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 33
+#line 51
   testRunner.And("I set the required parameters for a Documents Search call", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 34
+#line 52
  testRunner.When("I make the \"DocumentsSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 35
+#line 53
   testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 36
+#line 54
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 37
+#line 55
   testRunner.And("The Bundle id should match the SSPTraceID", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 38
+#line 56
   testRunner.And("The Bundle should contain NO Documents", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -156,26 +197,26 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void SearchForDocumentsWithoutMandatoryIncludeParamsExpectFail()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Search for Documents without Mandatory include Params expect fail", null, ((string[])(null)));
-#line 40
+#line 58
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 41
+#line 59
  testRunner.Given("I configure the default \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 42
+#line 60
   testRunner.And("I add a Patient Identifier parameter with default System and Value \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 43
+#line 61
   testRunner.When("I make the \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 44
+#line 62
   testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 45
+#line 63
   testRunner.Given("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 46
+#line 64
  testRunner.Given("I configure the default \"DocumentsSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 47
+#line 65
  testRunner.When("I make the \"DocumentsSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 48
+#line 66
   testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 49
+#line 67
   testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
                     "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -187,36 +228,36 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void SearchForDocumentsUsingAuthorParameter()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Search for Documents using author parameter", null, ((string[])(null)));
-#line 51
+#line 69
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 52
+#line 70
  testRunner.Given("I configure the default \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 53
+#line 71
   testRunner.And("I add a Patient Identifier parameter with default System and Value \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 54
+#line 72
   testRunner.When("I make the \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 55
+#line 73
   testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 56
+#line 74
   testRunner.Given("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 57
+#line 75
  testRunner.Given("I configure the default \"DocumentsSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 58
+#line 76
   testRunner.And("I set the required parameters for a Documents Search call", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 59
+#line 77
   testRunner.And("I set the author parameters for a Documents Search call to \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 60
+#line 78
  testRunner.When("I make the \"DocumentsSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 61
+#line 79
   testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 62
+#line 80
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 63
+#line 81
   testRunner.And("The Bundle id should match the SSPTraceID", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 64
+#line 82
   testRunner.And("I Check the returned DocumentReference is Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 65
+#line 83
   testRunner.And("I Check the returned DocumentReference Do Not Include Not In Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -227,31 +268,31 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void SearchForDocumentsUsingAuthorParameterButWithInvalidIdentifier()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Search for Documents using author parameter but with invalid identifier", null, ((string[])(null)));
-#line 67
+#line 85
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 68
+#line 86
  testRunner.Given("I configure the default \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 69
+#line 87
   testRunner.And("I add a Patient Identifier parameter with default System and Value \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 70
+#line 88
   testRunner.When("I make the \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 71
+#line 89
   testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 72
+#line 90
   testRunner.Given("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 73
+#line 91
  testRunner.Given("I configure the default \"DocumentsSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 74
+#line 92
   testRunner.And("I set the required parameters for a Documents Search call", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 75
+#line 93
   testRunner.And("I set the author parameters with an invalid identifier for a Documents Search cal" +
                     "l to \"ORG1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 76
+#line 94
  testRunner.When("I make the \"DocumentsSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 77
+#line 95
   testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 78
+#line 96
   testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
                     "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -263,32 +304,32 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void SearchForPatientDocumentsCreatedWithinALast365Days()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Search for Patient Documents created within a last 365 days", null, ((string[])(null)));
-#line 80
+#line 98
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 81
+#line 99
  testRunner.Given("I configure the default \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 82
+#line 100
   testRunner.And("I add a Patient Identifier parameter with default System and Value \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 83
+#line 101
   testRunner.When("I make the \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 84
+#line 102
   testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 85
+#line 103
   testRunner.Given("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 86
+#line 104
  testRunner.Given("I configure the default \"DocumentsSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 87
+#line 105
   testRunner.And("I set the required parameters for a Documents Search call", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 88
+#line 106
   testRunner.Then("I set the documents search parameters le to today and ge to 365 days ago", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 89
+#line 107
  testRunner.When("I make the \"DocumentsSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 90
+#line 108
   testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 91
+#line 109
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 92
+#line 110
   testRunner.And("The Bundle id should match the SSPTraceID", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -300,32 +341,32 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void SearchForPatientDocumentsCreatedLessThanADate(string days, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Search for Patient Documents created less than a date", null, exampleTags);
-#line 94
+#line 112
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 95
+#line 113
  testRunner.Given("I configure the default \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 96
+#line 114
   testRunner.And("I add a Patient Identifier parameter with default System and Value \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 97
+#line 115
   testRunner.When("I make the \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 98
+#line 116
   testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 99
+#line 117
   testRunner.Given("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 100
+#line 118
  testRunner.Given("I configure the default \"DocumentsSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 101
+#line 119
   testRunner.And("I set the required parameters for a Documents Search call", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 102
+#line 120
   testRunner.Then(string.Format("I set the created search parameter to less than \"{0}\" days ago", days), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 103
+#line 121
  testRunner.When("I make the \"DocumentsSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 104
+#line 122
   testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 105
+#line 123
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 106
+#line 124
   testRunner.And("The Bundle id should match the SSPTraceID", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -337,32 +378,32 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void SearchForPatientDocumentsCreatedGreaterThanADate(string days, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Search for Patient Documents created greater than a date", null, exampleTags);
-#line 111
+#line 129
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 112
+#line 130
  testRunner.Given("I configure the default \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 113
+#line 131
   testRunner.And("I add a Patient Identifier parameter with default System and Value \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 114
+#line 132
   testRunner.When("I make the \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 115
+#line 133
   testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 116
+#line 134
   testRunner.Given("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 117
+#line 135
  testRunner.Given("I configure the default \"DocumentsSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 118
+#line 136
   testRunner.And("I set the required parameters for a Documents Search call", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 119
+#line 137
   testRunner.Then(string.Format("I set the created search parameter to greater than \"{0}\" days ago", days), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 120
+#line 138
  testRunner.When("I make the \"DocumentsSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 121
+#line 139
   testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 122
+#line 140
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 123
+#line 141
   testRunner.And("The Bundle id should match the SSPTraceID", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -373,30 +414,30 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void SearchForDocumentsWithAnInvalidParameter()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Search for Documents with an invalid parameter", null, ((string[])(null)));
-#line 128
+#line 146
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 129
+#line 147
  testRunner.Given("I configure the default \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 130
+#line 148
   testRunner.And("I add a Patient Identifier parameter with default System and Value \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 131
+#line 149
   testRunner.When("I make the \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 132
+#line 150
   testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 133
+#line 151
   testRunner.Given("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 134
+#line 152
  testRunner.Given("I configure the default \"DocumentsSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 135
+#line 153
   testRunner.And("I set the required parameters for a Documents Search call", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 136
+#line 154
   testRunner.And("I set an invalid parameter for a Documents Search call", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 137
+#line 155
  testRunner.When("I make the \"DocumentsSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 138
+#line 156
   testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 139
+#line 157
   testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
                     "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -408,20 +449,20 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void SearchForDocumentsOnAPatientThatDoesntExist()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Search for Documents on a Patient that doesnt exist", null, ((string[])(null)));
-#line 141
+#line 159
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 142
+#line 160
  testRunner.Given("I configure the default \"DocumentsSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 143
+#line 161
   testRunner.And("I set the required parameters for a Documents Search call", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 144
+#line 162
   testRunner.And("I change the patient logical id to a non existent id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 145
+#line 163
  testRunner.When("I make the \"DocumentsSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 146
+#line 164
   testRunner.Then("the response status code should be \"404\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 147
+#line 165
   testRunner.And("the response should be a OperationOutcome resource with error code \"PATIENT_NOT_F" +
                     "OUND\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -435,34 +476,34 @@ this.ScenarioInitialize(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Search for Documents on a patient which exists on the system as a temporary patie" +
                     "nt", null, ((string[])(null)));
-#line 149
+#line 167
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 150
+#line 168
  testRunner.Given("I get the next Patient to register and store it", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 151
+#line 169
  testRunner.Given("I configure the default \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 152
+#line 170
   testRunner.And("I add the Stored Patient as a parameter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 153
+#line 171
  testRunner.When("I make the \"RegisterPatient\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 154
+#line 172
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 155
+#line 173
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 156
+#line 174
   testRunner.And("the response bundle should contain a single Patient resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 157
+#line 175
  testRunner.Given("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 158
+#line 176
  testRunner.Given("I configure the default \"DocumentsSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 159
+#line 177
   testRunner.And("I set the required parameters for a Documents Search call", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 160
+#line 178
  testRunner.When("I make the \"DocumentsSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 161
+#line 179
  testRunner.Then("the response status code should be \"404\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 162
+#line 180
   testRunner.And("the response should be a OperationOutcome resource with error code \"PATIENT_NOT_F" +
                     "OUND\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -474,88 +515,43 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void RetrieveADocumentForPatient2()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve a Document for Patient2", null, ((string[])(null)));
-#line 168
+#line 186
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 169
+#line 187
  testRunner.Given("I configure the default \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 170
-  testRunner.And("I add a Patient Identifier parameter with default System and Value \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 171
-  testRunner.When("I make the \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 172
-  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 173
-  testRunner.Given("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 174
- testRunner.Given("I configure the default \"DocumentsSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 175
-  testRunner.And("I set the required parameters for a Documents Search call", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 176
- testRunner.When("I make the \"DocumentsSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 177
-  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 178
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 179
-  testRunner.And("I save a document url for retrieving later", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 180
- testRunner.Given("I configure the default \"DocumentsRetrieve\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 181
-  testRunner.When("I make the \"DocumentsRetrieve\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 182
-  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 183
-  testRunner.And("I save the binary document from the retrieve", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 184
-  testRunner.And("I Check the returned Binary Document is Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 185
-  testRunner.And("I Check the returned Binary Document Do Not Include Not In Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Retrieve a Document Over 5mb for Patient4 expect Fail")]
-        public virtual void RetrieveADocumentOver5MbForPatient4ExpectFail()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve a Document Over 5mb for Patient4 expect Fail", null, ((string[])(null)));
 #line 188
-this.ScenarioInitialize(scenarioInfo);
-            this.ScenarioStart();
+  testRunner.And("I add a Patient Identifier parameter with default System and Value \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 189
- testRunner.Given("I configure the default \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 190
-  testRunner.And("I add a Patient Identifier parameter with default System and Value \"patient4\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 191
   testRunner.When("I make the \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 192
+#line 190
   testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 193
+#line 191
   testRunner.Given("I store the Patient", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 194
+#line 192
  testRunner.Given("I configure the default \"DocumentsSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 195
+#line 193
   testRunner.And("I set the required parameters for a Documents Search call", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 196
+#line 194
  testRunner.When("I make the \"DocumentsSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 197
+#line 195
   testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 198
+#line 196
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 199
+#line 197
   testRunner.And("I save a document url for retrieving later", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 200
+#line 198
  testRunner.Given("I configure the default \"DocumentsRetrieve\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 201
+#line 199
   testRunner.When("I make the \"DocumentsRetrieve\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 200
+  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 201
+  testRunner.And("I save the binary document from the retrieve", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 202
-  testRunner.Then("the response status code should be \"404\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I Check the returned Binary Document is Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 203
-  testRunner.And("the response should be a OperationOutcome resource with error code \"NO_RECORD_FOU" +
-                    "ND\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 204
-  testRunner.And("I clear the saved document url", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I Check the returned Binary Document Do Not Include Not In Use Fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -573,56 +569,56 @@ this.ScenarioInitialize(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Documents Patient Search and check response conforms with the GPConnect specifica" +
                     "tion", null, exampleTags);
-#line 211
+#line 229
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 212
- testRunner.Given("I configure the default \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 213
-  testRunner.And(string.Format("I add a Patient Identifier parameter with default System and Value \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 214
- testRunner.When("I make the \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 215
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 216
-  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 217
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 218
-  testRunner.And("the response bundle should contain \"1\" entries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 219
-  testRunner.And("The Bundle id should match the SSPTraceID", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 220
-  testRunner.And("the Patient Name should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 221
-  testRunner.And("the Patient Gender should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 222
-  testRunner.And("the Patient DOB should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 223
-  testRunner.And("the Patient Use should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 224
-  testRunner.And("the Patient Communication should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 225
-  testRunner.And("the Patient Contact should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 226
-  testRunner.And("the Patient MultipleBirth should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 227
-  testRunner.And("the Patient MaritalStatus should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 228
-  testRunner.And("the Patient Deceased should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 229
-  testRunner.And("the Patient Telecom should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 230
-  testRunner.And("the Patient ManagingOrganization Should be Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I configure the default \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 231
-  testRunner.And("the Patient GeneralPractitioner Practitioner should be valid and resolvable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("I add a Patient Identifier parameter with default System and Value \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 232
-  testRunner.And("the Patient should exclude disallowed fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I make the \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 233
-  testRunner.And("the Patient Link should be valid and resolvable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 234
-  testRunner.And("the Patient Contact Telecom use should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 235
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 236
+  testRunner.And("the response bundle should contain \"1\" entries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 237
+  testRunner.And("The Bundle id should match the SSPTraceID", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 238
+  testRunner.And("the Patient Name should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 239
+  testRunner.And("the Patient Gender should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 240
+  testRunner.And("the Patient DOB should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 241
+  testRunner.And("the Patient Use should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 242
+  testRunner.And("the Patient Communication should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 243
+  testRunner.And("the Patient Contact should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 244
+  testRunner.And("the Patient MultipleBirth should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 245
+  testRunner.And("the Patient MaritalStatus should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 246
+  testRunner.And("the Patient Deceased should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 247
+  testRunner.And("the Patient Telecom should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 248
+  testRunner.And("the Patient ManagingOrganization Should be Valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 249
+  testRunner.And("the Patient GeneralPractitioner Practitioner should be valid and resolvable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 250
+  testRunner.And("the Patient should exclude disallowed fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 251
+  testRunner.And("the Patient Link should be valid and resolvable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 252
+  testRunner.And("the Patient Contact Telecom use should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 253
   testRunner.And("the Patient Not In Use should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -633,24 +629,24 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void DocumentsPatientSearchResultsShouldContainALogicalIdentifier()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Documents Patient Search results should contain a logical identifier", null, ((string[])(null)));
-#line 245
+#line 263
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 246
+#line 264
  testRunner.Given("I configure the default \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 247
+#line 265
   testRunner.And("I add a Patient Identifier parameter with default System and Value \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 248
+#line 266
  testRunner.When("I make the \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 249
+#line 267
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 250
+#line 268
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 251
+#line 269
   testRunner.And("the response bundle should contain \"1\" entries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 252
+#line 270
   testRunner.And("the Patient Id should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 253
+#line 271
   testRunner.And("the patient resource in the bundle should contain meta data profile and version i" +
                     "d", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -664,18 +660,18 @@ this.ScenarioInitialize(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Documents Patient Search should return an error when no system is supplied in the" +
                     " identifier parameter", null, ((string[])(null)));
-#line 255
+#line 273
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 256
+#line 274
  testRunner.Given("I configure the default \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 257
+#line 275
   testRunner.And("I add a Patient Identifier parameter with no System and Value \"patient1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 258
+#line 276
  testRunner.When("I make the \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 259
+#line 277
  testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 260
+#line 278
   testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
                     "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -689,18 +685,18 @@ this.ScenarioInitialize(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Documents Patient Search should return an error when a blank system is supplied i" +
                     "n the identifier parameter", null, ((string[])(null)));
-#line 262
+#line 280
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 263
+#line 281
  testRunner.Given("I configure the default \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 264
+#line 282
   testRunner.And("I add a Patient Identifier parameter with System \"\" and Value \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 265
+#line 283
  testRunner.When("I make the \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 266
+#line 284
  testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 267
+#line 285
   testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
                     "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -714,23 +710,23 @@ this.ScenarioInitialize(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Documents Patient Search When a patient is not found on the provider system an em" +
                     "pty bundle should be returned", null, ((string[])(null)));
-#line 269
+#line 287
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 270
+#line 288
  testRunner.Given("I configure the default \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 271
+#line 289
   testRunner.And("I add a Patient Identifier parameter with default System and Value \"patientNotInS" +
                     "ystem\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 272
+#line 290
  testRunner.When("I make the \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 273
+#line 291
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 274
+#line 292
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 275
+#line 293
   testRunner.And("the response bundle should contain \"0\" entries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 276
+#line 294
   testRunner.And("The Bundle id should match the SSPTraceID", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -741,16 +737,16 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void DocumentsPatientSearchShouldFailIfNoIdentifierParameterIsInclude()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Documents Patient Search should fail if no identifier parameter is include", null, ((string[])(null)));
-#line 278
+#line 296
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 279
+#line 297
  testRunner.Given("I configure the default \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 280
+#line 298
  testRunner.When("I make the \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 281
+#line 299
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 282
+#line 300
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -763,19 +759,19 @@ this.ScenarioInitialize(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Documents Patient Search The identifier parameter should be rejected if the case " +
                     "is incorrect", null, ((string[])(null)));
-#line 284
+#line 302
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 285
+#line 303
  testRunner.Given("I configure the default \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 286
+#line 304
   testRunner.And("I add a Patient Identifier parameter with identifier name \"Identifier\" default Sy" +
                     "stem and Value \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 287
+#line 305
  testRunner.When("I make the \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 288
+#line 306
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 289
+#line 307
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -788,19 +784,19 @@ this.ScenarioInitialize(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Documents Patient Search response should be an error if no value is sent in the i" +
                     "dentifier parameter", null, ((string[])(null)));
-#line 291
+#line 309
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 292
+#line 310
  testRunner.Given("I configure the default \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 293
+#line 311
   testRunner.And("I add the parameter \"identifier\" with the value \"https://fhir.nhs.uk/Id/nhs-numbe" +
                     "r|\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 294
+#line 312
  testRunner.When("I make the \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 295
+#line 313
  testRunner.Then("the response status code should be \"422\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 296
+#line 314
   testRunner.And("the response should be a OperationOutcome resource with error code \"INVALID_PARAM" +
                     "ETER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -814,28 +810,28 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void TheDocumentsPatientSearchEndpointShouldAcceptTheAcceptHeader(string acceptHeader, string resultFormat, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("The Documents Patient Search endpoint should accept the accept header", null, exampleTags);
-#line 298
+#line 316
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 299
+#line 317
  testRunner.Given("I configure the default \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 300
+#line 318
   testRunner.And(string.Format("I set the Accept header to \"{0}\"", acceptHeader), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 301
+#line 319
   testRunner.And("I add a Patient Identifier parameter with default System and Value \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 302
+#line 320
  testRunner.When("I make the \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 303
+#line 321
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 304
+#line 322
   testRunner.And(string.Format("the response body should be FHIR {0}", resultFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 305
+#line 323
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 306
+#line 324
   testRunner.And("the response bundle should contain \"1\" entries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 307
+#line 325
   testRunner.And("the Patient Id should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 308
+#line 326
   testRunner.And("the Patient Identifiers should be valid for Patient \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -848,28 +844,28 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void TheDocumentsPatientSearchEndpointShouldAcceptTheFormatParameter(string formatParam, string resultFormat, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("The Documents patient search endpoint should accept the format parameter", null, exampleTags);
-#line 314
+#line 332
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 315
+#line 333
   testRunner.Given("I configure the default \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 316
+#line 334
   testRunner.And(string.Format("I add the parameter \"_format\" with the value \"{0}\"", formatParam), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 317
+#line 335
   testRunner.And("I add a Patient Identifier parameter with default System and Value \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 318
+#line 336
  testRunner.When("I make the \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 319
+#line 337
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 320
+#line 338
   testRunner.And(string.Format("the response body should be FHIR {0}", resultFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 321
+#line 339
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 322
+#line 340
   testRunner.And("the response bundle should contain \"1\" entries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 323
+#line 341
   testRunner.And("the Patient Id should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 324
+#line 342
   testRunner.And("the Patient Identifiers should be valid for Patient \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -886,30 +882,30 @@ this.ScenarioInitialize(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("The Documents patient search endpoint should accept the format parameter after th" +
                     "e identifier parameter", null, exampleTags);
-#line 330
+#line 348
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 331
+#line 349
   testRunner.Given("I configure the default \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 332
+#line 350
   testRunner.And(string.Format("I set the Accept header to \"{0}\"", acceptHeader), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 333
+#line 351
   testRunner.And("I add a Patient Identifier parameter with default System and Value \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 334
+#line 352
   testRunner.And(string.Format("I add the parameter \"_format\" with the value \"{0}\"", formatParam), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 335
+#line 353
  testRunner.When("I make the \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 336
+#line 354
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 337
+#line 355
   testRunner.And(string.Format("the response body should be FHIR {0}", resultFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 338
+#line 356
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 339
+#line 357
   testRunner.And("the response bundle should contain \"1\" entries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 340
+#line 358
   testRunner.And("the Patient Id should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 341
+#line 359
   testRunner.And("the Patient Identifiers should be valid for Patient \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -926,30 +922,30 @@ this.ScenarioInitialize(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("The Documents Patient search endpoint should accept the format parameter before t" +
                     "he identifier parameter", null, exampleTags);
-#line 349
+#line 367
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 350
+#line 368
  testRunner.Given("I configure the default \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 351
+#line 369
   testRunner.And(string.Format("I set the Accept header to \"{0}\"", acceptHeader), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 352
+#line 370
   testRunner.And(string.Format("I add the parameter \"_format\" with the value \"{0}\"", formatParam), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 353
+#line 371
   testRunner.And("I add a Patient Identifier parameter with default System and Value \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 354
+#line 372
  testRunner.When("I make the \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 355
+#line 373
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 356
+#line 374
   testRunner.And(string.Format("the response body should be FHIR {0}", resultFormat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 357
+#line 375
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 358
+#line 376
   testRunner.And("the response bundle should contain \"1\" entries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 359
+#line 377
   testRunner.And("the Patient Id should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 360
+#line 378
   testRunner.And("the Patient Identifiers should be valid for Patient \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -965,26 +961,26 @@ this.ScenarioInitialize(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Documents Patient Search resource should contain NHS number identifier returned a" +
                     "s XML", null, exampleTags);
-#line 368
+#line 386
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 369
+#line 387
  testRunner.Given("I configure the default \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 370
+#line 388
   testRunner.And("I set the Accept header to \"application/fhir+xml\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 371
+#line 389
   testRunner.And(string.Format("I add a Patient Identifier parameter with default System and Value \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 372
+#line 390
  testRunner.When("I make the \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 373
+#line 391
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 374
+#line 392
   testRunner.And("the response body should be FHIR XML", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 375
+#line 393
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 376
+#line 394
   testRunner.And("the response bundle should contain \"1\" entries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 377
+#line 395
   testRunner.And(string.Format("the Patient Identifiers should be valid for Patient \"{0}\"", patient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -995,24 +991,24 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void DocumentsPatientSearchResponseDoesNotReturnDeceasedPatient()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Documents Patient search response does not return deceased patient", null, ((string[])(null)));
-#line 384
+#line 402
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 385
+#line 403
  testRunner.Given("I configure the default \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 386
+#line 404
   testRunner.And("I add a Patient Identifier parameter with default System and Value \"patient18\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 387
+#line 405
  testRunner.When("I make the \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 388
+#line 406
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 389
+#line 407
  testRunner.And("the response body should be FHIR JSON", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 390
+#line 408
  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 391
+#line 409
  testRunner.And("the response bundle should contain \"0\" entries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 392
+#line 410
  testRunner.And("The Bundle id should match the SSPTraceID", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1028,22 +1024,22 @@ this.ScenarioInitialize(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Documents Patient search should error if multiple parameters valid or invalid are" +
                     " sent", null, exampleTags);
-#line 394
+#line 412
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 395
+#line 413
   testRunner.Given("I configure the default \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 396
+#line 414
   testRunner.And(string.Format("I add a Patient Identifier parameter with identifier name \"{0}\" default System an" +
                         "d Value \"{1}\"", identifier1, patientOne), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 397
+#line 415
   testRunner.And(string.Format("I add a Patient Identifier parameter with identifier name \"{0}\" default System an" +
                         "d Value \"{1}\"", identifier2, patientTwo), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 398
+#line 416
  testRunner.When("I make the \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 399
+#line 417
  testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 400
+#line 418
   testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1054,59 +1050,6 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void DocumentsPatientSearchValidResponseCheckCachingHeadersExist()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Documents Patient search valid response check caching headers exist", null, ((string[])(null)));
-#line 407
-this.ScenarioInitialize(scenarioInfo);
-            this.ScenarioStart();
-#line 408
- testRunner.Given("I configure the default \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 409
-  testRunner.And("I add a Patient Identifier parameter with default System and Value \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 410
- testRunner.When("I make the \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 411
- testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 412
-  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 413
-  testRunner.And("the response bundle should contain \"1\" entries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 414
-  testRunner.And("the Patient Id should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 415
-  testRunner.And("the required cacheing headers should be present in the response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Documents Patient search invalid response check caching headers exist")]
-        public virtual void DocumentsPatientSearchInvalidResponseCheckCachingHeadersExist()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Documents Patient search invalid response check caching headers exist", null, ((string[])(null)));
-#line 417
-this.ScenarioInitialize(scenarioInfo);
-            this.ScenarioStart();
-#line 418
-testRunner.Given("I configure the default \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 419
-  testRunner.And("I add a Patient Identifier parameter with identifier name \"Identifier\" default Sy" +
-                    "stem and Value \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 420
- testRunner.When("I make the \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 421
- testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 422
-  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 423
-  testRunner.And("the required cacheing headers should be present in the response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Documents Patient search should contain a preferred branch")]
-        public virtual void DocumentsPatientSearchShouldContainAPreferredBranch()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Documents Patient search should contain a preferred branch", null, ((string[])(null)));
 #line 425
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -1123,6 +1066,59 @@ this.ScenarioInitialize(scenarioInfo);
 #line 431
   testRunner.And("the response bundle should contain \"1\" entries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 432
+  testRunner.And("the Patient Id should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 433
+  testRunner.And("the required cacheing headers should be present in the response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Documents Patient search invalid response check caching headers exist")]
+        public virtual void DocumentsPatientSearchInvalidResponseCheckCachingHeadersExist()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Documents Patient search invalid response check caching headers exist", null, ((string[])(null)));
+#line 435
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 436
+testRunner.Given("I configure the default \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 437
+  testRunner.And("I add a Patient Identifier parameter with identifier name \"Identifier\" default Sy" +
+                    "stem and Value \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 438
+ testRunner.When("I make the \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 439
+ testRunner.Then("the response status code should be \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 440
+  testRunner.And("the response should be a OperationOutcome resource with error code \"BAD_REQUEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 441
+  testRunner.And("the required cacheing headers should be present in the response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Documents Patient search should contain a preferred branch")]
+        public virtual void DocumentsPatientSearchShouldContainAPreferredBranch()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Documents Patient search should contain a preferred branch", null, ((string[])(null)));
+#line 443
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 444
+ testRunner.Given("I configure the default \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 445
+  testRunner.And("I add a Patient Identifier parameter with default System and Value \"patient2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 446
+ testRunner.When("I make the \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 447
+ testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 448
+  testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 449
+  testRunner.And("the response bundle should contain \"1\" entries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 450
   testRunner.And("the Patient RegistrationDetails should include preferredBranchSurgery", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1135,20 +1131,20 @@ this.ScenarioInitialize(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Documents Patient search for a patient with a sensitive flag should return no res" +
                     "ults", null, ((string[])(null)));
-#line 434
+#line 452
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 435
+#line 453
  testRunner.Given("I configure the default \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 436
+#line 454
   testRunner.And("I add a Patient Identifier parameter with default System and Value \"patient9\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 437
+#line 455
  testRunner.When("I make the \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 438
+#line 456
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 439
+#line 457
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 440
+#line 458
   testRunner.And("the response bundle should contain \"0\" entries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1161,20 +1157,20 @@ this.ScenarioInitialize(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Documents Patient search for a patient with a inactive flag should return no resu" +
                     "lts", null, ((string[])(null)));
-#line 442
+#line 460
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 443
+#line 461
  testRunner.Given("I configure the default \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 444
+#line 462
   testRunner.And("I add a Patient Identifier parameter with default System and Value \"patient21\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 445
+#line 463
  testRunner.When("I make the \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 446
+#line 464
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 447
+#line 465
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 448
+#line 466
   testRunner.And("the response bundle should contain \"0\" entries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1185,24 +1181,24 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void DocumentsPatientSearchForANoConsentPatientSearchGetsAValidResponse()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Documents Patient search for a No Consent Patient search gets a valid response", null, ((string[])(null)));
-#line 450
+#line 468
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 451
+#line 469
  testRunner.Given("I configure the default \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 452
+#line 470
   testRunner.And("I add a Patient Identifier parameter with default System and Value \"patient15\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 453
+#line 471
  testRunner.When("I make the \"DocumentsPatientSearch\" request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 454
+#line 472
  testRunner.Then("the response status code should indicate success", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 455
+#line 473
   testRunner.And("the response should be a Bundle resource of type \"searchset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 456
+#line 474
   testRunner.And("the response bundle should contain \"1\" entries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 457
+#line 475
   testRunner.And("the Patient Id should be valid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 458
+#line 476
   testRunner.And("the required cacheing headers should be present in the response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

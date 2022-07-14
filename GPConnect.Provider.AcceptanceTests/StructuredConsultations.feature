@@ -4,7 +4,7 @@ Feature: StructuredConsultations
 # These Tests are only Testing this Structured Area in isolation and Not with other Areas or Combinations of Include Parameters
 # Tests around Multiple Structured Areas in one Request are tested in the MultipleRequests Feature
 
-
+@1.5.0-IncrementalAndRegression
 Scenario: Verify Consultations Response for a Patient with Topic or Headings linked to clinical items and a problem
 	Given I configure the default "GpcGetStructuredRecord" request
 		And I add an NHS Number parameter for "patient2"
@@ -16,6 +16,8 @@ Scenario: Verify Consultations Response for a Patient with Topic or Headings lin
 		And the patient resource in the bundle should contain meta data profile and version id
 		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
+		#added this step in accordance with the new changes 
+		And if the response bundle contains a location resource it should contain meta data profile and version id
 		And check that the bundle does not contain any duplicate resources
 		And the Bundle should be valid for patient "patient2"
 		And the Patient Id should be valid
