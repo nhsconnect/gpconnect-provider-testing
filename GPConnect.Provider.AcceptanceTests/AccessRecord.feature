@@ -1,4 +1,4 @@
-﻿@accessrecord
+﻿@accessrecord @0.7.3-Full-Pack
 Feature: AccessRecord
 
 Background:
@@ -1164,7 +1164,7 @@ Scenario Outline: A patient is requested which is not on Spine but is on provide
 
 
 #Added By PG #192 20-3-2019
-@0.7.2-Incremental-and-regression
+@0.7.3-Only
 Scenario Outline: Ensure Retrieve the care record sections for senstive patients returns patient not found
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction

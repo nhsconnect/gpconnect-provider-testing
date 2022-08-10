@@ -1,4 +1,4 @@
-﻿@security
+﻿@security @0.7.3-Full-Pack
 Feature: Security
 
 Scenario: Security reject a  non ssl request

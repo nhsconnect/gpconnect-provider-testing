@@ -20,6 +20,7 @@ namespace GPConnect.Provider.AcceptanceTests
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("Fhir Base")]
     [NUnit.Framework.CategoryAttribute("fhir")]
+    [NUnit.Framework.CategoryAttribute("0.7.3-Full-Pack")]
     public partial class FhirBaseFeature
     {
         
@@ -33,7 +34,8 @@ namespace GPConnect.Provider.AcceptanceTests
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Fhir Base", null, ProgrammingLanguage.CSharp, new string[] {
-                        "fhir"});
+                        "fhir",
+                        "0.7.3-Full-Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -954,11 +956,11 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Check Capability Version")]
-        [NUnit.Framework.CategoryAttribute("0.7.2-Incremental-and-regression")]
+        [NUnit.Framework.CategoryAttribute("0.7.3-Only")]
         public virtual void CheckCapabilityVersion()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check Capability Version", null, new string[] {
-                        "0.7.2-Incremental-and-regression"});
+                        "0.7.3-Only"});
 #line 315
  this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();

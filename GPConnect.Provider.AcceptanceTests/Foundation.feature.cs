@@ -19,6 +19,7 @@ namespace GPConnect.Provider.AcceptanceTests
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("Foundation")]
+    [NUnit.Framework.CategoryAttribute("0.7.3-Full-Pack")]
     public partial class FoundationFeature
     {
         
@@ -31,7 +32,8 @@ namespace GPConnect.Provider.AcceptanceTests
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Foundation", null, ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Foundation", null, ProgrammingLanguage.CSharp, new string[] {
+                        "0.7.3-Full-Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
         

@@ -20,6 +20,7 @@ namespace GPConnect.Provider.AcceptanceTests
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("Security")]
     [NUnit.Framework.CategoryAttribute("security")]
+    [NUnit.Framework.CategoryAttribute("0.7.3-Full-Pack")]
     public partial class SecurityFeature
     {
         
@@ -33,7 +34,8 @@ namespace GPConnect.Provider.AcceptanceTests
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Security", null, ProgrammingLanguage.CSharp, new string[] {
-                        "security"});
+                        "security",
+                        "0.7.3-Full-Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
         

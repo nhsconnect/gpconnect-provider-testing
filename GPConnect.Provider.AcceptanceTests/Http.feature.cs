@@ -20,6 +20,7 @@ namespace GPConnect.Provider.AcceptanceTests
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("Http")]
     [NUnit.Framework.CategoryAttribute("http")]
+    [NUnit.Framework.CategoryAttribute("0.7.3-Full-Pack")]
     public partial class HttpFeature
     {
         
@@ -33,7 +34,8 @@ namespace GPConnect.Provider.AcceptanceTests
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Http", null, ProgrammingLanguage.CSharp, new string[] {
-                        "http"});
+                        "http",
+                        "0.7.3-Full-Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
         

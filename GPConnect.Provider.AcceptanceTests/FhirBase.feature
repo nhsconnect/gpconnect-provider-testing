@@ -1,4 +1,4 @@
-﻿@fhir
+﻿@fhir @0.7.3-Full-Pack
 Feature: Fhir Base
 
 Background:
@@ -311,7 +311,7 @@ Scenario: endpoint should support chunking of data
 		And the JSON response should be a Bundle resource
 		And response should be chunked
 
-	@0.7.2-Incremental-and-regression
+	@0.7.3-Only
 	Scenario: Check Capability Version
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:rest:read:metadata" interaction
