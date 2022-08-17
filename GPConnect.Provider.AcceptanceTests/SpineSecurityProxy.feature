@@ -1,4 +1,4 @@
-﻿@ssp @0.7.3-Full-Pack
+﻿@ssp @0.7.4-Full-Pack
 Feature: SpineSecurityProxy
 
 Background:

@@ -1,4 +1,4 @@
-﻿@accessrecord @0.7.3-Full-Pack
+﻿@accessrecord @0.7.4-Full-Pack
 Feature: AccessRecord
 
 Background:
@@ -20,6 +20,9 @@ Background:
 		| patient13          | 9000000013 |
 		| patient14          | 9000000014 |
 		| patient15          | 9000000015 |
+		| patient16          | 9000000016 |
+		| patient17          | 9000000017 |
+		| patient18          | 9000000018 |
 
 Scenario Outline: Retrieve the care record sections for a patient
 	Given I am using the default server
@@ -1164,7 +1167,7 @@ Scenario Outline: A patient is requested which is not on Spine but is on provide
 
 
 #Added By PG #192 20-3-2019
-@0.7.3-Only
+
 Scenario Outline: Ensure Retrieve the care record sections for senstive patients returns patient not found
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -1189,3 +1192,53 @@ Scenario Outline: Ensure Retrieve the care record sections for senstive patients
 		| REF |
 		| SUM |
 
+@0.7.4-Only
+	 #allowed access period is 28 days at the moment.
+	Scenario Outline: Deceased Date is within  allowed access period post patient death returns patient record
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "patient18"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the JSON response should be a Bundle resource
+		And the response bundle contains a deceased date not older than allowed access period "28" days
+	Examples:
+		| Code |
+		| ADM  |
+		| ALL  |
+		| CLI  |
+		| ENC  |
+		| IMM  |
+		#| INV  |
+		| MED  |
+		| OBS  |
+		#| PAT  |
+		| PRB  |
+		| REF  |
+		| SUM  |
+
+@0.7.4-Only
+	#Error checking when the request is received after allowed access period post patient death i.e 28 days
+	Scenario Outline: When request is received after allowed access period post patient death returns patient not found
+	Given I am using the default server
+		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
+		And I author a request for the "<Code>" care record section for config patient "patient17"
+	When I request the FHIR "gpc.getcarerecord" Patient Type operation
+	Then the response status code should be "404"
+		And the response body should be FHIR JSON
+		And the JSON response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
+	Examples:
+		| Code |
+		| ADM  |
+		| ALL  |
+		| CLI  |
+		| ENC  |
+		| IMM  |
+		#| INV  |
+		| MED  |
+		| OBS  |
+		#| PAT  |
+		| PRB  |
+		| REF  |
+		| SUM  |

@@ -20,7 +20,7 @@ namespace GPConnect.Provider.AcceptanceTests
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("SpineSecurityProxy")]
     [NUnit.Framework.CategoryAttribute("ssp")]
-    [NUnit.Framework.CategoryAttribute("0.7.3-Full-Pack")]
+    [NUnit.Framework.CategoryAttribute("0.7.4-Full-Pack")]
     public partial class SpineSecurityProxyFeature
     {
         
@@ -35,7 +35,7 @@ namespace GPConnect.Provider.AcceptanceTests
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "SpineSecurityProxy", null, ProgrammingLanguage.CSharp, new string[] {
                         "ssp",
-                        "0.7.3-Full-Pack"});
+                        "0.7.4-Full-Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
         

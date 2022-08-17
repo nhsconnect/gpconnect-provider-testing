@@ -785,6 +785,27 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             }
         }
 
+        [Then(@"the response bundle contains a deceased date not older than allowed access period ""([^""]*)"" days")]
+        public void TheResponseBundleContainsADeceasedDateNotOlderThanAllowedAccessPeriod(int AllowedAccessPeriod)
+        {
+            foreach (EntryComponent entry in ((Bundle)FhirContext.FhirResponseResource).Entry)
+            {
+                if (entry.Resource.ResourceType.Equals(ResourceType.Patient))
+                {
+                    Patient patient = (Patient)entry.Resource;
+
+                    //check if deceased date exists
+                    patient.Deceased.ShouldNotBeNull("Deceased date doesn't exists");                  
+
+                    var deceasedDateTime = (new FhirDateTime(patient.Deceased.ToString())).ToDateTimeOffset();
+                    var allowedAccessPeriod = new DateTimeOffset(DateTime.UtcNow.AddDays(-AllowedAccessPeriod));
+                    allowedAccessPeriod.ShouldBeLessThanOrEqualTo(deceasedDateTime, "Patient Deceased Date : " + deceasedDateTime.ToString() + " should be less than allowed access period " + AllowedAccessPeriod + " days.");
+                    Logger.Log.WriteLine("Log: Patient Deceased Date : " + deceasedDateTime.ToString("dd/MM/yyyy") + " is with in "+ AllowedAccessPeriod + " days allowed access period.");
+
+                }
+            }
+        }
+
         public void shouldBeSingleCodingWhichIsInValuest(ValueSet valueSet, List<Coding> codingList) {
             var codingCount = 0;
             foreach (Coding coding in codingList)

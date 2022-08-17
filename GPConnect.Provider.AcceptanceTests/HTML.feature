@@ -1,4 +1,4 @@
-﻿@http @0.7.3-Full-Pack
+﻿@http @0.7.4-Full-Pack
 Feature: Html
 
 Background:
@@ -21,7 +21,7 @@ Background:
 		| patient14          | 9000000014 |
 		| patient15          | 9000000015 |
 
-@0.7.3-Only
+
 Scenario Outline: HTML should not contain disallowed elements
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -58,7 +58,7 @@ Scenario Outline: HTML should not contain disallowed elements
 # 197 03/05/2019 SJD changes to Medication view - removed duplicated tests
 # 201 14/05/2019 SJD Summary Page re-ordering
 # 195 17/07/2019 removed single tables as not inside a <h2> tag
-@0.7.3-Only
+
 Scenario Outline: html sub section headers present
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -77,7 +77,7 @@ Scenario Outline: html sub section headers present
 
 # 197 03/05/2019 SJD changes to Medication view tables
 # 201 14/05/2019 SJD Summary Page re-ordering tables
-@0.7.3-Only
+
 Scenario Outline: html table headers present and in order that is expected
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -117,7 +117,7 @@ Scenario Outline: html table headers present and in order that is expected
 
 
 #28/10/2019 SJD removed unecessary duplicated tests against patient 1
-@0.7.3-Only
+
 Scenario Outline: filtered sections should contain date range section banner
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -150,7 +150,7 @@ Scenario Outline: filtered sections should contain date range section banner
 
 
 # issue 193 sado1 2/4/19 - To check banner when no end date provided
-@0.7.3-Only
+
 Scenario Outline: should contain the applied start banner
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -173,7 +173,7 @@ Scenario Outline: should contain the applied start banner
 		
 
 # issue 193 SJD 01/05/19 - To check banner when no start date provided	
-@0.7.3-Only
+
 Scenario Outline: should contain the banner All data items until 
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -197,7 +197,7 @@ Scenario Outline: should contain the banner All data items until
 
 #28/10/2019 SJD removed unecessary duplicated tests against patient 1
 #20/11/2019 SJD removed SUM, IMM & ALL as don't support date filtering
-@0.7.3-Only
+
 Scenario Outline: sections should contain the all data items section banner
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -219,7 +219,7 @@ Scenario Outline: sections should contain the all data items section banner
 	#	| INV ||||||
 	#	| PAT ||||||
 	
-@0.7.3-Only
+
 Scenario Outline: filtered sections should return no data available html banner
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -242,7 +242,7 @@ Scenario Outline: filtered sections should return no data available html banner
 
 #197 SJD 03/05/2019 Update to Medication view
 # 201 14/05/2019 SJD Summary Page re-ordering
-@0.7.3-Only
+
 Scenario Outline: sections should return no data available html banner
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -279,7 +279,7 @@ Scenario Outline: sections should return no data available html banner
 	#	 INV ||||||
 	#	 PAT ||||||
 
-@0.7.3-Only
+
 Scenario Outline: Check html for non html formatting
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -307,7 +307,7 @@ Scenario Outline: Check html for non html formatting
 	   #| PAT  |           
 
 #PG - 5/12/2019 - Changed test to check for operation outcome instead of posstive result.
-@0.7.3-Only
+
 Scenario Outline: check when empty date range supplied a 422 invalid Param error is returned
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -329,7 +329,7 @@ Scenario Outline: check when empty date range supplied a 422 invalid Param error
 
 
 #195 SJD 24/07/2019 – when consumer date range applied to a section and subsections do not support a date filter - MUST display banner
-@0.7.3-Only
+
 Scenario Outline: section date filter applied but date filter not supported in subsection - not applied banner displayed
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -348,7 +348,7 @@ Scenario Outline: section date filter applied but date filter not supported in s
 	    | PRB  | patient2 | 2018-04-20    | 2018-04-30  | Active Problems and Issues        |
 
 #195 SJD 24/07/2019 h1 header tags 
-@0.7.3-Only
+
 Scenario Outline: html section headers inside correct tag
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -373,7 +373,7 @@ Scenario Outline: html section headers inside correct tag
 
 #202  -PG 14-8-2019
 # SU - added cli-tab to last test. it was missing hence failed against the Demonstrator.  
-@0.7.3-Only
+
 Scenario Outline: Check html table ids are present and in correct order
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -397,7 +397,7 @@ Scenario Outline: Check html table ids are present and in correct order
 		 | patient2 | SUM  | cli-tab,enc-tab,prb-tab-act,prb-tab-majinact,all-tab-curr,med-tab-acu-med,med-tab-curr-rep |
 
 #202  -PG 15-8-2019
-@0.7.3-Only
+
 Scenario Outline: Check html tables have date column class attribute for date columns
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -435,7 +435,7 @@ Scenario Outline: Check html tables have date column class attribute for date co
 
 #202  -PG 18-10-2019
 # SJD 20/11/19 removed SUM, ALL, IMM and MED subsections with no date filtering
-@0.7.3-Only
+
 Scenario Outline: Check html Date banners have the date banner class attribute
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -457,7 +457,7 @@ Scenario Outline: Check html Date banners have the date banner class attribute
 		
 
 #202  -PG 24-10-2019
-@0.7.3-Only
+
 Scenario Outline: Check HTML response includes GP Transfer banners
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -481,7 +481,7 @@ Scenario Outline: Check HTML response includes GP Transfer banners
 		 | patient13 | REF  | Referrals                       |
 
 #202  -PG 24-10-2019
-@0.7.3-Only
+
 Scenario: Check HTML Medication Views and the Grouping of Entries
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -495,7 +495,7 @@ Scenario: Check HTML Medication Views and the Grouping of Entries
 		
 
 # 195 18/10/2019 SJD Subsection banner displayed
-@0.7.3-Only
+
 Scenario: Discontinued repeat medication subsection banner displayed with expected message
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction
@@ -507,7 +507,7 @@ Scenario: Discontinued repeat medication subsection banner displayed with expect
 		And The Response Html Should Contain The Discontinued Repeat Medication Banner Text
 
 # 319 SJD 28/11/2019 unsupported date filters
-@0.7.3-Only
+
 Scenario Outline: Check that the date banner class is not present when sections do not support date filters
 	Given I am using the default server
 		And I am performing the "urn:nhs:names:services:gpconnect:fhir:operation:gpc.getcarerecord" interaction

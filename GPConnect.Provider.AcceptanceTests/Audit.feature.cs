@@ -20,7 +20,7 @@ namespace GPConnect.Provider.AcceptanceTests
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("Audit")]
     [NUnit.Framework.CategoryAttribute("audit")]
-    [NUnit.Framework.CategoryAttribute("0.7.3-Full-Pack")]
+    [NUnit.Framework.CategoryAttribute("0.7.4-Full-Pack")]
     public partial class AuditFeature
     {
         
@@ -35,7 +35,7 @@ namespace GPConnect.Provider.AcceptanceTests
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Audit", null, ProgrammingLanguage.CSharp, new string[] {
                         "audit",
-                        "0.7.3-Full-Pack"});
+                        "0.7.4-Full-Pack"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
