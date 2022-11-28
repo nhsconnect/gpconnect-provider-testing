@@ -129,7 +129,8 @@ Scenario: Retrieve Referrals data structured record for a patient that has sensi
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure
 		And the response status code should be "404"
-		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
+		#And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
+		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND" and display "Patient not found"
 
 @1.5.0-IncrementalAndRegression	
 Scenario Outline: Retrieve the Referrals data structured record with invalid dates expected failure

@@ -93,7 +93,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 			TestOperationOutcomeResource(errorCode);
 		}
 
-		private void TestOperationOutcomeResource(string errorCode = null)
+		[Then (@"the response should be a OperationOutcome resource with error code ""(.*)"" and display ""(.*)""")]
+		public void ThenTheResponseShouldBeAOperationOutcomeResourceWithErrorCodeAndDisplay(string errorCode, string errorDisplay)
+		{
+			TestOperationOutcomeResource(errorCode, errorDisplay);
+		}
+
+		private void TestOperationOutcomeResource(string errorCode = null, string errorDisplay=null)
 		{
 			var resource = _httpContext.FhirResponse.Resource;
 
@@ -125,7 +131,12 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
 					if (!string.IsNullOrEmpty(errorCode))
 					{
-						coding.Code.ShouldBe(errorCode);
+						coding.Code.ShouldBe(errorCode,string.Format("coding.Code should be {0} but is {1}",errorCode, coding.Code));
+					}
+
+					if (!string.IsNullOrEmpty(errorDisplay))
+					{
+						coding.Display.ShouldBe(errorDisplay, string.Format("coding.Display should be {0} but is {1}", errorDisplay, coding.Display));
 					}
 				}
 			});
