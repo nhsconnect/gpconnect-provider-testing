@@ -24,7 +24,7 @@ Scenario: Search for Documents on a Patient with Documents
 		And I Check the returned DocumentReference Do Not Include Not In Use Fields
 
 
-#This test will fail against the demonstrator. Till the demonstraor is updates
+#This test will fail against the demonstrator. Till the demonstraor is updated
 @1.5.0-IncrementalAndRegression
 Scenario: Search for Documents on a Patient with Documents Over 5MB
 	Given I configure the default "DocumentsPatientSearch" request
@@ -178,6 +178,16 @@ Scenario: Search for Documents on a patient which exists on the system as a temp
 	When I make the "DocumentsSearch" request
 	Then the response status code should be "404"
 		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
+
+		@1.5.1-Only
+Scenario: Search for Documents on a Patient with deceased date not older than 28 days
+	Given I configure the default "DocumentsPatientSearch" request
+		And I add a Patient Identifier parameter with default System and Value "patient18"
+		When I make the "DocumentsPatientSearch" request
+		Then the response status code should indicate success
+		And the response body should be FHIR JSON
+		And the response should be a Bundle resource of type "searchset"
+		And the response bundle contains a deceased date not older than allowed access period "28" days
 		
 ##########################################
 #Retrieve  Documents Tests

@@ -620,6 +620,24 @@
             });
         }
 
+        [Then(@"the response bundle contains a deceased date not older than allowed access period ""([^""]*)"" days")]
+        public void TheResponseBundleContainsADeceasedDateNotOlderThanAllowedAccessPeriod(int AllowedAccessPeriod)
+        {
+            Patients.ForEach(patient =>
+            {
+
+                //check if deceased date exists
+                patient.Deceased.ShouldNotBeNull("Deceased date doesn't exists");
+
+                var deceasedDateTime = (new FhirDateTime(patient.Deceased.ToString())).ToDateTimeOffset();
+                var allowedAccessPeriod = new DateTimeOffset(DateTime.UtcNow.AddDays(-AllowedAccessPeriod));
+                allowedAccessPeriod.ShouldBeLessThanOrEqualTo(deceasedDateTime, "Patient Deceased Date : " + deceasedDateTime.ToString() + " should be less than allowed access period " + AllowedAccessPeriod + " days.");
+                Logger.Log.WriteLine("Log: Patient Deceased Date : " + deceasedDateTime.ToString("dd/MM/yyyy") + " is with in " + AllowedAccessPeriod + " days allowed access period.");
+
+
+            });
+        }
+
         private void ValidateNoExtension(List<Extension> extensions, string defUri)
         {
             var exts = extensions.Where(
