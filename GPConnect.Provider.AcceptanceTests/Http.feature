@@ -1,4 +1,4 @@
-﻿@http
+﻿@http @1.5.0-Full-Pack
 Feature: HTTP
 
 Scenario: Http GET from invalid endpoint
