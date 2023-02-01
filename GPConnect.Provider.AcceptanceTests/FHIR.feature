@@ -141,6 +141,7 @@ Scenario: Foundations endpoint should support gzip compression for metadata endp
 		And the response body should be FHIR JSON
 		And the Response Resource should be a CapabilityStatement
                   
+@1.6.0-Only @1.6.0-IncrementalAndRegression
 Scenario Outline: Foundations CapabilityStatement returns correct profile versions
 Given I configure the default "MetadataRead" request
 	When I make the "MetadataRead" request
@@ -165,7 +166,7 @@ Examples:
 | https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-List-1                     |
 | https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-StructuredRecord-Bundle-1        |
 | https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Immunization-1             |
-| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Condition-ProblemHeader-1  |
+| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-ProblemHeader-Condition-1  |
 | https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Encounter-1                |
 | https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Observation-1              |
 | https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-DiagnosticReport-1         |
@@ -312,7 +313,7 @@ Scenario: Structured Fhir content type test where Accept header is JSON and _for
 	Then the response status code should indicate success
 		And the response body should be FHIR XML
 
-@Structured @1.6.0-Only
+@Structured @1.6.0-Only @1.6.0-IncrementalAndRegression
 Scenario Outline: Structured CapabilityStatement returns correct profile versions
 Given I configure the default "StructuredMetaDataRead" request
 	When I make the "StructuredMetaDataRead" request
@@ -334,7 +335,7 @@ Examples:
 | https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-StructuredRecord-Bundle-1/_history/1.3       |
 | https://fhir.nhs.uk/STU3/StructureDefinition/GPConnect-OperationOutcome-1/_history/1.2              |
 | https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Immunization-1/_history/1.5            |
-| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-ProblemHeader-Condition-1/_history/1.6 |
+| https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-ProblemHeader-Condition-1/_history/1.7 |
 | https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Encounter-1/_history/1.5               |
 | https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-Observation-1/_history/1.6             |
 | https://fhir.nhs.uk/STU3/StructureDefinition/CareConnect-GPC-DiagnosticReport-1/_history/1.3        |

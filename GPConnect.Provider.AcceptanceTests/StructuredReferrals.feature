@@ -120,7 +120,7 @@ Given I configure the default "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure
 		And the response should be a OperationOutcome resource
 
-	
+@1.6.0-IncrementalAndRegression	
 Scenario: Retrieve Referrals data structured record for a patient that has sensitive flag
 	Given I configure the default "GpcGetStructuredRecord" request 
 		And I add an NHS Number parameter for "patient9"
@@ -128,7 +128,8 @@ Scenario: Retrieve Referrals data structured record for a patient that has sensi
 	When I make the "GpcGetStructuredRecord" request
 	Then the response status code should indicate failure
 		And the response status code should be "404"
-		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
+		#And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND"
+		And the response should be a OperationOutcome resource with error code "PATIENT_NOT_FOUND" and display "Patient not found"
 
 	
 Scenario Outline: Retrieve the Referrals data structured record with invalid dates expected failure

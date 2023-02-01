@@ -93,45 +93,56 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 			TestOperationOutcomeResource(errorCode);
 		}
 
-		private void TestOperationOutcomeResource(string errorCode = null)
-		{
-			var resource = _httpContext.FhirResponse.Resource;
+        [Then(@"the response should be a OperationOutcome resource with error code ""(.*)"" and display ""(.*)""")]
+        public void ThenTheResponseShouldBeAOperationOutcomeResourceWithErrorCodeAndDisplay(string errorCode, string errorDisplay)
+        {
+            TestOperationOutcomeResource(errorCode, errorDisplay);
+        }
 
-			resource.ResourceType.ShouldBe(ResourceType.OperationOutcome);
+        private void TestOperationOutcomeResource(string errorCode = null, string errorDisplay = null)
+        {
+            var resource = _httpContext.FhirResponse.Resource;
 
-			var operationOutcome = (OperationOutcome)resource;
+            resource.ResourceType.ShouldBe(ResourceType.OperationOutcome);
 
-			operationOutcome.Meta.ShouldNotBeNull();
-			//operationOutcome.Meta.Profile.ShouldAllBe(profile => profile.Equals("http://fhir.nhs.net/StructureDefinition/gpconnect-operationoutcome-1"));
+            var operationOutcome = (OperationOutcome)resource;
 
-			operationOutcome.Issue?.Count.ShouldBeGreaterThanOrEqualTo(1);
+            operationOutcome.Meta.ShouldNotBeNull();
+            //operationOutcome.Meta.Profile.ShouldAllBe(profile => profile.Equals("http://fhir.nhs.net/StructureDefinition/gpconnect-operationoutcome-1"));
 
-			operationOutcome.Issue?.ForEach(issue =>
-			{
-				var errorValue = issue.Severity;
+            operationOutcome.Issue?.Count.ShouldBeGreaterThanOrEqualTo(1);
 
-				Log.WriteLine("issue.severity value is incorrect should be issue.severity.error");
-				errorValue.ToString().ShouldBe("Error", "the severity value is incorrect should be Error"); //#259 SJD 26/6/19 assertion added
+            operationOutcome.Issue?.ForEach(issue =>
+            {
+                var errorValue = issue.Severity;
 
-				issue.Code.ShouldNotBeNull();
+                Log.WriteLine("issue.severity value is incorrect should be issue.severity.error");
+                errorValue.ToString().ShouldBe("Error", "the severity value is incorrect should be Error"); //#259 SJD 26/6/19 assertion added
 
-				issue.Details?.Coding?.Count.ShouldBe(1);
-				if (issue.Details?.Coding != null)
-				{
-					var coding = issue.Details.Coding[0];
+                issue.Code.ShouldNotBeNull();
 
-					coding.Code.ShouldNotBeNull();
-					coding.Display.ShouldNotBeNull();
+                issue.Details?.Coding?.Count.ShouldBe(1);
+                if (issue.Details?.Coding != null)
+                {
+                    var coding = issue.Details.Coding[0];
 
-					if (!string.IsNullOrEmpty(errorCode))
-					{
-						coding.Code.ShouldBe(errorCode);
-					}
-				}
-			});
-		}
+                    coding.Code.ShouldNotBeNull();
+                    coding.Display.ShouldNotBeNull();
 
-		[Then(@"the response bundle should contain ""([^""]*)"" entries")]
+                    if (!string.IsNullOrEmpty(errorCode))
+                    {
+                        coding.Code.ShouldBe(errorCode, string.Format("coding.Code should be {0} but is {1}", errorCode, coding.Code));
+                    }
+
+                    if (!string.IsNullOrEmpty(errorDisplay))
+                    {
+                        coding.Display.ShouldBe(errorDisplay, string.Format("coding.Display should be {0} but is {1}", errorDisplay, coding.Display));
+                    }
+                }
+            });
+        }
+
+        [Then(@"the response bundle should contain ""([^""]*)"" entries")]
 		public void ThenResponseBundleEntryShouldNotBeEmpty(int expectedSize)
 		{
 			_httpContext.FhirResponse.Entries.Count.ShouldBe(expectedSize, "The response bundle does not contain the expected number of entries");

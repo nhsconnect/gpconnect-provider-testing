@@ -501,7 +501,8 @@ Scenario: Register patient with family name not matching PDS
 #		And the response should be a OperationOutcome resource with error code "BAD_REQUEST"
 #
 # github demonstrator ref 128
-# RMB 29/10/2018		
+# RMB 29/10/2018	
+@1.6.0-IncrementalAndRegression
 	Scenario: Register deceased patient
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
@@ -509,7 +510,8 @@ Scenario: Register patient with family name not matching PDS
 		And I change the NHSNo from the Stored Patient "patient18"
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "INVALID_PATIENT_DEMOGRAPHICS"
+		#And the response should be a OperationOutcome resource with error code "INVALID_PATIENT_DEMOGRAPHICS"
+		And the response should be a OperationOutcome resource with error code "INVALID_PATIENT_DEMOGRAPHICS" and display "Invalid patient demographics"
 
 	Scenario: Register sensitive patient
 	Given I get the next Patient to register and store it
@@ -520,6 +522,7 @@ Scenario: Register patient with family name not matching PDS
 	Then the response status code should be "400"
 		And the response should be a OperationOutcome resource with error code "INVALID_PATIENT_DEMOGRAPHICS"
 
+@1.6.0-IncrementalAndRegression
 	Scenario: Register superseded patient
 	Given I get the next Patient to register and store it
 	Given I configure the default "RegisterPatient" request
@@ -527,7 +530,8 @@ Scenario: Register patient with family name not matching PDS
 		And I change the NHSNo from the Stored Patient "patient11"
 	When I make the "RegisterPatient" request
 	Then the response status code should be "400"
-		And the response should be a OperationOutcome resource with error code "INVALID_NHS_NUMBER"
+		#And the response should be a OperationOutcome resource with error code "INVALID_NHS_NUMBER"
+		And the response should be a OperationOutcome resource with error code "INVALID_NHS_NUMBER" and display "Invalid NHS number"
 
 # git hub ref 154
 # RMB 8/1/19
