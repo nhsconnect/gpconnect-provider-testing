@@ -150,7 +150,9 @@
                 observation.BasedOn.Count().ShouldBe(0, "BasedOn is Not Supposed to be Sent - Not In Use Field");
                 observation.Category.Count().ShouldBe(0, "Category is Not Supposed to be Sent - Not In Use Field");
                 observation.DataAbsentReason.ShouldBeNull("DataAbsentReason is Not Supposed to be Sent - Not In Use Field");
-                observation.Interpretation.ShouldBeNull("Interpretation is Not Supposed to be Sent - Not In Use Field");
+                // SU
+                // removed as Interpretation is valid to populate
+                //observation.Interpretation.ShouldBeNull("Interpretation is Not Supposed to be Sent - Not In Use Field");
                 observation.BodySite.ShouldBeNull("BodySite is Not Supposed to be Sent - Not In Use Field");
                 observation.Method.ShouldBeNull("Method is Not Supposed to be Sent - Not In Use Field");
                 observation.Specimen.ShouldBeNull("Specimen is Not Supposed to be Sent - Not In Use Field");

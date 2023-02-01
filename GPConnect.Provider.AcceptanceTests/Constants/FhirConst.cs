@@ -135,6 +135,7 @@
             public const string kVsMaritalStatus = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-MaritalStatus-1";
             public const string kVsWarningCode = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-ListWarningCode-1";
             public const string kVsCareSetting = "https://fhir.nhs.uk/STU3/ValueSet/CareConnect-CareSettingType-1";
+            public const string kVsCareConditionCategory = "https://fhir.hl7.org.uk/STU3/CodeSystem/CareConnect-ConditionCategory-1";
 
             //HL7
             public const string kVsNameUse = "http://hl7.org/fhir/stu3/valueset-name-use.html";

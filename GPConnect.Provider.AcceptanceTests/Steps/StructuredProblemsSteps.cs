@@ -238,6 +238,7 @@
                 problem.ClinicalStatus.ToString().ShouldBeOneOf("Active", "Inactive");
 
                 //check category
+                problem.Category.Where(c => c.Coding.First().System == FhirConst.ValueSetSystems.kVsCareConditionCategory).Count().ShouldBe(1);
                 problem.Category.Where(c => c.Coding.First().Code == "problem-list-item").Count().ShouldBe(1);
 
                 //Check assertedDate
