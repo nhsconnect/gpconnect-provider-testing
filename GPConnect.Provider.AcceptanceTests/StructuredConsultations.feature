@@ -16,6 +16,7 @@ Scenario: Verify Consultations Response for a Patient with Topic or Headings lin
 		And the patient resource in the bundle should contain meta data profile and version id
 		And if the response bundle contains a practitioner resource it should contain meta data profile and version id
 		And if the response bundle contains an organization resource it should contain meta data profile and version id
+		And if the response bundle contains a location resource it should contain meta data profile and version id
 		And check that the bundle does not contain any duplicate resources
 		And the Bundle should be valid for patient "patient2"
 		And the Patient Id should be valid

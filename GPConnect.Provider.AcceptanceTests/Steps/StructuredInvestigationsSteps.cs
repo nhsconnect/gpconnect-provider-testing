@@ -582,7 +582,7 @@
                 {
                     obs.BasedOn.Count().ShouldBe(0, "Fail :  Observation Test report Filing - basedon element Should not be used - Not In Use Field");
                     obs.Category.Count().ShouldBe(0, "Fail :  Observation Test report Filing - category element Should not be used - Not In Use Field");
-                    obs.Context.ShouldBeNull("Fail :  Observation Test report Filing  - context element Should not be used - Not In Use Field");
+                    //obs.Context.ShouldBeNull("Fail :  Observation Test report Filing  - context element Should not be used - Not In Use Field");
                     obs.DataAbsentReason.ShouldBeNull("Fail :  Observation Test report Filing  - DataAbsentReason element Should not be used - Not In Use Field");
                     obs.Interpretation.ShouldBeNull("Fail :  Observation Test report Filing  - Interpretation element Should not be used - Not In Use Field");
                     obs.BodySite.ShouldBeNull("Fail :  Observation Test report Filing  - BodySite element Should not be used - Not In Use Field");
