@@ -260,3 +260,4 @@ paket-files/
 #ignore app.config file
 *.config
 
+/GPConnect.Provider.AcceptanceTests/App.config
