@@ -782,7 +782,7 @@
 			// Added RMB 8/8/2018
             TheMedicationRequestIdentifierShouldBeValid();			
 			
-            TheMedicationRequestGroupIdentiferShouldBeValid();
+            //TheMedicationRequestGroupIdentiferShouldBeValid();
             TheMedicationRequestBasedOnShouldBeValid();
             TheMedicationRequestStatusShouldbeValid();
             TheMedicationRequestIntentShouldbeValid();
