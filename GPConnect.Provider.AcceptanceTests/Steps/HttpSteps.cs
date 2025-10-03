@@ -81,8 +81,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             // Load The Default Settings From The App.config File
             HttpContext.LoadAppConfig();            
 
-            Given(@"I configure server certificate and ssl");
-            And($@"I am using ""{FhirConst.ContentTypes.kJsonFhir}"" to communicate with the server");
+            // Given(@"I configure server certificate and ssl");
+            Given($@"I am using ""{FhirConst.ContentTypes.kJsonFhir}"" to communicate with the server");
             And(@"I am generating a random message trace identifier");
             And($@"I am accredited system ""{HttpContext.ConsumerASID}""");
             And($@"I am connecting to accredited system ""{HttpContext.ProviderASID}""");

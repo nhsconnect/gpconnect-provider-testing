@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValueSet xmlns="http://hl7.org/fhir">
+  <meta>
+		<lastUpdated value="2016-08-03T00:00:00+01:00"/>
+	</meta>
+  <contained>
+    <ConceptMap>
+          <id value="map"/>
+      <name value="NHS Data Model and Dictionary Mapping"/>
+      <status value="draft"/>
+      <sourceReference>
+        <reference value="http://hl7.org/fhir/ValueSet/administrative-gender"/>
+      </sourceReference>
+      <targetReference>
+        <reference value="http://fhir.nhs.net/ValueSet/administrative-gender-ddmap-1"/>
+      </targetReference>
+      <element>
+        <code value="male"/>
+        <target>
+          <code value="1"/>
+          <equivalence value="equivalent"/>
+        </target>
+      </element>
+      <element>
+        <code value="female"/>
+        <target>
+          <code value="2"/>
+          <equivalence value="equivalent"/>
+        </target>
+      </element>
+      <element>
+        <code value="other"/>
+        <target>
+          <code value="9"/>
+          <equivalence value="equivalent"/>
+        </target>
+      </element>
+      <element>
+        <code value="unknown"/>
+        <target>
+          <code value="0"/>
+          <equivalence value="equivalent"/>
+        </target>
+      </element>
+    </ConceptMap>
+  </contained>
+  <extension url="http://hl7.org/fhir/StructureDefinition/valueset-map">
+    <valueReference>
+      <reference value="#map"/>
+    </valueReference>
+  </extension>
+  	<extension url="http://hl7.org/fhir/StructureDefinition/valueset-oid">
+		<valueUri value="urn:oid:2.16.840.1.113883.4.642.2.1"/>
+	</extension>
+<!--      DD MAPPING CODES     -->
+  <url value="http://fhir.nhs.net/ValueSet/administrative-gender-1"/>
+  <name value="Administrative Gender"/>
+<status value="active"/>
+<description value="The gender of a person used for administrative purposes."/>
+  <codeSystem>
+    <system value="http://fhir.nhs.net/ValueSet/administrative-gender-1"/>
+    <concept>
+      <code value="male"/>
+      <display value="Male"/>
+      <definition value="Male"/>
+    </concept>
+    <concept>
+      <code value="female"/>
+      <display value="Female"/>
+      <definition value="Female"/>
+    </concept>
+    <concept>
+      <code value="other"/>
+      <display value="Other"/>
+      <definition value="Other"/>
+    </concept>
+    <concept>
+      <code value="unknown"/>
+      <display value="Unknown"/>
+      <definition value="Unknown"/>
+    </concept>
+  </codeSystem>
+</ValueSet>
