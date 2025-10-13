@@ -13,7 +13,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 	using GPConnect.Provider.AcceptanceTests.Helpers;
 	using GPConnect.Provider.AcceptanceTests.Steps;
 	using GPConnect.Provider.AcceptanceTests.Logger;
-    using System.Text.RegularExpressions;
+	using System.Text.RegularExpressions;
 
 	[Binding]
 	public sealed class StructuredAllergySteps : BaseSteps
@@ -105,61 +105,61 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 		{
 			Lists.ForEach(list =>
 			{
-                //make sure to only act on allergies lists
-              if (list.Code.Coding.First().Code.Equals(FhirConst.GetSnoMedParams.kActiveAllergies) || list.Code.Coding.First().Code.Equals(FhirConst.GetSnoMedParams.kResolvedAllergies))
-              {
-                    AccessRecordSteps.BaseListParametersAreValid(list);
+				//make sure to only act on allergies lists
+				if (list.Code.Coding.First().Code.Equals(FhirConst.GetSnoMedParams.kActiveAllergies) || list.Code.Coding.First().Code.Equals(FhirConst.GetSnoMedParams.kResolvedAllergies))
+				{
+					AccessRecordSteps.BaseListParametersAreValid(list);
 
-                    // Added 1.2.1 RMB 1/10/2018
-                    list.Meta.VersionId.ShouldBeNull("List Meta VersionId should be Null");
-                    list.Meta.LastUpdated.ShouldBeNull("List Meta LastUpdated should be Null");
+					// Added 1.2.1 RMB 1/10/2018
+					list.Meta.VersionId.ShouldBeNull("List Meta VersionId should be Null");
+					list.Meta.LastUpdated.ShouldBeNull("List Meta LastUpdated should be Null");
 
-                    //Alergy specific checks
-                    CheckForValidMetaDataInResource(list, FhirConst.StructureDefinitionSystems.kList);
+					//Alergy specific checks
+					CheckForValidMetaDataInResource(list, FhirConst.StructureDefinitionSystems.kList);
 
-                    if (list.Title.Equals(FhirConst.ListTitles.kActiveAllergies))
-                    {
-                        list.Code.Coding.First().Code.Equals("886921000000105");
-                    }
-                    else if (list.Title.Equals(FhirConst.ListTitles.kResolvedAllergies))
-                    {
-                        // Changed from TBD to 1103671000000101 for 1.2.0 RMB 7/8/2018
-                        list.Code.Coding.First().Code.Equals("1103671000000101");
-                        // Amended github ref 89
-                        // RMB 9/10/2018				
-                        // git hub ref 174 snomed code display set to Ended allergies
-                        // RMB 23/1/19
-                        //					list.Code.Coding.First().Display.ShouldBe("Ended allergies (record artifact)");
-                        list.Code.Coding.First().Display.ShouldBe("Ended allergies");
-                    }
+					if (list.Title.Equals(FhirConst.ListTitles.kActiveAllergies))
+					{
+						list.Code.Coding.First().Code.Equals("886921000000105");
+					}
+					else if (list.Title.Equals(FhirConst.ListTitles.kResolvedAllergies))
+					{
+						// Changed from TBD to 1103671000000101 for 1.2.0 RMB 7/8/2018
+						list.Code.Coding.First().Code.Equals("1103671000000101");
+						// Amended github ref 89
+						// RMB 9/10/2018				
+						// git hub ref 174 snomed code display set to Ended allergies
+						// RMB 23/1/19
+						//					list.Code.Coding.First().Display.ShouldBe("Ended allergies (record artifact)");
+						list.Code.Coding.First().Display.ShouldBe("Ended allergies");
+					}
 
 
-                    if (list.Entry.Count > 0)
-                    {
-                        list.Entry.ForEach(entry =>
-                        {
-                            entry.Item.ShouldNotBeNull("The item field must be populated for each list entry.");
-                            entry.Item.Reference.ShouldMatch("AllergyIntolerance/.+|#.+");
-                            if (entry.Item.IsContainedReference)
-                            {
-                                string id = entry.Item.Reference.Substring(1);
-                                List<Resource> contained = list.Contained.Where(allergy => allergy.Id.Equals(id)).ToList();
-                                contained.Count.ShouldBe(1);
-                                contained.ForEach(allergy =>
-                                {
-                                    AllergyIntolerance allergyIntolerance = (AllergyIntolerance)allergy;
-                                    allergyIntolerance.ClinicalStatus.Equals(AllergyIntolerance.AllergyIntoleranceClinicalStatus.Resolved);
-                                });
-                            }
-                        });
-                    }
+					if (list.Entry.Count > 0)
+					{
+						list.Entry.ForEach(entry =>
+						{
+							entry.Item.ShouldNotBeNull("The item field must be populated for each list entry.");
+							entry.Item.Reference.ShouldMatch("AllergyIntolerance/.+|#.+");
+							if (entry.Item.IsContainedReference)
+							{
+								string id = entry.Item.Reference.Substring(1);
+								List<Resource> contained = list.Contained.Where(allergy => allergy.Id.Equals(id)).ToList();
+								contained.Count.ShouldBe(1);
+								contained.ForEach(allergy =>
+								{
+									AllergyIntolerance allergyIntolerance = (AllergyIntolerance)allergy;
+									allergyIntolerance.ClinicalStatus.Equals(AllergyIntolerance.AllergyIntoleranceClinicalStatus.Resolved);
+								});
+							}
+						});
+					}
 
-                    if (list.Entry.Count == 0)
-                    {
-                        list.EmptyReason.ShouldNotBeNull("The List's empty reason field must be populated if the list is empty.");
-                        list.Note.ShouldNotBeNull("The List's note field must be populated if the list is empty.");
-                    }
-              }
+					if (list.Entry.Count == 0)
+					{
+						list.EmptyReason.ShouldNotBeNull("The List's empty reason field must be populated if the list is empty.");
+						list.Note.ShouldNotBeNull("The List's note field must be populated if the list is empty.");
+					}
+				}
 			});
 		}
 
@@ -206,42 +206,42 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 		[Then(@"the Lists are valid for a patient with no allergies")]
 		public void TheListsAreValidForAPatientWithNoAllergies()
 		{
-			 Lists.ForEach(list =>
-           {
-               list.Entry.ShouldBeEmpty();
-               list.Note.ShouldNotBeNull();
-               list.Note.ShouldHaveSingleItem();
-               //#289 PG 6/9/2019 - changed as more notes added
-               //list.Note.First().Text.ShouldBe("Information not available");
-               var found = false;
-               foreach (var note in list.Note)
-               {
-                   if (note.Text.Contains("Information not available"))
-                       found = true;
-               }
+			Lists.ForEach(list =>
+		  {
+			  list.Entry.ShouldBeEmpty();
+			  list.Note.ShouldNotBeNull();
+			  list.Note.ShouldHaveSingleItem();
+			  //#289 PG 6/9/2019 - changed as more notes added
+			  //list.Note.First().Text.ShouldBe("Information not available");
+			  var found = false;
+			  foreach (var note in list.Note)
+			  {
+				  if (note.Text.Contains("Information not available"))
+					  found = true;
+			  }
 
-               if (!found)
-               {
-                   Log.WriteLine("Warning not Found : Information not available");
-                   found.ShouldBeTrue("Warning not Found : Information not available");
-               }
-               else
-               {
-                   Log.WriteLine("Warning Found : Information not available");
-               }
+			  if (!found)
+			  {
+				  Log.WriteLine("Warning not Found : Information not available");
+				  found.ShouldBeTrue("Warning not Found : Information not available");
+			  }
+			  else
+			  {
+				  Log.WriteLine("Warning Found : Information not available");
+			  }
 
-               list.EmptyReason.ShouldNotBeNull();
-               list.EmptyReason.Coding.Count.ShouldBe(1);
-// git hub ref 158
-// RMB 9/1/19			   
-               list.EmptyReason.Coding.First().System.ShouldBe(FhirConst.StructureDefinitionSystems.kListEmptyReason);
-// Amended for github ref 87
-// RMB 9/10/2018			   
-               list.EmptyReason.Coding.First().Code.ShouldBe("no-content-recorded");
-// Amended for github ref 172
-// RMB 24/1/19			   			   
-               list.EmptyReason.Coding.First().Display.ShouldBe("No Content Recorded");
-           });
+			  list.EmptyReason.ShouldNotBeNull();
+			  list.EmptyReason.Coding.Count.ShouldBe(1);
+			  // git hub ref 158
+			  // RMB 9/1/19			   
+			  list.EmptyReason.Coding.First().System.ShouldBe(FhirConst.StructureDefinitionSystems.kListEmptyReason);
+			  // Amended for github ref 87
+			  // RMB 9/10/2018			   
+			  list.EmptyReason.Coding.First().Code.ShouldBe("no-content-recorded");
+			  // Amended for github ref 172
+			  // RMB 24/1/19			   			   
+			  list.EmptyReason.Coding.First().Display.ShouldBe("No Content Recorded");
+		  });
 		}
 
 		[Then(@"the Lists are valid for a patient with explicit no allergies coding")]
@@ -265,15 +265,15 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 		{
 			Lists.ForEach(list =>
 			{
-                if (list.Code.Coding.First().Code.Equals(FhirConst.GetSnoMedParams.kActiveAllergies))
-                {
+				if (list.Code.Coding.First().Code.Equals(FhirConst.GetSnoMedParams.kActiveAllergies))
+				{
 
-                    list.EmptyReason.ShouldBeNull("List empty reason should be null");
-                    list.Note.ForEach(note =>
-                    {
-                        note.Text.ShouldNotContain("no known allergies");
-                    });
-                }
+					list.EmptyReason.ShouldBeNull("List empty reason should be null");
+					list.Note.ForEach(note =>
+					{
+						note.Text.ShouldNotContain("no known allergies");
+					});
+				}
 			});
 		}
 
@@ -294,72 +294,72 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 			});
 		}
 
-		
-        [Then(@"Check the list contains the following warning ""(.*)""")]
-        public void CheckTheListContainsTheFollowingWarning(string WarningToCheckFor)
-        {
-            Lists.ForEach(list =>
-            {
-                var found = list.Extension
-                    .Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kExtListWarningCode))
-                    .Where(extension => extension.Value.ToString().Equals(WarningToCheckFor)).ToList();
 
-                if (found.Count() == 1)
-                    Log.WriteLine("Found Warning : " + WarningToCheckFor + " in List : " +list.Title);
-                
-                found.Count().ShouldBe(1, "Unable to Find Warning : " + WarningToCheckFor + " in List : " + list.Title);
-            });
-        }
+		[Then(@"Check the list contains the following warning ""(.*)""")]
+		public void CheckTheListContainsTheFollowingWarning(string WarningToCheckFor)
+		{
+			Lists.ForEach(list =>
+			{
+				var found = list.Extension
+					.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kExtListWarningCode))
+					.Where(extension => extension.Value.ToString().Equals(WarningToCheckFor)).ToList();
 
+				if (found.Count() == 1)
+					Log.WriteLine("Found Warning : " + WarningToCheckFor + " in List : " + list.Title);
 
-        [Then(@"Check the warning ""(.*)"" has associated note ""(.*)""")]
-        public void CheckTheListContainsTheFollowingNote(string warning,string noteToCheckFor)
-        {
-            Lists.ForEach(list =>
-            {
-                if (warning != "data-in-transit")
-                {
-                    var matches = list.Note
-                    .Where(note => note.Text.Contains(noteToCheckFor));
-
-                    if (matches.Count() == 1)
-                        Log.WriteLine("Found Note : " + noteToCheckFor + " in List : " + list.Title);
-
-                    matches.Count().ShouldBe(1, "Unable to Find Note : " + noteToCheckFor + "in LIst : " + list.Title);
-                }
-                //Process data-in-transit separatly due to date being variable in message
-                else
-                {
-                    Regex regex = new Regex("(.*)dd-Mmm-yyyy(.*)");
-                    string noteWithRegex = regex.Replace(noteToCheckFor, "$1.*$2");
-                    Regex findNoteRegex = new Regex(noteWithRegex);
-
-                    var found = false;
-                    MatchCollection matches;
-                    foreach (var note in list.Note)
-                    {
-                        matches = findNoteRegex.Matches(note.Text);
-                        if (matches.Count == 1)
-                        {
-                            found = true;
-                            Log.WriteLine("Warning Note Found : " + noteToCheckFor + " in List : " + list.Title);
-                        }
-                    }
-
-                    if (!found)
-                    {
-                        found.ShouldBeTrue("Unable to Find Warning Note : " + noteToCheckFor + " in LIst : " + list.Title);
-                        Log.WriteLine("Note Not Found For Warning: " + noteToCheckFor + " in List : " + list.Title);
-                    }
-
-                }
-            });
-        }
+				found.Count().ShouldBe(1, "Unable to Find Warning : " + WarningToCheckFor + " in List : " + list.Title);
+			});
+		}
 
 
+		[Then(@"Check the warning ""(.*)"" has associated note ""(.*)""")]
+		public void CheckTheListContainsTheFollowingNote(string warning, string noteToCheckFor)
+		{
+			Lists.ForEach(list =>
+			{
+				if (warning != "data-in-transit")
+				{
+					var matches = list.Note
+					.Where(note => note.Text.Contains(noteToCheckFor));
 
-		
-		
+					if (matches.Count() == 1)
+						Log.WriteLine("Found Note : " + noteToCheckFor + " in List : " + list.Title);
+
+					matches.Count().ShouldBe(1, "Unable to Find Note : " + noteToCheckFor + "in LIst : " + list.Title);
+				}
+				//Process data-in-transit separatly due to date being variable in message
+				else
+				{
+					Regex regex = new Regex("(.*)dd-Mmm-yyyy(.*)");
+					string noteWithRegex = regex.Replace(noteToCheckFor, "$1.*$2");
+					Regex findNoteRegex = new Regex(noteWithRegex);
+
+					var found = false;
+					MatchCollection matches;
+					foreach (var note in list.Note)
+					{
+						matches = findNoteRegex.Matches(note.Text);
+						if (matches.Count == 1)
+						{
+							found = true;
+							Log.WriteLine("Warning Note Found : " + noteToCheckFor + " in List : " + list.Title);
+						}
+					}
+
+					if (!found)
+					{
+						found.ShouldBeTrue("Unable to Find Warning Note : " + noteToCheckFor + " in LIst : " + list.Title);
+						Log.WriteLine("Note Not Found For Warning: " + noteToCheckFor + " in List : " + list.Title);
+					}
+
+				}
+			});
+		}
+
+
+
+
+
 		#endregion
 
 		#region Allergy Intolerance Validity Checks
@@ -442,17 +442,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 		//PG 10-4-2019 #190 - Updated Code to check that GUID is valid
 		private void TheAllergyIntoleranceIdentifierShouldBeValid()
 		{
-            AllAllergyIntolerances.ForEach(allergy =>
-            {
-                allergy.Identifier.Count.ShouldBeGreaterThan(0, "There should be at least 1 Identifier system/value pair");
-                if (allergy.Identifier.Count == 1)
-                {
-                    var identifier = allergy.Identifier.First();
-                    identifier.System.ShouldNotBeNullOrWhiteSpace("AllergyIntolerance Identifier System Cannot be null or Empty");
-                    identifier.Value.ShouldNotBeNullOrEmpty("AllergyIntolerance Identifier Value Cannot be null or Empty Value");
-                }
-            });
-        }
+			AllAllergyIntolerances.ForEach(allergy =>
+			{
+				allergy.Identifier.Count.ShouldBeGreaterThan(0, "There should be at least 1 Identifier system/value pair");
+				if (allergy.Identifier.Count == 1)
+				{
+					var identifier = allergy.Identifier.First();
+					identifier.System.ShouldNotBeNullOrWhiteSpace("AllergyIntolerance Identifier System Cannot be null or Empty");
+					identifier.Value.ShouldNotBeNullOrEmpty("AllergyIntolerance Identifier Value Cannot be null or Empty Value");
+				}
+			});
+		}
 
 		private void TheAllergyIntoleranceClinicalStatusShouldbeValid()
 		{
@@ -538,16 +538,17 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 			{
 				var reference = allergy.Patient.Reference;
 				reference.ShouldStartWith("Patient/");
-						// git hub ref 159
-						// RMB 14/1/19
-						//                var resource = _httpSteps.GetResourceForRelativeUrl(GpConnectInteraction.PatientRead, reference);
-						//                resource.GetType().ShouldBe(typeof(Patient));
-					});
+				// git hub ref 159
+				// RMB 14/1/19
+				//                var resource = _httpSteps.GetResourceForRelativeUrl(GpConnectInteraction.PatientRead, reference);
+				//                resource.GetType().ShouldBe(typeof(Patient));
+			});
 		}
 
 		private void TheAllergyIntoleranceReactionShouldBeValid()
 		{
-			AllAllergyIntolerances.ForEach(allergy => {
+			AllAllergyIntolerances.ForEach(allergy =>
+			{
 				if (allergy.Reaction != null)
 				{
 					allergy.Reaction.Count.ShouldBeLessThanOrEqualTo(1);
@@ -559,7 +560,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 					//                   }               
 					// git hub ref 173
 					// RMB 23/1/19
-					if (allergy.Reaction.Any()) {
+					if (allergy.Reaction.Any())
+					{
 						AllergyIntolerance.ReactionComponent reaction = allergy.Reaction[0];
 						if (reaction.Manifestation != null)
 						{

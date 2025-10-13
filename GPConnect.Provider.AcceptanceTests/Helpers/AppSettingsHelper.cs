@@ -50,7 +50,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         public static string ServerHttpPortDocuments => Get<string>("serverHttpPortDocuments");
         public static string ServerBaseDocuments => Get<string>("serverBaseDocuments");
 
-        
+
         // Web Proxy Settings
         public static bool UseWebProxy => Get<bool>("useWebProxy");
         public static string WebProxyUrl => Get<string>("webProxyUrl");
@@ -107,15 +107,21 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
 
         public static T Get<T>(string key)
         {
-            var appSetting = ConfigurationManager.AppSettings[key];
+            // Force ConfigurationManager to reload from the assembly config file
+            var configFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location + ".config";
 
-                if (!(key.Equals("serverHttpsPortFoundationsAndAppmts") || key.Equals("serverHttpPortFoundationsAndAppmts") || key.Equals("serverHttpsPortStructured") || key.Equals("serverHttpPortStructured") || key.Equals("serverHttpsPortDocuments") || key.Equals("serverHttpPortDocuments")  ) && string.IsNullOrWhiteSpace(appSetting))
-                {
-                    throw new ConfigurationErrorsException($"AppSettings Key='{key}' Not Found.");
-                }
+            // Open the config file explicitly
+            var fileMap = new ExeConfigurationFileMap { ExeConfigFilename = configFilePath };
+            var configuration = ConfigurationManager.OpenMappedExeConfiguration(fileMap, ConfigurationUserLevel.None);
+
+            var appSetting = configuration.AppSettings.Settings[key]?.Value;
+
+            if (!(key.Equals("serverHttpsPortFoundationsAndAppmts") || key.Equals("serverHttpPortFoundationsAndAppmts") || key.Equals("serverHttpsPortStructured") || key.Equals("serverHttpPortStructured") || key.Equals("serverHttpsPortDocuments") || key.Equals("serverHttpPortDocuments")) && string.IsNullOrWhiteSpace(appSetting))
+            {
+                throw new ConfigurationErrorsException($"AppSettings Key='{key}' Not Found.");
+            }
 
             var converter = TypeDescriptor.GetConverter(typeof(T));
-
             return (T)converter.ConvertFromInvariantString(appSetting);
         }
     }

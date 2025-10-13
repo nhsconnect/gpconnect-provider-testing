@@ -83,7 +83,7 @@
             Patients.ForEach(patient =>
             {
                 patient.MultipleBirth?.ShouldBeOfType<FhirBoolean>("Multiple Birth must be of type FhirBoolean");
-                
+
 
 
             });
@@ -152,11 +152,11 @@
                         telecom.Use.ShouldNotBeNull();
                     });
 
-                  });
+                });
             });
         }
 
-    [Then(@"the Patient Identifiers should be valid")]
+        [Then(@"the Patient Identifiers should be valid")]
         public void ThePatientIdentifiersShouldBeValid()
         {
             ThePatientIdentifiersShouldBeValid(null);
@@ -202,8 +202,8 @@
                     telecom.System.ShouldNotBeNull("The telecom system should not be null");
                     telecom.Value.ShouldNotBeNull("The telecom value element should not be null");
                     //telecom.System.ShouldBeOfType<ContactPoint.ContactPointSystem>(string.Format("{0} System is not a valid value within the value set {1}", FhirConst.ValueSetSystems.kContactPointSystem));
-// git hub ref 121
-// RMB 25/10/2018
+                    // git hub ref 121
+                    // RMB 25/10/2018
                     telecom.Use.ShouldNotBeNull("The telecom use element should not be null");
 
                 });
@@ -392,10 +392,10 @@
                         var valueSet = ValueSetCache.Get(FhirConst.ValueSetSystems.kVsRelationshipStatus);
 
                         ShouldBeSingleCodingWhichIsInValueSet(valueSet, relationship.Coding);
-// github ref 126
-// RMB 29/10/2018
+                        // github ref 126
+                        // RMB 29/10/2018
                         relationship.Text.ShouldNotBeNull();
-						relationship.Coding.Count.ShouldBe(0);
+                        relationship.Coding.Count.ShouldBe(0);
                     });
 
                     //contact.Name.ShouldBeNull();
@@ -497,7 +497,8 @@
             {
                 _httpContext.HttpRequestConfiguration.GetRequestId = patient.Id;
                 _fhirResourceRepository.Patient = patient;
-            } else
+            }
+            else
             {
                 patient.ShouldNotBeNull("Stored patient is null.");
             }
@@ -606,7 +607,7 @@
         public void ThePatientNotInUseShouldBeValid()
         {
             Patients.ForEach(patient =>
-            {               
+            {
                 patient.MaritalStatus.ShouldBeNull();
                 patient.MultipleBirth.ShouldBeNull();
                 // EXTENSIONS
@@ -638,7 +639,7 @@
                 {
                     var regDetailsExtension = registrationDetailsExtensions.First();
                     var regExtensions = regDetailsExtension.Extension;
-                    
+
                     //Check the registrationPeriod is valid
                     var extensions = regExtensions.Where(extension => extension.Url.Equals(FhirConst.StructureDefinitionSystems.kCCExtRegistrationPeriod)).ToList();
                     extensions.Count.ShouldBeLessThanOrEqualTo(1, "The patient resource should contain a maximum of 1 registration period extension.");

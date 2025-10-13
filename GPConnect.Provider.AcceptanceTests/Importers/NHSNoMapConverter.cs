@@ -4,7 +4,7 @@ using GPConnect.Provider.AcceptanceTests.Data;
 namespace GPConnect.Provider.AcceptanceTests.Importers
 {
     // ReSharper disable once ClassNeverInstantiated.Global
-    internal sealed class NHSNoMapConverter : CsvClassMap<NHSNoMap>
+    internal sealed class NHSNoMapConverter : ClassMap<NHSNoMap>
     {
         public NHSNoMapConverter()
         {

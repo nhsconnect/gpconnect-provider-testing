@@ -111,22 +111,22 @@
                 composition.Section.ForEach(section =>
                 {
                     var html = section.Text.Div;
-                  
-                    if (hasSingleHeader)    
+
+                    if (hasSingleHeader)
                     {
                         var headerHtml = $"<{h1}>{headers[0]}</{h1}>";
 
-                        html.ShouldContain(headerHtml, $"The Section HTML should contain the <{h1}> header {headerHtml}, but did not.");
+                        html.ShouldContain(headerHtml, Case.Sensitive, $"The Section HTML should contain the <{h1}> header {headerHtml}, but did not.");
                     }
                     else
                     {
-                        html.ShouldContain(h1, $"The Section HTML should contain a <{h1}> header, but did not.");
+                        html.ShouldContain(h1, Case.Sensitive, $"The Section HTML should contain a <{h1}> header, but did not.");
 
                         headers.ForEach(header =>
                         {
                             var headerHtml = $"<{h2}>{header}</{h2}>";
 
-                            html.ShouldContain(headerHtml, $"The Section HTML should contain the <{h2}> header {headerHtml}, but did not.");
+                            html.ShouldContain(headerHtml, Case.Sensitive, $"The Section HTML should contain the <{h2}> header {headerHtml}, but did not.");
                         });
                     }
                 });

@@ -160,7 +160,7 @@
                 throw Error.InvalidOperation($"No valueset resolver available to resolve valueset '{uri}', " +
                         "set ValueSetExpander.Settings.ValueSetSource to fix.");
 
-            var importedVs = Settings.ValueSetSource.FindValueSet(uri);
+            var importedVs = ((IResourceResolver)Settings.ValueSetSource).FindValueSet(uri);
             if (importedVs == null) throw new ValueSetUnknownException($"Cannot resolve canonical reference '{uri}' to ValueSet");
 
             if (!importedVs.HasExpansion) Expand(importedVs);
@@ -177,7 +177,7 @@
                 throw Error.InvalidOperation($"No terminology service available to resolve references to codesystem '{uri}', " +
                         "set ValueSetExpander.Settings.ValueSetSource to fix.");
 
-            var importedCs = Settings.ValueSetSource.FindCodeSystem(uri);
+            var importedCs = ((IResourceResolver)Settings.ValueSetSource).FindCodeSystem(uri);
             if (importedCs == null) throw new ValueSetUnknownException($"Cannot resolve canonical reference '{uri}' to CodeSystem");
 
             var result = new List<ValueSet.ContainsComponent>();

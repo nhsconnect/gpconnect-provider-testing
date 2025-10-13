@@ -74,7 +74,7 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
                 {
                     new Identifier(FhirConst.IdentifierSystems.kPracSDSUserId, "GCASDS0001"),
                     new Identifier(FhirConst.IdentifierSystems.kPracRoleProfile, "112233445566"),
-                    new Identifier(FhirConst.IdentifierSystems.kGuid, "98ed4f78-814d-4266-8d5b-cde742f3093c")                    
+                    new Identifier(FhirConst.IdentifierSystems.kGuid, "98ed4f78-814d-4266-8d5b-cde742f3093c")
                 }
             };
         }
@@ -161,7 +161,8 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
         {
             Log.WriteLine("Incomming Json Object = " + jsonResource);
             dynamic dynamicDeviceObj = JsonConvert.DeserializeObject<ExpandoObject>(jsonResource);
-            foreach (var parameter in dynamicDeviceObj.parameter) {
+            foreach (var parameter in dynamicDeviceObj.parameter)
+            {
                 parameter.resource.resourceType = newResourceType;
             }
             Log.WriteLine("Converted Type Json Object = " + JsonConvert.SerializeObject(dynamicDeviceObj));
@@ -180,12 +181,28 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
             return JsonConvert.SerializeObject(dynamicDeviceObj);
         }
 
-        public static Period GetDefaultTimePeriodForGetCareRecord() {
+        public static Period GetDefaultTimePeriodForGetCareRecord()
+        {
             return new Period(new FhirDateTime(DateTime.Now.AddYears(-2)), new FhirDateTime(DateTime.Now));
         }
 
-        public static Period GetTimePeriod(string startDate, string endDate) {
+        public static Period GetTimePeriod(string startDate, string endDate)
+        {
             return new Period(new FhirDateTime(startDate), new FhirDateTime(endDate));
+        }
+
+#nullable enable
+        public static Period SafeGetTimePeriod(string startDate, string? endDate = null)
+        {
+            var period = new Period();
+            period.StartElement = new FhirDateTime(startDate);
+
+            if (!string.IsNullOrEmpty(endDate))
+            {
+                period.EndElement = new FhirDateTime(endDate);
+            }
+
+            return period;
         }
 
         // github ref 127
@@ -195,7 +212,8 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
             return new Date(startDate);
         }
 
-        public static bool isValidNHSNumber(string NHSNumber) {
+        public static bool isValidNHSNumber(string NHSNumber)
+        {
 
             NHSNumber = NHSNumber.Trim();
 
@@ -203,7 +221,8 @@ namespace GPConnect.Provider.AcceptanceTests.Helpers
             {
                 return false;
             }
-            else {
+            else
+            {
 
                 string checkDigit = NHSNumber.Substring(NHSNumber.Length - 1, 1);
                 int checkNumber = Convert.ToInt16(checkDigit);

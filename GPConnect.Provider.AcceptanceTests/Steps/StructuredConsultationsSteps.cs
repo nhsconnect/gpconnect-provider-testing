@@ -517,9 +517,7 @@
         public void GivenIAddTheConsultationParameterWithStartDateOnly()
         {
             var backDate = DateTime.UtcNow.AddYears(-3);
-            var futureDate = DateTime.UtcNow.AddDays(-1);
             var startDate = backDate.ToString("yyyy-MM-dd");
-            //var endDate = futureDate.ToString("yyyy-MM-dd");
 
             IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
                 Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationSearch, (Base)FhirHelper.GetTimePeriod(startDate, null)),
@@ -530,9 +528,7 @@
         [Given(@"I add the consultation parameter with endDate only")]
         public void GivenIAddTheConsultationParameterWithEndDateOnly()
         {
-            var backDate = DateTime.UtcNow.AddDays(-1);
             var futureDate = DateTime.UtcNow.AddDays(-1);
-            //var startDate = backDate.ToString("yyyy-MM-dd");
             var endDate = futureDate.ToString("yyyy-MM-dd");
 
             IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
@@ -558,11 +554,6 @@
         [Given(@"I add the consultation parameter with consultationsMostRecent partParameter")]
         public void GivenIAddTheConsultationParameterWithConsultationMostRecentPartParameter()
         {
-            var backDate = DateTime.UtcNow.AddDays(-10);
-            var futureDate = DateTime.UtcNow.AddDays(-5);
-            var startDate = backDate.ToString("yyyy-MM-dd");
-            var endDate = futureDate.ToString("yyyy-MM-dd");
-
             IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
                 Tuple.Create(FhirConst.GetStructuredRecordParams.kConsultationsMostRecent, (Base) new PositiveInt(3)),
             };

@@ -455,6 +455,27 @@
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kInvestigations, tuples);
         }
 
+        [Given(@"I add the investigations data parameter with valid start date and no end date")]
+        public void GivenIAddTheinvestigationsParameterWithValidStartDateAndNoEndDate()
+        {
+            var backDate = DateTime.UtcNow.AddYears(-3);
+            var startDate = backDate.ToString("yyyy-MM-dd");
+
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kInvestigationsSearch, (Base)FhirHelper.SafeGetTimePeriod(startDate, null)),
+            };
+            _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kInvestigations, tuples);
+        }
+
+        [Given(@"I add the investigations data parameter with no start date and no end date")]
+        public void GivenIAddTheinvestigationsParameterWithNoStartDateAndNoEndDate()
+        {
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kInvestigationsSearch, (Base)FhirHelper.SafeGetTimePeriod(null, null)),
+            };
+            _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kInvestigations, tuples);
+        }
+
         //Not currently used as no easy way to know what is a test group without being very specific about data requirements
         [Then(@"I Check a Test group is linked to a Test Report Filing")]
         public void GiveCheckaTestgroupislinkedtoaTestReportFiling()
@@ -520,7 +541,8 @@
                 }
                 if (found)
                     break;
-            };
+            }
+            ;
 
             found.ShouldBeTrue("Fail : No Problems found to be linked to a  DiagnosticReport");
 

@@ -24,18 +24,18 @@
         private readonly PatientSteps _patientSteps;
         private readonly SearchForFreeSlotsSteps _searchForFreeSlotsSteps;
         private readonly HttpRequestConfigurationSteps _httpRequestConfigurationSteps;
-        private readonly IFhirResourceRepository _fhirResourceRepository;        
+        private readonly IFhirResourceRepository _fhirResourceRepository;
 
         private List<Appointment> Appointments => _httpContext.FhirResponse.Appointments;
 
         public AppointmentsSteps(
             HttpSteps httpSteps,
             HttpContext httpContext,
-            JwtSteps jwtSteps, 
+            JwtSteps jwtSteps,
             PatientSteps patientSteps,
-            SearchForFreeSlotsSteps searchForFreeSlotsSteps, 
-            HttpRequestConfigurationSteps httpRequestConfigurationSteps, 
-            IFhirResourceRepository fhirResourceRepository) 
+            SearchForFreeSlotsSteps searchForFreeSlotsSteps,
+            HttpRequestConfigurationSteps httpRequestConfigurationSteps,
+            IFhirResourceRepository fhirResourceRepository)
             : base(httpSteps)
         {
             _httpContext = httpContext;
@@ -82,7 +82,7 @@
             });
 
         }
-        
+
         [Then(@"the Appointment Start should equal the Created Appointment Start")]
         public void TheAppointmentStartShouldEqualTheCreatedAppointmentStart()
         {
@@ -91,7 +91,7 @@
                 appointment.Start.ShouldBe(_fhirResourceRepository.Appointment.Start, $"The Appointment Start should equal {_fhirResourceRepository.Appointment.Start} but was {appointment.Start}.");
             });
         }
-      
+
         [Given(@"I create ""([^""]*)"" Appointments for Patient ""([^""]*)"" and Organization Code ""([^""]*)""")]
         public void CreateAppointmentsForPatientAndOrganizationCode(int appointments, string patient, string code)
         {
@@ -112,7 +112,7 @@
             _searchForFreeSlotsSteps.StoreTheFreeSlotsBundle();
 
             _httpSteps.ConfigureRequest(GpConnectInteraction.AppointmentCreate);
-            
+
             CreateAnAppointmentFromTheStoredPatientAndStoredSchedule();
 
             _httpSteps.MakeRequest(GpConnectInteraction.AppointmentCreate);
@@ -124,7 +124,7 @@
         {
             _patientSteps.GetThePatientForPatientValue(patient);
             _patientSteps.StoreThePatient();
-          
+
             _searchForFreeSlotsSteps.GetAvailableFreeSlots();
             _searchForFreeSlotsSteps.StoreTheFreeSlotsBundle();
 
@@ -139,7 +139,7 @@
 
         }
 
-        
+
         [Given(@"I create an Appointment in ""([^ ""]*)"" days time for Patient ""([^""]*)"" and Organization Code ""([^""]*)""")]
         public void CreateanAppointmentInXDaysTimeforPatientAndOrganizationCode(int days, string patient, string code)
         {
@@ -147,7 +147,7 @@
             _patientSteps.StoreThePatient();
 
             _searchForFreeSlotsSteps.GetAvailableFreeSlotsSearchingXDaysInFuture(days);
-        
+
             _searchForFreeSlotsSteps.StoreTheFreeSlotsBundle();
 
             _httpSteps.ConfigureRequest(GpConnectInteraction.AppointmentCreate);
@@ -188,7 +188,7 @@
 
         }
 
-        [Given(@"I create an Appointment in ""([^ ""]*)"" days time for Patient ""([^""]*)"" and Organization Code ""([^""]*)"" With serviceCategory and serviceType in Request")]        
+        [Given(@"I create an Appointment in ""([^ ""]*)"" days time for Patient ""([^""]*)"" and Organization Code ""([^""]*)"" With serviceCategory and serviceType in Request")]
         public void CreateanAppointmentInXDaysTimeForPatientAndOrganizationCodeWithserviceCategoryandserviceTypeinRequest(int days, string patient, string code)
         {
             _patientSteps.GetThePatientForPatientValue(patient);
@@ -218,7 +218,7 @@
             _httpSteps.MakeRequest(GpConnectInteraction.AppointmentCreate);
 
         }
-        
+
         [Given(@"I create an Appointment for Today for Patient ""([^""]*)"" and Organization Code ""([^""]*)""")]
         public void CreateAnAppointmentForTodayForPatientAndOrganizationCode(string patient, string code)
         {
@@ -241,14 +241,15 @@
 
         [Given(@"I create an Appointment for an existing Patient and Organization Code ""([^""]*)""")]
         public void CreateAnAppointmentForRandomPatientAndOrganizationCode(string code)
-        { 
+        {
 
-             var patient = "patient1";
+            var patient = "patient1";
 
-            if (AppSettingsHelper.RandomPatientEnabled == true) {
-                 patient = RandomPatientSteps.ReturnRandomPatient();
+            if (AppSettingsHelper.RandomPatientEnabled == true)
+            {
+                patient = RandomPatientSteps.ReturnRandomPatient();
             }
-        
+
             _patientSteps.GetThePatientForPatientValue(patient);
             _patientSteps.StoreThePatient();
 
@@ -356,7 +357,7 @@
             if (_fhirResourceRepository.Appointment.Extension == null)
                 _fhirResourceRepository.Appointment.Extension = new List<Extension>();
 
-            _fhirResourceRepository.Appointment.Extension.Add(extension); 
+            _fhirResourceRepository.Appointment.Extension.Add(extension);
         }
 
         // git hub ref 200
@@ -447,7 +448,7 @@
                 CheckForValidMetaDataInResource(appointment, FhirConst.StructureDefinitionSystems.kAppointment);
             });
         }
-      
+
         [Then(@"the Appointment Participant Type and Actor should be valid")]
         public void TheAppointmentParticipantTypeAndActorShouldBeValid()
         {
@@ -479,7 +480,7 @@
                         var shouldStartWith = participant.Actor.Reference.StartsWith(patient) ||
                                               participant.Actor.Reference.StartsWith(practitioner) ||
                                               participant.Actor.Reference.StartsWith(location);
-                       
+
                         shouldStartWith.ShouldBeTrue($"The Appointment Participant Actor Reference should start with one of {patient}, {practitioner} or {location}, but was {participant.Actor.Reference}.");
                     }
                 });
@@ -626,7 +627,7 @@
                         foundServiceCategory = true;
                         Logger.Log.WriteLine("Info : Found an Appointment resource with ServiceCategory set");
                     }
-                }                
+                }
             });
             foundServiceCategory.ShouldBeTrue("Fail : At least one Appointment Resource should contain a ServiceCategory set as per the data requirements");
         }

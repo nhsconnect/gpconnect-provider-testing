@@ -89,7 +89,7 @@
         [Then(@"the Response Resource should be a Practitioner")]
         public void ResponseResourceShouldBeAPractitioner()
         {
-            _httpContext.FhirResponse.Resource.ResourceType.ShouldBe(ResourceType.Practitioner);
+            _httpContext.FhirResponse.Resource.TypeName.ShouldBe("Practitioner");
         }
 
         [Then("the Practitioner Id should be valid")]
@@ -130,7 +130,7 @@
             ThePractitionerExcludeDisallowedElements();
             ThePractitionerCommunicationShouldBeValid();
         }
-        
+
         [Then(@"the Practitioner Metadata should be valid")]
         public void ThePractitionerMetadataShouldBeValid()
         {
@@ -348,14 +348,14 @@
             });
         }
 
-		//#320 SJD 04/12/2019 
-		[Given(@"I add a Practitioner Identifier parameter with unknown value")]
-		public void AddAPractitionerIdentifierParameterWithUnknownValue()
-		{
-			_httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("identifier", FhirConst.IdentifierSystems.kPracSDSUserId + '|' + "unknownSDSUserID");
-		}
+        //#320 SJD 04/12/2019 
+        [Given(@"I add a Practitioner Identifier parameter with unknown value")]
+        public void AddAPractitionerIdentifierParameterWithUnknownValue()
+        {
+            _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("identifier", FhirConst.IdentifierSystems.kPracSDSUserId + '|' + "unknownSDSUserID");
+        }
 
-	}
+    }
 }
 
 

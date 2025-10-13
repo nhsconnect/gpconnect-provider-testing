@@ -105,7 +105,7 @@
             //check atleast one
             ReferralRequests.ToList().Count().ShouldBeGreaterThan(0, "Error Should be Atleast One ReferralRequest in response as per Data requirements");
 
-            ReferralRequests.ForEach(referalRequest=>
+            ReferralRequests.ForEach(referalRequest =>
             {
                 //Check Id
                 referalRequest.Id.ShouldNotBeNullOrEmpty();
@@ -159,6 +159,27 @@
 
             IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
                 Tuple.Create(FhirConst.GetStructuredRecordParams.kReferralSearch, (Base)FhirHelper.GetTimePeriod(startDate, endDate)),
+            };
+            _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kReferrals, tuples);
+        }
+
+        [Given(@"I add the Referrals data parameter with valid start date and no end date")]
+        public void GivenIAddTheReferralsParameterWithValidStartDateAndNoEndDate()
+        {
+            var backDate = DateTime.UtcNow.AddYears(-3);
+            var startDate = backDate.ToString("yyyy-MM-dd");
+
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kReferralSearch, (Base)FhirHelper.SafeGetTimePeriod(startDate, null)),
+            };
+            _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kReferrals, tuples);
+        }
+
+        [Given(@"I add the Referrals data parameter with no start date and no end date")]
+        public void GivenIAddTheReferralsParameterWithNoStartDateAndNoEndDate()
+        {
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+                Tuple.Create(FhirConst.GetStructuredRecordParams.kReferralSearch, (Base)FhirHelper.SafeGetTimePeriod(null, null)),
             };
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kReferrals, tuples);
         }
@@ -230,7 +251,8 @@
                 }
                 if (found)
                     break;
-            };
+            }
+            ;
 
             found.ShouldBeTrue("Fail : No Problems found to be linked to a  ReferralRequest");
 

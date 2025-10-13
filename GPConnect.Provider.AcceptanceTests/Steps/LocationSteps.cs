@@ -17,7 +17,7 @@
         private readonly HttpContext _httpContext;
         private List<Location> Locations => _httpContext.FhirResponse.Locations;
 
-        public LocationSteps(HttpContext httpContext, HttpSteps httpSteps) 
+        public LocationSteps(HttpContext httpContext, HttpSteps httpSteps)
             : base(httpSteps)
         {
             _httpContext = httpContext;
@@ -101,7 +101,7 @@
         {
             Locations.ForEach(location =>
             {
-                location.PartOf?.Reference?.ShouldStartWith("Location/", "The reference element within the PartOf element of the Location resource should contain a relative Location reference.");
+                location.PartOf?.Reference?.ShouldStartWith("Location/", Case.Sensitive, "The reference element within the PartOf element of the Location resource should contain a relative Location reference.");
             });
         }
         // github ref 120
@@ -121,16 +121,16 @@
         {
             Locations.ForEach(location =>
             {
-                location.ManagingOrganization?.Reference?.ShouldStartWith("Organization/", "The ManagingOrganization reference should be a relative url for an Organization.");
-// github ref 121
-// RMB 29/10/2018
-				    var reference = location.ManagingOrganization.Reference;
+                location.ManagingOrganization?.Reference?.ShouldStartWith("Organization/", Case.Sensitive, "The ManagingOrganization reference should be a relative url for an Organization.");
+                // github ref 121
+                // RMB 29/10/2018
+                var reference = location.ManagingOrganization.Reference;
 
-                    reference.ShouldStartWith("Organization/");
+                reference.ShouldStartWith("Organization/");
 
-                    var resource = _httpSteps.GetResourceForRelativeUrl(GpConnectInteraction.OrganizationRead, reference);
+                var resource = _httpSteps.GetResourceForRelativeUrl(GpConnectInteraction.OrganizationRead, reference);
 
-                    resource.GetType().ShouldBe(typeof(Organization));
+                resource.GetType().ShouldBe(typeof(Organization));
             });
         }
 
@@ -226,10 +226,10 @@
 
                 if (!string.IsNullOrEmpty(locationName))
                 {
-                     siteCodeIdentifiers.ForEach(siteCodeIdentifier =>
-                    {
-                        siteCodeIdentifier.Value.ShouldBe(GlobalContext.OdsCodeMap[locationName], "Location business identifier does not match the expected business identifier.");
-                    });
+                    siteCodeIdentifiers.ForEach(siteCodeIdentifier =>
+                   {
+                       siteCodeIdentifier.Value.ShouldBe(GlobalContext.OdsCodeMap[locationName], "Location business identifier does not match the expected business identifier.");
+                   });
                 }
 
             });

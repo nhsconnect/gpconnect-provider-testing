@@ -11,16 +11,15 @@ namespace GPConnect.Provider.AcceptanceTests.Importers
     {
         public static List<RegisterPatient> LoadCsv(string filename)
         {
-            using (var csv = new CsvReader(new StreamReader(filename)))
-            {
-                csv.Configuration.RegisterClassMap<RegisterPatientConverter>();
-                return csv.GetRecords<RegisterPatient>().ToList();
-            }
+            using var reader = new StreamReader(filename);
+            using var csv = new CsvReader(reader, new CsvConfiguration(System.Globalization.CultureInfo.InvariantCulture));
+            csv.Context.RegisterClassMap<RegisterPatientConverter>();
+            return csv.GetRecords<RegisterPatient>().ToList();
         }
     }
 
     // ReSharper disable once ClassNeverInstantiated.Global
-    internal sealed class RegisterPatientConverter : CsvClassMap<RegisterPatient>
+    internal sealed class RegisterPatientConverter : ClassMap<RegisterPatient>
     {
         public RegisterPatientConverter()
         {
@@ -29,7 +28,7 @@ namespace GPConnect.Provider.AcceptanceTests.Importers
             Map(p => p.NAME_GIVEN).Name("NAME_GIVEN");
             Map(p => p.GENDER).Name("GENDER");
             Map(p => p.DOB).Name("DOB");
-            Map(p => p.IsRegistered).Ignore(true);
+            Map(p => p.IsRegistered).Ignore();
         }
     }
 }

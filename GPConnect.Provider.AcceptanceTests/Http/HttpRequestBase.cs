@@ -117,9 +117,9 @@
             return requestParamString.Substring(0, requestParamString.Length - 1);
         }
 
-        protected WebRequestHandler ConfigureHandler()
+        protected HttpClientHandler ConfigureHandler()
         {
-            var handler = new WebRequestHandler
+            var handler = new HttpClientHandler
             {
                 AllowAutoRedirect = true
             };

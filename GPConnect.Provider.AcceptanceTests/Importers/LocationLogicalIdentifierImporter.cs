@@ -10,14 +10,13 @@
     {
         public static Dictionary<string, string> LoadCsv(string filename)
         {
-            using (var csv = new CsvReader(new StreamReader(filename)))
-            {
-                csv.Configuration.RegisterClassMap<LocationLogicalIdentifierConverter>();
+            using var reader = new StreamReader(filename);
+            using var csv = new CsvReader(reader, System.Globalization.CultureInfo.InvariantCulture);
+            csv.Context.RegisterClassMap<LocationLogicalIdentifierConverter>();
 
-                return csv
-                    .GetRecords<LocationLogicalIdentifierMap>()
-                    .ToDictionary(x => x.Location, x => x.LogicalIdentifier);
-            }
+            return csv
+                .GetRecords<LocationLogicalIdentifierMap>()
+                .ToDictionary(x => x.Location, x => x.LogicalIdentifier);
         }
     }
 }

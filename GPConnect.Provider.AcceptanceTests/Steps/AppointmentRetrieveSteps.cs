@@ -29,7 +29,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             _jwtSteps = jwtSteps;
         }
 
-        [Then(@"the Appointment Status should be valid")] 
+        [Then(@"the Appointment Status should be valid")]
         public void TheAppointmentStatusShouldBeValid()
         {
             Appointments.ForEach(appointment =>
@@ -44,7 +44,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             Appointments.ForEach(appointment =>
             {
                 appointment.Start.ShouldNotBeNull("The Appointment Start should not be null.");
-             
+
             });
         }
 
@@ -67,7 +67,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 appointment.Slot?.ForEach(slot =>
                 {
                     var reference = "Slot/";
-                    slot.Reference.ShouldStartWith(reference, $"The Appointment Slot Reference should start with {reference}, but was {slot.Reference}.");
+                    slot.Reference.ShouldStartWith(reference, Case.Sensitive, $"The Appointment Slot Reference should start with {reference}, but was {slot.Reference}.");
                 });
             });
         }

@@ -10,9 +10,10 @@ namespace GPConnect.Provider.AcceptanceTests.Importers
     {
         public static Dictionary<string, string> LoadCsv(string filename)
         {
-            using (var csv = new CsvReader(new StreamReader(filename)))
+            using var reader = new StreamReader(filename);
+            using var csv = new CsvReader(reader, System.Globalization.CultureInfo.InvariantCulture);
             {
-                csv.Configuration.RegisterClassMap<PractitionerCodeMapConverter>();
+                csv.Context.RegisterClassMap<PractitionerCodeMapConverter>();
                 return csv.GetRecords<PractitionerCodeMap>().ToDictionary(x => x.NativePractitionerCode, x => x.ProviderPractitionerCode);
             }
         }

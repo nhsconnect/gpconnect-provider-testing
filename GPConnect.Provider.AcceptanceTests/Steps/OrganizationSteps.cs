@@ -64,13 +64,13 @@
         {
             OrganizationIdentifiersShouldBeValid();
         }
-        
+
         [Then(@"the Organization Identifiers should be valid for Organization ""([^""]*)""")]
         public void TheOrganizationIdentifiersShouldBeValidForOrganization(string organizationName)
         {
             OrganizationIdentifiersShouldBeValid(organizationName);
         }
-        
+
         private void OrganizationIdentifiersShouldBeValid(string organizationName = null)
         {
             Organizations.ForEach(organization =>
@@ -132,7 +132,7 @@
                 organizationEntry.FullUrl.ShouldNotBeNull();
             });
         }
-        
+
         [Then(@"the Organization Name should be valid")]
         public void TheOrganizationNameShouldBeValid()
         {
@@ -195,7 +195,7 @@
         {
             if (extension != null)
             {
-                var validExtensions = new List<string>{ FhirConst.StructureDefinitionSystems.kExtCcGpcMainLoc, FhirConst.StructureDefinitionSystems.kOrgzPeriod };
+                var validExtensions = new List<string> { FhirConst.StructureDefinitionSystems.kExtCcGpcMainLoc, FhirConst.StructureDefinitionSystems.kOrgzPeriod };
 
                 validExtensions.ShouldContain(extension.Url, $"The Organisation Extension is invalid. Extensions must be one of {validExtensions}.");
             }
@@ -257,7 +257,7 @@
         {
             Organizations.ForEach(organization =>
             {
-                organization.PartOf?.Reference?.ShouldStartWith("Organization/", "The reference element within the PartOf element of the Organization resource should contain a relative Organization reference.");
+                organization.PartOf?.Reference?.ShouldStartWith("Organization/", Case.Sensitive, "The reference element within the PartOf element of the Organization resource should contain a relative Organization reference.");
             });
         }
 
@@ -296,7 +296,7 @@
         {
             _httpContext.HttpRequestConfiguration.RequestParameters.AddParameter("identifier", string.Format("{0}|{1}", FhirConst.IdentifierSystems.kOdsOrgzCode, GlobalContext.OdsCodeMap[value]));
         }
-              
+
         [Given(@"I add an Identifier parameter with the Value ""([^""]*)""")]
         public void AddAnIdentifierParameterWithTheValue(string value)
         {
@@ -319,7 +319,7 @@
         public void GetTheOrganizationForOrganizationCode(string code)
         {
             _httpSteps.ConfigureRequest(GpConnectInteraction.OrganizationSearch);
-            
+
             AddAnIdentifierParameterWithOrganizationsCodeSystemAndValue(code);
 
             _httpSteps.MakeRequest(GpConnectInteraction.OrganizationSearch);
@@ -339,8 +339,8 @@
             StoreTheOrganization(null);
         }
 
-       
-      
+
+
 
         [Then(@"the Organization Identifiers are correct for Organization Code ""([^""]*)""")]
         public void OrganizationIdentifiersAreCorrectForOrganizationCode(string organizationCode)
@@ -356,7 +356,7 @@
         private static void OrganizationCodeIdentifiersAreValid(string organizationCode, Organization organization)
         {
             //Get Organization Codes for Organization
-            var organizationCodes = new List<string> { GlobalContext.OdsCodeMap[organizationCode]};
+            var organizationCodes = new List<string> { GlobalContext.OdsCodeMap[organizationCode] };
 
             //Get Organization Code Identifier values
             var organizationCodeIdentifierValues = organization.Identifier
@@ -406,7 +406,7 @@
                         orgLoopCounter++;
                         continue;
                     }
-                  
+
                 }
 
                 if ((orgLoopCounter == orgCount))
@@ -450,7 +450,8 @@
                 _httpContext.HttpRequestConfiguration.GetRequestId = organization.Id;
                 _fhirResourceRepository.Organization = organization;
             }
-            else{
+            else
+            {
                 throw new Exception("Organization cannot be stored. Organization equal to null");
             }
         }

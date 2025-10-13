@@ -4,7 +4,7 @@ using GPConnect.Provider.AcceptanceTests.Data;
 namespace GPConnect.Provider.AcceptanceTests.Importers
 {
     // ReSharper disable once ClassNeverInstantiated.Global
-    internal sealed class PDSMap : CsvClassMap<PDS>
+    internal sealed class PDSMap : ClassMap<PDS>
     {
         public PDSMap()
         {

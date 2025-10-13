@@ -346,7 +346,8 @@
                 }
                 if (found)
                     break;
-            };
+            }
+            ;
 
             found.ShouldBeTrue("Fail : No Problems found with a linked MedicationRequest");
         }
@@ -472,7 +473,8 @@
                 }
                 if (found)
                     break;
-            };
+            }
+            ;
 
             found.ShouldBeTrue("Fail : No Problems found to be linked to a  " + resourceType + " - resource type");
 
@@ -503,7 +505,8 @@
                         found = true;
                     }
                 }
-            };
+            }
+            ;
 
             found.ShouldBeTrue("Fail : No Problems found with a Context link to an Encounter as per the data requirements for this test");
 

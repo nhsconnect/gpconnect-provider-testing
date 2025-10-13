@@ -21,14 +21,14 @@
         {
             _httpContext = httpContext;
         }
-        
+
         [Then(@"the Appointment Description should be valid for ""(.*)""")]
         public void TheAppointmentDescriptionShouldBeValidFor(string value)
         {
             Appointments.ForEach(appointment =>
             {
                 appointment.Description.ShouldNotBeNull("Appointment description cannot be null");
-                appointment.Description.ShouldContain(value, $@"The Appointment Description should be ""{value}"" but was ""{appointment.Description}"".");
+                appointment.Description.ShouldContain(value, Case.Sensitive, $@"The Appointment Description should be ""{value}"" but was ""{appointment.Description}"".");
             });
         }
 

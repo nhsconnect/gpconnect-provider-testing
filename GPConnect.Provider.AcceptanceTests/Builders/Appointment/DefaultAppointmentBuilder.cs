@@ -35,14 +35,14 @@
                         ComposeReferenceFromEntry(entry) == firstSlot.Schedule.Reference)
                 .Select(entry => (Schedule)entry.Resource)
                 .First();
-            
+
             //Patient
             var patient = GetPatient(storedPatient);
 
             //Practitioners
             var practitionerReferences = schedule.Extension.Where(extension => extension is ResourceReference).Select(extension => ((ResourceReference)extension.Value).Reference);
             var practitioners = GetPractitioners(practitionerReferences);
-            
+
             //Location
             var locationReference = schedule.Actor.First(actor => actor.Reference.Contains("Location")).Reference;
             var location = GetLocation(locationReference);
@@ -90,8 +90,8 @@
             if (schedule.ServiceCategory != null)
             {
                 if (schedule.ServiceCategory.Text != null)
-                { 
-                serviceCategory = schedule.ServiceCategory.Text;
+                {
+                    serviceCategory = schedule.ServiceCategory.Text;
                 }
 
             }
@@ -109,7 +109,7 @@
                 CreatedElement = new FhirDateTime(DateTime.UtcNow)
             };
 
-            
+
 
             //Add Extensions & Contained Resources
             appointment.Extension.Add(bookingOrganizationExtension);
@@ -128,8 +128,8 @@
             //Delivery Channel
             if (addDeliveryChannel)
             {
-// git hub ref 203 (demonstrator) failed if channel code <> In-Person
-// RMB 28/2/19
+                // git hub ref 203 (demonstrator) failed if channel code <> In-Person
+                // RMB 28/2/19
                 Extension sExt = firstSlot.GetExtension(FhirConst.StructureDefinitionSystems.kDeliveryChannel2Ext);
                 var channelCode = sExt.Value;
                 //Code channelCode = new Code("In-person"); 
@@ -260,5 +260,5 @@
                 .ToList();
         }
 
-     }
+    }
 }

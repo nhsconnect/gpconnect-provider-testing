@@ -3,7 +3,7 @@
     using CsvHelper.Configuration;
     using Data;
 
-    internal sealed class LocationLogicalIdentifierConverter : CsvClassMap<LocationLogicalIdentifierMap>
+    internal sealed class LocationLogicalIdentifierConverter : ClassMap<LocationLogicalIdentifierMap>
     {
         public LocationLogicalIdentifierConverter()
         {

@@ -11,7 +11,7 @@
     using static Hl7.Fhir.Model.Parameters;
     using GPConnect.Provider.AcceptanceTests.Helpers;
     using GPConnect.Provider.AcceptanceTests.Steps;
-  	using GPConnect.Provider.AcceptanceTests.Logger;
+    using GPConnect.Provider.AcceptanceTests.Logger;
     using NUnit.Framework;
 
     [Binding]
@@ -40,9 +40,9 @@
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kMedication, tuples);
         }
 
-		[Given(@"I add the medications parameter without mandatory partParameter")]
-		public void GivenIAddTheMedicationsParameterWithoutMandatoryParameter()
-		{
+        [Given(@"I add the medications parameter without mandatory partParameter")]
+        public void GivenIAddTheMedicationsParameterWithoutMandatoryParameter()
+        {
             ParameterComponent param = new ParameterComponent();
             param.Name = FhirConst.GetStructuredRecordParams.kMedication;
             _httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(param);
@@ -78,9 +78,9 @@
             _httpContext.HttpRequestConfiguration.BodyParameters.Parameter.Add(partParam);
         }
 
-		[Given(@"I add an incorrectly named medication parameter")]
-		public void GivenIAddAnIncorrectlyNamedMedicationParameter()
-		{
+        [Given(@"I add an incorrectly named medication parameter")]
+        public void GivenIAddAnIncorrectlyNamedMedicationParameter()
+        {
             IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
                 Tuple.Create(FhirConst.GetStructuredRecordParams.kPrescriptionIssues, (Base)new FhirBoolean(false)),
             };
@@ -128,21 +128,21 @@
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kMedication, tuples);
         }
 
-		[Given(@"I add the medications parameter with a start date greater than current date")]
-		public void GivenIAddTheMedicationsParameterWithAStartDateGreaterThanCurrentDate()
-		{
-			var tempDate = DateTime.UtcNow.AddDays(+1);
-			var startDate = tempDate.ToString("yyyy-MM-dd");
+        [Given(@"I add the medications parameter with a start date greater than current date")]
+        public void GivenIAddTheMedicationsParameterWithAStartDateGreaterThanCurrentDate()
+        {
+            var tempDate = DateTime.UtcNow.AddDays(+1);
+            var startDate = tempDate.ToString("yyyy-MM-dd");
 
-			IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
-						Tuple.Create(FhirConst.GetStructuredRecordParams.kPrescriptionIssues, (Base)new FhirBoolean(false)),
+            IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
+                        Tuple.Create(FhirConst.GetStructuredRecordParams.kPrescriptionIssues, (Base)new FhirBoolean(false)),
 //                Tuple.Create(FhirConst.GetStructuredRecordParams.kMedicationDatePeriod, (Base)TimePeriodHelper.GetTimePeriodStartDateOnlyFormatted("yyyy-MM-dd"))               
             Tuple.Create(FhirConst.GetStructuredRecordParams.kMedicationDatePeriod, (Base)FhirHelper.GetStartDate(startDate))
-		};
-			_httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kMedication, tuples);
-		}
+        };
+            _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kMedication, tuples);
+        }
 
-		[Given(@"I add the medications parameter with an end date")]
+        [Given(@"I add the medications parameter with an end date")]
         public void GivenIAddTheMedicationsParameterWithAnEndPeriod()
         {
             IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
@@ -161,8 +161,8 @@
             };
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kMedication, tuples);
         }
-// github ref 127
-// RMB 5/11/2018
+        // github ref 127
+        // RMB 5/11/2018
         [Given(@"I set a medications period parameter start date to ""([^ ""]*)""")]
         public void GivenISetAMedicationsTimeAParameterStartDateTo(string startDate)
         {
@@ -180,9 +180,9 @@
                 Tuple.Create(FhirConst.GetStructuredRecordParams.kPrescriptionIssues, (Base)new FhirBoolean(Boolean.Parse("true"))),
                 Tuple.Create(FhirConst.GetStructuredRecordParams.kPrescriptionIssues, (Base)new FhirBoolean(Boolean.Parse("true")))
             };
-            
+
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kMedication, tuples);
-            
+
         }
 
         #endregion
@@ -192,7 +192,7 @@
         [Then(@"the List of MedicationStatements should be valid")]
         public void TheListOfMedicationStatementsShouldBeValid()
         {
-            
+
             Lists.ForEach(list =>
             {
                 if (list.Code.Coding.First().Code.Equals(FhirConst.GetSnoMedParams.kMeds))
@@ -277,7 +277,7 @@
             TheMedicationIdShouldBeValid();
             TheMedicationCodeShouldBeValid();
             TheMedicationMetadataShouldBeValid();
-// Added 1.2.1 RMB 1/10/2018
+            // Added 1.2.1 RMB 1/10/2018
             TheMedicationNotInUseShouldBeValid();
         }
 
@@ -301,18 +301,18 @@
                     medication.Code.Coding.ForEach(coding =>
                     {
                         coding.System.ShouldNotBeNull("Code should not be null");
-// Added github ref 85
-// RMB 15/10/2018
+                        // Added github ref 85
+                        // RMB 15/10/2018
                         coding.System.ShouldBeOneOf("http://snomed.info/sct", "http://read.info/readv2", "http://read.info/ctv3", "https://fhir.hl7.org.uk/Id/emis-drug-codes", "https://fhir.hl7.org.uk/Id/egton-codes", "https://fhir.hl7.org.uk/Id/multilex-drug-codes", "https://fhir.hl7.org.uk/Id/resipuk-gemscript-drug-codes");
                         Extension extension = coding.GetExtension("https://fhir.hl7.org.uk/STU3/StructureDefinition/Extension-coding-sctdescid");
-//                        extension.ShouldNotBeNull();
-//                        extension.GetExtension("descriptionId").ShouldNotBeNull();
-//                        extension.GetExtension("descriptionDisplay").ShouldNotBeNull();
-//
-//                       if (extension.GetExtension("descriptionId").Value.Equals("196421000000109"))
-//                      {
-//                           medication.Code.Text.ShouldNotBeNullOrEmpty();
-//                       }
+                        //                        extension.ShouldNotBeNull();
+                        //                        extension.GetExtension("descriptionId").ShouldNotBeNull();
+                        //                        extension.GetExtension("descriptionDisplay").ShouldNotBeNull();
+                        //
+                        //                       if (extension.GetExtension("descriptionId").Value.Equals("196421000000109"))
+                        //                      {
+                        //                           medication.Code.Text.ShouldNotBeNullOrEmpty();
+                        //                       }
                     });
                 }
             });
@@ -327,7 +327,7 @@
             });
         }
 
-// Added 1.2.1 RMB 1/10/2018        
+        // Added 1.2.1 RMB 1/10/2018        
         [Then(@"the Medication Not In Use should be valid")]
         public void TheMedicationNotInUseShouldBeValid()
         {
@@ -348,13 +348,13 @@
         {
             TheMedicationStatementIdShouldBeValid();
             TheMedicationStatementMetadataShouldBeValid();
-			
-			// Added check for Medication Statement PrescribingAgency is Mandatory RMB 08-08-2016		
-            TheMedicationStatementPrescribingAgencyShouldBeValid();			
-			
-			// Added check for Medication Statement System should be set and be a GUID RMB 08-08-2016		
-            TheMedicationStatementIdentifierShouldBeValid();			
-			
+
+            // Added check for Medication Statement PrescribingAgency is Mandatory RMB 08-08-2016		
+            TheMedicationStatementPrescribingAgencyShouldBeValid();
+
+            // Added check for Medication Statement System should be set and be a GUID RMB 08-08-2016		
+            TheMedicationStatementIdentifierShouldBeValid();
+
             TheMedicationStatementBasedOnShouldNotBeNullAndShouldReferToMedicationRequestWithIntentPlan();
             TheMedicationStatementContextShouldBeValid();
             TheMedicationStatementStatusShouldbeValid();
@@ -364,7 +364,7 @@
             TheMedicationStatementTakenShouldbeValid();
             TheMedicationStatementDosageTextShouldbeValid();
             TheSpecifiedMedicationStatementFieldsShouldBeNull();
-// Added 1.2.1 RMB 1/10/2018
+            // Added 1.2.1 RMB 1/10/2018
             TheMedicationStatementNotInUseShouldBeValid();
         }
 
@@ -392,7 +392,7 @@
             });
         }
 
-		// Added check for MedicationStatement PrescribingAgency is Mandatory RMB 08-08-2016		
+        // Added check for MedicationStatement PrescribingAgency is Mandatory RMB 08-08-2016		
         [Then(@"the MedicationStatement PrescribingAgency should be valid")]
         public void TheMedicationStatementPrescribingAgencyShouldBeValid()
         {
@@ -416,8 +416,8 @@
                     identifier.Value.ShouldNotBeNullOrEmpty("MedicationStatement Identifier Value Cannot be null or Empty Value");
                 }
             });
-        }					
-		
+        }
+
         [Then(@"the Medication Statement Metadata should be valid")]
         public void TheMedicationStatementMetadataShouldBeValid()
         {
@@ -528,7 +528,7 @@
         {
             MedicationStatements.ForEach(medStatement =>
             {
-				// Commented out code added back in 1.2.0 RMB 8/8/2018
+                // Commented out code added back in 1.2.0 RMB 8/8/2018
                 medStatement.Taken.ShouldNotBeNull();
                 medStatement.Taken.ShouldBeOfType<MedicationStatement.MedicationStatementTaken>("Medication Taken is of the wrong type");
             });
@@ -542,8 +542,8 @@
                 medStatement.Dosage.ForEach(dosage =>
                 {
                     dosage.Text.ShouldNotBeNullOrEmpty();
-					
-// Added for 1.2.0 RMB 8/8/2018
+
+                    // Added for 1.2.0 RMB 8/8/2018
                     dosage.Text.Equals("No information available");
                 });
             });
@@ -552,7 +552,7 @@
         [Then(@"the MedicationStatement for prescriptions prescribed elsewhere should be valid")]
         public void TheMedicationStatementForPrescriptionsPrescribedElsewhereShouldBeValid()
         {
-            List<MedicationStatement> prescribedElsewhere = MedicationStatements.Where(medStatement => 
+            List<MedicationStatement> prescribedElsewhere = MedicationStatements.Where(medStatement =>
                 medStatement.GetExtension(FhirConst.StructureDefinitionSystems.kExtPrescriptionAgency) != null).ToList();
 
             prescribedElsewhere.ForEach(medStatement =>
@@ -601,9 +601,9 @@
         }
 
         [Then(@"the MedicationStatement EffectiveDate is Greater Than Search Date of ""(.*)"" years ago")]
-        private void TheMedicationStatementEffectiveDateIsGreaterThanSearchDate(int yearsToSearchBack)
+        private void TheMedicationStatementEffectiveDateIsGreaterThanSearchDate(string searchDateString)
         {
-            DateTime searchDate = DateTime.UtcNow.AddYears(-yearsToSearchBack);
+            DateTime searchDate = DateTime.Parse(searchDateString);
 
             MedicationStatements.ForEach(medStatement =>
             {
@@ -613,14 +613,14 @@
                     {
                         Period effectivePeriod = (Period)medStatement.Effective;
                         var foundValidDateFlag = false;
-                        
+
                         //check start and end date and ensure atleast one is greater than search date
                         if (DateTime.Parse(effectivePeriod.Start) >= searchDate || DateTime.Parse(effectivePeriod.End) >= searchDate)
                         {
                             foundValidDateFlag = true;
                         }
 
-                        if(!foundValidDateFlag)
+                        if (!foundValidDateFlag)
                             Assert.Fail("Effective Date start or end should be greater than search date");
                     }
                     else
@@ -644,7 +644,8 @@
             });
         }
 
-            private void checkDateIsInRange(Boolean useStart, Boolean useEnd, DateTime toCheck) {
+        private void checkDateIsInRange(Boolean useStart, Boolean useEnd, DateTime toCheck)
+        {
             DateTime start = DateTime.UtcNow.AddYears(-2);
             DateTime end = DateTime.UtcNow;
 
@@ -662,15 +663,15 @@
         {
             DateTime startPeriod = DateTime.Parse(period.Start);
 
-// git hub ref 184
-// RMB 19/2/19			
+            // git hub ref 184
+            // RMB 19/2/19			
             //DateTime endPeriod = DateTime.Parse(period.End);
             DateTime endPeriod = DateTime.UtcNow;
 
             if (period.End != null)
             {
                 endPeriod = DateTime.Parse(period.End);
-            }			
+            }
 
             DateTime start = DateTime.UtcNow.AddYears(-2);
             DateTime end = DateTime.UtcNow;
@@ -711,12 +712,12 @@
                 medStatement.Category.ShouldBeNull("MedicationStatement Category should be Null");
                 medStatement.InformationSource.ShouldBeNull("MedicationStatement InformationSource should be Null");
                 medStatement.DerivedFrom.Count().ShouldBe(0);
-//                medStatement.Taken.ShouldBeNull();
+                //                medStatement.Taken.ShouldBeNull();
                 medStatement.ReasonNotTaken.Count().ShouldBe(0);
 
             });
         }
-		/* SJD 19/07/2019 removed as not relevant to 'Retrieve the medication structured record section for a patient including prescription issues' test
+        /* SJD 19/07/2019 removed as not relevant to 'Retrieve the medication structured record section for a patient including prescription issues' test
 			#endregion
 
 			#region Medication Request Checks
@@ -744,7 +745,7 @@
 				});
 			} */
 
-		[Then(@"there should only be one order request for acute prescriptions")]
+        [Then(@"there should only be one order request for acute prescriptions")]
         public void ThereShouldOnlyBeOneOrderRequestForAcutePrescriptions()
         {
             List<MedicationRequest> acuteRequests = MedicationRequests.Where(req => isRequestAnAcutePlan(req).Equals(true)).ToList();
@@ -770,7 +771,7 @@
         [Then(@"the Medication Requests should not contain any issues")]
         public void TheMedicationRequestsShouldNotContainAnyIssues()
         {
-            MedicationRequests.Where(req => req.Intent.Equals(MedicationRequest.MedicationRequestIntent.Order)).ToList().ShouldBeEmpty();  
+            MedicationRequests.Where(req => req.Intent.Equals(MedicationRequest.MedicationRequestIntent.Order)).ToList().ShouldBeEmpty();
         }
 
         [Then(@"the Medication Requests should be valid")]
@@ -779,9 +780,9 @@
             TheMedicationRequestIdShouldBeValid();
             TheMedicationRequestMetadataShouldBeValid();
 
-			// Added RMB 8/8/2018
-            TheMedicationRequestIdentifierShouldBeValid();			
-			
+            // Added RMB 8/8/2018
+            TheMedicationRequestIdentifierShouldBeValid();
+
             //TheMedicationRequestGroupIdentiferShouldBeValid();
             TheMedicationRequestBasedOnShouldBeValid();
             TheMedicationRequestStatusShouldbeValid();
@@ -798,7 +799,7 @@
             TheMedicationRequestAuthoredOnShouldbeValid();
             ThereShouldBeAtLeastOneMedicationRequestWithIntentToPlan();
             TheSpecifiedMedicationRequestsFieldsShouldBeNull();
-// Added 1.2.1 RMB 1/10/2018
+            // Added 1.2.1 RMB 1/10/2018
             TheMedicationRequestNotInUseShouldBeValid();
         }
 
@@ -811,23 +812,23 @@
                 medRequest.Category.ShouldBeNull("MedicationRequest Category should be Null");
                 medRequest.Priority.ShouldBeNull("MedicationRequest Priority should be Null");
                 medRequest.SupportingInformation.ShouldBeEmpty();
-				
-				// Removed 1.2.0 RMB 8/8/2018
+
+                // Removed 1.2.0 RMB 8/8/2018
                 //medRequest.DispenseRequest.ExpectedSupplyDuration.ShouldBeNull();
-				
+
                 medRequest.Substitution.ShouldBeNull("MedicationRequest Substitution should be Null");
-				
-				// Added RMB 8/8/2018
-                medRequest.DetectedIssue.ShouldBeEmpty();				
-				
+
+                // Added RMB 8/8/2018
+                medRequest.DetectedIssue.ShouldBeEmpty();
+
                 medRequest.EventHistory.ShouldBeEmpty();
-                
+
                 CodeableConcept prescriptionType = (CodeableConcept)medRequest.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationPrescriptionType).Value;
                 if (!prescriptionType.Coding.First().Display.Contains("Repeat"))
                 {
- // git hub ref 167
-//  RMB 22/1/19
-					//medRequest.GroupIdentifier.ShouldBeNull();
+                    // git hub ref 167
+                    //  RMB 22/1/19
+                    //medRequest.GroupIdentifier.ShouldBeNull();
                 }
             });
         }
@@ -840,8 +841,8 @@
                 medRequest.Id.ShouldNotBeNullOrEmpty();
             });
         }
-		
-		// Added RMB 8/8/2018
+
+        // Added RMB 8/8/2018
         [Then(@"the MedicationRequest Identifier should be valid")]
         public void TheMedicationRequestIdentifierShouldBeValid()
         {
@@ -856,7 +857,7 @@
                 }
             });
         }
-		
+
         [Then(@"there should be at least one medication request with intent to plan")]
         public void ThereShouldBeAtLeastOneMedicationRequestWithIntentToPlan()
         {
@@ -887,11 +888,11 @@
                     medRequest.BasedOn.ShouldNotBeEmpty();
                     medRequest.BasedOn.First().Reference.StartsWith("MedicationRequest");
                 }
-                else 
+                else
                 {
                     medRequest.BasedOn.ShouldBeEmpty();
                 }
-                
+
             });
         }
 
@@ -914,23 +915,23 @@
         {
             MedicationRequests.ForEach(medRequest =>
             {
-// git hub ref 170
-// RMB 23/1/19
-//                medRequest.Status.ShouldNotBeNull("MedicationRequest Status cannot be null");
-				if (medRequest.Status != null) 
-				{
-					medRequest.Status.ShouldBeOfType<MedicationRequest.MedicationRequestStatus>($"MedicationRequest Status is not a valid value within the value set {FhirConst.ValueSetSystems.kVsMedicationRequestStatus}");
-					medRequest.Status.ShouldBeOneOf(MedicationRequest.MedicationRequestStatus.Active, MedicationRequest.MedicationRequestStatus.Completed, MedicationRequest.MedicationRequestStatus.Stopped);
-				}
-                   
+                // git hub ref 170
+                // RMB 23/1/19
+                //                medRequest.Status.ShouldNotBeNull("MedicationRequest Status cannot be null");
+                if (medRequest.Status != null)
+                {
+                    medRequest.Status.ShouldBeOfType<MedicationRequest.MedicationRequestStatus>($"MedicationRequest Status is not a valid value within the value set {FhirConst.ValueSetSystems.kVsMedicationRequestStatus}");
+                    medRequest.Status.ShouldBeOneOf(MedicationRequest.MedicationRequestStatus.Active, MedicationRequest.MedicationRequestStatus.Completed, MedicationRequest.MedicationRequestStatus.Stopped);
+                }
+
                 CodeableConcept prescriptionType = (CodeableConcept)medRequest.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationPrescriptionType).Value;
-// git hub ref 170
-// RMB 23/1/19
-//                if (prescriptionType.Coding.First().Display.Contains("Acute"))
-//                { 
-//
-//                    medRequest.Status.ShouldBe(MedicationRequest.MedicationRequestStatus.Completed);
-//               }
+                // git hub ref 170
+                // RMB 23/1/19
+                //                if (prescriptionType.Coding.First().Display.Contains("Acute"))
+                //                { 
+                //
+                //                    medRequest.Status.ShouldBe(MedicationRequest.MedicationRequestStatus.Completed);
+                //               }
             });
         }
 
@@ -958,7 +959,7 @@
                 medReference.Reference.StartsWith("Medication");
             });
         }
-        
+
         [Then(@"the MedicationRequest subject should be valid")]
         public void TheMedicationRequestSubjectShouldbeValid()
         {
@@ -1007,8 +1008,8 @@
             {
                 medRequest.DosageInstruction.ShouldHaveSingleItem();
                 medRequest.DosageInstruction.First().Text.ShouldNotBeNullOrEmpty();
-				
-				// Added for 1.2.0 RMB 8/8/2018
+
+                // Added for 1.2.0 RMB 8/8/2018
                 medRequest.DosageInstruction.First().Text.Equals("No information available");
             });
         }
@@ -1027,7 +1028,7 @@
                     // git hub ref 160
                     // RMB 14/1/19
                     //medRequest.DispenseRequest.ValidityPeriod.End.ShouldBeNull();
-                } 
+                }
             });
         }
 
@@ -1043,9 +1044,9 @@
                 if ((prescriptionType.Coding.First().Display.Equals("Repeat") || prescriptionType.Coding.First().Display.Equals("Repeat dispensing")) && medRequest.Intent.Equals(MedicationRequest.MedicationRequestIntent.Plan))
                 {
                     Extension repeatInformation = medRequest.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationRepeatInformation);
-                 
+
                     if (repeatInformation != null)
-                    { 
+                    {
                         repeatInformation.GetExtension("numberOfRepeatPrescriptionsIssued").ShouldNotBeNull();
                         repeatInformation.GetExtension("numberOfRepeatPrescriptionsAllowed").ShouldNotBeNull();
                     }
@@ -1075,10 +1076,10 @@
             {
                 Extension prescriptionType = medRequest.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationPrescriptionType);
                 prescriptionType.ShouldNotBeNull();
-				
-// Added for 1.2.0 RMB 8/8/2018
+
+                // Added for 1.2.0 RMB 8/8/2018
                 prescriptionType.Equals("No information available");
-				
+
                 CodeableConcept prescriptionTypeValue = (CodeableConcept)prescriptionType.Value;
 
                 prescriptionTypeValue.Coding.First().System.Equals(FhirConst.CodeSystems.kCcPresriptionType);
@@ -1090,15 +1091,15 @@
         {
             MedicationRequests.ForEach(medRequest =>
             {
-                if((medRequest.Intent.Equals(MedicationRequest.MedicationRequestIntent.Plan)) && (medRequest.Status.Equals(MedicationRequest.MedicationRequestStatus.Stopped)))
+                if ((medRequest.Intent.Equals(MedicationRequest.MedicationRequestIntent.Plan)) && (medRequest.Status.Equals(MedicationRequest.MedicationRequestStatus.Stopped)))
                 {
                     Extension endReason = medRequest.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationRequestEndReason);
                     endReason.ShouldNotBeNull();
                     endReason.GetExtension("statusChangeDate").ShouldNotBeNull();
                     endReason.GetExtension("statusReason").ShouldNotBeNull();
-                    endReason.GetExtension("statusReason").Equals("No information available");					
+                    endReason.GetExtension("statusReason").Equals("No information available");
                 }
-                else if((medRequest.Intent.Equals(MedicationRequest.MedicationRequestIntent.Order)) && (medRequest.Status.Equals(MedicationRequest.MedicationRequestStatus.Stopped)))
+                else if ((medRequest.Intent.Equals(MedicationRequest.MedicationRequestIntent.Order)) && (medRequest.Status.Equals(MedicationRequest.MedicationRequestStatus.Stopped)))
                 {
                     Extension endReason = medRequest.GetExtension(FhirConst.StructureDefinitionSystems.kMedicationRequestEndReason);
                     endReason.ShouldBeNull();
@@ -1107,7 +1108,7 @@
             });
         }
 
-// Added 1.2.1 RMB 1/10/2018        
+        // Added 1.2.1 RMB 1/10/2018        
         [Then(@"the MedicationRequest Not In Use should be valid")]
         public void TheMedicationRequestNotInUseShouldBeValid()
         {
@@ -1125,6 +1126,6 @@
 
             });
         }
-		#endregion
-	}
+        #endregion
+    }
 }

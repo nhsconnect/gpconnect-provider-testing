@@ -10,11 +10,10 @@ namespace GPConnect.Provider.AcceptanceTests.Importers
     {
         public static Dictionary<string, string> LoadCsv(string filename)
         {
-            using (var csv = new CsvReader(new StreamReader(filename)))
-            {
-                csv.Configuration.RegisterClassMap<NHSNoMapConverter>();
-                return csv.GetRecords<NHSNoMap>().ToDictionary(x => x.NativeNHSNumber, x => x.ProviderNHSNumber);
-            }
+            using var reader = new StreamReader(filename);
+            using var csv = new CsvReader(reader, System.Globalization.CultureInfo.InvariantCulture);
+            csv.Context.RegisterClassMap<NHSNoMapConverter>();
+            return csv.GetRecords<NHSNoMap>().ToDictionary(x => x.NativeNHSNumber, x => x.ProviderNHSNumber);
         }
     }
 }

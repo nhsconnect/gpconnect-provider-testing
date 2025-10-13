@@ -5,14 +5,14 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 	using Context;
 	using GPConnect.Provider.AcceptanceTests.Logger;
 	using Hl7.Fhir.Model;
-    using Hl7.Fhir.Serialization;
-    using Newtonsoft.Json.Linq;
-    using NUnit.Framework;
+	using Hl7.Fhir.Serialization;
+	using Newtonsoft.Json.Linq;
+	using NUnit.Framework;
 	using Shouldly;
 	using System;
 	using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
+	using System.IO;
+	using System.Linq;
 	using TechTalk.SpecFlow;
 	using static Hl7.Fhir.Model.Bundle;
 
@@ -20,16 +20,16 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 	public sealed class BundleSteps : BaseSteps
 	{
 		private readonly HttpContext _httpContext;
-        private List<Medication> Medications => _httpContext.FhirResponse.Medications;
-        private List<MedicationStatement> MedicationStatements => _httpContext.FhirResponse.MedicationStatements;
-        private List<MedicationRequest> MedicationRequests => _httpContext.FhirResponse.MedicationRequests;
-        private List<AllergyIntolerance> ActiveAllergyIntolerances => _httpContext.FhirResponse.AllergyIntolerances;
-        private List<Observation> Observations => _httpContext.FhirResponse.Observations;
-        private List<Encounter> Encounters => _httpContext.FhirResponse.Encounters;
-        private List<Condition> Problems => _httpContext.FhirResponse.Conditions;
-        private List<Immunization> Immunizations => _httpContext.FhirResponse.Immunizations;
+		private List<Medication> Medications => _httpContext.FhirResponse.Medications;
+		private List<MedicationStatement> MedicationStatements => _httpContext.FhirResponse.MedicationStatements;
+		private List<MedicationRequest> MedicationRequests => _httpContext.FhirResponse.MedicationRequests;
+		private List<AllergyIntolerance> ActiveAllergyIntolerances => _httpContext.FhirResponse.AllergyIntolerances;
+		private List<Observation> Observations => _httpContext.FhirResponse.Observations;
+		private List<Encounter> Encounters => _httpContext.FhirResponse.Encounters;
+		private List<Condition> Problems => _httpContext.FhirResponse.Conditions;
+		private List<Immunization> Immunizations => _httpContext.FhirResponse.Immunizations;
 
-        public BundleSteps(HttpSteps httpSteps, HttpContext httpContext) : base(httpSteps)
+		public BundleSteps(HttpSteps httpSteps, HttpContext httpContext) : base(httpSteps)
 		{
 			_httpContext = httpContext;
 		}
@@ -75,7 +75,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 			});
 
 			//check that no fullurl entries found, else fail test and report how many found
-			foundFullurlCounter.ShouldBe(0,("Expected 0 fullurl key/value pairs but found : " + foundFullurlCounter.ToString() ));
+			foundFullurlCounter.ShouldBe(0, ("Expected 0 fullurl key/value pairs but found : " + foundFullurlCounter.ToString()));
 
 		}
 
@@ -93,13 +93,13 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 			TestOperationOutcomeResource(errorCode);
 		}
 
-		[Then (@"the response should be a OperationOutcome resource with error code ""(.*)"" and display ""(.*)""")]
+		[Then(@"the response should be a OperationOutcome resource with error code ""(.*)"" and display ""(.*)""")]
 		public void ThenTheResponseShouldBeAOperationOutcomeResourceWithErrorCodeAndDisplay(string errorCode, string errorDisplay)
 		{
 			TestOperationOutcomeResource(errorCode, errorDisplay);
 		}
 
-		private void TestOperationOutcomeResource(string errorCode = null, string errorDisplay=null)
+		private void TestOperationOutcomeResource(string errorCode = null, string errorDisplay = null)
 		{
 			var resource = _httpContext.FhirResponse.Resource;
 
@@ -131,7 +131,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
 					if (!string.IsNullOrEmpty(errorCode))
 					{
-						coding.Code.ShouldBe(errorCode,string.Format("coding.Code should be {0} but is {1}",errorCode, coding.Code));
+						coding.Code.ShouldBe(errorCode, string.Format("coding.Code should be {0} but is {1}", errorCode, coding.Code));
 					}
 
 					if (!string.IsNullOrEmpty(errorDisplay))
@@ -208,7 +208,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 		[Then(@"the patient resource in the bundle should contain meta data profile and version id")]
 		public void ThenThePatientResourceInTheBundleShouldContainMetaDataProfileAndVersionId()
 		{
-			CheckForValidMetaDataInResource(_httpContext.FhirResponse.Patients,FhirConst.StructureDefinitionSystems.kPatient);
+			CheckForValidMetaDataInResource(_httpContext.FhirResponse.Patients, FhirConst.StructureDefinitionSystems.kPatient);
 		}
 
 		[Then(@"if the response bundle contains an organization resource it should contain meta data profile and version id")]
@@ -271,58 +271,58 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 		}
 
 
-        [Then(@"check that the bundle does not contain any duplicate resources")]
-        public void ThenCheckThatTheBundleDoesNotContainAnyDuplicateResources()
-        {
-            //Check Meds for Duplicates
-            Medications.ForEach(itemToCheck =>
-            {
-                (Medications.Where(m => m.Id == itemToCheck.Id)).ToList().Count().ShouldBe(1, "Error : Duplicate Medication Resource Found with ID : " + itemToCheck.Id);
-            });
+		[Then(@"check that the bundle does not contain any duplicate resources")]
+		public void ThenCheckThatTheBundleDoesNotContainAnyDuplicateResources()
+		{
+			//Check Meds for Duplicates
+			Medications.ForEach(itemToCheck =>
+			{
+				(Medications.Where(m => m.Id == itemToCheck.Id)).ToList().Count().ShouldBe(1, "Error : Duplicate Medication Resource Found with ID : " + itemToCheck.Id);
+			});
 
-            //Check MedicationStatements for Duplicates
-            MedicationStatements.ForEach(itemToCheck =>
-            {
-                (MedicationStatements.Where(m => m.Id == itemToCheck.Id)).ToList().Count().ShouldBe(1, "Error : Duplicate MedicationStatement Resource Found with ID : " + itemToCheck.Id);
-            });
+			//Check MedicationStatements for Duplicates
+			MedicationStatements.ForEach(itemToCheck =>
+			{
+				(MedicationStatements.Where(m => m.Id == itemToCheck.Id)).ToList().Count().ShouldBe(1, "Error : Duplicate MedicationStatement Resource Found with ID : " + itemToCheck.Id);
+			});
 
-            // Check MedicationRequests for Duplicates
-            MedicationRequests.ForEach(itemToCheck =>
-            {
-                 (MedicationRequests.Where(m => m.Id == itemToCheck.Id)).ToList().Count().ShouldBe(1, "Error : Duplicate MedicationRequests Resource Found with ID : " + itemToCheck.Id);
-            });
+			// Check MedicationRequests for Duplicates
+			MedicationRequests.ForEach(itemToCheck =>
+			{
+				(MedicationRequests.Where(m => m.Id == itemToCheck.Id)).ToList().Count().ShouldBe(1, "Error : Duplicate MedicationRequests Resource Found with ID : " + itemToCheck.Id);
+			});
 
-            // Check ActiveAllergyIntolerances for Duplicates
-            ActiveAllergyIntolerances.ForEach(itemToCheck =>
-            {
-                (ActiveAllergyIntolerances.Where(a => a.Id == itemToCheck.Id)).ToList().Count().ShouldBe(1, "Error : Duplicate ActiveAllergyIntolerances Resource Found with ID : " + itemToCheck.Id);
-            });
+			// Check ActiveAllergyIntolerances for Duplicates
+			ActiveAllergyIntolerances.ForEach(itemToCheck =>
+			{
+				(ActiveAllergyIntolerances.Where(a => a.Id == itemToCheck.Id)).ToList().Count().ShouldBe(1, "Error : Duplicate ActiveAllergyIntolerances Resource Found with ID : " + itemToCheck.Id);
+			});
 
-            // Check Observations for Duplicates
-            Observations.ForEach(itemToCheck =>
-            {
-                (Observations.Where(o => o.Id == itemToCheck.Id)).ToList().Count().ShouldBe(1, "Error : Duplicate Observations Resource Found with ID : " + itemToCheck.Id);
-            });
+			// Check Observations for Duplicates
+			Observations.ForEach(itemToCheck =>
+			{
+				(Observations.Where(o => o.Id == itemToCheck.Id)).ToList().Count().ShouldBe(1, "Error : Duplicate Observations Resource Found with ID : " + itemToCheck.Id);
+			});
 
-            // Check Immunizations for Duplicates
-            Immunizations.ForEach(itemToCheck =>
-            {
-                (Immunizations.Where(i => i.Id == itemToCheck.Id)).ToList().Count().ShouldBe(1, "Error : Duplicate Immunizations Resource Found with ID : " + itemToCheck.Id);
-            });
+			// Check Immunizations for Duplicates
+			Immunizations.ForEach(itemToCheck =>
+			{
+				(Immunizations.Where(i => i.Id == itemToCheck.Id)).ToList().Count().ShouldBe(1, "Error : Duplicate Immunizations Resource Found with ID : " + itemToCheck.Id);
+			});
 
-            // Check Encounters for Duplicates
-            Encounters.ForEach(itemToCheck =>
-            {
-                (Encounters.Where(e => e.Id == itemToCheck.Id)).ToList().Count().ShouldBe(1, "Error : Duplicate Encounters Resource Found with ID : " + itemToCheck.Id);
-            });
+			// Check Encounters for Duplicates
+			Encounters.ForEach(itemToCheck =>
+			{
+				(Encounters.Where(e => e.Id == itemToCheck.Id)).ToList().Count().ShouldBe(1, "Error : Duplicate Encounters Resource Found with ID : " + itemToCheck.Id);
+			});
 
-            // Check Problems for Duplicates
-            Problems.ForEach(itemToCheck =>
-            {
-                (Problems.Where(p => p.Id == itemToCheck.Id)).ToList().Count().ShouldBe(1, "Error : Duplicate Problems Resource Found with ID : " + itemToCheck.Id);
-            });
+			// Check Problems for Duplicates
+			Problems.ForEach(itemToCheck =>
+			{
+				(Problems.Where(p => p.Id == itemToCheck.Id)).ToList().Count().ShouldBe(1, "Error : Duplicate Problems Resource Found with ID : " + itemToCheck.Id);
+			});
 
-        }
-     
-    }
+		}
+
+	}
 }

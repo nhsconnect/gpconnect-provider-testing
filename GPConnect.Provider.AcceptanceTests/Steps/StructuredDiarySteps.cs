@@ -56,8 +56,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
         [Then(@"I add the Diary Search date parameter with a past date ""(.*)"" days ago")]
         public void GivenIaddtheDiarySearchdateparameterwithapastdate(int days)
-        {            
-            var pastSearchDate = DateTime.UtcNow.AddDays(-days);            
+        {
+            var pastSearchDate = DateTime.UtcNow.AddDays(-days);
             var searchBeforeDate = pastSearchDate.ToString("yyyy-MM-dd");
 
             IEnumerable<Tuple<string, Base>> tuples = new Tuple<string, Base>[] {
@@ -65,7 +65,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
             };
             _httpContext.HttpRequestConfiguration.BodyParameters.Add(FhirConst.GetStructuredRecordParams.kDiary, tuples);
         }
-        
+
         [Then(@"I add the Diary Search date parameter of ""(.*)"" days in future")]
         public void GivenIaddtheDiarySearchdateparameterofdaysinfuture(int years)
         {
@@ -109,7 +109,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
                 //Check we found atleast One ProcedureRequest Linked in list
                 found.ShouldBeTrue("Fail : Diary List should be linked to atleast one ProcedureRequest");
-                
+
                 Logger.Log.WriteLine("Completed Mandatory checks on Diary List");
             });
         }
@@ -178,7 +178,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
 
                 //Check authoredOn
                 proc.AuthoredOn.ShouldNotBeNullOrEmpty("Fail : Diary ProcedureRequest - AuthoredOn should be populated with a dateTime");
-               
+
                 Logger.Log.WriteLine("Diary ProcedureRequest Validated with ID: " + proc.Id);
             });
         }
@@ -230,7 +230,8 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
                 }
                 if (found)
                     break;
-            };
+            }
+            ;
 
             found.ShouldBeTrue("Fail : No Problems found to be linked to a  ProcedureRequest");
 
@@ -319,7 +320,7 @@ namespace GPConnect.Provider.AcceptanceTests.Steps
         }
 
 
-       
+
 
     }
 }

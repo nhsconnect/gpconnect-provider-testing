@@ -17,7 +17,7 @@
             HttpRequestConfiguration = new HttpRequestConfiguration();
             FhirResponse = new FhirResponse();
         }
-        
+
         public FhirResponse FhirResponse { get; set; }
 
         public HttpResponse HttpResponse { get; set; }
@@ -96,7 +96,7 @@
         public void SaveJSONResponseToDisk(string filename)
         {
             var JSONResponse = JToken.Parse(FhirSerializer.SerializeResourceToJson(FhirResponse.Resource));
-                     
+
             string jsonPrettyPrinted = JsonConvert.SerializeObject(JSONResponse, Formatting.Indented);
             File.WriteAllText(@filename, jsonPrettyPrinted);
 
@@ -108,20 +108,20 @@
             string JWTToken;
 
             foreach (var entry in HttpRequestConfiguration.RequestHeaders.GetRequestHeaders())
-            {             
+            {
                 //find JWT
                 if (entry.Key == "Authorization")
-                { 
+                {
                     JWTToken = entry.Value.Replace("Bearer ", "");
-             
+
                     //Convert Token to JSON
                     var jwtHandler = new JwtSecurityTokenHandler();
                     var token = jwtHandler.ReadJwtToken(JWTToken);
-                    
+
                     string jwtHeaderPrettyPrinted = JsonConvert.SerializeObject(token.Header, Formatting.Indented);
                     string jwtPayloadPrettyPrinted = JsonConvert.SerializeObject(token.Payload, Formatting.Indented);
                     File.WriteAllText(@filename, "Header:\n" + jwtHeaderPrettyPrinted + "\nPayload:\n" + jwtPayloadPrettyPrinted);
-                    }
+                }
 
             }
 

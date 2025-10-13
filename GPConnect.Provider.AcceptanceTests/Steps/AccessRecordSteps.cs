@@ -81,8 +81,9 @@
         [Then(@"the Bundle should be valid for patient ""(.*)""")]
         public void TheBundleShouldBeValid(string patient)
         {
-            Bundle.Id.ShouldBe(GlobalContext.SSPTraceID, "Fail : Bundle ID should match the Request Header Ssp-TraceID");
-            Logger.Log.WriteLine("Info : Bundle ID matched Request SSPTraceID");
+            // removed from gp-connect-mock-tests as the Wiremock cannot provide dynamic traceIDs
+            // Bundle.Id.ShouldBe(GlobalContext.SSPTraceID, "Fail : Bundle ID should match the Request Header Ssp-TraceID");
+            // Logger.Log.WriteLine("Info : Bundle ID matched Request SSPTraceID");
 
             Bundle.Meta.ShouldNotBeNull();
             Bundle.Meta.VersionId.ShouldBeNull();

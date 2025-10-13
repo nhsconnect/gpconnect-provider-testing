@@ -95,9 +95,9 @@
             string eTag;
             _httpContext.HttpResponse.Headers.TryGetValue("ETag", out eTag);
 
-            eTag.ShouldStartWith("W/\"", "The ETag header should start with W/\"");
+            eTag.ShouldStartWith("W/\"", Case.Sensitive, "The ETag header should start with W/\"");
 
-            eTag.ShouldEndWith(versionId + "\"", "The ETag header should contain the resource version enclosed within speech marks");
+            eTag.ShouldEndWith(versionId + "\"", Case.Sensitive, "The ETag header should contain the resource version enclosed within speech marks");
 
             eTag.ShouldBe("W/\"" + versionId + "\"", "The ETag header contains invalid characters");
 
@@ -133,10 +133,10 @@
             string cacheControl;
             _httpContext.HttpResponse.Headers.TryGetValue("Cache-Control", out cacheControl);
 
-// Amended git hub ref 82 from Shouldbe to ShouldContain 
-// RMB 9/10/2018			
-            cacheControl.ShouldContain("no-store", "The response payload should contain a resource.");
-    
+            // Amended git hub ref 82 from Shouldbe to ShouldContain 
+            // RMB 9/10/2018			
+            cacheControl.ShouldContain("no-store", Case.Sensitive, "The response payload should contain a resource.");
+
         }
 
         [Then("if redirected the Response Headers should contain a Strict-Transport-Security header")]
@@ -144,7 +144,7 @@
         {
             if (_httpContext.HttpResponse.Redirected)
             {
-                 _httpContext.HttpResponse.Headers.ShouldContainKey("Strict-Transport-Security", "The Response Headers should contain a Strict-Transport-Security header, but it wasn't found.");
+                _httpContext.HttpResponse.Headers.ShouldContainKey("Strict-Transport-Security", "The Response Headers should contain a Strict-Transport-Security header, but it wasn't found.");
             }
         }
 
@@ -165,7 +165,7 @@
                 var statusCode = _httpContext.HttpResponse.StatusCode;
                 var statusCodeList = string.Join(", ", statusCodes.Select(sc => (int)sc));
 
-                statusCodes.ShouldContain(statusCode, $"The Response Status Code should be one of {statusCodeList}, but it was {(int) statusCode}.");
+                statusCodes.ShouldContain(statusCode, $"The Response Status Code should be one of {statusCodeList}, but it was {(int)statusCode}.");
             }
         }
 
@@ -193,7 +193,7 @@
 
             methods.ForEach(method =>
             {
-                headerValue.ShouldContain(method, $"The {headerName} header should contain the {method} HTTP method, but did not.");
+                headerValue.ShouldContain(method, Case.Sensitive, $"The {headerName} header should contain the {method} HTTP method, but did not.");
             });
         }
 
@@ -201,11 +201,11 @@
         public void TheResponseShouldContainTheRecorderReference()
         {
             var values = _httpContext.FhirResponse.AllergyIntolerances;
-            foreach(var allergy in values)
+            foreach (var allergy in values)
             {
                 allergy.Recorder.ShouldNotBeNull("Recorder has a value");
             }
-            
+
         }
 
         [StepArgumentTransformation]
